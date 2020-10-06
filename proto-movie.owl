@@ -1,0 +1,2414 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#"
+     xml:base="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:swrla="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#"
+     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
+     xmlns:untitled-ontology-16="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#"
+     xmlns:untitled-ontology-161="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled -->
+
+    <owl:AnnotationProperty rdf:about="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasActor -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasActor">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Situation"/>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation"/>
+                <owl:someValuesFrom rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasActor"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasCharacter"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasCharacter -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasCharacter">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Situation"/>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation"/>
+                <owl:someValuesFrom rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasActor"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasCharacter"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCharacterTitle"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isLocationOf"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#castMemberOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#castMemberOf"/>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#coparticipatesWith -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#coparticipatesWith">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasCrewMember -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasCrewMember">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasMember"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CrewMember"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasException -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasException">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasFilmPeople -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasFilmPeople">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasMovie -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasMovie">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasPartActing -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasPartActing">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasPart"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isPartOfMaking"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasParticipant -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasParticipant">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isParticipantIn"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Event"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isAffectedByValidityOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isAffectedByValidityOf">
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isCriterionFor -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isCriterionFor">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isDirectedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isDirectedBy">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Director"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isPartOfMaking -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isPartOfMaking">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPartOf"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isParticipantIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isParticipantIn">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Event"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isRealizedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isRealizedBy">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationObject"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationRealization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isRequirementFor -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isRequirementFor">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Requirement"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSatisfiedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSatisfiedBy">
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSettingIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSettingIn">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Award"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AwardWinning"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isValidFor -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isValidFor">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isViolatedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isViolatedBy">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#realizes -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#realizes">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationRealization"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationObject"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfies -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfies">
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfiesCriterion -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfiesCriterion">
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfiesRequirement -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfiesRequirement">
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Requirement"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#setBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#setBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violates -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violates">
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violatesCriterion -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violatesCriterion">
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violatesRequirement -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violatesRequirement">
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Requirement"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#associatedWithMovie -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#associatedWithMovie">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCast -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCast">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Situation"/>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation"/>
+                <owl:someValuesFrom rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasActor"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasCharacter"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCountryOfOrigin -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCountryOfOrigin">
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Country"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCrewMember -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCrewMember">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasDirector -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasDirector">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasPart"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Situation"/>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation"/>
+                <owl:someValuesFrom rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasDirector"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Director"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CrewMember"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Director"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasMember -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasMember">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isMemberOf"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CollectiveAgent"/>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+        <rdfs:range>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasPart -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasPart">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPartOf"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isLocationOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isLocationOf">
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isMemberOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isMemberOf">
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+        <rdfs:domain>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CollectiveAgent"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPartOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPartOf">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPortrayedAs -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPortrayedAs">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasPart"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPortrayedIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPortrayedIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#portrays"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#portrays -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#portrays">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#topObjectProperty -->
+
+    <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#topObjectProperty">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasFeatureLengthInMinutes -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasFeatureLengthInMinutes"/>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#yearReleased -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#yearReleased">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCharacterTitle -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCharacterTitle">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasName -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasName">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity -->
+
+    <owl:Class rdf:about="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Situation"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasActor"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasCharacter"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPartOf"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isParticipantIn"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPortrayedAs"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPortrayedIn"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CrewMember"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Situation"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasFilmPeople"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasMovie"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasPart"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCharacterTitle"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object">
+        <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#coparticipatesWith"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Object"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Situation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Situation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Event"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation"/>
+                <owl:someValuesFrom rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AwardWinning -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AwardWinning">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Situation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestActor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestActor">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestActress -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestActress">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestCinematography -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestCinematography">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestDirector -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestDirector">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestNewcomer -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestNewcomer">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestPicture -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestPicture">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestProductionDesigner -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestProductionDesigner">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Comedy -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Comedy">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NormativeValue"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isCriterionFor"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfiesCriterion"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violatesCriterion"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Drama -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Drama">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Event -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Event">
+        <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#FeatureFilm -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#FeatureFilm">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#MovieRealization"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#FeatureLengthOscarCriterion -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#FeatureLengthOscarCriterion">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#OscarCriterion"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Horror -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Horror">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#MovieRealization -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#MovieRealization">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationRealization"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#yearReleased"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Mystery -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Mystery">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NominationGiving -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NominationGiving">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Situation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NormativeValue -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NormativeValue">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#OscarCriterion -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#OscarCriterion">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isCriterionFor"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Producers -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Producers">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CrewMember"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Requirement -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Requirement">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NormativeValue"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Romcom -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Romcom">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Subgenre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#SciFi -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#SciFi">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ShortFilm -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ShortFilm">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#MovieRealization"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Subgenre -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Subgenre">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Thriller -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Thriller">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value">
+        <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasException"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isAffectedByValidityOf"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSatisfiedBy"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isViolatedBy"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfies"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violates"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Abstract -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Abstract">
+        <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Actor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Actor">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Job"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ActorJob -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ActorJob">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Job"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Actress -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Actress">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:hasValue rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Female"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ActressJob -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ActressJob">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Job"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Antagonist -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Antagonist">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MainCharacter"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCharacterTitle"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Audience -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Audience">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CollectiveAgent"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Award -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Award">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSettingIn"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AwardWinning"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#AwardMeritCategory -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#AwardMeritCategory">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Classification"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Building -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Building">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Place"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Cast -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Cast">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CollectiveAgent"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasMember"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#City -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#City">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Place"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Classification -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Classification">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Abstract"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CollectiveAgent -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CollectiveAgent">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Country -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Country">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Place"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Crew -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Crew">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CollectiveAgent"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasMember"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CrewMember"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CrewMember -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CrewMember">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Person"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Class>
+                        <owl:complementOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+                    </owl:Class>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isParticipantIn"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Director -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Director">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#CrewMember"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Extra -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Extra">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCharacterTitle"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#FemaleProtagonist -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#FemaleProtagonist">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Protagonist"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:hasValue rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Female"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#FilmMaker -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#FilmMaker">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Job"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Female"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Male"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#NonBinary"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Classification"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Female"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Male"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#NonBinary"/>
+                </owl:oneOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Genre -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Genre">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Classification"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationEntity -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationEntity">
+        <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationObject -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationObject">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationEntity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isRealizedBy"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationRealization"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationRealization -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationRealization">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationEntity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#realizes"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationObject"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Job -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Job">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MainCharacter -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MainCharacter">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCharacterTitle"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MaleActor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MaleActor">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:hasValue rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Male"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MaleProtagonist -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MaleProtagonist">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Protagonist"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:hasValue rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Male"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#InformationObject"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Nationality -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Nationality">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Classification"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Nomination -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Nomination">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Place -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Place">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Agent"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Protagonist -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Protagonist">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MainCharacter"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCharacterTitle"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#SideCharacter -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#SideCharacter">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#MovieRole"/>
+        <rdfs:subClassOf>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                        <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                        <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCharacterTitle"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/2002/07/owl#Thing -->
+
+    <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Thing">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isValidFor"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </rdf:Description>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AcademyAward -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AcademyAward">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Award"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestEditor -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestEditor">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#AwardMeritCategory"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BongJoonho -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BongJoonho">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Director"/>
+        <untitled-ontology-16:hasGender rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Male"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Parasite2019Making -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Parasite2019Making">
+        <rdf:type rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+        <hasMovie rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Parasite2019"/>
+        <untitled-ontology-161:hasCast rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParasiteCast"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteCrew -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteCrew">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Crew"/>
+        <untitled-ontology-161:associatedWithMovie rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Parasite2019"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKevin -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKevin">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MainCharacter"/>
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKimKiwoo"/>
+        <untitled-ontology-161:hasName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kevin</untitled-ontology-161:hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKimKiwoo -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKimKiwoo">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MainCharacter"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#SouthKorea -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#SouthKorea">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Thailand -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Thailand">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Country"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ChoiWooshik -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ChoiWooshik">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MaleActor"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ChoiWooshikInParasite -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ChoiWooshikInParasite">
+        <rdf:type rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+        <untitled-ontology-16:hasActor rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ChoiWooshik"/>
+        <untitled-ontology-16:hasCharacter rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKevin"/>
+        <isPartOfMaking rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Parasite2019Making"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Female -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Female">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Male -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Male">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#NonBinary -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#NonBinary">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Parasite2019 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Parasite2019">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie"/>
+        <untitled-ontology-161:hasCountryOfOrigin rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#SouthKorea"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParasiteCast -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParasiteCast">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Cast"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParasiteJessica -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParasiteJessica">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MainCharacter"/>
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParasiteKimKijung"/>
+        <untitled-ontology-161:hasCharacterTitle rdf:datatype="http://www.w3.org/2001/XMLSchema#string">private tutor of the Park family</untitled-ontology-161:hasCharacterTitle>
+        <untitled-ontology-161:hasName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Jessica</untitled-ontology-161:hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParasiteKimKijung -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParasiteKimKijung">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#MainCharacter"/>
+        <untitled-ontology-161:hasCharacterTitle rdf:datatype="http://www.w3.org/2001/XMLSchema#string">daughter of the Kim family</untitled-ontology-161:hasCharacterTitle>
+        <untitled-ontology-161:hasName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim Ki-jung</untitled-ontology-161:hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParkSodam -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParkSodam">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Actress"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParkSodamInParasite -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParkSodamInParasite">
+        <rdf:type rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+        <untitled-ontology-16:hasActor rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParkSodam"/>
+        <untitled-ontology-16:hasCharacter rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#ParasiteJessica"/>
+        <isPartOfMaking rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Parasite2019Making"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </owl:intersectionOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </owl:intersectionOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasGender"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Female"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Male"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#NonBinary"/>
+        </owl:oneOf>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Classification"/>
+    </owl:Class>
+    <owl:Class>
+        <owl:oneOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Female"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Male"/>
+            <rdf:Description rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#NonBinary"/>
+        </owl:oneOf>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Gender"/>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Rules
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description rdf:about="urn:swrl:var#a1">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#a2">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#f">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#m">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#c">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#p">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#a">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:swrl:var#s">
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Variable"/>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a1"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasActor"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#a1"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#a2"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPartOf"/>
+                                        <swrl:argument1 rdf:resource="urn:swrl:var#a1"/>
+                                        <swrl:argument2 rdf:resource="urn:swrl:var#f"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#FilmMaking"/>
+                                                <swrl:argument1 rdf:resource="urn:swrl:var#f"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                <rdf:first>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasMovie"/>
+                                                        <swrl:argument1 rdf:resource="urn:swrl:var#f"/>
+                                                        <swrl:argument2 rdf:resource="urn:swrl:var#m"/>
+                                                    </rdf:Description>
+                                                </rdf:first>
+                                                <rdf:rest>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                        <rdf:first>
+                                                            <rdf:Description>
+                                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasCast"/>
+                                                                <swrl:argument1 rdf:resource="urn:swrl:var#f"/>
+                                                                <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
+                                                            </rdf:Description>
+                                                        </rdf:first>
+                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                    </rdf:Description>
+                                                </rdf:rest>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#castMemberOf"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a2"/>
+                        <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasActor"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasCharacter"/>
+                                        <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                                        <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Actor"/>
+                                                <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#isPortrayedAs"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#a"/>
+                        <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <swrla:isRuleEnabled rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</swrla:isRuleEnabled>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"></rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">S1</rdfs:label>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasActor"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation"/>
+                                        <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                                        <swrl:argument2 rdf:resource="urn:swrl:var#s"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Cast"/>
+                                                <swrl:argument1 rdf:resource="urn:swrl:var#c"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                                <rdf:first>
+                                                    <rdf:Description>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation"/>
+                                                        <swrl:argument1 rdf:resource="urn:swrl:var#c"/>
+                                                        <swrl:argument2 rdf:resource="urn:swrl:var#s"/>
+                                                    </rdf:Description>
+                                                </rdf:first>
+                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                            </rdf:Description>
+                                        </rdf:rest>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#hasMember"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#c"/>
+                        <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasLocation"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                        <swrl:argument2 rdf:resource="urn:swrl:var#s"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#hasActor"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/untitled-ontology-16#Acting"/>
+                                        <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#Movie"/>
+                                                <swrl:argument1 rdf:resource="urn:swrl:var#s"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/untitled-ontology-16#portrays"/>
+                        <swrl:argument1 rdf:resource="urn:swrl:var#s"/>
+                        <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
