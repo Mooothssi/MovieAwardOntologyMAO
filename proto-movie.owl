@@ -11,7 +11,7 @@
      xmlns:swrla="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#"
      xmlns:swrlb="http://www.w3.org/2003/11/swrlb#"
      xmlns:terms="http://purl.org/dc/terms/">
-    <owl:Ontology rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology"/>
+    <owl:Ontology rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao"/>
     
 
 
@@ -41,6 +41,24 @@
     <!-- http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled -->
 
     <owl:AnnotationProperty rdf:about="http://swrl.stanford.edu/ontologies/3.3/swrla.owl#isRuleEnabled"/>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasActor -->
+
+    <owl:AnnotationProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasActor"/>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCharacter -->
+
+    <owl:AnnotationProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCharacter"/>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasGender -->
+
+    <owl:AnnotationProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasGender"/>
     
 
 
@@ -213,6 +231,22 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#castMemberOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#castMemberOf"/>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#coparticipatesWith -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#coparticipatesWith">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Object"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCast -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCast">
@@ -288,9 +322,11 @@
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCrewMember -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCrewMember">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasMember"/>
         <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasPart"/>
         <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
         <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#CrewMember"/>
     </owl:ObjectProperty>
     
 
@@ -352,6 +388,24 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasException -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasException">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasFilmPeople -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasFilmPeople">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Person"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasMember -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasMember">
@@ -396,6 +450,15 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasMovie -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasMovie">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasPart -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasPart">
@@ -403,6 +466,55 @@
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
         <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
         <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasPartActing -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasPartActing">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasPart"/>
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isPartOfMaking"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
+        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasParticipant -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasParticipant">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isParticipantIn"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Event"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Object"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isAffectedByValidityOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isAffectedByValidityOf">
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isCriterionFor -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isCriterionFor">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Criterion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isDirectedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isDirectedBy">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Director"/>
     </owl:ObjectProperty>
     
 
@@ -469,6 +581,25 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isPartOfMaking -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isPartOfMaking">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isPartOf"/>
+        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isParticipantIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isParticipantIn">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Object"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Event"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isPortrayedAs -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isPortrayedAs">
@@ -488,6 +619,60 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isRealizedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isRealizedBy">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationObject"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationRealization"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isRequirementFor -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isRequirementFor">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Requirement"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSatisfiedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSatisfiedBy">
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSettingIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSettingIn">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Award"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardWinning"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isValidFor -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isValidFor">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isViolatedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isViolatedBy">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#portrays -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#portrays">
@@ -498,247 +683,73 @@
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#castMemberOf -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#realizes -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#castMemberOf"/>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#coparticipatesWith -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#coparticipatesWith">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Object"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Object"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasCrewMember -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasCrewMember">
-        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasMember"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#CrewMember"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasException -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasException">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasFilmPeople -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasFilmPeople">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Person"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasMovie -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasMovie">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasPartActing -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasPartActing">
-        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasPart"/>
-        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isPartOfMaking"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
-        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasParticipant -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasParticipant">
-        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isParticipantIn"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Event"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Object"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isAffectedByValidityOf -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isAffectedByValidityOf">
-        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isCriterionFor -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isCriterionFor">
-        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isDirectedBy -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isDirectedBy">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Director"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isPartOfMaking -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isPartOfMaking">
-        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isPartOf"/>
-        <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isParticipantIn -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isParticipantIn">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Object"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Event"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isRealizedBy -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isRealizedBy">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationObject"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationRealization"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isRequirementFor -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isRequirementFor">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Requirement"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSatisfiedBy -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSatisfiedBy">
-        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSettingIn -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSettingIn">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Award"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AwardWinning"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isValidFor -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isValidFor">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isViolatedBy -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isViolatedBy">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
-        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#realizes -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#realizes">
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#realizes">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationRealization"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationObject"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfies -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#satisfies -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfies">
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#satisfies">
         <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfiesCriterion -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#satisfiesCriterion -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfiesCriterion">
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#satisfiesCriterion">
         <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Criterion"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfiesRequirement -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#satisfiesRequirement -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfiesRequirement">
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#satisfiesRequirement">
         <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Requirement"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Requirement"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#setBy -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#setBy -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#setBy">
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#setBy">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violates -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#violates -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violates">
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#violates">
         <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violatesCriterion -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#violatesCriterion -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violatesCriterion">
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#violatesCriterion">
         <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Criterion"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violatesRequirement -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#violatesRequirement -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violatesRequirement">
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#violatesRequirement">
         <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Requirement"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Requirement"/>
     </owl:ObjectProperty>
     
 
@@ -746,7 +757,7 @@
     <!-- http://www.w3.org/2002/07/owl#topObjectProperty -->
 
     <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#topObjectProperty">
-        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Criterion"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Agent"/>
     </rdf:Description>
     
@@ -771,6 +782,12 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasFeatureLengthInMinutes -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasFeatureLengthInMinutes"/>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasName -->
 
     <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasName">
@@ -779,15 +796,9 @@
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasFeatureLengthInMinutes -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#yearReleased -->
 
-    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasFeatureLengthInMinutes"/>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#yearReleased -->
-
-    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#yearReleased">
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#yearReleased">
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
     </owl:DatatypeProperty>
     
@@ -857,6 +868,12 @@
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isParticipantIn"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isPortrayedAs"/>
                 <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#MovieRole"/>
             </owl:Restriction>
@@ -865,12 +882,6 @@
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isPortrayedIn"/>
                 <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isParticipantIn"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <owl:disjointWith rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#CrewMember"/>
@@ -892,20 +903,20 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Situation"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasPart"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasFilmPeople"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasFilmPeople"/>
                 <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Person"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasMovie"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasMovie"/>
                 <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasPart"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -948,7 +959,7 @@
         <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#coparticipatesWith"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#coparticipatesWith"/>
                 <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Object"/>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -995,7 +1006,7 @@
     <!-- http://www.semanticweb.org/55/ontologies/2020/9/mao#Situation -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/55/ontologies/2020/9/mao#Situation">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Event"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Event"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasLocation"/>
@@ -1095,8 +1106,8 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Agent"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSettingIn"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AwardWinning"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSettingIn"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardWinning"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -1107,6 +1118,70 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Classification"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardWinning -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardWinning">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Situation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestActor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestActor">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestActress -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestActress">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestCinematography -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestCinematography">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestDirector -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestDirector">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestNewcomer -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestNewcomer">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestPicture -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestPicture">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestProductionDesigner -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestProductionDesigner">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
     </owl:Class>
     
 
@@ -1157,6 +1232,14 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Comedy -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Comedy">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Country -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Country">
@@ -1190,7 +1273,7 @@
                         <owl:complementOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
                     </owl:Class>
                     <owl:Restriction>
-                        <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isParticipantIn"/>
+                        <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isParticipantIn"/>
                         <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
                     </owl:Restriction>
                 </owl:intersectionOf>
@@ -1215,6 +1298,32 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Criterion -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Criterion">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#NormativeValue"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isCriterionFor"/>
+                <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#satisfiesCriterion"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Criterion"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#violatesCriterion"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Criterion"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Director -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Director">
@@ -1234,6 +1343,22 @@
                 </owl:intersectionOf>
             </owl:Class>
         </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Drama -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Drama">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Event -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Event">
+        <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
     </owl:Class>
     
 
@@ -1263,6 +1388,22 @@
                 <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#FeatureFilm -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#FeatureFilm">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MovieRealization"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#FeatureLengthOscarCriterion -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#FeatureLengthOscarCriterion">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#OscarCriterion"/>
     </owl:Class>
     
 
@@ -1323,6 +1464,14 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Horror -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Horror">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationEntity -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationEntity">
@@ -1337,7 +1486,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationEntity"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isRealizedBy"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isRealizedBy"/>
                 <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationRealization"/>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -1351,7 +1500,7 @@
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationEntity"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#realizes"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#realizes"/>
                 <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationObject"/>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -1447,6 +1596,28 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MovieRealization -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MovieRealization">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationRealization"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#yearReleased"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Mystery -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Mystery">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Nationality -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Nationality">
@@ -1463,10 +1634,48 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#NominationGiving -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#NominationGiving">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Situation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#NormativeValue -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#NormativeValue">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#OscarCriterion -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#OscarCriterion">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Criterion"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isCriterionFor"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Place -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Place">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Agent"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Producers -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Producers">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#CrewMember"/>
     </owl:Class>
     
 
@@ -1481,6 +1690,38 @@
                 <owl:allValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Requirement -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Requirement">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#NormativeValue"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Romcom -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Romcom">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Subgenre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#SciFi -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#SciFi">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ShortFilm -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ShortFilm">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MovieRealization"/>
     </owl:Class>
     
 
@@ -1514,290 +1755,60 @@
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AwardWinning -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Subgenre -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AwardWinning">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Situation"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestActor -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestActor">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestActress -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestActress">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestCinematography -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestCinematography">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestDirector -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestDirector">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestNewcomer -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestNewcomer">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestPicture -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestPicture">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestProductionDesigner -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestProductionDesigner">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Comedy -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Comedy">
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Subgenre">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Thriller -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NormativeValue"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isCriterionFor"/>
-                <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfiesCriterion"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violatesCriterion"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Drama -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Drama">
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Thriller">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
     </owl:Class>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Event -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value -->
 
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Event">
-        <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#FeatureFilm -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#FeatureFilm">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#MovieRealization"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#FeatureLengthOscarCriterion -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#FeatureLengthOscarCriterion">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#OscarCriterion"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Horror -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Horror">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#MovieRealization -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#MovieRealization">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#InformationRealization"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#yearReleased"/>
-                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Mystery -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Mystery">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NominationGiving -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NominationGiving">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Situation"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NormativeValue -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NormativeValue">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#OscarCriterion -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#OscarCriterion">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Criterion"/>
-        <rdfs:subClassOf>
-            <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isCriterionFor"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
-            </owl:Restriction>
-        </rdfs:subClassOf>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Producers -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Producers">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#CrewMember"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Requirement -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Requirement">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#NormativeValue"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Romcom -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Romcom">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Subgenre"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#SciFi -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#SciFi">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ShortFilm -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ShortFilm">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#MovieRealization"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Subgenre -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Subgenre">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Thriller -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Thriller">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value">
+    <owl:Class rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value">
         <rdfs:subClassOf rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasException"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasException"/>
                 <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isAffectedByValidityOf"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isAffectedByValidityOf"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isSatisfiedBy"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSatisfiedBy"/>
                 <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isViolatedBy"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isViolatedBy"/>
                 <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#satisfies"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#satisfies"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
             </owl:Restriction>
         </rdfs:subClassOf>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#violates"/>
-                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Value"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#violates"/>
+                <owl:allValuesFrom rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -1809,7 +1820,7 @@
     <rdf:Description rdf:about="http://www.w3.org/2002/07/owl#Thing">
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#isValidFor"/>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isValidFor"/>
                 <owl:allValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
             </owl:Restriction>
         </rdfs:subClassOf>
@@ -1828,6 +1839,31 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AcademyAward -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AcademyAward">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Award"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestEditor -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BestEditor">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BongJoonho -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BongJoonho">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Director"/>
+        <mao:hasGender rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Male"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ChoiWooshik -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ChoiWooshik">
@@ -1840,9 +1876,9 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ChoiWooshikInParasite">
         <rdf:type rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
+        <mao:isPartOfMaking rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019Making"/>
         <mao:hasActor rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ChoiWooshik"/>
         <mao:hasCharacter rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKevin"/>
-        <isPartOfMaking rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Parasite2019Making"/>
     </owl:NamedIndividual>
     
 
@@ -1875,7 +1911,17 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019">
         <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
-        <mao:hasCountryOfOrigin rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#SouthKorea"/>
+        <mao:hasCountryOfOrigin rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#SouthKorea"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019Making -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019Making">
+        <rdf:type rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
+        <mao:hasCast rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteCast"/>
+        <mao:hasMovie rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019"/>
     </owl:NamedIndividual>
     
 
@@ -1884,6 +1930,15 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteCast">
         <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Cast"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteCrew -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteCrew">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Crew"/>
+        <mao:associatedWithMovie rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019"/>
     </owl:NamedIndividual>
     
 
@@ -1899,12 +1954,30 @@
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteKevin -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteKevin">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MainCharacter"/>
+        <owl:sameAs rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteKimKiwoo"/>
+        <mao:hasName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kevin</mao:hasName>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteKimKijung -->
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteKimKijung">
         <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MainCharacter"/>
         <mao:hasCharacterTitle rdf:datatype="http://www.w3.org/2001/XMLSchema#string">daughter of the Kim family</mao:hasCharacterTitle>
         <mao:hasName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kim Ki-jung</mao:hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteKimKiwoo -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteKimKiwoo">
+        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MainCharacter"/>
     </owl:NamedIndividual>
     
 
@@ -1921,86 +1994,24 @@
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParkSodamInParasite">
         <rdf:type rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
+        <mao:isPartOfMaking rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019Making"/>
         <mao:hasActor rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParkSodam"/>
         <mao:hasCharacter rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteJessica"/>
-        <isPartOfMaking rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Parasite2019Making"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AcademyAward -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#SouthKorea -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#AcademyAward">
-        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Award"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestEditor -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BestEditor">
-        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#AwardMeritCategory"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BongJoonho -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#BongJoonho">
-        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Director"/>
-        <mao:hasGender rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Male"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Parasite2019Making -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Parasite2019Making">
-        <rdf:type rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
-        <mao:hasCast rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteCast"/>
-        <hasMovie rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteCrew -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteCrew">
-        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Crew"/>
-        <mao:associatedWithMovie rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKevin -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKevin">
-        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MainCharacter"/>
-        <owl:sameAs rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKimKiwoo"/>
-        <mao:hasName rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Kevin</mao:hasName>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKimKiwoo -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#ParasiteKimKiwoo">
-        <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MainCharacter"/>
-    </owl:NamedIndividual>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#SouthKorea -->
-
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#SouthKorea">
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#SouthKorea">
         <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Country"/>
     </owl:NamedIndividual>
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Thailand -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Thailand -->
 
-    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#Thailand">
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Thailand">
         <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Country"/>
     </owl:NamedIndividual>
     
@@ -2111,9 +2122,10 @@
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                 <rdf:first>
                     <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
-                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasActor"/>
                         <swrl:argument1 rdf:resource="urn:swrl:var#a1"/>
+                        <swrl:argument2 rdf:resource="urn:swrl:var#a2"/>
                     </rdf:Description>
                 </rdf:first>
                 <rdf:rest>
@@ -2122,9 +2134,9 @@
                         <rdf:first>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasActor"/>
-                                <swrl:argument1 rdf:resource="urn:swrl:var#a1"/>
-                                <swrl:argument2 rdf:resource="urn:swrl:var#a2"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasMovie"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#f"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#m"/>
                             </rdf:Description>
                         </rdf:first>
                         <rdf:rest>
@@ -2143,9 +2155,10 @@
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                                         <rdf:first>
                                             <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
-                                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCast"/>
                                                 <swrl:argument1 rdf:resource="urn:swrl:var#f"/>
+                                                <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
                                             </rdf:Description>
                                         </rdf:first>
                                         <rdf:rest>
@@ -2153,10 +2166,9 @@
                                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                                                 <rdf:first>
                                                     <rdf:Description>
-                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#hasMovie"/>
+                                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#FilmMaking"/>
                                                         <swrl:argument1 rdf:resource="urn:swrl:var#f"/>
-                                                        <swrl:argument2 rdf:resource="urn:swrl:var#m"/>
                                                     </rdf:Description>
                                                 </rdf:first>
                                                 <rdf:rest>
@@ -2164,10 +2176,9 @@
                                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                                                         <rdf:first>
                                                             <rdf:Description>
-                                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCast"/>
-                                                                <swrl:argument1 rdf:resource="urn:swrl:var#f"/>
-                                                                <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
+                                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
+                                                                <swrl:argument1 rdf:resource="urn:swrl:var#a1"/>
                                                             </rdf:Description>
                                                         </rdf:first>
                                                         <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
@@ -2189,7 +2200,7 @@
                 <rdf:first>
                     <rdf:Description>
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/movie-ontology#castMemberOf"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#castMemberOf"/>
                         <swrl:argument1 rdf:resource="urn:swrl:var#a2"/>
                         <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
                     </rdf:Description>
@@ -2216,9 +2227,9 @@
                         <rdf:first>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasActor"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasCharacter"/>
                                 <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
-                                <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
                             </rdf:Description>
                         </rdf:first>
                         <rdf:rest>
@@ -2227,9 +2238,9 @@
                                 <rdf:first>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasCharacter"/>
+                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasActor"/>
                                         <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
-                                        <swrl:argument2 rdf:resource="urn:swrl:var#c"/>
+                                        <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
                                     </rdf:Description>
                                 </rdf:first>
                                 <rdf:rest>
@@ -2276,9 +2287,10 @@
                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                 <rdf:first>
                     <rdf:Description>
-                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
-                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasLocation"/>
                         <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                        <swrl:argument2 rdf:resource="urn:swrl:var#s"/>
                     </rdf:Description>
                 </rdf:first>
                 <rdf:rest>
@@ -2287,9 +2299,9 @@
                         <rdf:first>
                             <rdf:Description>
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasActor"/>
-                                <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
-                                <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
+                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasLocation"/>
+                                <swrl:argument1 rdf:resource="urn:swrl:var#c"/>
+                                <swrl:argument2 rdf:resource="urn:swrl:var#s"/>
                             </rdf:Description>
                         </rdf:first>
                         <rdf:rest>
@@ -2297,10 +2309,9 @@
                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                                 <rdf:first>
                                     <rdf:Description>
-                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasLocation"/>
-                                        <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
-                                        <swrl:argument2 rdf:resource="urn:swrl:var#s"/>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Cast"/>
+                                        <swrl:argument1 rdf:resource="urn:swrl:var#c"/>
                                     </rdf:Description>
                                 </rdf:first>
                                 <rdf:rest>
@@ -2309,8 +2320,8 @@
                                         <rdf:first>
                                             <rdf:Description>
                                                 <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
-                                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Cast"/>
-                                                <swrl:argument1 rdf:resource="urn:swrl:var#c"/>
+                                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
+                                                <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
                                             </rdf:Description>
                                         </rdf:first>
                                         <rdf:rest>
@@ -2319,9 +2330,9 @@
                                                 <rdf:first>
                                                     <rdf:Description>
                                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasLocation"/>
-                                                        <swrl:argument1 rdf:resource="urn:swrl:var#c"/>
-                                                        <swrl:argument2 rdf:resource="urn:swrl:var#s"/>
+                                                        <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasActor"/>
+                                                        <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                                                        <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
                                                     </rdf:Description>
                                                 </rdf:first>
                                                 <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
@@ -2368,10 +2379,9 @@
                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                         <rdf:first>
                             <rdf:Description>
-                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
-                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasActor"/>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
                                 <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
-                                <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
                             </rdf:Description>
                         </rdf:first>
                         <rdf:rest>
@@ -2380,8 +2390,8 @@
                                 <rdf:first>
                                     <rdf:Description>
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
-                                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#Acting"/>
-                                        <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                                        <swrl:classPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
+                                        <swrl:argument1 rdf:resource="urn:swrl:var#s"/>
                                     </rdf:Description>
                                 </rdf:first>
                                 <rdf:rest>
@@ -2389,9 +2399,10 @@
                                         <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
                                         <rdf:first>
                                             <rdf:Description>
-                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
-                                                <swrl:classPredicate rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Movie"/>
-                                                <swrl:argument1 rdf:resource="urn:swrl:var#s"/>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                                <swrl:propertyPredicate rdf:resource="http://www.semanticweb.org/55/ontologies/2020/9/mao#hasActor"/>
+                                                <swrl:argument1 rdf:resource="urn:swrl:var#p"/>
+                                                <swrl:argument2 rdf:resource="urn:swrl:var#a"/>
                                             </rdf:Description>
                                         </rdf:first>
                                         <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
@@ -2423,3 +2434,4 @@
 
 
 <!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+
