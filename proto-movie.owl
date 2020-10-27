@@ -454,6 +454,16 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasSubGenre -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasSubGenre">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSubGenreOf"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Genre"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isAffectedByValidityOf -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isAffectedByValidityOf">
