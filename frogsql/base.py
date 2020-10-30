@@ -167,13 +167,17 @@ class BaseModel(metaclass=BaseModelMeta):
                     elif type_.__origin__ == ClassVar:
                         continue
                 except AttributeError:
+                    # normal to get in here
                     if type_ in [List, dict]:
                         kwargs[attr] = json.loads(dct[key], cls=JSONDecoder)
                         continue
                     elif type_ == Date:
                         kwargs[attr] = Date.fromisoformat(dct[key])
                         continue
-                    kwargs[attr] = type_(dct[key])
+                    try:
+                        kwargs[attr] = type_(dct[key])
+                    except Exception as e:
+                        raise ValueError(f"Error when parsing row '{dct}' with for attr '{attr}'") from e
             except KeyError:
                 pass
         return cls(**kwargs)  # its subclasses will be dataclasses
