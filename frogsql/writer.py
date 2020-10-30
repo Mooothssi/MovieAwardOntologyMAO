@@ -85,6 +85,14 @@ class SQLWriter:
                             print(row)
                             warnings.warn(f'str "{value}" exceeds the limit for {datatype}')
                         text = f"N'{self.escape_string(value)}'"
+                    elif datatype.startswith('char'):
+                        assert datatype[4] == '(', datatype
+                        assert datatype[-1] == ')', datatype
+                        len_ = int(datatype[5:-1])
+                        if len(value) != len_:
+                            warnings.warn(repr(row))
+                            warnings.warn(f'str "{value}" does not have specified len for {datatype}')
+                        text = f"'{self.escape_string(value)}'"
                     elif datatype == 'date':
                         text = f"'{value.year:04}-{value.month:02}-{value.day:02}'"
                     elif datatype == 'datetime':
