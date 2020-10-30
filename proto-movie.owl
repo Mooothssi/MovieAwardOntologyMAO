@@ -52,36 +52,6 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasActor -->
-
-    <owl:AnnotationProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasActor">
-        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Actor"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Agent"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Object"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Person"/>
-    </owl:AnnotationProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCharacter -->
-
-    <owl:AnnotationProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCharacter">
-        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Agent"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MovieRole"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Object"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Person"/>
-    </owl:AnnotationProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasGender -->
-
-    <owl:AnnotationProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasGender"/>
-    
-
-
     <!-- 
     ///////////////////////////////////////////////////////////////////////////////////////
     //
