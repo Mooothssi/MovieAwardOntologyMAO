@@ -228,6 +228,40 @@ class BaseModel(metaclass=BaseModelMeta):
                 count += 1
 
     @classmethod
+    def load_from_tsv(cls, filename: str, *, clear_instances=True, limit=None):
+        # not recommended
+        if clear_instances:
+            cls._instances.clear()
+        with open(filename, 'r', encoding='utf-8') as tsvfile:
+            reader = csv.DictReader(tsvfile, dialect='excel-tab')
+            count = 0
+            for row in reader:
+                if limit is not None:
+                    if count == limit:
+                        break
+                cls.init_from_dict(dct=row)
+                count += 1
+
+    @classmethod
+    def dump_to_tsv(cls, filename: str):
+        with open(filename, 'w', encoding='utf-8', newline='') as tsvfile:
+            writer = csv.DictWriter(tsvfile, cls.get_dict_keys(), dialect='excel-tab')
+            writer.writeheader()
+            for instance in cls._instances:
+                dct = {}
+                for key, attr in zip(cls.get_dict_keys(), cls.get_attr_names()):
+                    value = getattr(instance, attr)
+                    if isinstance(value, list):
+                        value = json.dumps(value)
+                    elif isinstance(value, dict):
+                        value = json.dumps(value)
+                    elif isinstance(value, Date):
+                        # print(f'dumping date, {value}')
+                        value = value.isoformat()
+                    dct[key] = value
+                writer.writerow(dct)
+
+    @classmethod
     def dump_to_json(cls, filename: str):
         with open(filename, 'w', encoding='utf-8') as f:
             lst = [instance.__dict__ for instance in cls._instances]
@@ -294,18 +328,3 @@ class BaseModel(metaclass=BaseModelMeta):
                 return getattr(self, attr)
         else:
             raise KeyError(f"Key '{item}' is not found")
-
-    @classmethod
-    def load_from_tsv(cls, filename: str, *, clear_instances=True, limit=None):
-        # not recommended
-        if clear_instances:
-            cls._instances.clear()
-        with open(filename, 'r', encoding='utf-8') as tsvfile:
-            reader = csv.DictReader(tsvfile, dialect='excel-tab')
-            count = 0
-            for row in reader:
-                if limit is not None:
-                    if count == limit:
-                        break
-                cls.init_from_dict(dct=row)
-                count += 1
