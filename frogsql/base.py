@@ -294,3 +294,18 @@ class BaseModel(metaclass=BaseModelMeta):
                 return getattr(self, attr)
         else:
             raise KeyError(f"Key '{item}' is not found")
+
+    @classmethod
+    def load_from_tsv(cls, filename: str, *, clear_instances=True, limit=None):
+        # not recommended
+        if clear_instances:
+            cls._instances.clear()
+        with open(filename, 'r', encoding='utf-8') as tsvfile:
+            reader = csv.DictReader(tsvfile, dialect='excel-tab')
+            count = 0
+            for row in reader:
+                if limit is not None:
+                    if count == limit:
+                        break
+                cls.init_from_dict(dct=row)
+                count += 1
