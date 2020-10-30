@@ -7,8 +7,16 @@
     <groupId>th.ac.ku.mao.owlapi</groupId>
     <artifactId>mao-owlapi</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.clojars.stain</groupId>
+            <artifactId>owlapi-jsonld</artifactId>
+            <version>0.1.0</version>
+        </dependency>
         <dependency>
             <groupId>net.sourceforge.owlapi</groupId>
             <artifactId>owlapi-rio</artifactId>
@@ -19,5 +27,17 @@
             <artifactId>owlapi-api</artifactId>
             <version>5.1.16</version>
         </dependency>
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-apibinding</artifactId>
+            <version>5.1.16</version>
+        </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>clojars</id>
+            <name>Clojars repository</name>
+            <url>https://clojars.org/repo</url>
+        </repository>
+    </repositories>
 </project>
