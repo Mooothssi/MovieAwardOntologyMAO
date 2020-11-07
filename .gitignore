@@ -177,3 +177,4 @@ dmypy.json
 
 database/
 out/
+db/

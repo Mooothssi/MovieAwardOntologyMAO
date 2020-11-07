@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  # MySQL database backend
+  mao-db:
+    container_name: mao-db
+    image: mysql:5.7.22
+    environment:
+      TZ: "Asia/Bangkok"
+      MYSQL_DATABASE: "mao"
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/dump:/docker-entrypoint-initdb.d # Dump loader
+      - ./db/mysql-datadir:/var/lib/mysql # Default MySQL data directory
+      - ./db/config/custom.cnf:/etc/mysql/conf.d/custom.cnf # MySQL configuration file
+    restart: unless-stopped
