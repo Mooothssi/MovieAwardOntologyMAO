@@ -11,7 +11,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./db/dump:/docker-entrypoint-initdb.d # Dump loader
-      - ./db/mysql-datadir:/var/lib/mysql # Default MySQL data directory
-      - ./db/config/custom.cnf:/etc/mysql/conf.d/custom.cnf # MySQL configuration file
+      - ./database/dump:/docker-entrypoint-initdb.d # Dump loader
+      - ./database/mysql-datadir:/var/lib/mysql # Default MySQL data directory: For persistence
+      - ./database/config/custom.cnf:/etc/mysql/conf.d/custom.cnf # MySQL configuration file
     restart: unless-stopped
