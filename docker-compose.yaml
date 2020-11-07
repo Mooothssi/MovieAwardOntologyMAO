@@ -1,5 +1,14 @@
 version: "3.7"
 services:
+  mao-db-mssql:
+    container_name: mao-db-mssql
+    image: mcr.microsoft.com/mssql/server
+    ports:
+      - "1433:1433"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "tbU(X1ID"
+
   # MySQL database backend
   mao-db:
     container_name: mao-db

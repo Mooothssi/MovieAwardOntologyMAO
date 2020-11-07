@@ -2,3 +2,4 @@ owlready2~=0.25
 python-decouple
 sqlalchemy
 PyMySQL
+PyMSSQL

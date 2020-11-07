@@ -1,6 +1,10 @@
-from settings import DB_NAME, DB_PASSWORD, DB_DRIVER, DB_USERNAME, DB_HOST
+from settings import DB_NAME, DB_PASSWORD, DB_DRIVER, DB_USERNAME, DB_HOST, DB_DIALECT
 from sqlalchemy import create_engine
-CONNECTION_STRING = f"mysql+{DB_DRIVER}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+
+if DB_DIALECT == "mssql":
+    CONNECTION_STRING = f"{DB_DIALECT}+{DB_DRIVER}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}"
+else:
+    CONNECTION_STRING = f"{DB_DIALECT}+{DB_DRIVER}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}?driver=SQL+Server+Native+Client+10.0"
 
 
 def connect_database():
