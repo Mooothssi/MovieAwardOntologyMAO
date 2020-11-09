@@ -153,7 +153,7 @@ class BaseModel(metaclass=BaseModelMeta):
         for key, attr in zip(cls.get_dict_keys(), cls.get_attr_names()):
             if key == 'Shipment Fees':
                 continue
-            if dct[key] == '' or dct[key] == 'NULL':
+            if dct[key] == '' or dct[key] == '\\N' or dct[key] == 'NULL':
                 kwargs[attr] = None
                 continue
             try:
@@ -180,6 +180,8 @@ class BaseModel(metaclass=BaseModelMeta):
                         raise ValueError(f"Error when parsing row '{dct}' with for attr '{attr}'") from e
             except KeyError:
                 pass
+        kwargs.pop("primaryprofession", None)
+        # print(dct)
         return cls(**kwargs)  # its subclasses will be dataclasses
 
     @classmethod

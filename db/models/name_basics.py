@@ -25,11 +25,11 @@ class NameBasics(BaseModel):
         String,
         nullable=False
     )
-    birthYear: str = Column(
+    birthYear: int = Column(
         Integer,
         nullable=False
     )
-    deathYear: str = Column(
+    deathYear: int = Column(
         Integer,
         nullable=True
     )
