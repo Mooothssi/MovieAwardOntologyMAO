@@ -4,3 +4,4 @@ sqlalchemy
 PyMySQL
 PyMSSQL
 stringcase
+pyyaml
