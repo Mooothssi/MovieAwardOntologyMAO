@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-
+from .base import clean_backslash_n
 from frogsql.base import BaseModel
+
 
 
 @dataclass(eq=False)
@@ -28,9 +29,7 @@ class TitleBasics(BaseModel):
     genres: str = None
 
     def __post_init__(self):
-        if self.endYear:
-            if self.endYear == r'\N':
-                self.endYear = None
+        clean_backslash_n(self, "endYear")
         try:
             self.isAdult = int(self.isAdult)
         except ValueError or TypeError:
