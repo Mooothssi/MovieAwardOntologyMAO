@@ -1,9 +1,12 @@
 import ast
-from . import MapperDataSource
-from db.models import TitleAkas, TitleBasics
-from mapper.models.film import FilmModel, PersonModel, ActorModel, Gender
-from sqlalchemy.orm import Session
+
 import stringcase
+from sqlalchemy.orm import Session
+
+from db.models import TitleAkas, TitleBasics
+from mapper.models.film import ActorModel, FilmModel, Gender, PersonModel
+
+from . import MapperDataSource
 
 
 class ImdbDataSource(MapperDataSource):

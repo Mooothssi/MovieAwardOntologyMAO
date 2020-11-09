@@ -1,6 +1,8 @@
-from .base import BaseMapperModel
 from dataclasses import dataclass
-from owl_models.film import Gender, Character
+
+from owl_models.film import Character, Gender
+
+from .base import BaseMapperModel
 
 
 @dataclass(eq=False)

@@ -1,5 +1,6 @@
-from .base import BaseOntologyClass
 from enum import Enum
+
+from .base import BaseOntologyClass
 
 
 class Agent(BaseOntologyClass):

@@ -1,13 +1,15 @@
-from owlready2 import *
-from settings import OWL_FILEPATH, OUT_PATH, OUT_FILENAME
 from pathlib import Path
+
+from owlready2 import *
+
 from db.connection import connect_database
-from models.imdb.title_akas import TitleAkas
-from models.imdb.title_principals import TitlePrincipal
-from models.imdb.name_basics import NameBasics
-from models.imdb.title_crew import TitleCrew
-from owl_models.base import apply_classes_from
 from mapper.aggregators.film import FilmAggregator
+from models.imdb.name_basics import NameBasics
+# from models.imdb.title_akas import TitleAkas
+from models.imdb.title_crew import TitleCrew
+# from models.imdb.title_principals import TitlePrincipal
+from owl_models.base import apply_classes_from
+from settings import OUT_FILENAME, OUT_PATH, OWL_FILEPATH
 
 # TitleAkas.load_from_tsv("database/src/imdb-tsvs/new.tsv")
 # print(TitleAkas.dump_to_sql('out/any.sql'))

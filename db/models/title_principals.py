@@ -1,11 +1,10 @@
-
-from sqlalchemy import Column, Integer, String, PrimaryKeyConstraint, ForeignKeyConstraint, UniqueConstraint
+from sqlalchemy import (Column, ForeignKeyConstraint, Integer,
+                        PrimaryKeyConstraint, String, UniqueConstraint)
 from sqlalchemy.orm import relationship
 
 from .base import BaseModel
-
-from .title_basics import TitleBasics
 from .name_basics import NameBasics
+from .title_basics import TitleBasics
 
 
 class TitlePrincipal(BaseModel):

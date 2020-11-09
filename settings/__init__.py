@@ -1,5 +1,6 @@
-from decouple import config
 import os
+
+from decouple import config
 
 OWL_FILEPATH = config('OWL_FILE_PATH', default="proto-movie.owl")
 OUT_PATH = config('OUT_PATH', default="out/")

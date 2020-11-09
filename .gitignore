@@ -177,3 +177,7 @@ dmypy.json
 
 database/
 out/
+
+
+##### MISC #####
+.DS_Store

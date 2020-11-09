@@ -1,7 +1,10 @@
-from .base import Aggregator
-from owl_models.film import Film, Person, FilmMakingSituation, ActingSituation, Crew, Cast, Character
 from sqlalchemy.orm import Session
+
+from owl_models.film import (ActingSituation, Cast, Character, Crew, Film,
+                             FilmMakingSituation, Person)
+
 from ..models.film import FilmModel
+from .base import Aggregator
 
 
 class FilmAggregator(Aggregator):
