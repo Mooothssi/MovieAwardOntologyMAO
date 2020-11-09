@@ -1,5 +1,6 @@
-owlready2~=0.25
+owlready2
 python-decouple
 sqlalchemy
 PyMySQL
 PyMSSQL
+stringcase
