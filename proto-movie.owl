@@ -63,6 +63,15 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
     
 
 
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#actsIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#actsIn">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Person"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#FilmMakingSituation"/>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#associatedWithMovie -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#associatedWithMovie">
