@@ -1,27 +1,22 @@
-from typing import List, ClassVar, Tuple, TypeVar, Type
-from datetime import date, datetime
-import time
-
 import csv
 import json
+import time
+from datetime import date, datetime
+from typing import ClassVar, List, Tuple, Type, TypeVar
 
-from .jsoncompat import JSONEncoder, JSONDecoder, Date
-from .writer import SQLWriter
+from .jsoncompat import Date, JSONDecoder, JSONEncoder
 from .utils import common_name_to_snake_case
+from .writer import SQLWriter
 
 T = TypeVar('T')
 
 
 class BaseModelMeta(type):
     def __new__(mcs, name: str, bases: tuple, namespace: dict):
-        if name not in ('BaseModel', 'Bridge'):
-            try:
-                if namespace['fields'] == ():
-                    raise AttributeError(f"class attribute 'fields' is not "
-                                         f'defined in {name}')
-            except KeyError:
-                raise AttributeError(f"class attribute 'fields' is not "
-                                     f'defined in {name}') from None
+        if name not in ('BaseModel', ):
+            fields = namespace.get('fields')
+            if fields is None or fields == ():
+                raise AttributeError(f"class attribute 'fields' is not defined in {name}")
         namespace['_instances'] = []
         return super().__new__(mcs, name, bases, namespace)
 

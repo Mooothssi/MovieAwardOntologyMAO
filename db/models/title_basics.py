@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, PrimaryKeyConstraint
+from sqlalchemy import Column, Integer, PrimaryKeyConstraint, String
 from sqlalchemy.orm import relationship
+
 from .base import BaseModel
 
 

@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from .base import clean_backslash_n
+
 from frogsql.base import BaseModel
 
+from .base import clean_backslash_n
 
 
 @dataclass(eq=False)

@@ -1,8 +1,11 @@
-from settings import DB_NAME, DB_PASSWORD, DB_DRIVER, DB_USERNAME, DB_HOST, DB_DIALECT
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
-from .models.title_principals import TitlePrincipal
+
 from db.models import BaseModel
+from settings import (DB_DIALECT, DB_DRIVER, DB_HOST, DB_NAME, DB_PASSWORD,
+                      DB_USERNAME)
+
+from .models.title_principals import TitlePrincipal
 
 if DB_DIALECT == "mssql":
     CONNECTION_STRING = f"{DB_DIALECT}+{DB_DRIVER}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}"

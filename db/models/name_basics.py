@@ -1,5 +1,6 @@
+from sqlalchemy import (Column, ForeignKeyConstraint, Integer,
+                        PrimaryKeyConstraint, String)
 
-from sqlalchemy import Column, Integer, String, PrimaryKeyConstraint, ForeignKeyConstraint
 from .base import BaseModel
 from .title_basics import TitleBasics
 

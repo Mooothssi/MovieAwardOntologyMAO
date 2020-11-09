@@ -1,6 +1,7 @@
-from typing import List, Dict, TypeVar, Iterable, Tuple, Any, Sequence, TextIO, Generator
-from datetime import date, datetime, time
 import warnings
+from datetime import date, datetime, time
+from typing import (Any, Dict, Generator, Iterable, List, Sequence, TextIO,
+                    Tuple, TypeVar)
 
 
 class SQLWriter:

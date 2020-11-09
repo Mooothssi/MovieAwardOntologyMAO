@@ -1,6 +1,7 @@
-from typing import List, Dict, TypeVar, Iterable, Tuple, Any, Sequence, TextIO, Generator, Callable
 import csv
-from itertools import tee, zip_longest, islice
+from itertools import islice, tee, zip_longest
+from typing import (Any, Callable, Dict, Generator, Iterable, List, Sequence,
+                    TextIO, Tuple, TypeVar)
 
 T = TypeVar('T')
 
