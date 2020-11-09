@@ -14,6 +14,7 @@ class ImdbDataSource(MapperDataSource):
         f_list: [FilmModel] = []
         for x in self.session.query(TitleBasics).all():
             film = FilmModel()
+            print(x.crew)
             for person in x.principals:
                 p: PersonModel = PersonModel()
                 if person.name:

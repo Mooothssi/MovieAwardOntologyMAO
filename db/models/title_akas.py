@@ -1,5 +1,6 @@
 
 from sqlalchemy import Column, Integer, String, PrimaryKeyConstraint, ForeignKeyConstraint
+from sqlalchemy.orm import relationship
 from .base import BaseModel
 from .title_basics import TitleBasics
 
@@ -39,11 +40,6 @@ class TitleAkas(BaseModel):
         PrimaryKeyConstraint('titleId', 'ordering'),
         ForeignKeyConstraint(name="akas_title_fk", refcolumns=[TitleBasics.titleId], columns=(titleId,)),
     )
-    # region: str = None
-    # language: str = None
-    # types: str = None
-    # attributes: str = None
-    # isOriginalTitle: str = None
 
     def __repr__(self):
         return '<TitleAkas model {}>'.format(self.titleId)

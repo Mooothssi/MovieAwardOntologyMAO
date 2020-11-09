@@ -5,6 +5,7 @@ from db.connection import connect_database
 from models.imdb.title_akas import TitleAkas
 from models.imdb.title_principals import TitlePrincipal
 from models.imdb.name_basics import NameBasics
+from models.imdb.title_crew import TitleCrew
 from owl_models.base import apply_classes_from
 from mapper.aggregators.film import FilmAggregator
 
@@ -14,6 +15,8 @@ from mapper.aggregators.film import FilmAggregator
 # print(TitlePrincipal.dump_to_sql('out/any2.sql'))
 NameBasics.load_from_tsv("database/src/imdb-tsvs/name.stripped.basics.tsv")
 print(NameBasics.dump_to_sql('out/any3.sql'))
+TitleCrew.load_from_tsv("database/src/imdb-tsvs/name.stripped.basics.tsv")
+print(TitleCrew.dump_to_sql('out/any4.sql'))
 
 sess = connect_database()
 

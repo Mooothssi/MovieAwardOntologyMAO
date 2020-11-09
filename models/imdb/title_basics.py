@@ -3,7 +3,6 @@ from .base import clean_backslash_n
 from frogsql.base import BaseModel
 
 
-
 @dataclass(eq=False)
 class TitleBasics(BaseModel):
     _instances = []

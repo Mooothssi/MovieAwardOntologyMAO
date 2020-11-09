@@ -36,11 +36,7 @@ class TitleBasics(BaseModel):
 
     principals = relationship("TitlePrincipal")
     akas = relationship("TitleAkas", lazy='dynamic')
-    # region: str = None
-    # language: str = None
-    # types: str = None
-    # attributes: str = None
-    # isOriginalTitle: str = None
+    crew = relationship("TitleCrew")
 
     def __repr__(self):
         return '<TitleBasics model {}>'.format(self.titleId)

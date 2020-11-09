@@ -1,7 +1,7 @@
 from settings import DB_NAME, DB_PASSWORD, DB_DRIVER, DB_USERNAME, DB_HOST, DB_DIALECT
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
-from .models.title_principals import TitlePrincipal
+from .models.title_crew import TitleCrew
 from db.models import BaseModel
 
 if DB_DIALECT == "mssql":
