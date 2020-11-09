@@ -27,7 +27,7 @@ class NameBasics(BaseModel):
     )
     birthYear: int = Column(
         Integer,
-        nullable=False
+        nullable=True
     )
     deathYear: int = Column(
         Integer,
@@ -35,7 +35,7 @@ class NameBasics(BaseModel):
     )
     primaryProfession: str = Column(
         String,
-        nullable=False
+        nullable=True
     )
     knownForTitles: str = Column(
         String,
@@ -48,4 +48,4 @@ class NameBasics(BaseModel):
     # isOriginalTitle: str = None
 
     def __repr__(self):
-        return '<TitleAkas model {}>'.format(self.titleId)
+        return '<NameBasics model {}>'.format(self.primaryName)

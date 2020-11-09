@@ -289,13 +289,11 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
     
 
 
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCrewMember -->
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCrew -->
 
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCrewMember">
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasCrew">
         <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasMember"/>
-        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasPart"/>
         <rdfs:domain rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
-        <rdfs:range rdf:resource="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#Entity"/>
         <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#CrewMember"/>
     </owl:ObjectProperty>
     
@@ -314,6 +312,15 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasException">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Value"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasFilm -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#hasFilm">
+        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSettingFor"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Film"/>
     </owl:ObjectProperty>
     
 
@@ -616,15 +623,6 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <rdfs:domain rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Situation"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSettingForFilm -->
-
-    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSettingForFilm">
-        <rdfs:subPropertyOf rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#isSettingFor"/>
-        <rdfs:range rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Film"/>
     </owl:ObjectProperty>
     
 
@@ -1874,7 +1872,7 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
         <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#FilmMakingSituation"/>
         <hasCast rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#ParasiteCast"/>
         <hasDirector rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#BongJoonho"/>
-        <isSettingForFilm rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019"/>
+        <hasFilm rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019"/>
     </owl:NamedIndividual>
     
 
@@ -1883,7 +1881,7 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite92ndOscarBestPicture">
         <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#NominationSituation"/>
-        <isSettingForFilm rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019"/>
+        <hasFilm rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019"/>
         <win rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</win>
     </owl:NamedIndividual>
     
@@ -1893,7 +1891,7 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite92ndOscarInternationalFeatureFilm">
         <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#NominationSituation"/>
-        <isSettingForFilm rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019"/>
+        <hasFilm rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite2019"/>
         <win rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</win>
     </owl:NamedIndividual>
     
@@ -2032,7 +2030,7 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
 
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#TheIrishman92ndOscarForBestPicture">
         <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#NominationSituation"/>
-        <isSettingForFilm rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#TheIrishman"/>
+        <hasFilm rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#TheIrishman"/>
         <win rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</win>
     </owl:NamedIndividual>
     
@@ -2043,7 +2041,7 @@ THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRES
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#TheIrishmanMaking">
         <rdf:type rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#FilmMakingSituation"/>
         <hasDirector rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#MartinScorsese"/>
-        <isSettingForFilm rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#TheIrishman"/>
+        <hasFilm rdf:resource="http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#TheIrishman"/>
     </owl:NamedIndividual>
     
 

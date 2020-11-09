@@ -10,7 +10,7 @@ class TitlePrincipal(BaseModel):
         ('tconst', 'tconst', 'char(9)'),
         ('ordering', None, 'int'),
         ('nconst', None, 'nvarchar(255)'),
-        ('category', None, 'nvarchar(4)'),
+        ('category', None, 'nvarchar(20)'),
         ('job', None, 'nvarchar(50)'),
         ('characters', None, 'nvarchar(255)'),
     )
