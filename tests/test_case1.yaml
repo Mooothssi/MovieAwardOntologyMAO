@@ -105,7 +105,7 @@ owl:Class:
     rdfs:subClassOf:
       - PizzaTopping
 
-owl:AnnnotationPropert:
+owl:AnnotationPropert:
   rdfs:comment: ""
   rdfs:label: ""
 
