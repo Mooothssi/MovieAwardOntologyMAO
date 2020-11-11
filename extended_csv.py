@@ -1,5 +1,4 @@
 import csv
-from warnings import warn
 from itertools import islice
 
 from typing import List, Dict, Iterable, TextIO
@@ -103,14 +102,7 @@ def read_xsv(file: TextIO,
     reader = csv.DictReader(file, **select_not_null(kwargs, 'fieldnames'))
 
     if first_line_is_column_header and fieldnames is not None:
-        # check if fieldnames is correct
-        headers = reader.__next__()
-        if get_differing_keys_and_values(headers) != {}:
-            warn(
-                f"\nSpecified 'fieldnames' is different from headers in file:"
-                f"\n  fieldnames: {fieldnames}"
-                f"\n        file: {list(headers.values())}"
-            )
+        raise NotImplementedError("Changing column names isn't supported for simplicity")
 
     stop = None
     if load_at_most is not None:
