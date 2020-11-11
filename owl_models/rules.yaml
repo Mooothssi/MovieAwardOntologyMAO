@@ -1,7 +1,0 @@
-rules:
-  goodperson:
-    rule: f:Person(?p) ^ f:hasPower(?p, ?a) ^ f:BeamShoot(?a) -> f:beamshooter(?p)
-    rdfs:comment: ""
-  hasNiece:
-    rule: f:Person(?p1) ^ f:hasSibling(?p1, ?p2) ^ f:hasChild(?p2, ?p3) ^ f:woman(?p3) -> f:hasNiece(?p1, ?p3)
-    rdfs:comment: The daughter of one's brother or sister.
