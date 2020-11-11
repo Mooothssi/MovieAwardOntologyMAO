@@ -44,7 +44,7 @@ owl:Class:
       - hasTopping
     owl:disjointWith:
       - PizzaBase
-      - Topping
+      - PizzaTopping
     owl:equivalentClass:
       owl:Restriction:
         - Food and (hasBase some PizzaBase)
