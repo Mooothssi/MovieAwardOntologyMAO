@@ -1,0 +1,171 @@
+owl:Class:
+  family:Ancestor:
+    objectProperty: isAncestorOf
+    owl:equivalentClass:
+      owl:Restriction:
+        - Person and (isAncestorOf some Person)
+    rdfs:subClassOf: Person
+  family:Gender:
+    owl:disjointWith: Person
+    owl:equivalentClass:
+      owl:Restriction:
+        - {Female, Male, Non-binary}
+    rdfs:subClassOf: Thing
+  family:Parent:
+    annotations:
+      rdfs:label:
+          - Parent^^rdfs:Literal@en
+          - Parent^^xsd:string
+    objectProperty: isParentOf
+    owl:equivalentClass:
+      owl:Restriction:
+        - Person and (isParentOf some Person)
+    rdfs:subClassOf: Person
+  family:Person:
+    annotations:
+      rdfs:label:
+        - Person^^rdfs:Literal@en
+        - Person^^xsd:string
+    dataProperty:
+      - hasBirthYear
+      - hasName
+    objectProperty:
+      - hasParent
+      - hasGender
+    owl:equivalentClass:
+      owl:Restriction:
+        - (hasParent some Person) and (hasGender some Gender)
+    owl:disjointWith: Gender
+    rdfs:subClassOf: Thing
+  family:Spouse:
+    annotations:
+      rdfs:label:
+        - Spouse^^xsd:string
+    objectProperty: isSpouseOf
+    owl:equivalentClass:
+      owl:Restriction:
+        - Person and (isSpouseOf some Person)
+    rdfs:subClassOf: Person
+
+owl:AnnnotationProperty:
+  rdfs:label: ""
+
+owl:DataProperty:
+  owl:topDataProperty: ""
+  family:hasBirthYear:
+    rdfs:domain:
+      - Person
+    rdfs:range:
+      - xsd:integer
+    rdf:type:
+      - owl:FunctionalProperty
+  family:hasFamilyName:
+    rdfs:domain:
+      - Person
+    rdfs:range:
+      - xsd:string
+    rdfs:subPropertyOf:
+      - hasName
+  family:hasFirstGivenName:
+    rdfs:domain:
+      - Person
+    rdfs:range:
+      - xsd:string
+    rdfs:subPropertyOf:
+      - hasName
+  family:hasName:
+    rdfs:domain:
+      - Person
+    rdfs:range:
+      - xsd:string
+  family:knownAs:
+    rdfs:domain:
+      - Person
+    rdfs:range:
+      - xsd:string
+    rdfs:subPropertyOf:
+      - hasName
+
+owl:ObjectProperty:
+  owl:topObjectProperty: ""
+  family:hasAncestor:
+    owl:inverseOf:
+      - isAncestorOf
+    rdf:type:
+      - owl:TransitiveProperty
+    rdfs:Domain:
+      - Person
+    rdfs:Range: Person
+    rdfs:subPropertyOf:
+      - isBloodRelationOf
+  family:hasAunt:
+    rdfs:Domain:
+      - Person
+    rdfs:Range:
+      - Person
+    rdfs:subPropertyOf:
+      - isBloodRelationOf
+  family:hasGender:
+    rdfs:Domain:
+      - Person
+    rdfs:Range:
+      - Gender
+    rdf:type:
+      - owl:FunctionalProperty
+  family:hasParent:
+    owl:inverseOf:
+      - isParentOf
+    rdfs:Domain:
+      - Person
+    rdfs:Range:
+      - Person
+    rdfs:subPropertyOf:
+      - hasAncestor
+  family:isAncestorOf:
+    owl:inverseOf:
+      - hasAncestor
+  family:isBloodRelationOf:
+    rdf:type:
+      - owl:SymmetricProperty
+    rdfs:Domain:
+      - Person
+    rdfs:Range:
+      - Person
+    rdfs:subPropertyOf:
+      - topObjectProperty
+  family:isInlawOf:
+    rdf:type:
+      - owl:SymmetricProperty
+    rdfs:Domain:
+      - Person
+    rdfs:Range:
+      - Person
+    rdfs:subPropertyOf:
+      - topObjectProperty
+  family:isParentOf:
+    owl:inverseOf:
+      - hasParent
+  family:isSiblingOf:
+    rdf:type:
+      - owl:SymmetricProperty
+      - owl:TransitiveProperty
+    rdfs:Domain:
+      - Person
+    rdfs:Range:
+      - Person
+    rdfs:subPropertyOf:
+      - isBloodRelationOf
+  family:isSpouseOf:
+    rdf:type:
+      - owl:SymmetricProperty
+    rdfs:Domain:
+      - Person
+    rdfs:Range:
+      - Person
+    rdfs:subPropertyOf:
+      - isInLawOf
+
+rdfs:Datatype:
+  - rdfs:Literal
+  - xsd:interger
+  - xsd:string
