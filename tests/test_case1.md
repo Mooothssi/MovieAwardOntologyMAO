@@ -1,16 +1,16 @@
 # Class Hierarchy
-### Thing
-- Food
-  - Pizza
-    - NamedPizza
-      - Margherita
-      - Rosa
-  - PizzaBase
-  - PizzaTopping
-    - GorgonzolaTopping
-    - MozzarellaTopping
-    - TomatoTopping
-- Spiciness
+-Thing
+  - Food
+    - Pizza
+      - NamedPizza
+        - Margherita
+        - Rosa
+    - PizzaBase
+    - PizzaTopping
+      - GorgonzolaTopping
+      - MozzarellaTopping
+      - TomatoTopping
+  - Spiciness
 
 
 # Property Hierarchy
@@ -21,7 +21,7 @@
 
 # Class
 ## Food
-### Annotation
+### Annotations
 | Language      | Label                |
 | ------------- |:--------------------:|
 | English       | Food                 |
@@ -32,7 +32,7 @@ SubClass Of:
 
 
 ## GorgonzolaTopping
-### Annotation
+### Annotations
 | Language      | Label                |
 | ------------- |:--------------------:|
 | English       | GorgonzolaTopping    |
@@ -47,7 +47,7 @@ SubClass Of:
 
 
 ## Margherita
-### Annotation
+### Annotations
 | Language      | Label         |
 | ------------- |:-------------:|
 | English       | Margherita    |
@@ -62,7 +62,7 @@ SubClass Of:
 
 
 ## MozzarellaTopping
-### Annotation
+### Annotations
 | Language      | Label                |
 | ------------- |:--------------------:|
 | English       | MozzarellaTopping    |
@@ -79,10 +79,10 @@ SubClass Of:
 ## NamedPizza:
 ### Description
 SubClass Of
-  - PizzaTopping
+  - Pizza
 
 
-## MozzarellaTopping
+## Pizza
 ### Description
 Disjoint With:
   - PizzaBase
@@ -100,7 +100,7 @@ SubClass Of
 
 
 ## PizzaBase
-### Annotation
+### Annotations
 Comment: Pizza dough that used as
          a pizza base
 
@@ -118,7 +118,7 @@ SubClass Of
 
 
 ## PizzaTopping
-### Annotation
+### Annotations
 Comment: Topping of pizza
 
 | Language      | Label         |
@@ -135,7 +135,7 @@ SubClass Of
 
 
 ## Rosa
-### Annotation
+### Annotations
 | Language      | Label         |
 | ------------- |:-------------:|
 | English       | Rosa          |
@@ -151,7 +151,7 @@ SubClass Of
 
 
 ## Spiciness
-### Annotation
+### Annotations
 Comment: Spiciness of Pizza
 
 | Language      | Label         |
@@ -165,11 +165,10 @@ SubClass Of
 
 
 ## TomatoTopping
-### Annotation
+### Annotations
 | Language      | Label         |
 | ------------- |:-------------:|
 | English       | TomatoTopping |
-| Portuguese    | Tempero       |
 
 ### Description
 Disjoint With:
