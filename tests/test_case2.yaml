@@ -93,31 +93,31 @@ owl:ObjectProperty:
       - isAncestorOf
     rdf:type:
       - owl:TransitiveProperty
-    rdfs:Domain:
+    rdfs:domain:
       - Person
-    rdfs:Range: Person
+    rdfs:range: Person
     rdfs:subPropertyOf:
       - isBloodRelationOf
   family:hasAunt:
-    rdfs:Domain:
+    rdfs:domain:
       - Person
-    rdfs:Range:
+    rdfs:range:
       - Person
     rdfs:subPropertyOf:
       - isBloodRelationOf
   family:hasGender:
-    rdfs:Domain:
+    rdfs:domain:
       - Person
-    rdfs:Range:
+    rdfs:range:
       - Gender
     rdf:type:
       - owl:FunctionalProperty
   family:hasParent:
     owl:inverseOf:
       - isParentOf
-    rdfs:Domain:
+    rdfs:domain:
       - Person
-    rdfs:Range:
+    rdfs:range:
       - Person
     rdfs:subPropertyOf:
       - hasAncestor
@@ -127,18 +127,18 @@ owl:ObjectProperty:
   family:isBloodRelationOf:
     rdf:type:
       - owl:SymmetricProperty
-    rdfs:Domain:
+    rdfs:domain:
       - Person
-    rdfs:Range:
+    rdfs:range:
       - Person
     rdfs:subPropertyOf:
       - topObjectProperty
   family:isInlawOf:
     rdf:type:
       - owl:SymmetricProperty
-    rdfs:Domain:
+    rdfs:domain:
       - Person
-    rdfs:Range:
+    rdfs:range:
       - Person
     rdfs:subPropertyOf:
       - topObjectProperty
@@ -149,18 +149,18 @@ owl:ObjectProperty:
     rdf:type:
       - owl:SymmetricProperty
       - owl:TransitiveProperty
-    rdfs:Domain:
+    rdfs:domain:
       - Person
-    rdfs:Range:
+    rdfs:range:
       - Person
     rdfs:subPropertyOf:
       - isBloodRelationOf
   family:isSpouseOf:
     rdf:type:
       - owl:SymmetricProperty
-    rdfs:Domain:
+    rdfs:domain:
       - Person
-    rdfs:Range:
+    rdfs:range:
       - Person
     rdfs:subPropertyOf:
       - isInLawOf
