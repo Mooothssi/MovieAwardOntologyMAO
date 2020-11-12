@@ -125,5 +125,5 @@ owl:ObjectProperty:
       - PizzaTopping
 
 rdfs:Datatype:
-  - xsd:string
   - rdfs:Literal
+  - xsd:string
