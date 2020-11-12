@@ -1,34 +1,34 @@
 # Class Hierarchy
-### Thing
-- Gender
-- Person
-  - Ancestor
-  - Parent
-  - Spouse
+- Thing
+  - Gender
+  - Person
+    - Ancestor
+    - Parent
+    - Spouse
 
 
 # Property Hierarchy
 ## Data Property
-### topDataProperty
-- hasBirthYear
-- hasName
-  - hasFamilyName
-  - hasFirstGivenName
-  - knownAs
+- topDataProperty
+  - hasBirthYear
+  - hasName
+    - hasFamilyName
+    - hasFirstGivenName
+    - knownAs
 
 
 ## Object Property
-### topObjectProperty
-- hasGender
-- isBloodRelationOf
-  - hasAncestor
-    - hasParent
-  - hasAunt
-  - isSiblingOf
-- isInLawOf
-  - isSpouseOf
-- isAncestorOf
-- isParentOf
+- topObjectProperty
+  - hasGender
+  - isBloodRelationOf
+    - hasAncestor
+      - hasParent
+    - hasAunt
+    - isSiblingOf
+  - isInLawOf
+    - isSpouseOf
+  - isAncestorOf
+  - isParentOf
 
 
 # Class
@@ -54,7 +54,7 @@ SubClass Of: Thing
 
 
 ## Parent
-### Annotation
+### Annotations
 | Language      | Label         |
 | ------------- |:-------------:|
 | English       | Parent        |
@@ -70,7 +70,7 @@ SubClass Of: Person
 
 
 ## Person
-### Annotation
+### Annotations
 | Language      | Label         |
 | ------------- |:-------------:|
 | English       | Person        |
@@ -93,7 +93,7 @@ SubClass Of: Thing
 
 
 ## Spouse
-### Annotation
+### Annotations
 | Language      | Label         |
 | ------------- |:-------------:|
 | English       | Spouse        |
@@ -115,7 +115,7 @@ SubcClass Of: Person
 
 ## hasBirthYear
 ### Characteristics
-  - owl:FunctionalProperty
+  - Functional
 
 ### Description
 Domain:
@@ -179,6 +179,9 @@ SubProperty Of:
 # Object property
 
 ## hasAncestor
+### Characteristics
+  - Transitive
+
 ### Description
 Inverse Of:
   - isAncestorOf
@@ -190,10 +193,6 @@ Range: Person
 
 SubProperty Of:
   - isBloodRelationOf
-
-### Characteristics
-Characteristics:
-  - Transitive
 
 
 ## hasAunt
@@ -209,15 +208,15 @@ SubProperty Of:
 
 
 ## hasGender
+### Characteristics:
+  - Functional
+
 ### Description
 Domain:
   - Person
 
 Range:
   - Gender
-
-Characteristics:
-  - Functional
 
 
 ## hasParent
@@ -235,7 +234,7 @@ SubProperty Of:
   - hasAncestor
 
 
-## :isAncestorOf
+## isAncestorOf
 ### Description
 Inverse Of:
   - hasAncestor
@@ -245,21 +244,9 @@ SubProperty Of:
 
 
 ## isBloodRelationOf
-### Description
-Domain:
-  - Person
-
-Range:
-  - Person
-
-SubProperty Of:
-  - topObjectProperty
-
 ### Characteristics
   - Symmetric
 
-
-## isInLawOf
 ### Description
 Domain:
   - Person
@@ -270,11 +257,22 @@ Range:
 SubProperty Of:
   - topObjectProperty
 
+
+## isInLawOf
 ### Characteristics
-  - SymmetricProperty
+  - Symmetric
+### Description
+Domain:
+  - Person
+
+Range:
+  - Person
+
+SubProperty Of:
+  - topObjectProperty
 
 
-## :isParentOf
+## isParentOf
 ### Description
 Inverse Of:
   - hasParent
@@ -284,6 +282,10 @@ SubProperty Of:
 
 
 ## isSiblingOf
+### Characteristics
+  - Symmetric
+  - Transitive
+
 ### Description
 Domain:
   - Person
@@ -294,12 +296,11 @@ Range:
 SubProperty Of:
   - isBloodRelationOf
 
-### Characteristics
-  - owl:SymmetricProperty
-  - owl:TransitiveProperty
-
 
 ## isSpouseOf
+### Characteristics
+  - Symmetric
+
 ### Description
 Domain:
   - Person
@@ -310,9 +311,6 @@ Range:
 SubProperty Of:
   - isInLawOf
 
-### Characteristics
-  - SymmetricProperty
-
 
 # Data type
 - Interger
@@ -320,7 +318,7 @@ SubProperty Of:
 - String
 
 
-# Rule:
+# Rule
 ## hasAunt:
 <pre>
   family:Person(?p) ^ family:Person(?a) ^ family:Person(?c) ^
