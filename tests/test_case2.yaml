@@ -1,4 +1,5 @@
 owl:Class:
+  owl:Thing: ""
   family:Ancestor:
     objectProperty: isAncestorOf
     owl:equivalentClass:
