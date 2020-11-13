@@ -48,12 +48,52 @@ owl:Class:
       - Value
     rdfs:subClassOf:
       - Thing
+  mao:FilmMakingSituation:
+    annotations:
+      rdfs:label:
+        - Film making^^rdfs:Literal@en
+    objectProperty:
+      - hasCast
+      - hasCinematographer
+      - hasComposer
+      - hasCrew
+      - hasDirector
+      - hasFilm
+      - hasPart
+      - hasStudio
+    rdfs:subClassOf:
+      - Event
+      - Situation
 
 owl:DataProperty:
   owl:topDataProperty: ""
 
 owl:ObjectProperty:
   owl:topObjectProperty: ""
+  mao:hasCast:
+    rdfs:range:
+      - MovieCast
+  mao:hasCinematographer:
+    rdfs:range:
+      - Person
+  mao:hasComposer:
+    rdfs:range:
+      - Person
+  mao:hasCrew:
+    rdfs:range:
+      - MovieCrew
+  mao:hasDirector:
+    rdfs:range:
+      - Person
+  mao:hasFilm:
+    rdfs:range:
+      - Film
+  mao:hasPart:
+    rdfs:range:
+      - Acting
+  mao:hasStudio:
+    rdfs:range:
+      - Studio
   mao:hasParticipant:
     owl:inverseOf:
       - isParticipantIn
