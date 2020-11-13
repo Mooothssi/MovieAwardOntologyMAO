@@ -37,7 +37,7 @@
 Equivalent To:
   - Person and (isAncestorOf some Person)
 
-SubClass Of: Person
+Subclass Of: Person
 
 ### Object Property
   - isAncestorOf
@@ -50,7 +50,7 @@ Disjoint With: Person
 Equivalent To:
   - {Female, Male, Non-binary}
 
-SubClass Of: Thing
+Subclass Of: Thing
 
 
 ## Parent
@@ -63,7 +63,7 @@ SubClass Of: Thing
 Equivalent To:
   - Person and (isParentOf some Person)
 
-SubClass Of: Person
+Subclass Of: Person
 
 ### Object Property
   - isParentOf
@@ -85,7 +85,7 @@ Equivalent To:
 
 Disjoint With: Gender
 
-SubClass Of: Thing
+Subclass Of: Thing
 
 ### Object Property
   - hasParent
@@ -102,7 +102,7 @@ SubClass Of: Thing
 Equivalent To:
   - Person and (isSpouseOf some Person)
 
-SubcClass Of: Person
+Subclass Of: Person
 
 ### Object Property
   - isSpouseOf
@@ -124,7 +124,7 @@ Domain:
 Range:
   - Integer
 
-SubProperty Of:
+Subproperty Of:
   - topDataProperty
 
 
@@ -136,7 +136,7 @@ Domain:
 Range:
   - String
 
-SubProperty Of:
+Subproperty Of:
   - hasName
 
 
@@ -148,7 +148,7 @@ Domain:
 Range:
   - String
 
-SubProperty Of:
+Subproperty Of:
   - hasName
 
 
@@ -160,7 +160,7 @@ Domain:
 Range:
   - String
 
-SubProperty Of:
+Subproperty Of:
   - topDataProperty
 
 
@@ -172,7 +172,7 @@ Domain:
 Range:
   - String
 
-SubProperty Of:
+Subproperty Of:
   - hasName
 
 
@@ -191,7 +191,7 @@ Domain:
 
 Range: Person
 
-SubProperty Of:
+Subproperty Of:
   - isBloodRelationOf
 
 
@@ -203,7 +203,7 @@ Domain:
 Range:
   - Person
 
-SubProperty Of:
+Subproperty Of:
   - isBloodRelationOf
 
 
@@ -230,7 +230,7 @@ Domain:
 Range:
   - Person
 
-SubProperty Of:
+Subproperty Of:
   - hasAncestor
 
 
@@ -239,7 +239,7 @@ SubProperty Of:
 Inverse Of:
   - hasAncestor
 
-SubProperty Of:
+Subproperty Of:
   - topObjectProperty
 
 
@@ -254,7 +254,7 @@ Domain:
 Range:
   - Person
 
-SubProperty Of:
+Subproperty Of:
   - topObjectProperty
 
 
@@ -268,7 +268,7 @@ Domain:
 Range:
   - Person
 
-SubProperty Of:
+Subproperty Of:
   - topObjectProperty
 
 
@@ -277,7 +277,7 @@ SubProperty Of:
 Inverse Of:
   - hasParent
 
-SubProperty Of:
+Subproperty Of:
   - topObjectProperty
 
 
@@ -293,7 +293,7 @@ Domain:
 Range:
   - Person
 
-SubProperty Of:
+Subproperty Of:
   - isBloodRelationOf
 
 
@@ -308,7 +308,7 @@ Domain:
 Range:
   - Person
 
-SubProperty Of:
+Subproperty Of:
   - isInLawOf
 
 
@@ -320,8 +320,8 @@ SubProperty Of:
 
 # Rule
 ## hasAunt:
-<pre>
+```
   family:Person(?p) ^ family:Person(?a) ^ family:Person(?c) ^
   family:isSiblingOf(?p,?a) ^ family:isParentOf(?p,?c) ^ family:hasGender(?a,family:Female)
   -> family:hasAunt(?c,?a)
-</pre>
+```
