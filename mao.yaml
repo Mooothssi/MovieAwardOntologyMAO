@@ -161,6 +161,11 @@ owl:DataProperty:
 owl:ObjectProperty:
   owl:topObjectProperty: ""
   mao:coparticipatesWith:
+    annotations:
+      rdfs:comment:
+        - A relation between two objects participating in a same Event; e.g., 'Vitas and Jimmy are playing tennis'.^^xsd:string
+      rdfs:label:
+        - co-participates with^^rdfs:Literal@en
     rdfs:domain:
       - Object
     rdfs:range:
@@ -172,12 +177,21 @@ owl:ObjectProperty:
     rdfs:range:
       - CollectiveAgent
   mao:hasCast:
+    annotations:
+      rdfs:label:
+        - has cast^^rdfs:Literal@en
     rdfs:range:
       - MovieCast
   mao:hasCinematographer:
+    annotations:
+      rdfs:label:
+        - has cinematographer^^rdfs:Literal@en
     rdfs:range:
       - Person
   mao:hasComposer:
+    annotations:
+      rdfs:label:
+        - has composer^^rdfs:Literal@en
     rdfs:range:
       - Person
   mao:hasContentRating:
@@ -193,12 +207,21 @@ owl:ObjectProperty:
     rdfs:range:
       - Country
   mao:hasCrew:
+    annotations:
+      rdfs:label:
+        - has crew^^rdfs:Literal@en
     rdfs:range:
       - MovieCrew
   mao:hasDirector:
+    annotations:
+      rdfs:label:
+        - has director^^rdfs:Literal@en
     rdfs:range:
       - Person
   mao:hasFilm:
+    annotations:
+      rdfs:label:
+        - has Film^^rdfs:Literal@en
     rdfs:range:
       - Film
   mao:hasFilmingLocation:
@@ -226,6 +249,13 @@ owl:ObjectProperty:
     rdfs:range:
       - Language
   mao:hasPart:
+    annotations:
+      rdfs:comment:
+        - >
+          A schematic relation between any entities, e.g. 'the human body has a brain as part', '20th century contains year 1923', 'World War II includes the Pearl Harbour event'.
+          Subproperties and restrictions can be used to specialize hasPart for objects, events, etc.^^xsd:string
+      rdfs:label:
+        - has part^^rdfs:Literal@en
     rdfs:range:
       - Acting
   mao:hasPrequels:
@@ -246,9 +276,6 @@ owl:ObjectProperty:
         - has sequels^^rdfs:Literal@en
     rdfs:range:
       - Film
-  mao:hasStudio:
-    rdfs:range:
-      - Studio
   mao:hasSubTitleInLanguage:
     annotations:
       rdfs:label:
@@ -256,6 +283,11 @@ owl:ObjectProperty:
     rdfs:range:
       - Language
   mao:hasParticipant:
+    annotations:
+      rdfs:comment:
+        - A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.^^xsd:string
+      rdfs:label:
+        - has participant^^rdfs:Literal@en
     owl:inverseOf:
       - isParticipantIn
     rdfs:domain:
@@ -263,6 +295,9 @@ owl:ObjectProperty:
     rdfs:range:
       - Object
   mao:involvesAgent:
+    annotations:
+      rdfs:label:
+        - involves agent^^rdfs:Literal@en
     owl:inverseOf:
       - isAgentInvolvedIn
     rdfs:domain:
@@ -272,6 +307,9 @@ owl:ObjectProperty:
     rdfs:subPropertyOf:
       - hasParticipant
   mao:isAgentInvolvedIn:
+    annotations:
+      rdfs:label:
+        - is agent involved in^^rdfs:Literal@en
     owl:inverseOf:
       - involvesAgent
     rdfs:domain:
@@ -281,6 +319,11 @@ owl:ObjectProperty:
     rdfs:subPropertyOf:
       - isParticipantIn
   mao:isParticipantIn:
+    annotations:
+      rdfs:comment:
+        - A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.^^xsd:string
+      rdfs:label:
+        - is participant in^^rdfs:Literal@en
     owl:inverseOf:
       - hasParticipant
     rdfs:domain:
