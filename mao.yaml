@@ -42,6 +42,10 @@ owl:Class:
     objectProperty:
       - hasParticipant
       - involvesAgent
+    owl:disjointWith:
+      - Abstract
+      - Object
+      - Value
     rdfs:subClassOf:
       - Thing
 
