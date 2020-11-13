@@ -105,7 +105,7 @@ owl:Class:
     rdfs:subClassOf:
       - PizzaTopping
 
-owl:AnnotationPropert:
+owl:AnnotationProperty:
   rdfs:comment: ""
   rdfs:label: ""
 
@@ -123,7 +123,3 @@ owl:ObjectProperty:
       - Pizza
     rdfs:range:
       - PizzaTopping
-
-rdfs:Datatype:
-  - rdfs:Literal
-  - xsd:string

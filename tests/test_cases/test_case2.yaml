@@ -165,8 +165,3 @@ owl:ObjectProperty:
       - Person
     rdfs:subPropertyOf:
       - isInLawOf
-
-rdfs:Datatype:
-  - rdfs:Literal
-  - xsd:interger
-  - xsd:string
