@@ -64,12 +64,32 @@ owl:Class:
     rdfs:subClassOf:
       - Event
       - Situation
+  mao:Object:
+    annotations:
+      rdfs:comment:
+        - Any physical, social, or mental object, or a substance. Following DOLCE Full, objects are always participating in some event (at least their own life), and are spatially located.^^xsd:string
+      rdfs:label:
+        - Object^^rdfs:Literal@en
+    objectProperty:
+      - coparticipatesWith
+      - isParticipantIn
+    owl:disjointWith:
+      - Abstract
+      - Event
+      - Value
+    rdfs:subClassOf:
+      - Thing
 
 owl:DataProperty:
   owl:topDataProperty: ""
 
 owl:ObjectProperty:
   owl:topObjectProperty: ""
+  mao:coparticipatesWith:
+    rdfs:domain:
+      - Object
+    rdfs:range:
+      - Object
   mao:hasCast:
     rdfs:range:
       - MovieCast
