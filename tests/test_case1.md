@@ -27,7 +27,7 @@
 | English       | Food                 |
 
 ### Description
-SubClass Of:
+Subclass Of:
   - Thing
 
 
@@ -42,7 +42,7 @@ Disjoint With:
   - MozzarellaTopping
   - TomatoTopping
 
-SubClass Of:
+Subclass Of:
   - PizzaTopping
 
 
@@ -54,7 +54,7 @@ SubClass Of:
 | Portuguese    | Margherita    |
 
 ### Description
-SubClass Of:
+Subclass Of:
   - NamedPizza
   - hasTopping only (MozzarellaTopping or TomatoTopping)
   - hasTopping some MozzarellaTopping
@@ -72,13 +72,13 @@ Disjoint With:
   - GorgonzolaTopping
   - TomatoTopping
 
-SubClass Of:
+Subclass Of:
   - PizzaTopping
 
 
 ## NamedPizza:
 ### Description
-SubClass Of
+Subclass Of:
   - Pizza
 
 
@@ -91,7 +91,7 @@ Disjoint With:
 Equivalent To:
   - Food and (hasBase some PizzaBase)
 
-SubClass Of
+Subclass Of:
   - Food
 
 ### Object Property
@@ -113,7 +113,7 @@ Disjoint With:
   - Pizza
   - PizzaTopping
 
-SubClass Of
+Subclass Of:
   - Food
 
 
@@ -130,7 +130,7 @@ Disjoint With:
   - Pizza
   - PizzaBase
 
-SubClass Of
+Subclass Of:
   - Food
 
 
@@ -142,7 +142,7 @@ SubClass Of
 | Portuguese    | Rosa          |
 
 ### Description
-SubClass Of
+Subclass Of:
   - NamedPizza
   - hasTopping only (GorgonzolaTopping or MozzarellaTopping  or TomatoTopping)
   - hasTopping some GorgonzolaTopping
@@ -160,7 +160,7 @@ Comment: Spiciness of Pizza
 | Portuguese    | Tempero       |
 
 ### Description
-SubClass Of
+Subclass Of:
   - Thing
 
 
@@ -175,7 +175,7 @@ Disjoint With:
   - GorgonzolaTopping
   - MozzarellaTopping
 
-SubClass Of
+Subclass Of:
   - PizzaTopping
 
 
