@@ -1,0 +1,125 @@
+owl:Class:
+  owl:Thing: ""
+  pizza:Food:
+    annotations:
+      rdfs:label:
+        - Food^^rdfs:Literal@en
+    rdfs:subClassOf:
+      - owl:Thing
+  pizza:GorgonzolaTopping:
+    annotations:
+      rdfs:label:
+        - GorgonzolaTopping^^rdfs:Literal@en
+    owl:disjointWith:
+      - MozzarellaTopping
+      - TomatoTopping
+    rdfs:subClassOf:
+      - PizzaTopping
+  pizza:Margherita:
+    annotations:
+      rdfs:label:
+        - Margherita^^rdfs:Literal@en
+        - Margherita^^rdfs:Literal@pt
+    rdfs:subClassOf:
+      - NamedPizza
+      owl:Restriction:
+        - hasTopping only (MozzarellaTopping or TomatoTopping)
+        - hasTopping some MozzarellaTopping
+        - hasTopping some TomatoTopping
+  pizza:MozzarellaTopping:
+    annotations:
+      rdfs:label:
+        - MozzarellaTopping^^rdfs:Literal@en
+    owl:disjointWith:
+      - GorgonzolaTopping
+      - TomatoTopping
+    rdfs:subClassOf:
+      - PizzaTopping
+  pizza:NamedPizza:
+    rdfs:subClassOf:
+      - Pizza
+  pizza:Pizza:
+    objectProperty:
+      - hasBase
+      - hasTopping
+    owl:disjointWith:
+      - PizzaBase
+      - PizzaTopping
+    owl:equivalentClass:
+      owl:Restriction:
+        - Food and (hasBase some PizzaBase)
+    rdfs:subClassOf:
+      - Food
+  pizza:PizzaBase:
+     annotations:
+       rdfs:comment:
+         - >
+           Pizza dough that used as
+           a pizza base^^xsd:string
+      rdfs:label:
+        - PizzaBase^^rdfs:Literal@en
+    owl:disjointWith:
+      - Pizza
+      - PizzaTopping
+    rdfs:subClassOf:
+      - Food
+  pizza:PizzaTopping:
+    annotations:
+      rdfs:label:
+        - PizzaTopping^^rdfs:Literal@en
+      rdfs:comment:
+        - >
+          Topping of pizza^^xsd:string
+    owl:disjointWith:
+      - Pizza
+      - PizzaBase
+    rdfs:subClassOf:
+      - Food
+  pizza:Rosa:
+    annotations:
+      rdfs:label:
+        - Rosa^^rdfs:Literal@en
+        - Rosa^^rdfs:Literal@pt
+    rdfs:subClassOf:
+      - NamedPizza
+      owl:Restriction:
+        - hasTopping only (GorgonzolaTopping or MozzarellaTopping or TomatoTopping)
+        - hasTopping some GorgonzolaTopping
+        - hasTopping some MozzarellaTopping
+        - hasTopping some TomatoTopping
+  pizza:Spiciness:
+    annotations:
+      rdfs:comment: Spiciness of Pizza^^xsd:string
+      rdfs:label:
+        - Spiciness^^rdfs:Literal@en
+        - Tempero^^rdfs:Literal@pt
+    rdfs:subClassOf:
+      - Thing
+  pizza:TomatoTopping:
+    annotations:
+      rdfs:label:
+        - TomatoTopping^^rdfs:Literal@en
+    owl:disjointWith:
+      - GorgonzolaTopping
+      - MozzarellaTopping
+    rdfs:subClassOf:
+      - PizzaTopping
+
+owl:AnnotationProperty:
+  rdfs:comment: ""
+  rdfs:label: ""
+
+owl:ObjectProperty:
+  owl:topObjectProperty: ""
+  pizza:hasBase:
+    rdfs:domain:
+      - Pizza
+    rdfs:range:
+      - PizzaBase
+  pizza:hasTopping:
+    rdf:type:
+      - owl:InverseFunctionalProperty
+    rdfs:domain:
+      - Pizza
+    rdfs:range:
+      - PizzaTopping
