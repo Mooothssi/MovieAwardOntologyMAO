@@ -313,9 +313,14 @@ Subproperty Of:
 
 
 # Data type
-- Interger
-- Literal
-- String
+
+## personAge
+### Annotations
+Comment: Age of person which is the integer between 0 to 150
+
+### Description
+Datatype Definitions:
+  - integer[>=0, <=150]
 
 
 # Rule
