@@ -1,7 +1,6 @@
 import csv
 from itertools import islice
-
-from typing import List, Dict, Iterable, TextIO
+from typing import Dict, Iterable, List, IO
 
 from utils import select_not_null
 
@@ -53,7 +52,7 @@ def read_xsv_file(filename: str,
         return list(read_xsv(file, dialect, **select_not_null(kwargs)))
 
 
-def read_xsv(file: TextIO,
+def read_xsv(file: IO,
              dialect: str,
              fieldnames: List[str] = None,
              first_line_is_column_header: bool = True,
