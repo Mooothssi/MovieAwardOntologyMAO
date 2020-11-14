@@ -1,6 +1,6 @@
 import string
 
-__all__ = ['snake_to_camel', 'camel_to_snake', 'to_constant']
+__all__ = ['snake_to_camel', 'camel_to_snake', 'to_all_caps']
 
 
 def snake_to_camel(s: str) -> str:
@@ -12,8 +12,8 @@ def snake_to_camel(s: str) -> str:
         'snakeToCamel'
         >>> snake_to_camel('__snake_to_camel__')
         'snakeToCamel'
-        >>> snake_to_camel('snakeToCamel')
-        'snakeToCamel'
+        >>> snake_to_camel('alreadyCamel')
+        'alreadyCamel'
         >>> snake_to_camel('lonesnake')
         'lonesnake'
     """
@@ -33,30 +33,38 @@ def camel_to_snake(s: str) -> str:
     Examples:
         >>> camel_to_snake('camelToSnake')
         'camel_to_snake'
-        >>> camel_to_snake('camel_to_snake')
+        >>> camel_to_snake('already_snake')
         Traceback (most recent call last):
           ...
-        ValueError: original str is not in camelCase: 'camel_to_snake'
+        ValueError: original str is not in camelCase: 'already_snake'
         >>> camel_to_snake('lonecamel')
         'lonecamel'
+        >>> camel_to_snake('CapWords')
+        'cap_words'
+        >>> camel_to_snake('Ugly_Case')
+        Traceback (most recent call last):
+          ...
+        ValueError: original str is not in camelCase: 'Ugly_Case'
     """
     if '_' in s:
-        raise ValueError('original str is not in camelCase: \'{}\''
-                         .format(s))
+        raise ValueError("original str is not in camelCase: '{}'".format(s))
     for u in string.ascii_uppercase:
         s = s.replace(u, '_' + u.lower())
+    if s.startswith('_'):
+        # _cap_words
+        return s[1:]
     return s
 
 
-def to_constant(s: str) -> str:
+def to_all_caps(s: str) -> str:
     """Returns a new str in CONSTANT_CASE, given any str.
 
     Examples:
-        >>> to_constant('to_constant')
+        >>> to_all_caps('to_constant')
         'TO_CONSTANT'
-        >>> to_constant('Meals, Entrees, and Side Dishes')
+        >>> to_all_caps('Meals, Entrees, and Side Dishes')
         'MEALS_ENTREES_AND_SIDE_DISHES'
-        >>> to_constant('American Indian/Alaska Native Foods')
+        >>> to_all_caps('American Indian/Alaska Native Foods')
         'AMERICAN_INDIANALASKA_NATIVE_FOODS'
     """
     s = s.replace(' ', '_')
