@@ -158,7 +158,7 @@ def open_and_write_file(file: Union[IO, str, Path], s: str):
         file.write(s)
         return
     except OSError:
-        pass
+        raise
     except AttributeError:
         if isinstance(file, (str, Path)):
             with open(file, 'w', encoding='utf-8') as f:
