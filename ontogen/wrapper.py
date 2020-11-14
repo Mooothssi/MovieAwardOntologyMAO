@@ -16,10 +16,18 @@ class BaseOntologyClass(Thing):
     def _ontology_class(self) -> ThingClass:
         return getattr(self.ontology, self.__class__.__name__)
 
+    # def __setattr__(self, key, value):
+    #     att = getattr(self, key)
+    #     if isinstance(att, list):
+    #         att += value
+    #     else:
+    #         new_value = [value]  # owlready2 implementation
+    #         super().__setattr__(key, new_value)
+
 
 def all_subclasses(cls):
     return set(cls.__subclasses__()).union(
-        [s for c in cls.__subclasses__() for s in all_subclasses(c)])
+        [s for c in cls.__subclasses__() for s in all_subclasses(c)]).union([cls])
 
 
 def apply_classes_from(onto: Ontology):
