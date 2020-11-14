@@ -1,5 +1,24 @@
 owl:Class:
   owl:Thing: ""
+  mao:Agent:
+    annotations:
+      rdfs:comment:
+        - >
+          Additional comment: a computational agent can be considered as a PhysicalAgent that realizes a certain class of algorithms (that can be considered as instances of InformationObject) that allow to obtain some behaviors that are considered typical of agents in general. For an ontology of computational objects based on DOLCE see e.g. http://www.loa-cnr.it/COS/COS.owl, and http://www.loa-cnr.it/KCO/KCO.owl.^^xsd:string
+      rdfs:label:
+        - Agent^^rdfs:Literal@en
+    owl:disjointWith:
+      - AggregateRating
+      - Award
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
   mao:Animation:
     annotations:
       rdfs:label:
@@ -12,6 +31,48 @@ owl:Class:
       - hasFilmStudio
     rdfs:subClassOf:
       - Film
+  mao:Antagonist:
+    annotations:
+      rdfs:label:
+        - Antagonist^^rdfs:Literal@en
+    owl:disjointWith:
+      - Protagonist
+      - Hero
+    rdfs:subClassOf:
+      - MainCharacter
+  mao:Character:
+    annotations:
+      rdfs:comment:
+        - Character in film^^xsd:string
+      rdfs:label:
+        - Character^^rdfs:Literal@en
+    dataProperty:
+      - hasCharacterTitle
+      - hasName
+    objectProperty:
+      - actedBy
+      - hasArchetype
+      - hasGender
+      - hasImportance
+      - hasRole
+    owl:disjointWith:
+      - CharacterImportance
+      - CollectiveAgent
+      - Organization
+      - Person
+    rdfs:subClassOf:
+      - Agent
+  mao:CharacterImportance:
+    annotations:
+      rdfs:label:
+        - CharacterImportance^^rdfs:Literal@en
+    owl:disjointWith:
+      - Character
+      - CollectiveAgent
+      - Organization
+      - Person
+    rdfs:subClassOf:
+      - Agent
   mao:Event:
     annotations:
       rdfs:comment:
@@ -60,6 +121,15 @@ owl:Class:
       - Value
     rdfs:subClassOf:
       - Thing
+  mao:ExtraCharacter:
+    annotations:
+      rdfs:label:
+        - ExtraCharacter^^rdfs:Literal@en
+    owl:disjointWith:
+      - MainCharacter
+      - SideCharacter
+    rdfs:subClassOf:
+      - CharacterImportance
   mao:Film:
     annotations:
       rdfs:label:
@@ -119,6 +189,14 @@ owl:Class:
       - Film and (hasFeatureLengthInMinutes some integer[>=40])
     rdfs:subClassOf:
       - Film
+  mao:FemaleProtagonist:
+    annotations:
+      rdfs:label:
+        - FemaleProtagonist^^rdfs:Literal@en
+    owl:disjointWith:
+      - MaleProtagonist
+    rdfs:subClassOf:
+      - Protagonist
   mao:FilmMakingSituation:
     annotations:
       rdfs:label:
@@ -136,6 +214,48 @@ owl:Class:
     rdfs:subClassOf:
       - Event
       - Situation
+  mao:Hero:
+    annotations:
+      rdfs:label:
+        - Hero^^rdfs:Literal@en
+    owl:disjointWith:
+      - Antagonist
+      - Protagonist
+    rdfs:subClassOf:
+      - MainCharacter
+  mao:Heroine:
+    annotations:
+      rdfs:label:
+        - Heroine^^rdfs:Literal@en
+    owl:disjointWith:
+      - MaleHero
+    rdfs:subClassOf:
+      - Hero
+  mao:MainCharacter:
+    annotations:
+      rdfs:label:
+        - MainCharacter^^rdfs:Literal@en
+    owl:disjointWith:
+      - ExtraCharacter
+      - SideCharacter
+    rdfs:subClassOf:
+      - CharacterImportance
+  mao:MaleHero:
+    annotations:
+      rdfs:label:
+        - MaleHero^^rdfs:Literal@en
+    owl:disjointWith:
+      - Heroine
+    rdfs:subClassOf:
+      - Hero
+  mao:MaleProtagonist:
+    annotations:
+      rdfs:label:
+        - MaleProtagonist^^rdfs:Literal@en
+    owl:disjointWith:
+      - FemaleProtagonist
+    rdfs:subClassOf:
+      - Protagonist
   mao:Object:
     annotations:
       rdfs:comment:
@@ -160,6 +280,15 @@ owl:Class:
         - FilmEligibleForAward and (eligibleFor value Oscars) and (violatesCriterion only not(OscarCriterion)) and (satisfiesCriterion only OscarCriterion)
     rdfs:subClassOf:
       - FilmEligibleForAward
+  mao:Protagonist:
+    annotations:
+      rdfs:label:
+        - Protagonist^^rdfs:Literal@en
+    owl:disjointWith:
+      - Antagonist
+      - Hero
+    rdfs:subClassOf:
+      - MainCharacter
   mao:ShortFilm:
     annotations:
       rdfs:label:
@@ -172,6 +301,15 @@ owl:Class:
       - Film and (hasFeatureLengthInMinutes some integer[<40])
     rdfs:subClassOf:
       - Film
+  mao:SideCharacter:
+    annotations:
+      rdfs:label:
+        - SideCharacter^^rdfs:Literal@en
+    owl:disjointWith:
+      - ExtraCharacter
+      - MainCharacter
+    rdfs:subClassOf:
+      - CharacterImportance
 
 owl:DataProperty:
   owl:topDataProperty: ""
@@ -189,6 +327,12 @@ owl:DataProperty:
         - has aggregate rating^^rdfs:Literal@en
     rdfs:range:
       - xsd:decimal
+  mao:hasCharacterTitle:
+    annotations:
+      rdfs:label:
+        - has character title^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:string
   mao:hasFeatureLengthInMinutes:
     annotations:
       rdfs:label:
@@ -203,6 +347,12 @@ owl:DataProperty:
       - owl:FunctionalProperty
     rdfs:range:
       - xsd:integer
+  mao:hasName:
+    annotations:
+      rdfs:label:
+        - has name^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:string
   mao:hasTitle:
     annotations:
       rdfs:label:
@@ -218,6 +368,12 @@ owl:DataProperty:
 
 owl:ObjectProperty:
   owl:topObjectProperty: ""
+  mao:actedBy:
+    annotations:
+      rdfs:label:
+        - acted by^^rdfsL:Literal@en
+    rdfs:range:
+      - Person
   mao:coparticipatesWith:
     annotations:
       rdfs:comment:
@@ -236,6 +392,10 @@ owl:ObjectProperty:
       - FilmEligibleForAward
     rdfs:range:
       - AwardCategory
+  mao:hasArchetype:
+    annotations:
+      rdfs:label:
+        - has archetype^^rdfs:Literal@en
   mao:hasAudience:
     annotations:
       rdfs:label:
@@ -302,12 +462,24 @@ owl:ObjectProperty:
         - has film studio^^rdfs:Literal@en
     rdfs:range:
       - MovieStudio
+  mao:hasGender:
+    annotations:
+      rdfs:label:
+        - has gender^^rdfs:Literal@en
+    rdfs:range:
+      - Gender
   mao:hasGenre:
     annotations:
       rdfs:label:
-        - has Genre^^rdfs:Literal@en
+        - has genre^^rdfs:Literal@en
     rdfs:range:
       - Genre
+  mao:hasImportance:
+    annotations:
+      rdfs:label:
+        - has importance^^rdfs:Literal@en
+    rdfs:range:
+      - CharacterImportance
   mao:hasLanguage:
     annotations:
       rdfs:label:
@@ -346,6 +518,12 @@ owl:ObjectProperty:
         - has rating statement^^rdfs:Literal@en
     rdfs:range:
       - AggregateRatingStatement
+  mao:hasRole:
+    annotations:
+      rdfs:label:
+        - has role^^rdfs:Literal@en
+    rdfs:range:
+      - MainCharacter
   mao:hasSequels:
     annotations:
       rdfs:label:
