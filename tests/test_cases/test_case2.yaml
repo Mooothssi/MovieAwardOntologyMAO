@@ -167,7 +167,7 @@ owl:ObjectProperty:
       - isInLawOf
 
 rdfs:Datatype:
-  mao:personAge:
+  family:personAge:
     owl:equivalentClass:
       - xsd:integer[>=0, <=150]
     annotations:
