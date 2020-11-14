@@ -3,16 +3,11 @@ from itertools import islice
 
 from typing import List, Dict, Iterable, TextIO
 
+from utils import select_not_null
+
 
 def get_differing_keys_and_values(dct: dict) -> dict:
     return {k: v for k, v in dct.items() if k != v}
-
-
-def select_not_null(dct: dict, *keys: str) -> dict:
-    """Return a new dict with specified keys with values that are not null."""
-    if keys:
-        return {k: dct[k] for k in keys if dct.get(k) is not None}
-    return {k: v for k, v in dct.items() if v is not None}
 
 
 def read_xsv_file(filename: str,
