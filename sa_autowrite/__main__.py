@@ -91,7 +91,7 @@ class Table:
 
     def as_python(self) -> str:
         lines = [
-            f'from sqlalchemy import Column, Integer, String, Date, DateTime',
+            f"from sqlalchemy import Column, {', '.join(sorted(set(TYPE_DEF[col.type] for col in self.columns)))}",
             '',
             f'from .base import Base',
             '',
