@@ -29,9 +29,19 @@ def str_is_datetime(s: str) -> bool:
         return True
 
 
+def str_is_integer(s: str) -> bool:
+    """Check whether or not a string is lossless-ly an integer"""
+    return s.isnumeric() and not s.startswith('0')
+
+
+def str_is_float(s: str) -> bool:
+    """Check whether or not a string is lossless-ly a float"""
+    return s.isdecimal() and not s.startswith('0')
+
+
 TYPE_CHECKER = {
-    int: str.isnumeric,
-    float: str.isdecimal,
+    int: str_is_integer,
+    float: str_is_float,
 }
 
 TYPE_CONVERTER = {
