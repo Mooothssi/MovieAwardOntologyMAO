@@ -9,7 +9,7 @@ from utils import select_not_null
 
 
 def str_is_date(s: str) -> bool:
-    """Check whether or not a string is a date/"""
+    """Check whether or not a string is a dat/"""
     try:
         parse_date(s)
         date.fromisoformat(s)
@@ -20,7 +20,7 @@ def str_is_date(s: str) -> bool:
 
 
 def str_is_datetime(s: str) -> bool:
-    """Check whether or not a string is a date/"""
+    """Check whether or not a string is a datetime"""
     try:
         date.fromisoformat(s)
     except ValueError:
