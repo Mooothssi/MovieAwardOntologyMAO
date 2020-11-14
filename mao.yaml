@@ -83,6 +83,18 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
+  mao:FilmEligibleForAward:
+    annotations:
+      rdfs:label:
+        - FilmEligibleForAward^^rdfs:Literal@en
+    objectProperty:
+      - eligibleFor
+    owl:disjointWith:
+      - Animation
+      - FeatureFilm
+      - ShortFilm
+    rdfs:subClassOf:
+      - Film
   mao:FilmMakingSituation:
     annotations:
       rdfs:label:
@@ -114,6 +126,15 @@ owl:Class:
       - Value
     rdfs:subClassOf:
       - Thing
+  mao:OscarEligible:
+    annotations:
+      rdfs:label:
+        - OscarEligible^^rdfs:Literal@en
+    owl:equivalentClass:
+      owl:Restriction:
+        - FilmEligibleForAward and (eligibleFor value Oscars) and (violatesCriterion only not(OscarCriterion)) and (satisfiesCriterion only OscarCriterion)
+    rdfs:subClassOf:
+      - FilmEligibleForAward
 
 owl:DataProperty:
   owl:topDataProperty: ""
@@ -170,6 +191,14 @@ owl:ObjectProperty:
       - Object
     rdfs:range:
       - Object
+  mao:eligibleFor:
+    annotations:
+      rdfs:label:
+        - eligible for^^rdfs:Literal@en
+    rdfs:domain:
+      - FilmEligibleForAward
+    rdfs:range:
+      - AwardCategory
   mao:hasAudience:
     annotations:
       rdfs:label:
