@@ -101,8 +101,7 @@ Subclass Of:
 
 ## PizzaBase
 ### Annotations
-Comment: Pizza dough that used as
-         a pizza base
+Comment: Pizza dough that used as a pizza base
 
 | Language      | Label         |
 | ------------- |:-------------:|
@@ -204,8 +203,3 @@ Domain:
 
 Range:
   - PizzaTopping
-
-
-# Data type
-- Literal
-- String
