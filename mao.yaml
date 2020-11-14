@@ -107,6 +107,7 @@ owl:Class:
       - hasDirector
       - hasFilm
       - hasPart
+      - hasProducer
       - hasStudio
     rdfs:subClassOf:
       - Event
@@ -293,6 +294,10 @@ owl:ObjectProperty:
         - has prequels^^rdfs:Literal@en
     rdfs:range:
       - Film
+  mao:hasProducer:
+    annotations:
+      rdfs:label:
+        - has producer^^rdfs:Literal@en
   mao:hasRatingStatement:
     annotations:
       rdfs:label:
