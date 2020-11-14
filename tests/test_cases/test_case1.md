@@ -1,10 +1,10 @@
 # Ontology description
 ## Annotations
-### lable
-  - String
+### label
+  - pizza
 
 ### title
-  - Literal
+  - pizza
 
 ### licence
   - Creative Commons Attribution 3.0 (CC BY 3.0)
@@ -199,7 +199,7 @@ Comment: A name given to the resource
 ### Annotations
 Comment: A legal document giving official permission to do something with the resource.
 
-Lable: License
+Label: License
 
 
 # Object property
