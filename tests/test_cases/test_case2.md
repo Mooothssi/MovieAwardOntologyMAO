@@ -107,9 +107,6 @@ Subclass Of: Person
 ### Object Property
   - isSpouseOf
 
-# Annotation property
-- Label
-
 
 # Data Property
 
