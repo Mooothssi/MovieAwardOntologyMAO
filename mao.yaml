@@ -280,6 +280,25 @@ owl:Class:
         - FilmEligibleForAward and (eligibleFor value Oscars) and (violatesCriterion only not(OscarCriterion)) and (satisfiesCriterion only OscarCriterion)
     rdfs:subClassOf:
       - FilmEligibleForAward
+  mao:Person:
+    annotations:
+      rdfs:comment:
+        - Persons in commonsense intuition, which does not apparently distinguish between either natural or social persons.^^xsd:string
+      rdfs:label:
+        - Person^^rdfs:Literal@en
+    dataProperty:
+      - hasName
+    objectProperty:
+      - actsIn
+      - hasGender
+      - hasOccupation
+    owl:disjointWith:
+      - Character
+      - CharacterImportance
+      - CollectiveAgent
+      - Organization
+    rdfs:subClassOf:
+      - Agent
   mao:Protagonist:
     annotations:
       rdfs:label:
@@ -374,6 +393,12 @@ owl:ObjectProperty:
         - acted by^^rdfsL:Literal@en
     rdfs:range:
       - Person
+  mao:actsIn:
+    annotations:
+      rdfs:label:
+        - acts in^^rdfs:Literal@en
+    rdfs:range:
+      - FilmMakingSituation
   mao:coparticipatesWith:
     annotations:
       rdfs:comment:
@@ -486,6 +511,12 @@ owl:ObjectProperty:
         - has language^^rdfs:Literal@en
     rdfs:range:
       - Language
+  mao:hasOccupation:
+    annotations:
+      rdfs:label:
+        - has occupation^^rdfs:Literal@en
+    rdfs:range:
+      - Occupation
   mao:hasOriginalLanguage:
     annotations:
       rdfs:label:
