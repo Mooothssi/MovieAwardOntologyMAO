@@ -1,5 +1,17 @@
 owl:Class:
   owl:Thing: ""
+  mao:Animation:
+    annotations:
+      rdfs:label:
+        - Animation^^rdfs:Literal@en
+    owl:disjointWith:
+      - FeatureFilm
+      - FilmEligibleForAward
+      - ShortFilm
+    owl:ObjectProperty:
+      - hasFilmStudio
+    rdfs:subClassOf:
+      - Film
   mao:Event:
     annotations:
       rdfs:comment:
@@ -95,6 +107,18 @@ owl:Class:
       - ShortFilm
     rdfs:subClassOf:
       - Film
+  mao:FeatureFilm:
+    annotations:
+      rdfs:label:
+        - FeatureFilm^^rdfs:Literal@en
+    owl:disjointWith:
+      - Animation
+      - FilmEligibleForAward
+      - ShortFilm
+    rdfs:equivalentClass:
+      - Film and (hasFeatureLengthInMinutes some integer[>=40])
+    rdfs:subClassOf:
+      - Film
   mao:FilmMakingSituation:
     annotations:
       rdfs:label:
@@ -136,6 +160,18 @@ owl:Class:
         - FilmEligibleForAward and (eligibleFor value Oscars) and (violatesCriterion only not(OscarCriterion)) and (satisfiesCriterion only OscarCriterion)
     rdfs:subClassOf:
       - FilmEligibleForAward
+  mao:ShortFilm:
+    annotations:
+      rdfs:label:
+        - ShortFilm^^rdfs:Literal@en
+    owl:disjointWith:
+      - Animation
+      - FeatureFilm
+      - FilmEligibleForAward
+    rdfs:equivalentClass:
+      - Film and (hasFeatureLengthInMinutes some integer[<40])
+    rdfs:subClassOf:
+      - Film
 
 owl:DataProperty:
   owl:topDataProperty: ""
@@ -260,6 +296,12 @@ owl:ObjectProperty:
         - has filming location^^rdfs:Literal@en
     rdfs:range:
       - Place
+  mao:hasFilmStudio:
+    annotations:
+      rdfs:label:
+        - has film studio^^rdfs:Literal@en
+    rdfs:range:
+      - MovieStudio
   mao:hasGenre:
     annotations:
       rdfs:label:
