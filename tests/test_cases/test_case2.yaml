@@ -48,7 +48,6 @@ owl:Class:
         - Person and (isSpouseOf some Person)
     rdfs:subClassOf: Person
 
-
 owl:DataProperty:
   owl:topDataProperty: ""
   family:hasBirthYear:
