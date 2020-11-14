@@ -1,3 +1,15 @@
+# Ontology description
+## Annotations
+### lable
+  - String
+
+### title
+  - Literal
+
+### licence
+  - Creative Commons Attribution 3.0 (CC BY 3.0)
+
+
 # Class Hierarchy
 -Thing
   - Food
@@ -179,8 +191,15 @@ Subclass Of:
 
 
 # Annotation property
-- Comment
-- Label
+## title
+### Annotations
+Comment: A name given to the resource
+
+## licence
+### Annotations
+Comment: A legal document giving official permission to do something with the resource.
+
+Lable: License
 
 
 # Object property
