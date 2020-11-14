@@ -160,8 +160,20 @@ def write_model(filename: str,
         f.write(table.as_python())
 
 
+def write_base(filename: str):
+    lines = [
+        'from sqlalchemy.ext.declarative import declarative_base',
+        '',
+        'Base = declarative_base()',
+        '',
+    ]
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write('\n'.join(lines))
+
+
 def main():
     from extended_csv import read_xsv_file
+    write_base('base.py')
     write_model('branded_food.py', 'BrandedFood', read_xsv_file('../tests/data/csv/branded_food-10000.csv', dialect='excel'))
 
 
