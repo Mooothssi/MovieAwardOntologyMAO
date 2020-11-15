@@ -59,6 +59,9 @@ def get_pretty_label(ugly_label: str) -> str:
         return 'Title'
     if ugly_label == 'dcterms:licence':
         return 'Licence'
+    if ugly_label == 'rdfs:comment':
+        return 'Comments'
+    raise AssertionError(ugly_label)
 
 
 def get_language_from_code(language_code: str) -> str:
@@ -75,3 +78,6 @@ def get_language_from_code(language_code: str) -> str:
     """
     if language_code == 'en':
         return 'English'
+    if language_code == 'pt':
+        return 'Portugese'
+    raise AssertionError(language_code)
