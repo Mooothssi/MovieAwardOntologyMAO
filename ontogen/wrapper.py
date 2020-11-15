@@ -85,7 +85,6 @@ class OwlClass(OntologyEntity):
     def __init__(self, entity_qualifier: str):
         super(OwlClass, self).__init__(entity_qualifier=entity_qualifier)
         self.defined_properties: Dict[str, "OwlProperty"] = {}
-        self.is_instance = False
     
     def __str__(self):
         property_dump = "\n"
@@ -97,15 +96,22 @@ class OwlClass(OntologyEntity):
                f"{property_dump}"
 
     @property
-    def _imp_instance_instantiated(self) -> bool:
+    def is_instance(self) -> bool:
         return self._internal_imp_instance is not None
 
     # owlready-related implementation
-    def _create_imp_instance(self, onto: Ontology):
-        self._internal_imp_instance = BaseOntologyClass(name=self.name, onto=onto)
+    def instantiate(self, individual_name: str, onto: Ontology):
+        """
+        Instantiate Individuals into a given Ontology
+
+        :param individual_name: The name of an individual
+        :param onto: An `owlready2` Ontology
+        """
+        apply_classes_from(onto)
+        self._internal_imp_instance = type(self.name, (BaseOntologyClass,), {})(name=individual_name, onto=onto)
 
     def _sync_internal(self):
-        if not self._imp_instance_instantiated:
+        if not self.is_instance:
             return
         inst = self._internal_imp_instance
         for set_prop in self.properties_values:

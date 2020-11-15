@@ -1,6 +1,6 @@
 from enum import Enum
 
-from .base import BaseOntologyClass
+from ontogen.wrapper import BaseOntologyClass
 
 
 class Agent(BaseOntologyClass):
