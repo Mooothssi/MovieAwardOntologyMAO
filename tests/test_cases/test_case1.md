@@ -11,7 +11,7 @@
 
 
 # Class Hierarchy
--Thing
+- Thing
   - Food
     - Pizza
       - NamedPizza
