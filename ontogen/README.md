@@ -1,13 +1,27 @@
 # Ontogen
 
 ## To-dos
-- [x] `owl:datatypeProperty` (Mostly done)
-- [x] `owl:objectProperty` (Partially)
+### Classes
 - [x] `rdfs:type` (Mostly done)
-- [ ] `rdfs:subClassOf`
+- [x] `rdfs:subClassOf` (Mostly done)
+- [ ] `rdfs:equivalentClass`
+- [ ] `owl:disjointWith`
+
+### Properties
+- [x] `owl:ObjectProperty` (Partially)
+- [x] `owl:DatatypeProperty` (Mostly done)
+- [ ] `owl:AnnotationProperty`
+    - [ ] `rdfs:comment`
+    - [ ] `rdfs:label`
+
+### Datatypes
+- [ ] `rdfs:Literal`
+- [x] `xsd:string` (`owlready2` builtin as `str`)
+- [x] `xsd:integer` (`owlready2` builtin as `int`)
+- [x] `xsd:float` (`owlready2` builtin as `float`)
 
 ## Getting started
-Run unit tests in `test_ontogen.csv`
+Feel free to run unit tests in `test_ontogen.py`
 
 ### (`owlready2`) Loading an OWL Ontology
 ```python
@@ -41,7 +55,7 @@ parasite_film: OwlClass = OwlClass("mao:Film") # or selectively `converter.get_e
 parasite_film.instantiate("Parasite", onto) # Create an mao:Film individual named Parasite in a given OWL Ontology
 ```
 
-### Creating an Individual from an Ontology Class
+### Adding a property assertion to an Individual
 ```python
 from ontogen import OwlClass
 

@@ -11,7 +11,7 @@ def check_restrictions(prefix: str, str_types: List[str], value: Any) -> bool:
     # check for builtin types
     if t in TYPE_MAPPING:
         return True
-    p = set(str_types).intersection(ENTITIES.keys())
+    p = set([f"{prefix}:{str_type}" for str_type in str_types]).intersection(ENTITIES.keys())
     return len(p) > 0
 
 
@@ -25,7 +25,8 @@ class OwlClass(OntologyEntity):
     parent_name = "BaseOntologyClass"
     # Short for an Implementation instance
     _internal_imp_instance: Thing = None
-    _owlready_class = Thing
+    _parent_class = Thing
+    parent_class_names: List[str] = []
 
     def __init__(self, entity_qualifier: str):
         super(OwlClass, self).__init__(entity_qualifier=entity_qualifier)
@@ -81,11 +82,22 @@ class OwlClass(OntologyEntity):
         """
             Adds property assertions with values
         """
-        assert self.is_individual, "Must be an Individual before adding any assertion"
+        assert self.is_individual, \
+            "Must be an Individual before adding any assertion. Please call instantiate() first"
         assert ":" in property_name and len(property_name.split(":")) == 2, "Please add prefix"
         self.properties_values[property_name] = value
+        assert property_name in self.defined_properties, \
+            "Must associate a subclass of OwlProperty with the given name before any assertion can be done"
         assert check_restrictions(self.prefix, self.defined_properties[property_name].range, value), \
-            "The value added doesn't match the range restriction!"
+            "The added value doesn't match the range restriction!"
+
+    def add_superclass(self, superclass: "OwlClass"):
+        """
+            Adds a superclass of this Class.
+            This Class will then be a rdfs:subclassOf a given superclass
+        :param superclass:
+        """
+        self._parent_classes.append(superclass)
 
 
 class OwlThing(OwlClass):
@@ -95,7 +107,7 @@ class OwlThing(OwlClass):
 
 class OwlProperty(OntologyEntity):
     prefix = "owl"
-    range = [str]
+    range = [Type[str]]
 
 
 class OwlDataProperty(OwlProperty):
@@ -143,7 +155,7 @@ class OwlAnnotationProperty(OwlProperty):
 
 
 BASE_ENTITIES = [OwlAnnotationProperty, OwlDataProperty, OwlObjectProperty, OwlClass]
-PROPERTY_ENTITIES = {# "annotations": OwlAnnotationProperty,
+PROPERTY_ENTITIES = {"annotations": OwlAnnotationProperty,
                      "dataProperty": OwlDataProperty,
                      "objectProperty": OwlObjectProperty}
 ENTITIES: Dict[str, Any] = {}

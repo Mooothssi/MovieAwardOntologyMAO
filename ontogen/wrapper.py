@@ -1,8 +1,4 @@
-from owlready2 import (DataProperty, Ontology, Thing, ThingClass)
-from .primitives import BASE_ENTITIES
-from typing import Type
-
-from .base import OntologyEntity
+from owlready2 import (Ontology, Thing, ThingClass)
 
 
 class BaseOntologyClass(Thing):
