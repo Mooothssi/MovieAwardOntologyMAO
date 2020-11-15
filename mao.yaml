@@ -40,6 +40,27 @@ owl:Class:
       - Hero
     rdfs:subClassOf:
       - MainCharacter
+  mao:Audience:
+    annotations:
+      rdfs:label:
+        - Audience^^rdfs:Literal@en
+    owl:disjointWith:
+      - FilmCast
+      - FilmCrew
+    rdfs:equivalentClass:
+      - CollectiveAgent and (isParticipantIn some MovieWatchingSituation)
+    rdfs:subClassOf:
+      - CollectiveAgent
+  mao:Building:
+    annotations:
+      rdfs:label:
+        - Building^^rdfs:Literal@en
+    owl:disjointWith:
+      - City
+      - Country
+      - GeographicalFeature
+    rdfs:subClassOf:
+      - Place
   mao:Character:
     annotations:
       rdfs:comment:
@@ -73,6 +94,40 @@ owl:Class:
       - Person
     rdfs:subClassOf:
       - Agent
+  mao:City:
+    annotations:
+      rdfs:label:
+        - City^^rdfs:Literal@en
+    owl:disjointWith:
+      - Building
+      - Country
+      - GeographicalFeature
+    rdfs:subClassOf:
+      - Place
+  mao:CollectiveAgent:
+    annotations:
+      rdfs:label:
+        - CollectiveAgent^^rdfs:Literal@en
+    objectProperty:
+      - isParticipantIn
+      - hasMember
+    owl:disjointWith:
+      - Character
+      - CharacterImportance
+      - Organization
+      - Person
+    rdfs:subClassOf:
+      - Agent
+  mao:Country:
+    annotations:
+      rdfs:label:
+        - Country^^rdfs:Literal@en
+    owl:disjointWith:
+      - Building
+      - City
+      - GeographicalFeature
+    rdfs:subClassOf:
+      - Place
   mao:Event:
     annotations:
       rdfs:comment:
@@ -165,6 +220,28 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
+  mao:FilmCast:
+    annotations:
+      rdfs:label:
+        - FilmCast^^rdfs:Literal@en
+    owl:disjointWith:
+      - Audience
+      - FilmCrew
+    rdfs:equivalentClass:
+      - CollectiveAgent and (isParticipantIn some ActingSituation)
+    rdfs:subClassOf:
+      - CollectiveAgent
+  mao:FilmCrew:
+    annotations:
+      rdfs:label:
+        - FilmCrew^^rdfs:Literal@en
+    owl:disjointWith:
+      - Audience
+      - FilmCast
+    rdfs:equivalentClass:
+      - CollectiveAgent and (isParticipantIn some FilmMakingSituation)
+    rdfs:subClassOf:
+      - CollectiveAgent
   mao:FilmEligibleForAward:
     annotations:
       rdfs:label:
@@ -214,6 +291,16 @@ owl:Class:
     rdfs:subClassOf:
       - Event
       - Situation
+  mao:GeographicalFeature:
+    annotations:
+      rdfs:label:
+        - GeographicalFeature^^rdfs:Literal@en
+    owl:disjointWith:
+      - Building
+      - City
+      - Country
+    rdfs:subClassOf:
+      - Place
   mao:Hero:
     annotations:
       rdfs:label:
@@ -256,6 +343,14 @@ owl:Class:
       - FemaleProtagonist
     rdfs:subClassOf:
       - Protagonist
+  mao:MovieStudio:
+    annotations:
+      rdfs:label:
+        - MovieStudio^^rdfs:Literal@en
+    objectProperty:
+      - locatedIn
+    rdfs:subClassOf:
+      - Organization
   mao:Object:
     annotations:
       rdfs:comment:
@@ -271,6 +366,35 @@ owl:Class:
       - Value
     rdfs:subClassOf:
       - Thing
+  mao:Occupation:
+    annotations:
+      rdfs:label:
+        - Occupation^^rdfs:Literal@en
+    objectProperty:
+      - isOccupationOf
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - Award
+      - AwardCeremony
+      - Film
+      - Place
+      - Rating
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
+  mao:Organization:
+    annotations:
+      rdfs:label:
+        - Organization^^rdfs:Literal@en
+    owl:disjointWith:
+      - Character
+      - CharacterImportance
+      - CollectiveAgent
+      - Person
+    rdfs:subClassOf:
+      - Agent
   mao:OscarEligible:
     annotations:
       rdfs:label:
@@ -280,6 +404,22 @@ owl:Class:
         - FilmEligibleForAward and (eligibleFor value Oscars) and (violatesCriterion only not(OscarCriterion)) and (satisfiesCriterion only OscarCriterion)
     rdfs:subClassOf:
       - FilmEligibleForAward
+  mao:Place:
+    annotations:
+      rdfs:label:
+        - Place^^rdfs:Literal@en
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - Award
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Rating
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
   mao:Person:
     annotations:
       rdfs:comment:
@@ -462,7 +602,7 @@ owl:ObjectProperty:
       rdfs:label:
         - has crew^^rdfs:Literal@en
     rdfs:range:
-      - MovieCrew
+      - FilmCrew
   mao:hasDirector:
     annotations:
       rdfs:label:
@@ -511,6 +651,12 @@ owl:ObjectProperty:
         - has language^^rdfs:Literal@en
     rdfs:range:
       - Language
+  mao:hasMember:
+    annotations:
+      rdfs:label:
+        - has member^^rdfs:Literal@en
+    rdfs:range:
+      - Person
   mao:hasOccupation:
     annotations:
       rdfs:label:
@@ -603,6 +749,14 @@ owl:ObjectProperty:
       - Event
     rdfs:subPropertyOf:
       - isParticipantIn
+  mao:isOccupationOf:
+    annotations:
+      rdfs:label:
+        - is occupation of^^rdfs:Literal@en
+    owl:inverseOf:
+      - hasOccupation
+    rdfs:range:
+      - Person
   mao:isParticipantIn:
     annotations:
       rdfs:comment:
