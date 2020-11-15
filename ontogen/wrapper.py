@@ -71,6 +71,9 @@ def check_restrictions(prefix: str, str_types: List[str], value: Any) -> bool:
     return len(p) > 0
 
 
+GENERATED_TYPES = {}
+
+
 class OwlClass(OntologyEntity):
     """
         A class for ontology classes of instances
@@ -100,7 +103,10 @@ class OwlClass(OntologyEntity):
         return self._internal_imp_instance is not None
 
     def get_generated_class(self, onto: Ontology) -> type:
-        return type(self.name, (Thing,), {'namespace': onto})
+        if self.name in GENERATED_TYPES:
+            return GENERATED_TYPES[self.name]
+        GENERATED_TYPES[self.name] = type(self.name, (Thing,), {'namespace': onto})
+        return GENERATED_TYPES[self.name]
 
     # owlready-related implementation
     def instantiate(self, onto: Ontology, individual_name: str = ""):
@@ -113,7 +119,8 @@ class OwlClass(OntologyEntity):
         apply_classes_from(onto)
         indiv_name = self.name if individual_name == "" else individual_name
         inst = self.get_generated_class(onto)()
-        inst.name = indiv_name
+        inst.__init__(name=indiv_name)
+        # inst.name = indiv_name
         self._internal_imp_instance = inst
 
     def _sync_internal(self):
