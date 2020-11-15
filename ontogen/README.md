@@ -1,5 +1,9 @@
 # Ontogen
 
+## To-dos
+- [x] `rdfs:type`
+- [ ] `rdfs:subClassOf`
+
 ## Getting started
 Run unit tests in `test_ontogen.csv`
 
