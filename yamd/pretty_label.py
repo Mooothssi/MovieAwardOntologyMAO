@@ -8,7 +8,7 @@ def get_pretty_label(ugly_label: str) -> str:
         ugly_label: The ugly machine label.
 
     Examples:
-        >>> get_pretty_label('rdfs:label')
+            >>> get_pretty_label('rdfs:label')
         'label'
         >>> get_pretty_label('owl:disjointWith')
         'Disjoint With'
@@ -32,6 +32,26 @@ def get_pretty_label(ugly_label: str) -> str:
         'Characteristics'
         >>> get_pretty_label('rdfs:domain')
         'Domain'
+        >>> get_pretty_label('owl:Restriction')
+        ''
+        >>> get_pretty_label('family:isSpouseOf')
+        'isSpouseOf'
+        >>> get_pretty_label('owl:inverseOf')
+        'Inverse Of'
+        >>> get_pretty_label('rdfs:range')
+        'Range'
+        >>> get_pretty_label('rdfs:comment')
+        'Comment'
+        >>> get_pretty_label('owl:topObjectProperty')
+        'topObjectProperty'
+        >>> get_pretty_label('owl:topDataProperty')
+        'topDataProperty'
+        >>> get_pretty_label('rules')
+        'Rules'
+        >>> get_pretty_label('owl:AnnotationProperty')
+        'Annotation property'
+        >>> get_pretty_label('rdfs:Datatype')
+        'Data type'
     """
     if ugly_label == 'rdfs:label':
         return 'Label'
