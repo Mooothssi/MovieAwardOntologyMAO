@@ -1,0 +1,3 @@
+MAP = {
+    'rdfs:label': 'label'
+}
