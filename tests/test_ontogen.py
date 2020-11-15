@@ -6,7 +6,7 @@ from unittest import TestCase
 from ontogen.owlready_converter import YamlToOwlConverter
 from ontogen.primitives import OwlClass
 
-from settings import OWL_FILEPATH, OUT_PATH, OUT_FILENAME
+from settings import OUT_PATH, OUT_FILENAME
 
 
 def count_files(directory: str) -> int:

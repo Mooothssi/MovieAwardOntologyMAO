@@ -53,6 +53,7 @@ class OwlClass(OntologyEntity):
         :param onto: An `owlready2` Ontology
         """
         apply_classes_from(onto)
+        self._sync_internal()
         indiv_name = self.name if individual_name == "" else individual_name
         if indiv_name == self.name:
             self.get_generated_class(onto)
@@ -68,10 +69,13 @@ class OwlClass(OntologyEntity):
         for set_prop in self.properties_values:
             val = self.properties_values[set_prop]
             set_prop = set_prop.split(":")[1]
-            if isinstance(val, list):
-                setattr(inst, set_prop, val)
-            else:
-                setattr(inst, set_prop, [val])
+            try:
+                if isinstance(val, list):
+                    setattr(inst, set_prop, val)
+                else:
+                    setattr(inst, set_prop, [val])
+            except AttributeError:
+                pass
 
     def add_property_assertion(self, property_name: str, value):
         """
@@ -81,7 +85,6 @@ class OwlClass(OntologyEntity):
         self.properties_values[property_name] = value
         assert check_restrictions(self.prefix, self.defined_properties[property_name].range, value), \
             "The value added doesn't match the range restriction!"
-        self._sync_internal()
 
 
 class OwlThing(OwlClass):

@@ -1,8 +1,9 @@
 # Ontogen
 
 ## To-dos
+- [x] `owl:datatypeProperty` (Mostly done)
 - [x] `owl:objectProperty` (Partially)
-- [x] `rdfs:type` (Mostly)
+- [x] `rdfs:type` (Mostly done)
 - [ ] `rdfs:subClassOf`
 
 ## Getting started
