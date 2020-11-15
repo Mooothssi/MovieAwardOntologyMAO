@@ -7,7 +7,7 @@ from stringcase import pascalcase, snakecase
 
 from extended_csv import get_dialect_from_suffix, read_xsv_file
 from sa_autowrite.model import Table
-from sa_autowrite.utils import open_and_write_file
+from utils.io_utils import open_and_write_file
 from utils.dict_utils import select_not_null
 
 
@@ -108,12 +108,20 @@ def write_models(in_directory: Union[str, Path],
 
 
 # def main():
-#     write_base('base.py')
-#     write_model('branded_food.py', 'BrandedFood', read_xsv_file('../tests/data/csv/branded_food-10000.csv', dialect='excel'))
-#     write_model('nutrient.py', 'Nutrient', read_xsv_file('../tests/data/csv/nutrient-100.csv', dialect='excel'), pk_cols=['id'])
+    # write_base('base.py')
+    # write_model('branded_food.py', 'BrandedFood', read_xsv_file('../tests/data/csv/branded_food-10000.csv', dialect='excel'))
+    # write_model('nutrient.py', 'Nutrient', read_xsv_file('../tests/data/csv/nutrient-100.csv', dialect='excel'), pk_cols=['id'])
+
+'''
+Sample script (put this in the root dir:
+
+from sa_autowrite.main import write_models
+
+write_models('tests/data/csv/', 'sa_autowrite/out/', max_lines=1000)
+
+'''
 
 
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-    # main()
