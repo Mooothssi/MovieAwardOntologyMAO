@@ -1,5 +1,18 @@
 owl:Class:
   owl:Thing: ""
+  mao:Abstract:
+    annotations:
+      rdfs:comment:
+        - >
+          Any Entity that cannot be located in space-time. E.g. mathematical entities: formal semantics elements, regions within dimensional spaces, etc.^^xsd:string
+      rdfs:label:
+        - Abstract^^rdfs:Literal@en
+    owl:disjointWith:
+      - Event
+      - Object
+      - Value
+    rdfs:subClassOf:
+      - Thing
   mao:ActingSituation:
     annotations:
       rdfs:label:
@@ -116,6 +129,18 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
+  mao:AwardCategory:
+    annotations:
+      rdfs:label:
+        - AwardCategory^^rdfs:Literal@en
+    owl:disjointWith:
+      - ContentRating
+      - Genre
+      - Gender
+      - Nationality
+      - Race
+    rdfs:subClassOf:
+      - Classification
   mao:AwardCeremony:
     annotations:
       rdfs:label:
@@ -208,6 +233,14 @@ owl:Class:
       - GeographicalFeature
     rdfs:subClassOf:
       - Place
+  mao:Classification:
+    annotations:
+      rdfs:label:
+        - Classification^^rdfs:Literal@en
+    owl:disjointWith:
+      - Language
+    rdfs:subClassOf:
+      - Abstract
   mao:CollectiveAgent:
     annotations:
       rdfs:label:
@@ -222,6 +255,18 @@ owl:Class:
       - Person
     rdfs:subClassOf:
       - Agent
+  mao:ContentRating:
+    annotations:
+      rdfs:label:
+        - ContentRating^^rdfs:Literal@en
+    owl:disjointWith:
+      - AwardCategory
+      - Gender
+      - Genre
+      - Nationality
+      - Race
+    rdfs:subClassOf:
+      - Classification
   mao:Country:
     annotations:
       rdfs:label:
@@ -395,6 +440,36 @@ owl:Class:
     rdfs:subClassOf:
       - Event
       - Situation
+  mao:Gender:
+    annotations:
+      rdfs:label:
+        - Gender^^rdfs:Literal@en
+    owl:disjointWith:
+      - AwardCategory
+      - ContentRating
+      - Genre
+      - Nationality
+      - Race
+    owl:equivalentClass:
+      owl:Restriction:
+        - {Female, Male, Non-binary}
+    rdfs:subClassOf:
+      - Classification
+  mao:Genre:
+    annotations:
+      rdfs:label:
+        - Genre^^rdfs:Literal@en
+    objectProperty:
+      - hasSubGenre
+      - isSubGenreOf
+    owl:disjointWith:
+      - AwardCategory
+      - ContentRating
+      - Gender
+      - Nationality
+      - Race
+    rdfs:subClassOf:
+      - Classification
   mao:GeographicalFeature:
     annotations:
       rdfs:label:
@@ -422,6 +497,76 @@ owl:Class:
       - MaleHero
     rdfs:subClassOf:
       - Hero
+  mao:Language:
+    annotations:
+      rdfs:label:
+        - Language^^rdfs:Literal@en
+    owl:disjointWith:
+      - Classification
+    rdfs:subClassOf:
+      - Abstract
+  mao:MainCharacter:
+    annotations:
+      rdfs:label:
+        - MainCharacter^^rdfs:Literal@en
+    owl:disjointWith:
+      - ExtraCharacter
+      - SideCharacter
+    rdfs:subClassOf:
+      - CharacterImportance
+  mao:MaleHero:
+    annotations:
+      rdfs:label:
+        - MaleHero^^rdfs:Literal@en
+    owl:disjointWith:
+      - Heroine
+    rdfs:subClassOf:
+      - Hero
+  mao:MaleProtagonist:
+    annotations:
+      rdfs:label:
+        - MaleProtagonist^^rdfs:Literal@en
+    owl:disjointWith:
+      - FemaleProtagonist
+    rdfs:subClassOf:
+      - Protagonist
+  mao:MPAAContentRating:
+    annotations:
+      rdfs:label:
+        - MPAAContentRating^^rdfs:Literal@en
+    rdfs:subClassOf:
+      - ContentRating
+  mao:MovieStudio:
+    annotations:
+      rdfs:label:
+        - MovieStudio^^rdfs:Literal@en
+    objectProperty:
+      - locatedIn
+    rdfs:subClassOf:
+      - Organization
+  mao:MovieWatchingSituation:
+    annotations:
+      rdfs:label:
+        - MovieWatchingSituation^^rdfs:Literal@en
+    owl:disjointWith:
+      - ActingSituation
+      - FilmMakingSituation
+      - NominationSituation
+      - VoiceActingSituation
+    rdfs:subClassOf:
+      - Situation
+  mao:Nationality:
+    annotations:
+      rdfs:label:
+        - Nationality^^rdfs:Literal@en
+    owl:disjointWith:
+      - AwardCategory
+      - ContentRating
+      - Gender
+      - Genre
+      - Race
+    rdfs:subClassOf:
+      - Classification
   mao:NominatedForSituation:
     annotations:
       rdfs:label:
@@ -448,50 +593,6 @@ owl:Class:
       - ActingSituation
       - FilmMakingSituation
       - MovieWatchingSituation
-      - VoiceActingSituation
-    rdfs:subClassOf:
-      - Situation
-  mao:MainCharacter:
-    annotations:
-      rdfs:label:
-        - MainCharacter^^rdfs:Literal@en
-    owl:disjointWith:
-      - ExtraCharacter
-      - SideCharacter
-    rdfs:subClassOf:
-      - CharacterImportance
-  mao:MaleHero:
-    annotations:
-      rdfs:label:
-        - MaleHero^^rdfs:Literal@en
-    owl:disjointWith:
-      - Heroine
-    rdfs:subClassOf:
-      - Hero
-  mao:MaleProtagonist:
-    annotations:
-      rdfs:label:
-        - MaleProtagonist^^rdfs:Literal@en
-    owl:disjointWith:
-      - FemaleProtagonist
-    rdfs:subClassOf:
-      - Protagonist
-  mao:MovieStudio:
-    annotations:
-      rdfs:label:
-        - MovieStudio^^rdfs:Literal@en
-    objectProperty:
-      - locatedIn
-    rdfs:subClassOf:
-      - Organization
-  mao:MovieWatchingSituation:
-    annotations:
-      rdfs:label:
-        - MovieWatchingSituation^^rdfs:Literal@en
-    owl:disjointWith:
-      - ActingSituation
-      - FilmMakingSituation
-      - NominationSituation
       - VoiceActingSituation
     rdfs:subClassOf:
       - Situation
@@ -592,6 +693,18 @@ owl:Class:
       - Hero
     rdfs:subClassOf:
       - MainCharacter
+  mao:Race:
+    annotations:
+      rdfs:label:
+        - Race^^rdfs:Literal@en
+    owl:disjointWith:
+      - AwardCategory
+      - ContentRating
+      - Gender
+      - Genre
+      - Nationality
+    rdfs:subClassOf:
+      - Classification
   mao:Rating:
     annotations:
       rdfs:label:
@@ -1117,6 +1230,12 @@ owl:ObjectProperty:
       - Thing
     rdfs:range:
       - Situation
+  mao:hasSubGenre:
+    annotations:
+      rdfs:label:
+        - has sub-genre^^rdfs:Literal@en
+    rdfs:range:
+      - Genre
   mao:hasSubTitleInLanguage:
     annotations:
       rdfs:label:
@@ -1218,6 +1337,12 @@ owl:ObjectProperty:
       - Situation
     rdfs:range:
       - Thing
+  mao:isSubGenreOf:
+    annotations:
+      rdfs:label:
+        - is sub-genre of^^rdfs:Literal@en
+    rdfs:range:
+      - Genre
   mao:presentedBy:
     annotations:
       rdfs:label:
