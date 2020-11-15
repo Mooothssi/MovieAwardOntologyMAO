@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Union, IO
+from typing import IO, Union
 
 
 def open_and_write_file(file: Union[IO, str, Path], s: str) -> None:

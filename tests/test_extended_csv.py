@@ -1,7 +1,7 @@
 import unittest
 
-from extended_csv import read_xsv_file
 from dirs import ROOT_DIR
+from extended_csv import read_xsv_file
 
 TestCase = unittest.TestCase
 
