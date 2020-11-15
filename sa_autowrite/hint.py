@@ -24,3 +24,7 @@ class DeclaredModel(ABC):
     @abstractmethod
     def __table__(self) -> Table:
         pass
+
+    @abstractmethod
+    def __call__(self, *args, **kwargs) -> 'DeclaredModel':
+        pass
