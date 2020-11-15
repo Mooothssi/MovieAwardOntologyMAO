@@ -4,9 +4,9 @@ from typing import IO, Any, Dict, List, Union
 
 from pandas import DataFrame, Series
 
-from sa_autowrite.convenience import camel_to_snake
-from sa_autowrite.date_utils import parse_date
-from utils import select_not_null
+from utils.date_utils import parse_date
+from utils.dict_utils import select_not_null
+from utils.str_utils import camel_to_snake
 
 
 def str_is_date(s: str) -> bool:

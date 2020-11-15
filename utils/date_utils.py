@@ -1,5 +1,7 @@
 import datetime
 
+__all__ = ['parse_date']
+
 
 def _parse_date_by_guessing(date_str: str, sep: str = None) -> datetime.date:
     """Strategy for unknown date formats.

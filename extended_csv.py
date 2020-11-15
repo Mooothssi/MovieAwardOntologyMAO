@@ -1,12 +1,10 @@
 import csv
 from itertools import islice
-from typing import Dict, Iterable, List, IO
+from typing import IO, Dict, Iterable, List
 
-from utils import select_not_null
+from utils.dict_utils import select_not_null
 
-
-def get_differing_keys_and_values(dct: dict) -> dict:
-    return {k: v for k, v in dct.items() if k != v}
+__all__ = ['read_xsv', 'read_xsv_file']
 
 
 def read_xsv_file(filename: str,
