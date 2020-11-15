@@ -32,7 +32,7 @@ def _parse_date_by_guessing(date_str: str, sep: str = None) -> datetime.date:
                 assert 0 < int(parts[1]) <= 31
                 if sep_ == '/':
                     import warnings
-                    warnings.warn('Assuming MM/DD/YYYY format')
+                    warnings.warn('\nAssuming MM/DD/YYYY format')
                     # Only Americans use the slashes and not the ISO standard
                     return datetime.date(int(parts[2]), int(parts[0]), int(parts[1]))
                 assert sep_ != '/'
