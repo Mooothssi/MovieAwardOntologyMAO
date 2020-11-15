@@ -82,12 +82,20 @@ def write_models(in_directory: Union[str, Path],
     Returns:
         None
     """
-    kwargs = {
-        'max_lines': max_lines,
-    }
-
+    # Ensure directories are of type 'Path'
     in_directory = Path(in_directory)
     out_directory = Path(out_directory)
+
+    # Check for required files
+    has_base = False
+    has_init = False
+    for pyfile in out_directory.glob('*.py'):
+        if pyfile.name == 'base.py':
+            has_base = True
+        elif pyfile.name == '__init__.py':
+            has_init = True
+
+    # Write models file
     for csvfile in in_directory.glob('*.*sv'):
         info = _get_info_from_filename(csvfile.name)
         model_name = info['name']
@@ -99,12 +107,14 @@ def write_models(in_directory: Union[str, Path],
                         read_xsv_file(csvfile, dialect=dialect, load_at_most=max_lines))
             print(f"Writing to {(out_directory / f'{snakecase(model_name)}.py')}\n")
 
-    for pyfile in out_directory.glob('*.py'):
-        if pyfile.name == 'base.py':
-            break
-    else:
+    # Write required files
+    if not has_base:
         print(f'base.py not detected in {out_directory}, writing one')
         write_base((out_directory / 'base.py'))
+    if not has_init:
+        print(f'__init__.py not detected in {out_directory}, writing one')
+        open_and_write_file((out_directory / '__init__.py'), '\n')
+
 
 
 # def main():
