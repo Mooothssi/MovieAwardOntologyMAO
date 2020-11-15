@@ -3,6 +3,15 @@
 ## How to start
 Run unit tests in `test_ontogen.csv`
 
+### (`owlready2`) Loading an OWL Ontology
+```python
+from owlready2 import get_ontology, Ontology
+from settings import OWL_FILEPATH
+
+onto: Ontology = get_ontology(f"file:////{OWL_FILEPATH}")
+onto.load()
+```
+
 ### Creating an instance from an Ontology Class
 ```python
 onto: Ontology # owlready loaded OWL
