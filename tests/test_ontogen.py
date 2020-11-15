@@ -4,7 +4,7 @@ from owlready2 import get_ontology
 from unittest import TestCase
 
 from ontogen.owlready_converter import YamlToOwlConverter
-from ontogen.wrapper import OwlClass
+from ontogen.primitives import OwlClass
 
 from settings import OWL_FILEPATH, OUT_PATH, OUT_FILENAME
 

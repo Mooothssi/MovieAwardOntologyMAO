@@ -1,1 +1,1 @@
-from .wrapper import OwlClass, OwlProperty, OwlObjectProperty
+from .primitives import OwlClass, OwlProperty, OwlObjectProperty

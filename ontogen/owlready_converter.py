@@ -1,11 +1,11 @@
 import os
 from pathlib import Path
-from owlready2 import Ontology, get_ontology
+from owlready2 import Ontology
 from yaml import load, Loader
 
-from ontogen.wrapper import BASE_ENTITIES, PROPERTY_ENTITIES, get_match
-from settings import OWL_FILEPATH
-from .wrapper import BaseOntologyClass, OwlClass, OwlDataProperty, OwlObjectProperty, OntologyEntity, apply_classes_from
+from ontogen.primitives import BASE_ENTITIES, PROPERTY_ENTITIES
+from .primitives import OwlClass, OwlDataProperty, OwlObjectProperty, apply_classes_from
+from .wrapper import BaseOntologyClass, OntologyEntity
 
 
 def create_owl_thing(name: str, onto: Ontology):
@@ -86,10 +86,11 @@ class YamlToOwlConverter:
 
     def to_owl_ontology(self, onto: Ontology):
         for entity in self.entities.values():
-            if isinstance(entity, OwlClass):
+            if isinstance(entity, OwlDataProperty):
                 entity.instantiate(onto)
-            elif isinstance(entity, OwlDataProperty):
+            elif isinstance(entity, OwlClass):
                 entity.instantiate(onto)
+
 
                # class has_for_ingredient(ObjectProperty):
 
