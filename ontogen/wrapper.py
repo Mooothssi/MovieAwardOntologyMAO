@@ -118,10 +118,12 @@ class OwlClass(OntologyEntity):
         """
         apply_classes_from(onto)
         indiv_name = self.name if individual_name == "" else individual_name
-        inst = self.get_generated_class(onto)()
-        inst.__init__(name=indiv_name)
-        # inst.name = indiv_name
-        self._internal_imp_instance = inst
+        if indiv_name == self.name:
+            self.get_generated_class(onto)
+        else:
+            inst = self.get_generated_class(onto)()
+            inst.name = indiv_name
+            self._internal_imp_instance = inst
 
     def _sync_internal(self):
         if not self.is_instance:
