@@ -35,6 +35,32 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
+  mao:AggregateRating:
+    annotations:
+      rdfs:label:
+        - AggregateRating^^rdfs:Literal@en
+    dataProperty:
+      - hasCount
+      - hasMaxValue
+      - hasMinValue
+      - hasName
+      - hasSource
+      - hasValue
+    objectProperty:
+      - hasPart
+      - hasReviewAggregator
+    owl:disjointWith:
+      - Agent
+      - Award
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
   mao:Animation:
     annotations:
       rdfs:label:
@@ -566,6 +592,55 @@ owl:Class:
       - Hero
     rdfs:subClassOf:
       - MainCharacter
+  mao:Rating:
+    annotations:
+      rdfs:label:
+        - Rating^^rdfs:Literal@en
+    dataProperty:
+      - hasMaxValue
+      - hasMinValue
+      - hasValue
+    objectProperty:
+      - hasAuthor
+      - hasReviewAggregator
+      - isPartOf
+      - reviewOf
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - Award
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
+  mao:Review:
+    annotations:
+      rdfs:label:
+        - Review^^rdfs:Literal@en
+    dataProperty:
+      - hasContent
+    objectProperty:
+      - hasAuthor
+      - hasLanguage
+      - hasPart
+      - hasReviewAggregator 
+      - reviewOf
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - Award
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Situation
+    rdfs:subClassOf:
+      - Object
   mao:ShortFilm:
     annotations:
       rdfs:label:
@@ -668,6 +743,18 @@ owl:DataProperty:
         - has character title^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
+  mao:hasContent:
+    annotations:
+      rdfs:label:
+        - has content^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:string
+  mao:hasCount:
+    annotations:
+      rdfs:label:
+        - has count^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
   mao:hasEditionNumber:
     annotations:
       rdfs:label:
@@ -688,6 +775,18 @@ owl:DataProperty:
       - owl:FunctionalProperty
     rdfs:range:
       - xsd:integer
+  mao:hasMaxValue:
+    annotations:
+      rdfs:label:
+        - has max value^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:decimal
+  mao:hasMinValue:
+    annotations:
+      rdfs:label:
+        - has min value^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:decimal
   mao:hasName:
     annotations:
       rdfs:label:
@@ -706,6 +805,18 @@ owl:DataProperty:
         - has title^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
+  mao:hasSource:
+    annotations:
+      rdfs:label:
+        - has source^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:string
+  mao:hasValue:
+    annotations:
+      rdfs:label:
+        - has value^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:decimal
   mao:hasWikipediaLink:
     annotations:
       rdfs:label:
@@ -811,6 +922,12 @@ owl:ObjectProperty:
         - has audience^^rdfs:Literal@en
     rdfs:range:
       - CollectiveAgent
+  mao:hasAuthor:
+    annotations:
+      rdfs:label:
+        - has author^^rdfs:Literal@en
+    rdfs:range:
+      - Agent
   mao:hasAward:
     annotations:
       rdfs:label:
@@ -969,6 +1086,12 @@ owl:ObjectProperty:
         - has rating statement^^rdfs:Literal@en
     rdfs:range:
       - AggregateRatingStatement
+  mao:hasReviewAggregator:
+    annotations:
+      rdfs:label:
+        - has review aggregator^^rdfs:Literal@en
+    rdfs:range:
+      - Organization
   mao:hasRole:
     annotations:
       rdfs:label:
@@ -1101,3 +1224,9 @@ owl:ObjectProperty:
         - presented by^^rdfs:Literal@en
     rdfs:range:
       - Organization
+  mao:reviewOf:
+    annotations:
+      rdfs:label:
+        - review of^^rdfs:Literal@en
+    rdfs:range:
+      - Object
