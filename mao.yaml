@@ -1,5 +1,21 @@
 owl:Class:
   owl:Thing: ""
+  mao:ActingSituation:
+    annotations:
+      rdfs:label:
+        - ActingSituation^^rdfs:Literal@en
+    objectProperty:
+      - hasActor
+      - hasCharacter
+      - hasFilm
+      - isPartOf
+    owl:disjointWith:
+      - FilmMakingSituation
+      - MovieWatchingSituation
+      - NominationSituation
+      - VoiceActingSituation
+    rdfs:subClassOf:
+      - Situation
   mao:Agent:
     annotations:
       rdfs:comment:
@@ -51,6 +67,16 @@ owl:Class:
       - CollectiveAgent and (isParticipantIn some MovieWatchingSituation)
     rdfs:subClassOf:
       - CollectiveAgent
+  mao:AwardReceivedSituation:
+    annotations:
+      rdfs:label:
+        - AwardReceivedSituation^^rdfs:Literal@en
+    owl:disjointWith:
+      - NominatedForSituation
+    rdfs:equivalentClass:
+      - NominationSituation and (win value True)
+    rdfs:subClassOf:
+      - NominationSituation
   mao:Building:
     annotations:
       rdfs:label:
@@ -318,6 +344,35 @@ owl:Class:
       - MaleHero
     rdfs:subClassOf:
       - Hero
+  mao:NominatedForSituation:
+    annotations:
+      rdfs:label:
+        - NominatedForSituation^^rdfs:Literal@en
+    owl:disjointWith:
+      - AwardReceivedSituation
+    rdfs:equivalentClass:
+      - NominationSituation and (win value False)
+    rdfs:subClassOf:
+      - NominationSituation
+  mao:NominationSituation:
+    annotations:
+      rdfs:label:
+        - NominationSituation^^rdfs:Literal@en
+    dataProperty:
+      - win
+    objectProperty:
+      - forFilm
+      - hasAward
+      - hasAwardCategory
+      - hasAwardCeremony
+      - isGivenTo
+    owl:disjointWith:
+      - ActingSituation
+      - FilmMakingSituation
+      - MovieWatchingSituation
+      - VoiceActingSituation
+    rdfs:subClassOf:
+      - Situation
   mao:MainCharacter:
     annotations:
       rdfs:label:
@@ -351,6 +406,17 @@ owl:Class:
       - locatedIn
     rdfs:subClassOf:
       - Organization
+  mao:MovieWatchingSituation:
+    annotations:
+      rdfs:label:
+        - MovieWatchingSituation^^rdfs:Literal@en
+    owl:disjointWith:
+      - ActingSituation
+      - FilmMakingSituation
+      - NominationSituation
+      - VoiceActingSituation
+    rdfs:subClassOf:
+      - Situation
   mao:Object:
     annotations:
       rdfs:comment:
@@ -469,6 +535,46 @@ owl:Class:
       - MainCharacter
     rdfs:subClassOf:
       - CharacterImportance
+  mao:Situation:
+    annotations:
+      rdfs:comment:
+        - >
+          A view, consistent with ('satisfying') a Description, on a set of entities. 
+          It can also be seen as a 'relational context' created by an observer on the basis of a 'frame' (i.e. a Description). 
+          For example, a PlanExecution is a context including some actions executed by agents according to certain parameters and expected tasks to be achieved from a Plan; a DiagnosedSituation is a context of observed entities that is interpreted on the basis of a Diagnosis, etc.
+          Situation is also able to represent reified n-ary relations, where isSettingFor is the top-level relation for all binary projections of the n-ary relation. If used in a transformation pattern for n-ary relations, the designer should take care of creating only one subclass of Situation for each n-ary relation, otherwise the 'identification constraint' (Calvanese et al., IJCAI 2001) could be violated.^^xsd:string
+      rdfs:label:
+        - Situation^^rdfs:Literal@en
+    objectProperty:
+      - isSettingFor
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - Award
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Review
+    rdfs:subClassOf:
+      - Object
+  mao:VoiceActingSituation:
+    annotations:
+      rdfs:label:
+        - VoiceActingSituation^^rdfs:Literal@en
+    objectProperty:
+      - hasVoiceActor
+      - hasCharacter
+      - hasFilm
+      - isPartOf
+    owl:disjointWith:
+      - ActingSituation
+      - FilmMakingSituation
+      - MovieWatchingSituation
+      - NominationSituation
+    rdfs:subClassOf:
+      - Situation
 
 owl:DataProperty:
   owl:topDataProperty: ""
@@ -524,6 +630,12 @@ owl:DataProperty:
         - has Wikipedia link^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
+  mao:win:
+    annotations:
+      rdfs:label:
+        - win^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:boolean
 
 owl:ObjectProperty:
   owl:topObjectProperty: ""
@@ -557,6 +669,20 @@ owl:ObjectProperty:
       - FilmEligibleForAward
     rdfs:range:
       - AwardCategory
+  mao:forFilm:
+    annotations:
+      rdfs:label:
+        - for film^^rdfs:Literal@en
+    rdfs:domain:
+      - NominationSituation
+    rdfs:range:
+      - Film
+  mao:hasActor:
+    annotations:
+      rdfs:label:
+        - has actor^^rdfs:Literal@en
+    rdfs:range:
+      - Person
   mao:hasArchetype:
     annotations:
       rdfs:label:
@@ -567,12 +693,36 @@ owl:ObjectProperty:
         - has audience^^rdfs:Literal@en
     rdfs:range:
       - CollectiveAgent
+  mao:hasAward:
+    annotations:
+      rdfs:label:
+        - has award^^rdfs:Literal@en
+    rdfs:range:
+      - Award
+  mao:hasAwardCategory:
+    annotations:
+      rdfs:label:
+        - has award category^^rdfs:Literal@en
+    rdfs:range:
+      - AwardCategory
+  mao:hasAwardCeremony:
+    annotations:
+      rdfs:label:
+        - has award ceremony^^rdfs:Literal@en
+    rdfs:range:
+      - AwardCeremony
   mao:hasCast:
     annotations:
       rdfs:label:
         - has cast^^rdfs:Literal@en
     rdfs:range:
       - MovieCast
+  mao:hasCharacter:
+    annotations:
+      rdfs:label:
+        - has character^^rdfs:Literal@en
+    rdfs:range:
+      - Character
   mao:hasCinematographer:
     annotations:
       rdfs:label:
@@ -677,8 +827,14 @@ owl:ObjectProperty:
           Subproperties and restrictions can be used to specialize hasPart for objects, events, etc.^^xsd:string
       rdfs:label:
         - has part^^rdfs:Literal@en
+    owl:inverseOf:
+      - isPartOf
+    rdf:type:
+      - owl:TransitiveProperty
+    rdfs:domain:
+      - Thing
     rdfs:range:
-      - Acting
+      - Thing
   mao:hasPrequels:
     annotations:
       rdfs:label:
@@ -707,6 +863,19 @@ owl:ObjectProperty:
         - has sequels^^rdfs:Literal@en
     rdfs:range:
       - Film
+  mao:hasSetting:
+    annotations:
+      rdfs:comment:
+        - >
+          A relation between entities and situations, e.g. 'this morning I've prepared my coffee with a new fantastic Arabica', i.e.: (an amount of) a new fantastic Arabica hasSetting the preparation of my coffee this morning.^^xsd:string
+      rdfs:label:
+        - has setting^^rdfs:Literal@en
+    owl:inverseOf:
+      - isSettingFor
+    rdfs:domain:
+      - Thing
+    rdfs:range:
+      - Situation
   mao:hasSubTitleInLanguage:
     annotations:
       rdfs:label:
@@ -725,6 +894,12 @@ owl:ObjectProperty:
       - Event
     rdfs:range:
       - Object
+  mao:hasVoiceActor:
+    annotations:
+      rdfs:label:
+        - has voice actor^^rdfs:Literal@en
+    rdfs:range:
+      - Person
   mao:involvesAgent:
     annotations:
       rdfs:label:
@@ -749,6 +924,14 @@ owl:ObjectProperty:
       - Event
     rdfs:subPropertyOf:
       - isParticipantIn
+  mao:isGivenTo:
+    annotations:
+      rdfs:label:
+        - is given to^^rdfs:Literal@en
+    rdfs:domain:
+      - NominationSituation
+    rdfs:range:
+      - Object
   mao:isOccupationOf:
     annotations:
       rdfs:label:
@@ -757,6 +940,20 @@ owl:ObjectProperty:
       - hasOccupation
     rdfs:range:
       - Person
+  mao:isPartOf:
+    annotations:
+      rdfs:comment:
+        - A relation between any entities, e.g.'brain is a part of the human body'.^^xsd:string
+      rdfs:label:
+        - is part of^^rdfs:Literal@en
+    owl:inverseOf:
+      - hasPart
+    rdf:type:
+      - owl:TransitiveProperty
+    rdfs:domain:
+      - Thing
+    rdfs:range:
+      - Thing
   mao:isParticipantIn:
     annotations:
       rdfs:comment:
@@ -769,3 +966,14 @@ owl:ObjectProperty:
       - Object
     rdfs:range:
       - Event
+  mao:isSettingFor:
+    annotations:
+      rdfs:comment:
+        - >
+          A relation between situations and entities, e.g. 'this morning I've prepared my coffee with a new fantastic Arabica', i.e.: the preparation of my coffee this morning is the setting for (an amount of) a new fantastic Arabica.^^xsd:string
+      rdfs:label:
+        - is setting for^^rdfs:Literal@en
+    rdfs:domain:
+      - Situation
+    rdfs:range:
+      - Thing
