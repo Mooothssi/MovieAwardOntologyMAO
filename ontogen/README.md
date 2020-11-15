@@ -19,13 +19,13 @@ onto.load()
 ```
 
 ### Creating an Individual from an Ontology Class
-The order of lines of code matters.
+An individual must be first `instantiate()`d before adding any assertions.
 ```python
 from owlready2 import Ontology
 
 from ontogen import OwlClass
 
-onto: Ontology # owlready loaded OWL
+onto: Ontology # `owlready2` loaded OWL
 i: OwlClass = OwlClass("mao:Film") # mao:Film rdfs:subclassOf owl:Thing
 i.instantiate("Parasite", onto) # Create an mao:Film individual named Parasite in a given OWL Ontology
 i.add_property_assertion("mao:hasTitle", "Parasite") # Create a property assertion for an individual
