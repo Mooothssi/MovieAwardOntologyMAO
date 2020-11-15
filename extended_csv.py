@@ -1,10 +1,37 @@
 import csv
 from itertools import islice
-from typing import IO, Dict, Iterable, List
+from typing import IO, Dict, Iterable, List, Union
 
 from utils.dict_utils import select_not_null
 
-__all__ = ['read_xsv', 'read_xsv_file']
+__all__ = ['read_xsv', 'read_xsv_file', 'get_dialect_from_suffix']
+
+
+_FORMAT_DIALECT = {
+    'csv': 'excel',
+    'tsv': 'excel-tab',
+    '.csv': 'excel',
+    '.tsv': 'excel-tab',
+}
+
+
+def get_dialect_from_suffix(suffix: str) -> str:
+    """Returns `csv` module dialect given file ending.
+    
+    Examples:
+        >>> get_dialect_from_suffix('.csv')
+        'excel'
+        >>> get_dialect_from_suffix('.tsv')
+        'excel-tab'
+        >>> get_dialect_from_suffix('csv')
+        'excel'
+        >>> get_dialect_from_suffix('tsv')
+        'excel-tab'
+    """
+    try:
+        return _FORMAT_DIALECT[suffix]
+    except KeyError:
+        raise ValueError(f"Unrecognized file format: '{suffix}'") from None
 
 
 def read_xsv_file(filename: str,
