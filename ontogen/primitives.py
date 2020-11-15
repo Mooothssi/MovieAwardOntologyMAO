@@ -1,10 +1,10 @@
-from owlready2 import AllDisjoint, DataProperty, Ontology, Thing
+from owlready2 import (AllDisjoint, AnnotationProperty, DataProperty,
+                       ObjectProperty, Ontology, Thing)
 from typing import Any, Dict, List, Type
 
-from .base import OntologyEntity
+from .base import OntologyEntity, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
 
 TYPE_MAPPING = [str, int]
-
 
 
 def check_restrictions(prefix: str, str_types: List[str], value: Any) -> bool:
@@ -16,102 +16,9 @@ def check_restrictions(prefix: str, str_types: List[str], value: Any) -> bool:
     return len(p) > 0
 
 
-class OwlClass(OntologyEntity):
-    """
-        A class for ontology classes of instances
-    """
-    prefix = "owl"
-    name = "Class"
-    properties_values = {}
-    parent_name = "BaseOntologyClass"
-    # Short for an Implementation instance
-    _internal_imp_instance: Thing = None
-    _parent_class = Thing
-    parent_class_names: List[str] = []
-    disjoint_class_names: List[str] = []
-
-    def __init__(self, entity_qualifier: str):
-        super(OwlClass, self).__init__(entity_qualifier=entity_qualifier)
-        self.defined_properties: Dict[str, "OwlProperty"] = {}
-
-    def __str__(self):
-        property_dump = "\n"
-        for prop in self.defined_properties:
-            property_dump += f"    {prop}\n"
-        else:
-            property_dump += "    pass"
-        return f"class {self.name}({self.parent_name}):" \
-               f"{property_dump}"
-
-    @property
-    def is_individual(self) -> bool:
-        return self._internal_imp_instance is not None
-
-    # owlready-related implementation
-    def instantiate(self, onto: Ontology, individual_name: str = ""):
-        """
-        Instantiate Individuals into a given Ontology
-
-        :param individual_name: The name of an individual, creating an ontology Class if empty
-        :param onto: An `owlready2` Ontology
-        """
-        apply_classes_from(onto)
-        # TODO: realise all equivalents & disjoints
-        self._sync_internal()
-        individual_name = self.name if individual_name == "" else individual_name
-        if individual_name == self.name:
-            self.get_generated_class(onto)
-            disj = [x.get_generated_class(onto) for x in self._disjoint_classes if x is not None]
-            if len(disj) > 0:
-                AllDisjoint(disj)
-        else:
-            inst = self.get_generated_class(onto)()
-            inst.name = individual_name
-            self._internal_imp_instance = inst
-
-    def _sync_internal(self):
-        if not self.is_individual:
-            return
-        inst = self._internal_imp_instance
-        for set_prop in self.properties_values:
-            val = self.properties_values[set_prop]
-            set_prop = set_prop.split(":")[1]
-            try:
-                if isinstance(val, list):
-                    setattr(inst, set_prop, val)
-                else:
-                    setattr(inst, set_prop, [val])
-            except AttributeError:
-                pass
-
-    def add_property_assertion(self, property_name: str, value):
-        """
-            Adds property assertions with values
-        """
-        assert self.is_individual, \
-            "Must be an Individual before adding any assertion. Please call instantiate() first"
-        assert ":" in property_name and len(property_name.split(":")) == 2, "Please add prefix"
-        self.properties_values[property_name] = value
-        assert property_name in self.defined_properties, \
-            "Must associate a subclass of OwlProperty with the given name before any assertion can be done"
-        assert check_restrictions(self.prefix, self.defined_properties[property_name].range, value), \
-            "The added value doesn't match the range restriction!"
-
-
-class OwlThing(OwlClass):
-    name = "Thing"
-    parent_name = "BaseOwlThing"
-
-
 class OwlProperty(OntologyEntity):
     prefix = "owl"
     range = [Type[str]]
-
-
-class OwlDataProperty(OwlProperty):
-    name = "DataProperty"
-    range = [str]
-    _owlready_class = DataProperty
 
     # owlready-related implementation
     def instantiate(self, onto: Ontology):
@@ -121,13 +28,29 @@ class OwlDataProperty(OwlProperty):
         :param individual_name: The name of an individual, creating an ontology Class if empty
         :param onto: An `owlready2` Ontology
         """
+        if self.name in ["topObjectProperty", "topDataProperty"]:
+            return
         apply_classes_from(onto)
-        self.get_generated_class(onto, range=self.range)
+        self.get_generated_class(onto, range=self.get_generated_range(onto))
+        self._sync_internal(onto)
+
+    def get_generated_range(self, onto: Ontology):
+        return self.range
+
+
+class OwlDataProperty(OwlProperty):
+    name = "DataProperty"
+    range = [str]
+    _parent_class = DataProperty
 
 
 class OwlObjectProperty(OwlProperty):
     name = "ObjectProperty"
     _range = ["owl:Class"]
+    _parent_class = ObjectProperty
+
+    def get_generated_range(self, onto: Ontology):
+        return [x.get_generated_class(onto) for x in self.range if x is not None]
 
     @property
     def range(self):
@@ -149,14 +72,87 @@ class OwlObjectProperty(OwlProperty):
 
 class OwlAnnotationProperty(OwlProperty):
     name = "AnnotationProperty"
-    range = ["rdfs:label"]
+    range = [str]
+    _parent_class = AnnotationProperty
+
+    # owlready-related implementation
+    def instantiate(self, onto: Ontology):
+        """
+        Instantiate a Datatype Property into a given Ontology
+
+        :param individual_name: The name of an individual, creating an ontology Class if empty
+        :param onto: An `owlready2` Ontology
+        """
+        apply_classes_from(onto)
+        self.get_generated_class(onto, range=self.range)
 
 
-BASE_ENTITIES = [OwlAnnotationProperty, OwlDataProperty, OwlObjectProperty, OwlClass]
-PROPERTY_ENTITIES = {"annotations": OwlAnnotationProperty,
-                     "dataProperty": OwlDataProperty,
-                     "objectProperty": OwlObjectProperty}
-ENTITIES: Dict[str, Any] = {}
+class OwlClass(OntologyEntity):
+    """
+        A class for ontology classes of instances
+    """
+    prefix = "owl"
+    name = "Class"
+    parent_name = "BaseOntologyClass"
+    _parent_class = Thing
+    parent_class_names: List[str] = []
+    disjoint_class_names: List[str] = []
+
+    def __init__(self, entity_qualifier: str):
+        super(OwlClass, self).__init__(entity_qualifier=entity_qualifier)
+        self.defined_properties: Dict[str, "OwlProperty" or None] = dict(ENTITIES)
+
+    def __str__(self):
+        property_dump = "\n"
+        for prop in self.defined_properties:
+            property_dump += f"    {prop}\n"
+        else:
+            property_dump += "    pass"
+        return f"class {self.name}({self.parent_name}):" \
+               f"{property_dump}"
+
+    # owlready-related implementation
+    def instantiate(self, onto: Ontology, individual_name: str = ""):
+        """
+        Instantiate Individuals into a given Ontology
+
+        :param individual_name: The name of an individual, creating an ontology Class if empty
+        :param onto: An `owlready2` Ontology
+        """
+        apply_classes_from(onto)
+        # TODO: realise all equivalents
+        self._sync_internal(onto)
+        individual_name = self.name if individual_name == "" else individual_name
+        if individual_name == self.name:
+            self.get_generated_class(onto)
+            disj = [x.get_generated_class(onto) for x in self._disjoint_classes if x is not None]
+            if len(disj) > 0:
+                AllDisjoint(disj)
+        else:
+            inst = self.get_generated_class(onto)()
+            inst.name = individual_name
+            self._internal_imp_instance = inst
+
+    def add_property_assertion(self, property_name: str, value):
+        """
+            Adds property assertions with values
+        """
+        assert self.is_individual, \
+            "Must be an Individual before adding any assertion. Please call instantiate() first"
+        assert ":" in property_name and len(property_name.split(":")) == 2, "Please add prefix"
+        self.properties_values[property_name] = value
+        assert property_name in self.defined_properties, \
+            "Must associate a subclass of OwlProperty with the given name before any assertion can be done"
+        self._assert_restrictions(self.defined_properties[property_name].range, value)
+
+    def _assert_restrictions(self, types: List[str], value):
+        assert check_restrictions(self.prefix, types, value), \
+            "The added value doesn't match the range restriction!"
+
+
+class OwlThing(OwlClass):
+    name = "Thing"
+    parent_name = "BaseOwlThing"
 
 
 def all_subclasses(cls):
@@ -174,3 +170,16 @@ def get_match(identifier: str) -> Type[OntologyEntity]:
     for entity in BASE_ENTITIES:
         if identifier == entity.get_entity_qualifier():
             return entity
+
+
+BASE_ENTITIES = [OwlAnnotationProperty, OwlDataProperty, OwlObjectProperty, OwlClass]
+PROPERTY_ENTITIES = {"annotations": OwlAnnotationProperty,
+                     "dataProperty": OwlDataProperty,
+                     "objectProperty": OwlObjectProperty}
+ENTITIES: Dict[str, OntologyEntity] = {
+
+}
+BUILTIN_ENTITIES = {
+    LABEL_ENTITY_NAME: OwlAnnotationProperty(LABEL_ENTITY_NAME),
+    COMMENT_ENTITY_NAME: OwlAnnotationProperty(COMMENT_ENTITY_NAME)
+}

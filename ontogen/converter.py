@@ -1,22 +1,14 @@
-from datetime import date
 from owlready2 import Ontology
-from typing import List
+from typing import Tuple
 from yaml import load, Loader
 
 
-from .primitives import (BASE_ENTITIES, PROPERTY_ENTITIES,
+from .base import DATATYPE_MAP
+from .primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, ENTITIES,
+                         LABEL_ENTITY_NAME, PROPERTY_ENTITIES,
                          OntologyEntity, OwlClass, OwlDataProperty,
                          OwlObjectProperty)
-
 from .wrapper import BaseOntologyClass
-
-DATATYPE_MAP = {
-    'xsd:boolean': bool,
-    'xsd:string': str,
-    'xsd:integer': int,
-    'xsd:decimal': float,
-    'xsd:date': date
-}
 
 
 def create_owl_thing(name: str, onto: Ontology):
@@ -29,7 +21,7 @@ def get_equivalent_datatype(entity_name: str):
 
 class YamlToOwlConverter:
     def __init__(self, spec_filename: str):
-        self.entities = {}
+        self.entities = ENTITIES
         self.spec_filename = spec_filename
         self._load_file()
 
@@ -54,26 +46,32 @@ class YamlToOwlConverter:
                     elif base == OwlDataProperty:
                         if "rdfs:range" in sub:
                             obj.range = [get_equivalent_datatype(datatype) for datatype in sub["rdfs:range"]]
-
+                    annotations = sub["annotations"]
+                    obj.add_label(annotations.get(LABEL_ENTITY_NAME, [None])[0])
+                    obj.add_comment(annotations.get(COMMENT_ENTITY_NAME, [None])[0])
                 if base == OwlClass:
                     obj._internal_dict = sub
                     for prop in PROPERTY_ENTITIES:
                         if prop not in obj._internal_dict:
                             continue
                         prop_class = obj._internal_dict[prop]
+                        obj.parent_class_names = sub.get("rdfs:subClassOf", [])
+                        obj.disjoint_class_names = sub.get("owl:disjointWith", [])
                         for prop_name in prop_class:
+
                             prop_qualifier = f"{obj.prefix}:{prop_name}"
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_qualifier)
-                            obj.parent_class_names = sub.get("rdfs:subClassOf", [])
-                            obj.disjoint_class_names = sub.get("owl:disjointWith", [])
                     temp_classes.append(obj)
                 self.entities[class_entity_name] = obj
-        self._load_class_descriptions(temp_classes)
+        self._load_class_descriptions(tuple(self.entities.values()))
 
-    def _load_class_descriptions(self, classes: List[OwlClass]):
+    def _load_class_descriptions(self, classes: Tuple[OntologyEntity]):
         for cls in classes:
-            [cls.add_superclass(self.get_entity(f"{cls.prefix}:{name}")) for name in cls.parent_class_names]
-            [cls.add_disjoint_classes(self.get_entity(f"{cls.prefix}:{name}")) for name in cls.disjoint_class_names]
+            if isinstance(cls, OwlClass):
+                [cls.add_superclass(self.get_entity(f"{cls.prefix}:{name}")) for name in cls.parent_class_names]
+                [cls.add_disjoint_classes(self.get_entity(f"{cls.prefix}:{name}")) for name in cls.disjoint_class_names]
+            elif isinstance(cls, OwlObjectProperty):
+                cls.range = [self.get_entity(f"{cls.prefix}:{name}") for name in cls.range]
 
     def get_entity(self, entity_name: str) -> OntologyEntity or None:
         try:
@@ -83,7 +81,4 @@ class YamlToOwlConverter:
 
     def to_owl_ontology(self, onto: Ontology):
         for entity in self.entities.values():
-            if isinstance(entity, OwlDataProperty):
-                entity.instantiate(onto)
-            elif isinstance(entity, OwlClass):
-                entity.instantiate(onto)
+            entity.instantiate(onto)
