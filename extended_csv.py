@@ -1,5 +1,6 @@
 import csv
 from itertools import islice
+from pathlib import Path
 from typing import IO, Dict, Iterable, List, Union
 
 from utils.dict_utils import select_not_null
@@ -34,7 +35,7 @@ def get_dialect_from_suffix(suffix: str) -> str:
         raise ValueError(f"Unrecognized file format: '{suffix}'") from None
 
 
-def read_xsv_file(filename: str,
+def read_xsv_file(filename: Union[str, Path],
                   dialect: str,
                   *,
                   encoding: str = None,
