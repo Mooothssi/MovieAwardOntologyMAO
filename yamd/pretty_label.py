@@ -33,7 +33,12 @@ def get_pretty_label(ugly_label: str) -> str:
         >>> get_pretty_label('rdfs:domain')
         'Domain'
     """
-    pass
+    if ugly_label == 'rdfs:label':
+        return 'Label'
+    if ugly_label == 'dc:title':
+        return 'Title'
+    if ugly_label == 'dcterms:licence':
+        return 'Licence'
 
 
 def get_language_from_code(language_code: str) -> str:
