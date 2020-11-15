@@ -7,55 +7,6 @@ from utils.date_utils import parse_date
 from utils.str_utils import camel_to_snake
 
 
-def str_is_date(s: str) -> bool:
-    """Check whether or not a string is a date"""
-    try:
-        parse_date(s)
-        date.fromisoformat(s)
-    except ValueError:
-        return False
-    else:
-        return True
-
-
-def str_is_datetime(s: str) -> bool:
-    """Check whether or not a string is a datetime"""
-    try:
-        date.fromisoformat(s)
-    except ValueError:
-        return False
-    else:
-        return True
-
-
-def str_is_integer(s: str) -> bool:
-    """Check whether or not a string is lossless-ly an integer"""
-    return s.isnumeric() and not s.startswith('0')
-
-
-def str_is_float(s: str) -> bool:
-    """Check whether or not a string is lossless-ly a float"""
-    return s.isdecimal() and not s.startswith('0')
-
-
-TYPE_CHECKER = {
-    int: str_is_integer,
-    float: str_is_float,
-}
-TYPE_CONVERTER = {
-    date: parse_date,
-    datetime: datetime.fromisoformat,
-}
-TYPE_DEF = {
-    str: 'String',
-    int: 'Integer',
-    date: 'Date',
-    datetime: 'DateTime',
-    # TODO: Choose a SA representation of float
-    float: 'Float',
-}
-
-
 class Table:
     """ Represents a database table/model. """
     def __init__(self,
@@ -182,3 +133,57 @@ class Column:
         return "# " + ', '.join(self.comments)
 
 
+TYPE_DEF = {
+    str: 'String',
+    int: 'Integer',
+    date: 'Date',
+    datetime: 'DateTime',
+    float: 'Float',
+}
+
+DEF_TYPE = {
+    v: k for k, v in TYPE_DEF.items()
+}
+
+
+def str_is_date(s: str) -> bool:
+    """Check whether or not a string is a date"""
+    try:
+        parse_date(s)
+        date.fromisoformat(s)
+    except ValueError:
+        return False
+    else:
+        return True
+
+
+def str_is_datetime(s: str) -> bool:
+    """Check whether or not a string is a datetime"""
+    try:
+        date.fromisoformat(s)
+    except ValueError:
+        return False
+    else:
+        return True
+
+
+def str_is_integer(s: str) -> bool:
+    """Check whether or not a string is lossless-ly an integer"""
+    return s.isnumeric() and not s.startswith('0')
+
+
+def str_is_float(s: str) -> bool:
+    """Check whether or not a string is lossless-ly a float"""
+    return s.isdecimal() and not s.startswith('0')
+
+
+TYPE_CHECKER = {
+    int: str_is_integer,
+    float: str_is_float,
+}
+TYPE_CONVERTER = {
+    int: int,
+    float: float,
+    date: parse_date,
+    datetime: datetime.fromisoformat,
+}

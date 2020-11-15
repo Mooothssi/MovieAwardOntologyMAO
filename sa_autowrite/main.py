@@ -1,14 +1,18 @@
 import re
+from importlib import import_module, invalidate_caches
 from pathlib import Path
 from typing import IO, Any, Dict, List, Union
 
 from pandas import DataFrame
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 from stringcase import pascalcase, snakecase
 
+from engine import Session
 from extended_csv import get_dialect_from_suffix, read_xsv_file
-from sa_autowrite.model import Table
-from utils.io_utils import open_and_write_file
+from sa_autowrite.hint import DeclaredModel
+from sa_autowrite.model import DEF_TYPE, TYPE_CONVERTER, TYPE_DEF, Table
 from utils.dict_utils import select_not_null
+from utils.io_utils import open_and_write_file
 
 
 def write_model(file: Union[IO, str, Path],
@@ -121,14 +125,58 @@ def write_models(in_directory: Union[str, Path],
     open_and_write_file((out_directory / '__init__.py'), '\n'.join(lines))
 
 
-'''
-Sample script (put this in the root dir:
+def insert_data(in_directory: Union[str, Path],
+                out_directory: Union[str, Path]) -> None:
+    # Ensure directories are of type 'Path'
+    in_directory = Path(in_directory)
+    out_directory = Path(out_directory)
 
-from sa_autowrite.main import write_models
+    module_names = []
+    for pyfile in out_directory.glob('*.py'):
+        if pyfile.name in ['base.py', '__init__.py']:
+            continue
+        module_names.append(pyfile.stem)
+    class_names = [pascalcase(name) for name in module_names]
 
-write_models('tests/data/csv/', 'sa_autowrite/out/', max_lines=1000)
+    # invalidate_caches()
+    generated_module = import_module('autogen_db_models')
+    models: Dict[str, DeclaredModel] = {class_name: generated_module.__dict__[class_name] for class_name in class_names}
 
-'''
+    #
+    session = Session()
+    for csvfile in in_directory.glob('*.*sv'):
+        info = _get_info_from_filename(csvfile.name)
+        model_name = info['name']
+        dialect = get_dialect_from_suffix(info['format'])
+        with open(csvfile, 'r', encoding='utf-8') as f:
+            print(f"Reading from {csvfile}")
+            class_name = pascalcase(model_name)
+            if class_name not in class_names:
+                raise AssertionError("class name from data files doesn't match models")
+            data = read_xsv_file(csvfile, dialect=dialect)
+            df = DataFrame(data)
+            instances = []
+            for i in range(len(df)):
+                model = models[class_name]
+                datab = {}
+                for col in model.__table__.columns:
+                    try:
+                        val = df.get(col.name)[i]
+                        type_ = repr(col.type)[:-2]
+                        if type_ != 'String':
+                            val = TYPE_CONVERTER[DEF_TYPE[type_]](val)
+                        datab[col.name] = val
+                    except TypeError:
+                        if col.name == '_id':
+                            pass
+                        else:
+                            raise
+                instance = model(**datab)
+                instances.append(instance)
+            session.add_all(instances)
+            session.commit()
+
+            print(f"Writing from {csvfile} to {class_name}\n")
 
 
 if __name__ == '__main__':
