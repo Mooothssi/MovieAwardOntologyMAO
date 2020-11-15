@@ -105,13 +105,14 @@ class Annotations:
 
 class Class:
     map = {
-        'rdfs:subClassOf': 'Subclass Of',
+        'rdfs:subClassOf': 'Subclass of',
         'owl:disjointWith': 'Disjoint with',
-        'owl:equivalentClass': 'Equivalent class',
+        'owl:equivalentClass': 'Equivalent tp',
     }
 
     def __init__(self, name: str, data: dict):
         if isinstance(data, str):
+            assert data == ''
             self.data = {}
         else:
             self.data = data
@@ -123,6 +124,148 @@ class Class:
             self.annotations,
             self.description,
             self.object_properties,
+            self.data_properties,
+        ]
+        return '\n'.join((line for line in lines if line))
+
+    @property
+    def name(self) -> str:
+        return self._name.split(':')[1]
+
+    @property
+    def annotations(self) -> Optional[str]:
+        try:
+            return Annotations(self.data['annotations']).as_markdown()
+        except KeyError:
+            return None
+
+    @property
+    def description(self) -> Optional[str]:
+        try:
+            lines = []
+            for uname, pname in self.map.items():
+                if uname in self.data:
+                    lines.append(f'{pname}:')
+                    value = self.data[uname]
+                    if not isinstance(value, list):
+                        value = [value]
+                    for item in value:
+                        try:
+                            lines.append(get_markdown_list_item(1, item))
+                        except TypeError:
+                            assert isinstance(item, dict)
+                            lines.append(get_markdown_list_item(1, item['owl:equivalentClass']))
+                    lines.append('')
+            if lines:
+                lines.insert(0, '### Description')
+                return '\n'.join(lines)
+        except KeyError:
+            return None
+
+    @property
+    def object_properties(self) -> Optional[str]:
+        try:
+            lines = []
+            value = self.data['objectProperty']
+            if not isinstance(value, list):
+                value = [value]
+            for property in value:
+                lines.append(get_markdown_list_item(1, property))
+            lines.append('')
+            if lines:
+                lines.insert(0, '### Object Properties')
+                return '\n'.join(lines)
+        except KeyError:
+            return None
+
+    @property
+    def data_properties(self) -> Optional[str]:
+        try:
+            lines = []
+            for property in self.data['dataProperty']:
+                lines.append(get_markdown_list_item(1, property))
+            lines.append('')
+            if lines:
+                lines.insert(0, '### Data Properties')
+                return '\n'.join(lines)
+        except KeyError:
+            return None
+
+
+class ObjectProperty:
+    map = {
+        'rdfs:domain': 'Domain',
+        'rdfs:range': 'Range',
+        'rdfs:subPropertyOf': 'Subproperties',
+    }
+
+    def __init__(self, name: str, data: dict):
+        if isinstance(data, str):
+            assert data == ''
+            self.data = {}
+        else:
+            self.data = data
+        self._name = name
+
+    def as_markdown(self) -> str:
+        lines = [
+            f'## {self.name}',
+            self.annotations,
+            self.description,
+        ]
+        return '\n'.join((line for line in lines if line))
+
+    @property
+    def name(self) -> str:
+        return self._name.split(':')[1]
+
+    @property
+    def annotations(self) -> Optional[str]:
+        try:
+            return Annotations(self.data['annotations']).as_markdown()
+        except KeyError:
+            return None
+
+    @property
+    def description(self) -> Optional[str]:
+        try:
+            lines = []
+            for uname, pname in self.map.items():
+                if uname in self.data:
+                    lines.append(f'{pname}:')
+                    value = self.data[uname]
+                    if not isinstance(value, list):
+                        value = [value]
+                    for item in value:
+                        lines.append(get_markdown_list_item(1, item))
+                    lines.append('')
+            if lines:
+                lines.insert(0, '### Description')
+                return '\n'.join(lines)
+        except KeyError:
+            return None
+
+
+class DataProperty:
+    map = {
+        'rdfs:domain': 'Domain',
+        'rdfs:range': 'Range',
+        'rdfs:subPropertyOf': 'Subproperties',
+    }
+
+    def __init__(self, name: str, data: dict):
+        if isinstance(data, str):
+            assert data == ''
+            self.data = {}
+        else:
+            self.data = data
+        self._name = name
+
+    def as_markdown(self) -> str:
+        lines = [
+            f'## {self.name}',
+            self.annotations,
+            self.description,
         ]
         return '\n'.join((line for line in lines if line))
 
@@ -153,43 +296,93 @@ class Class:
         except KeyError:
             return None
 
+
+class AnnotationProperty:
+    map = {
+        'rdfs:domain': 'Domain',
+        'rdfs:range': 'Range',
+        # 'rdf:superProperty': 'Superproperties',
+    }
+
+    def __init__(self, name: str, data: dict):
+        if isinstance(data, str):
+            assert data == ''
+            self.data = {}
+        else:
+            self.data = data
+        self._name = name
+
+    def as_markdown(self) -> str:
+        lines = [
+            f'## {self.name}',
+            self.annotations,
+            self.description,
+        ]
+        return '\n'.join((line for line in lines if line))
+
     @property
-    def object_properties(self) -> Optional[str]:
+    def name(self) -> str:
+        return self._name.split(':')[1]
+
+    @property
+    def annotations(self) -> Optional[str]:
+        try:
+            return Annotations(self.data['annotations']).as_markdown()
+        except KeyError:
+            return None
+
+    @property
+    def description(self) -> Optional[str]:
         try:
             lines = []
-            for property in self.data['objectProperty']:
-                lines.append(get_markdown_list_item(1, property))
-            lines.append('')
+            for uname, pname in self.map.items():
+                if uname in self.data:
+                    lines.append(f'{pname}:')
+                    for item in self.data[uname]:
+                        lines.append(get_markdown_list_item(1, item))
+                    lines.append('')
             if lines:
-                lines.insert(0, '### Object Properties')
+                lines.insert(0, '### Description')
                 return '\n'.join(lines)
         except KeyError:
             return None
 
-    # @property
-    # def data_properties(self) -> str:
-    #     try:
-    #         lines = [
-    #             '### Data Properties',
-    #         ]
-    #         for property in self.data['dataProperty']:
-    #             lines.append(get_markdown_list_item(0, property))
-    #         return '\n'.join(lines)
-    #     except KeyError:
-    #         return ''
 
 
 def main():
-    with open(ROOT_DIR / 'tests/test_cases/test_case1.yaml', 'r', encoding='utf-8') as yamlfile:
+    with open(ROOT_DIR / 'tests/test_cases/test_case2.yaml', 'r', encoding='utf-8') as yamlfile:
         data = yaml.load(yamlfile, yaml.FullLoader)
-    print(data)
+    # print(data)
 
     lines: List[str] = [
         '# Ontology Description',
     ]
-    lines += [Annotations(data['annotations']).as_markdown()]
+    try:
+        lines += [Annotations(data['annotations']).as_markdown()]
+    except KeyError:
+        pass
     lines.append('')
     lines += write_classes(data['owl:Class'])
+
+    try:
+        for p, d in data['owl:ObjectProperty'].items():
+            lines += [ObjectProperty(p, d).as_markdown()]
+        lines.append('')
+    except KeyError:
+        pass
+
+    try:
+        for p, d in data['owl:DataProperty'].items():
+            lines += [DataProperty(p, d).as_markdown()]
+        lines.append('')
+    except KeyError:
+        pass
+
+    try:
+        for p, d in data['owl:AnnotationProperty'].items():
+            lines += [AnnotationProperty(p, d).as_markdown()]
+    except KeyError:
+        pass
 
     with open(ROOT_DIR / 'yamd/test.md', 'w', encoding='utf-8') as mdfile:
         mdfile.write('\n'.join(lines))
