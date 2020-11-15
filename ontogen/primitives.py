@@ -41,7 +41,7 @@ class OwlClass(OntologyEntity):
                f"{property_dump}"
 
     @property
-    def is_instance(self) -> bool:
+    def is_individual(self) -> bool:
         return self._internal_imp_instance is not None
 
     # owlready-related implementation
@@ -63,7 +63,7 @@ class OwlClass(OntologyEntity):
             self._internal_imp_instance = inst
 
     def _sync_internal(self):
-        if not self.is_instance:
+        if not self.is_individual:
             return
         inst = self._internal_imp_instance
         for set_prop in self.properties_values:
@@ -81,6 +81,7 @@ class OwlClass(OntologyEntity):
         """
             Adds property assertions with values
         """
+        assert self.is_individual, "Must be an Individual before adding any assertion"
         assert ":" in property_name and len(property_name.split(":")) == 2, "Please add prefix"
         self.properties_values[property_name] = value
         assert check_restrictions(self.prefix, self.defined_properties[property_name].range, value), \
