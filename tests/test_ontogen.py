@@ -37,8 +37,8 @@ class TestOntogen(TestCase):
 
     def test_instantiation(self):
         self.i: OwlClass = self.converter.get_entity("mao:Film")
-        self.i.add_property_assertion("mao:hasTitle", "Parasite")
         self.i.instantiate(self.onto, "Parasite")
+        self.i.add_property_assertion("mao:hasTitle", "Parasite")
         self.assertTrue(self.i.is_instance)
         self.assertEqual("mao2.Film", str(self.i._internal_imp_instance.is_instance_of[0]))
 

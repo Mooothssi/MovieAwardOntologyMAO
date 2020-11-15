@@ -17,7 +17,8 @@ onto: Ontology = get_ontology(f"file:////{OWL_FILEPATH}")
 onto.load()
 ```
 
-### Creating an instance from an Ontology Class
+### Creating an Individual from an Ontology Class
+The order of lines of code matters.
 ```python
 from owlready2 import Ontology
 
@@ -25,6 +26,6 @@ from ontogen import OwlClass
 
 onto: Ontology # owlready loaded OWL
 i: OwlClass = OwlClass("mao:Film") # mao:Film rdfs:subclassOf owl:Thing
-i.add_property_assertion("mao:hasTitle", "Parasite") # Create a property assertion for an individual
 i.instantiate("Parasite", onto) # Create an mao:Film individual named Parasite in a given OWL Ontology
+i.add_property_assertion("mao:hasTitle", "Parasite") # Create a property assertion for an individual
 ```

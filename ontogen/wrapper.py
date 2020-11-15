@@ -1,5 +1,10 @@
-from owlready2 import Ontology, Thing, ThingClass
+from owlready2 import (DataProperty, Ontology, Thing, ThingClass)
 from typing import (Any, Dict, List, Type)
+
+TYPE_MAPPING = {
+    str: 'xsd:string',
+    int: 'xsd:integer',
+}
 
 
 class BaseOntologyClass(Thing):
@@ -41,6 +46,7 @@ class OntologyEntity:
     prefix = "owl"
     name = "any"
     _internal_dict = {}
+    _owlready_class = object
 
     def __init__(self, entity_qualifier: str):
         pre, n = entity_qualifier.split(":")
@@ -52,22 +58,24 @@ class OntologyEntity:
     def get_entity_qualifier(cls) -> str:
         return f"{cls.prefix}:{cls.name}"
 
+    # owlready-related implementation
+    def instantiate(self, onto: Ontology):
+        pass
 
-TYPE_MAPPING = {
-    str: 'xsd:string',
-    int: 'xsd:integer',
-}
+    def get_generated_class(self, onto: Ontology, **attrs) -> type:
+        if self.name in GENERATED_TYPES:
+            return GENERATED_TYPES[self.name]
+        attrs['namespace'] = onto
+        GENERATED_TYPES[self.name] = type(self.name, (self._owlready_class,), attrs)
+        return GENERATED_TYPES[self.name]
 
 
 def check_restrictions(prefix: str, str_types: List[str], value: Any) -> bool:
     t = type(value)
-    p = {}
     # check for builtin types
     if t in TYPE_MAPPING:
-        p = set(str_types).intersection([TYPE_MAPPING[t]])
-        if len(p) == 0:
-            # check in defined classes
-            p = set(str_types).intersection(ENTITIES.keys())
+        return True
+    p = set(str_types).intersection(ENTITIES.keys())
     return len(p) > 0
 
 
@@ -84,6 +92,7 @@ class OwlClass(OntologyEntity):
     parent_name = "BaseOntologyClass"
     # Short for an Implementation instance
     _internal_imp_instance: BaseOntologyClass = None
+    _owlready_class = Thing
 
     def __init__(self, entity_qualifier: str):
         super(OwlClass, self).__init__(entity_qualifier=entity_qualifier)
@@ -101,12 +110,6 @@ class OwlClass(OntologyEntity):
     @property
     def is_instance(self) -> bool:
         return self._internal_imp_instance is not None
-
-    def get_generated_class(self, onto: Ontology) -> type:
-        if self.name in GENERATED_TYPES:
-            return GENERATED_TYPES[self.name]
-        GENERATED_TYPES[self.name] = type(self.name, (Thing,), {'namespace': onto})
-        return GENERATED_TYPES[self.name]
 
     # owlready-related implementation
     def instantiate(self, onto: Ontology, individual_name: str = ""):
@@ -155,12 +158,24 @@ class OwlThing(OwlClass):
 
 class OwlProperty(OntologyEntity):
     prefix = "owl"
-    range = ["xsd:string"]
+    range = [str]
 
 
 class OwlDataProperty(OwlProperty):
     name = "DataProperty"
-    range = ["xsd:string"]
+    range = [str]
+    _owlready_class = DataProperty
+
+    # owlready-related implementation
+    def instantiate(self, onto: Ontology):
+        """
+        Instantiate a Datatype Property into a given Ontology
+
+        :param individual_name: The name of an individual, creating an ontology Class if empty
+        :param onto: An `owlready2` Ontology
+        """
+        apply_classes_from(onto)
+        self.get_generated_class(onto, range=self.range)
 
 
 class OwlObjectProperty(OwlProperty):

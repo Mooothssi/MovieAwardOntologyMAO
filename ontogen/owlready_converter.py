@@ -5,7 +5,7 @@ from yaml import load, Loader
 
 from ontogen.wrapper import BASE_ENTITIES, PROPERTY_ENTITIES, get_match
 from settings import OWL_FILEPATH
-from .wrapper import BaseOntologyClass, OwlClass, OwlObjectProperty, OntologyEntity, apply_classes_from
+from .wrapper import BaseOntologyClass, OwlClass, OwlDataProperty, OwlObjectProperty, OntologyEntity, apply_classes_from
 
 
 def create_owl_thing(name: str, onto: Ontology):
@@ -88,6 +88,10 @@ class YamlToOwlConverter:
         for entity in self.entities.values():
             if isinstance(entity, OwlClass):
                 entity.instantiate(onto)
+            elif isinstance(entity, OwlDataProperty):
+                entity.instantiate(onto)
+
+               # class has_for_ingredient(ObjectProperty):
 
     # def sync_with_ontology(self):
     #     apply_classes_from(self.onto)
