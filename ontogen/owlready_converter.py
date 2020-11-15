@@ -16,10 +16,10 @@ class YamlToOwlConverter:
     imports = "from ontogen.wrapper import BaseOntologyClass\n\n\n"
 
     def __init__(self,
-                 spec_filename: str,
-                 ontology_filename: str = OWL_FILEPATH):
-        self.onto = get_ontology(f"file:////{ontology_filename}")
-        self.onto.load()
+                 spec_filename: str):
+                 #ontology_filename: str = OWL_FILEPATH):
+        # self.onto = get_ontology(f"file:////{ontology_filename}")
+        # self.onto.load()
         self.entities = {}
         self.spec_filename = spec_filename
         self._load_file()
@@ -61,11 +61,11 @@ class YamlToOwlConverter:
         except KeyError:
             return None
 
-    def convert(self):
-        self.sync_with_ontology()
-        for entity in self.entities:
-            if isinstance(entity, OwlClass):
-                create_owl_thing(entity.name, self.onto)
+    # def convert(self):
+    #     self.sync_with_ontology()
+    #     for entity in self.entities:
+    #         if isinstance(entity, OwlClass):
+    #             create_owl_thing(entity.name, self.onto)
 
     def to_python_scripts(self, base_path: str):
         for entity in self.entities.values():
@@ -84,8 +84,10 @@ class YamlToOwlConverter:
                     os.makedirs(out_path)
                 print(class_dump, file=open(out_path / class_filename, "w"))
 
-    def to_owl_ontology(self):
-        pass
+    def to_owl_ontology(self, onto: Ontology):
+        for entity in self.entities.values():
+            if isinstance(entity, OwlClass):
+                entity.instantiate(onto)
 
-    def sync_with_ontology(self):
-        apply_classes_from(self.onto)
+    # def sync_with_ontology(self):
+    #     apply_classes_from(self.onto)

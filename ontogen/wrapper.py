@@ -32,7 +32,7 @@ def all_subclasses(cls):
 
 
 def apply_classes_from(onto: Ontology):
-    for s in all_subclasses(BaseOntologyClass):
+    for s in all_subclasses(Thing):
         s.namespace = onto
         setattr(s, 'storid', onto.world._abbreviate(s.iri))
 
@@ -99,16 +99,22 @@ class OwlClass(OntologyEntity):
     def is_instance(self) -> bool:
         return self._internal_imp_instance is not None
 
+    def get_generated_class(self, onto: Ontology) -> type:
+        return type(self.name, (Thing,), {'namespace': onto})
+
     # owlready-related implementation
-    def instantiate(self, individual_name: str, onto: Ontology):
+    def instantiate(self, onto: Ontology, individual_name: str = ""):
         """
         Instantiate Individuals into a given Ontology
 
-        :param individual_name: The name of an individual
+        :param individual_name: The name of an individual, creating an ontology Class if empty
         :param onto: An `owlready2` Ontology
         """
         apply_classes_from(onto)
-        self._internal_imp_instance = type(self.name, (BaseOntologyClass,), {})(name=individual_name, onto=onto)
+        indiv_name = self.name if individual_name == "" else individual_name
+        inst = self.get_generated_class(onto)()
+        inst.name = indiv_name
+        self._internal_imp_instance = inst
 
     def _sync_internal(self):
         if not self.is_instance:

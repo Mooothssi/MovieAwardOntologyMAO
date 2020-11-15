@@ -1,6 +1,6 @@
 # Ontogen
 
-## How to start
+## Getting started
 Run unit tests in `test_ontogen.csv`
 
 ### (`owlready2`) Loading an OWL Ontology
