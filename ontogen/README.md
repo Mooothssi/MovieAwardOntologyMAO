@@ -5,7 +5,7 @@
 - [x] `rdfs:type` (Mostly done)
 - [x] `rdfs:subClassOf` (Mostly done)
 - [ ] `rdfs:equivalentClass`
-- [ ] `owl:disjointWith`
+- [x] `owl:disjointWith` (Partially)
 
 ### Properties
 - [x] `owl:ObjectProperty` (Partially)

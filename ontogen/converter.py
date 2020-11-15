@@ -28,12 +28,7 @@ def get_equivalent_datatype(entity_name: str):
 
 
 class YamlToOwlConverter:
-    imports = "from ontogen.wrapper import BaseOntologyClass\n\n\n"
-
     def __init__(self, spec_filename: str):
-                 #ontology_filename: str = OWL_FILEPATH):
-        # self.onto = get_ontology(f"file:////{ontology_filename}")
-        # self.onto.load()
         self.entities = {}
         self.spec_filename = spec_filename
         self._load_file()
@@ -69,15 +64,16 @@ class YamlToOwlConverter:
                         for prop_name in prop_class:
                             prop_qualifier = f"{obj.prefix}:{prop_name}"
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_qualifier)
-                            obj.parent_class_names = sub["rdfs:subClassOf"]
+                            obj.parent_class_names = sub.get("rdfs:subClassOf", [])
+                            obj.disjoint_class_names = sub.get("owl:disjointWith", [])
                     temp_classes.append(obj)
-
                 self.entities[class_entity_name] = obj
-        self._load_class_subclasses(temp_classes)
+        self._load_class_descriptions(temp_classes)
 
-    def _load_class_subclasses(self, classes: List[OwlClass]):
+    def _load_class_descriptions(self, classes: List[OwlClass]):
         for cls in classes:
             [cls.add_superclass(self.get_entity(f"{cls.prefix}:{name}")) for name in cls.parent_class_names]
+            [cls.add_disjoint_classes(self.get_entity(f"{cls.prefix}:{name}")) for name in cls.disjoint_class_names]
 
     def get_entity(self, entity_name: str) -> OntologyEntity or None:
         try:

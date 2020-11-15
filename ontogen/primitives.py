@@ -1,9 +1,10 @@
-from owlready2 import DataProperty, Ontology, Thing
+from owlready2 import AllDisjoint, DataProperty, Ontology, Thing
 from typing import Any, Dict, List, Type
 
 from .base import OntologyEntity
 
 TYPE_MAPPING = [str, int]
+
 
 
 def check_restrictions(prefix: str, str_types: List[str], value: Any) -> bool:
@@ -27,6 +28,7 @@ class OwlClass(OntologyEntity):
     _internal_imp_instance: Thing = None
     _parent_class = Thing
     parent_class_names: List[str] = []
+    disjoint_class_names: List[str] = []
 
     def __init__(self, entity_qualifier: str):
         super(OwlClass, self).__init__(entity_qualifier=entity_qualifier)
@@ -54,13 +56,17 @@ class OwlClass(OntologyEntity):
         :param onto: An `owlready2` Ontology
         """
         apply_classes_from(onto)
+        # TODO: realise all equivalents & disjoints
         self._sync_internal()
-        indiv_name = self.name if individual_name == "" else individual_name
-        if indiv_name == self.name:
+        individual_name = self.name if individual_name == "" else individual_name
+        if individual_name == self.name:
             self.get_generated_class(onto)
+            disj = [x.get_generated_class(onto) for x in self._disjoint_classes if x is not None]
+            if len(disj) > 0:
+                AllDisjoint(disj)
         else:
             inst = self.get_generated_class(onto)()
-            inst.name = indiv_name
+            inst.name = individual_name
             self._internal_imp_instance = inst
 
     def _sync_internal(self):
@@ -90,14 +96,6 @@ class OwlClass(OntologyEntity):
             "Must associate a subclass of OwlProperty with the given name before any assertion can be done"
         assert check_restrictions(self.prefix, self.defined_properties[property_name].range, value), \
             "The added value doesn't match the range restriction!"
-
-    def add_superclass(self, superclass: "OwlClass"):
-        """
-            Adds a superclass of this Class.
-            This Class will then be a rdfs:subclassOf a given superclass
-        :param superclass:
-        """
-        self._parent_classes.append(superclass)
 
 
 class OwlThing(OwlClass):
