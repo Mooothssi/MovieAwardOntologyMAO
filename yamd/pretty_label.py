@@ -1,3 +1,6 @@
+__all__ = ['get_pretty_label', 'get_language_from_code']
+
+
 def get_pretty_label(ugly_label: str) -> str:
     """Returns a pretty human-readable label
 
@@ -31,3 +34,19 @@ def get_pretty_label(ugly_label: str) -> str:
         'Domain'
     """
     pass
+
+
+def get_language_from_code(language_code: str) -> str:
+    """Returns a pretty human-readable language from its code.
+
+    Args:
+        language_code: The language code
+
+    Examples:
+        >>> get_language_from_code('en')
+        'English'
+        >>> get_language_from_code('pt')
+        'Portuguese'
+    """
+    if language_code == 'en':
+        return 'English'
