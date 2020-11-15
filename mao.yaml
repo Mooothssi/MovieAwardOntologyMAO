@@ -180,6 +180,17 @@ owl:Class:
       - NominationSituation and (win value True)
     rdfs:subClassOf:
       - NominationSituation
+  mao:BaftaCriterion:
+    annotations:
+      rdfs:label:
+        - BaftaCriterion^^rdfs:Literal@en
+    owl:disjointWith:
+      - OscarCriterion
+    rdfs:equivalentClass:
+      owl:Restriction:
+        - Criterion and (isCriterionFor value BaftaAward)
+    rdfs:subClassOf:
+      - Criterion
   mao:Building:
     annotations:
       rdfs:label:
@@ -277,6 +288,17 @@ owl:Class:
       - GeographicalFeature
     rdfs:subClassOf:
       - Place
+  mao:Criterion:
+    annotations:
+      rdfs:label:
+        - Criterion^^rdfs:Literal@en
+    objectProperty:
+      - isCriterionFor
+      - setBy
+    owl:disjointWith:
+      - Requirement
+    rdfs:subClassOf:
+      - NormativeValue
   mao:Event:
     annotations:
       rdfs:comment:
@@ -369,6 +391,21 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
+  mao:FeatureLengthBaftaCriterion:
+    annotations:
+      rdfs:label:
+        - FeatureLengthBaftaCriterion^^rdfs:Literal@en
+    rdfs:subClassOf:
+      - BaftaCriterio
+  mao:FeatureLengthOscarCriterion:
+    annotations:
+      rdfs:label:
+        - FeatureLengthOscarCriterion^^rdfs:Literal@en
+    owl:disjointWith:
+      - ShortFilmOscarCriterion
+      - ShortFilmReleaseNominationOscarCriterion
+    rdfs:subClassOf:
+      - OscarCriterion
   mao:FilmCast:
     annotations:
       rdfs:label:
@@ -596,6 +633,15 @@ owl:Class:
       - VoiceActingSituation
     rdfs:subClassOf:
       - Situation
+  mao:NormativeValue:
+    annotations:
+      rdfs:comment:
+        - >
+          Value that can serve as a norm, standard, codex, requirement, criterion etc.^^rdfs:Literal@en
+      rdfs:label:
+        - Normative value^^rdfs:Literal@en
+    rdfs:subClassOf:
+      - Value
   mao:Object:
     annotations:
       rdfs:comment:
@@ -640,6 +686,17 @@ owl:Class:
       - Person
     rdfs:subClassOf:
       - Agent
+  mao:OscarCriterion:
+    annotations:
+      rdfs:label:
+        - OscarCriterion^^rdfs:Literal@en
+    owl:disjointWith:
+      - BaftaCriterion
+    rdfs:equivalentClass:
+      owl:Restriction:
+        - Criterion and (isCriterionFor value OscarAward)
+    rdfs:subClassOf:
+      - Criterion
   mao:OscarEligible:
     annotations:
       rdfs:label:
@@ -730,6 +787,18 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
+  mao:Requirement:
+    annotations:
+      rdfs:label:
+        - Requirement^^rdfs:Literal@en
+    objectProperty:
+      - isRequirementFor
+      - satisfiesRequirement
+      - violatesRequirement
+    owl:disjointWith:
+      - Criterion
+    rdfs:subClassOf:
+      - NormativeValue
   mao:Review:
     annotations:
       rdfs:label:
@@ -766,6 +835,24 @@ owl:Class:
       - Film and (hasFeatureLengthInMinutes some integer[<40])
     rdfs:subClassOf:
       - Film
+  mao:ShortFilmOscarCriterion:
+    annotations:
+      rdfs:label:
+        - ShortFilmOscarCriterion^^rdfs:Literal@en
+    owl:disjointWith:
+      - FeatureLengthOscarCriterion
+      - ShortFilmReleaseNominationOscarCriterion
+    rdfs:subClassOf:
+      - OscarCriterion
+  mao:ShortFilmReleaseNominationOscarCriterion:
+    annotations:
+      rdfs:label:
+        - ShortFilmReleaseNominationOscarCriterion^^rdfs:Literal@en
+    owl:disjointWith:
+      - FeatureLengthOscarCriterion
+      - ShortFilmOscarCriterion
+    rdfs:subClassOf:
+      - OscarCriterion
   mao:SideCharacter:
     annotations:
       rdfs:label:
@@ -799,6 +886,28 @@ owl:Class:
       - Review
     rdfs:subClassOf:
       - Object
+  mao:Value:
+    annotations:
+      rdfs:comment:
+        - >
+          Value is everything that has validity for something and what determines how it would be satisfied.
+          Examples: self-interest, reliability, warranty, benefit, norm, requirement, criterion, recommendation...^^rdfs:Literal@en
+      rdfs:label:
+        - Value^^rdfs:Literal@en
+    objectProperty:
+      - hasException
+      - isAffectedByValidityOf
+      - isSatisfiedBy
+      - isValidFor
+      - isViolatedBy
+      - satisfies
+      - violates
+    owl:disjointWith:
+      - Abstract
+      - Event
+      - Object
+    rdfs:subClassOf:
+      - Thing
   mao:VoiceActingSituation:
     annotations:
       rdfs:label:
@@ -1107,6 +1216,14 @@ owl:ObjectProperty:
         - has director^^rdfs:Literal@en
     rdfs:range:
       - Person
+  mao:hasException:
+    annotations:
+      rdfs:label:
+        - has exception^^rdfs:Literal@en
+    rdfs:domain:
+      - Value
+    rdfs:range:
+      - Thing
   mao:hasFilm:
     annotations:
       rdfs:label:
@@ -1272,6 +1389,14 @@ owl:ObjectProperty:
       - Agent
     rdfs:subPropertyOf:
       - hasParticipant
+  mao:isAffectedByValidityOf:
+    annotations:
+      rdfs:label:
+        - is affected by validity of^^rdfs:Literal@en
+    rdfs:domain:
+      - Value
+    rdfs:range:
+      - Thing
   mao:isAgentInvolvedIn:
     annotations:
       rdfs:label:
@@ -1284,6 +1409,12 @@ owl:ObjectProperty:
       - Event
     rdfs:subPropertyOf:
       - isParticipantIn
+  mao:isCriterionFor:
+    annotations:
+      rdfs:label:
+        - is criterion for^^rdfs:Literal@en
+    rdfs:subPropertyOf:
+      - isValidFor
   mao:isGivenTo:
     annotations:
       rdfs:label:
@@ -1326,6 +1457,22 @@ owl:ObjectProperty:
       - Object
     rdfs:range:
       - Event
+  mao:isRequirementFor:
+    annotations:
+      rdfs:label:
+        - is requirement for^^rdfs:Literal@en
+    rdfs:range:
+      - Thing
+    rdfs:subPropertyOf:
+      - isValidFor
+  mao:isSatisfiedBy:
+    annotations:
+      rdfs:label:
+        - is satisfied by^^rdfs:Literal@en
+    rdfs:domain:
+      - Thing
+    rdfs:range:
+      - Value
   mao:isSettingFor:
     annotations:
       rdfs:comment:
@@ -1343,6 +1490,25 @@ owl:ObjectProperty:
         - is sub-genre of^^rdfs:Literal@en
     rdfs:range:
       - Genre
+  mao:isValidFor:
+    annotations:
+      rdfs:comment:
+        - >
+          A value is always valid for some specific thing. This relation should point to an entity which is expected to satisfy a given value. Sometimes a temporal or spatial context needs to be provided, e.g. Non-EU students, 2011 graduates etc. Exceptions describing special conditions affecting the validity of a value can be described using the 'has exception' relation.^^rdfs:Literal@en
+      rdfs:label:
+        - is valid for^^rdfs:Literal@en
+    rdfs:domain:
+      - Value
+    rdfs:range:
+      - Thing
+  mao:isViolatedBy:
+    annotations:
+      rdfs:label:
+        - is violated by^^rdfs:Literal@en
+    rdfs:domain:
+      - Value
+    rdfs:range:
+      - Thing
   mao:presentedBy:
     annotations:
       rdfs:label:
@@ -1355,3 +1521,57 @@ owl:ObjectProperty:
         - review of^^rdfs:Literal@en
     rdfs:range:
       - Object
+  mao:satisfies:
+    annotations:
+      rdfs:label:
+        - satisfies^^rdfs:Literal@en
+    rdfs:domain:
+      - Thing
+    rdfs:range:
+      - Value
+  mao:satisfiesCriterion:
+    annotations:
+      rdfs:label:
+        - satisfies criterion^^rdfs:Literal@en
+    rdfs:range:
+      - Criterion
+    rdfs:subPropertyOf:
+      - satisfies
+  mao:satisfiesRequirement:
+    annotations:
+      rdfs:label:
+        - satisfies requirement^^rdfs:Literal@en
+    rdfs:range:
+      - Requirement
+    rdfs:subPropertyOf:
+      - satisfies
+  mao:setBy:
+    annotations:
+      rdfs:label:
+        - set by^^rdfs:Literal@en
+    rdfs:range:
+      - Agent
+  mao:violates:
+    annotations:
+      rdfs:label:
+        - violates^^rdfs:Literal@en
+    rdfs:domain:
+      - Thing
+    rdfs:range:
+      - Value
+  mao:violatesCriterion:
+    annotations:
+      rdfs:label:
+        - violates criterion^^rdfs:Literal@en
+    rdfs:range:
+      - Criterion
+    rdfs:subPropertyOf:
+      - violates
+  mao:violatesRequirement:
+    annotations:
+      rdfs:label:
+        - violates requirement^^rdfs:Literal@en
+    rdfs:range:
+      - Requirement
+    rdfs:subPropertyOf:
+      - violates
