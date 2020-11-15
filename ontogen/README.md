@@ -19,6 +19,15 @@ onto: Ontology = get_ontology(f"file:////{OWL_FILEPATH}")
 onto.load()
 ```
 
+### Using an YamlToOwlConverter to generate `OwlClass`es
+```python
+from ontogen.owlready_converter import YamlToOwlConverter
+
+converter = YamlToOwlConverter("data/mao.yaml")
+film: OwlClass = converter.get_entity("mao:Film")
+...
+```
+
 ### Creating an Individual from an Ontology Class
 An individual must be first `instantiate()`d before adding any assertions.
 ```python
@@ -27,7 +36,8 @@ from owlready2 import Ontology
 from ontogen import OwlClass
 
 onto: Ontology # `owlready2` loaded OWL
-parasite_film: OwlClass = OwlClass("mao:Film") # mao:Film rdfs:subclassOf owl:Thing
+# mao:Film rdfs:subclassOf owl:Thing
+parasite_film: OwlClass = OwlClass("mao:Film") # or selectively `converter.get_entity("mao:Film")` 
 parasite_film.instantiate("Parasite", onto) # Create an mao:Film individual named Parasite in a given OWL Ontology
 ```
 

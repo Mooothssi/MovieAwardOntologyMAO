@@ -39,7 +39,7 @@ class TestOntogen(TestCase):
         self.i: OwlClass = self.converter.get_entity("mao:Film")
         self.i.instantiate(self.onto, "Parasite")
         self.i.add_property_assertion("mao:hasTitle", "Parasite")
-        self.assertTrue(self.i.is_instance)
+        self.assertTrue(self.i.is_individual)
         self.assertEqual("mao2.Film", str(self.i._internal_imp_instance.is_instance_of[0]))
 
     # Create an OWL ontology from scratch
