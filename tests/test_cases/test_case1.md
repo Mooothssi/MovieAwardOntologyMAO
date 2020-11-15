@@ -1,3 +1,15 @@
+# Ontology description
+## Annotations
+### label
+  - pizza
+
+### title
+  - pizza
+
+### licence
+  - Creative Commons Attribution 3.0 (CC BY 3.0)
+
+
 # Class Hierarchy
 -Thing
   - Food
@@ -101,8 +113,7 @@ Subclass Of:
 
 ## PizzaBase
 ### Annotations
-Comment: Pizza dough that used as
-         a pizza base
+Comment: Pizza dough that used as a pizza base
 
 | Language      | Label         |
 | ------------- |:-------------:|
@@ -180,8 +191,15 @@ Subclass Of:
 
 
 # Annotation property
-- Comment
-- Label
+## title
+### Annotations
+Comment: A name given to the resource
+
+## licence
+### Annotations
+Comment: A legal document giving official permission to do something with the resource.
+
+Label: License
 
 
 # Object property
@@ -204,8 +222,3 @@ Domain:
 
 Range:
   - PizzaTopping
-
-
-# Data type
-- Literal
-- String
