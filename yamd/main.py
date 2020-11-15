@@ -4,7 +4,7 @@ import yaml
 
 from dirs import ROOT_DIR
 
-from yamd.pretty_label import MAP
+from yamd.pretty_label import get_pretty_label
 
 
 def main():
