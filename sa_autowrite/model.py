@@ -1,11 +1,9 @@
 from datetime import date, datetime
-from pathlib import Path
-from typing import IO, Any, Dict, List, Union
+from typing import List
 
 from pandas import DataFrame, Series
 
 from utils.date_utils import parse_date
-from utils.dict_utils import select_not_null
 from utils.str_utils import camel_to_snake
 
 
@@ -44,34 +42,53 @@ TYPE_CHECKER = {
     int: str_is_integer,
     float: str_is_float,
 }
-
 TYPE_CONVERTER = {
     date: parse_date,
     datetime: datetime.fromisoformat,
 }
-
 TYPE_DEF = {
     str: 'String',
     int: 'Integer',
     date: 'Date',
     datetime: 'DateTime',
+    # TODO: Choose a SA representation of float
     float: 'TODOOOOOOOO',
 }
 
 
 class Table:
+    """ Represents a database table/model. """
     def __init__(self,
                  name: str,
                  data: DataFrame,
                  *,
                  gen_pk: bool = True,
                  pk_cols: List[str] = None):
+        """Creates an object storing model information.
+
+        Args:
+            name:
+                The name of the model.
+            data:
+                The data to use to generate .py model.
+            gen_pk:
+                If True use a new column for the primary key.
+                If False, must specify `pk_cols` to use.
+            pk_cols:
+                Columns to use as primary keys.
+                Must match columns in the data.
+
+        Raises:
+            ValueError:
+                When `gen_pk` is False and no `pk_cols` is specified.
+                When a pk in`pk_cols` isn't found in the data.
+        """
         self.name = name  # Name of the table in CapWords
         self.data = data
         self.columns = []
         self.pk_cols = pk_cols
         for name in data.columns:
-            col = Col(name)
+            col = Column(name)
             for type, check in TYPE_CHECKER.items():
                 if all(data.get(col.name).map(check)):
                     col.type = type
@@ -92,15 +109,21 @@ class Table:
 
         if self.pk_cols is None:
             if gen_pk:
-                self.columns.insert(0, Col('_id', Series(range(len(self.data))), type_=int, is_pk=True))
+                self.columns.insert(0, Column('_id', Series(range(len(self.data))), type_=int, is_pk=True))
             else:
                 raise ValueError(f"Table '{self.name}' will have no primary key if not specified")
-        else:
-            for col in self.columns:
-                if col.name in self.pk_cols:
-                    col.is_pk = True
+        elif self.pk_cols:
+            # pk_cols is not []
+            for pk in self.pk_cols:
+                for col in self.columns:
+                    if col.name == pk:
+                        col.is_pk = True
+                        break
+                else:
+                    raise ValueError(f"Specified pk: '{pk}' does not match any columns in table '{self.name}'.\ncols = {self.columns}")
 
     def as_python(self) -> str:
+        """ Returns the object as python code. """
         lines = [
             f"from sqlalchemy import Column, {', '.join(sorted(set(TYPE_DEF[col.type] for col in self.columns)))}",
             '',
@@ -119,7 +142,8 @@ class Table:
         return '\n'.join(lines)
 
 
-class Col:
+class Column:
+    """ Object to store column data to use in `Table`. """
     def __init__(self, name: str, data: Series = None, *, type_: type = None, is_pk: bool = False):
         self.name = name
         self.data: Series = data
@@ -127,7 +151,12 @@ class Col:
         self.is_pk = is_pk
         self.comments: List[str] = []
 
+    def __str__(self):
+        """ Returns some data to id the object for debugging. """
+        return f"Column(name={self.name}, type={self.type}, is_pk={self.is_pk})"
+
     def as_python(self, start: int = 55):
+        """ Returns the object as python code. """
         return (f"    {{:<{start}}}").format(self.definition) + self.comment
 
     @property
@@ -153,52 +182,3 @@ class Col:
         return "# " + ', '.join(self.comments)
 
 
-def open_and_write_file(file: Union[IO, str, Path], s: str):
-    try:
-        file.write(s)
-        return
-    except OSError:
-        raise
-    except AttributeError:
-        if isinstance(file, (str, Path)):
-            with open(file, 'w', encoding='utf-8') as f:
-                f.write(s)
-                return
-    raise AssertionError
-
-
-def write_model(file: Union[IO, str, Path],
-                model_name: str,
-                data: List[Dict[str, Any]],
-                *,
-                gen_pk: bool = True,
-                pk_cols: List[str] = None):
-    kwargs = {
-        'pk_cols': pk_cols,
-        'gen_pk': gen_pk
-    }
-
-    df = DataFrame(data)
-    table = Table(model_name, df, **select_not_null(kwargs))
-    open_and_write_file(file, table.as_python())
-
-
-def write_base(file: Union[IO, str, Path]):
-    lines = [
-        'from sqlalchemy.ext.declarative import declarative_base',
-        '',
-        'Base = declarative_base()',
-        '',
-    ]
-    open_and_write_file(file, '\n'.join(lines))
-
-
-def main():
-    from extended_csv import read_xsv_file
-    write_base('base.py')
-    write_model('branded_food.py', 'BrandedFood', read_xsv_file('../tests/data/csv/branded_food-10000.csv', dialect='excel'))
-    write_model('nutrient.py', 'Nutrient', read_xsv_file('../tests/data/csv/nutrient-100.csv', dialect='excel'), pk_cols=['id'])
-
-
-if __name__ == '__main__':
-    main()

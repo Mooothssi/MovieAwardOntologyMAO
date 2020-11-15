@@ -2,7 +2,7 @@ import unittest
 from io import StringIO
 
 from extended_csv import read_xsv_file
-from sa_autowrite.__main__ import write_model
+from sa_autowrite.main import write_model
 from dirs import ROOT_DIR
 
 TestCase = unittest.TestCase
