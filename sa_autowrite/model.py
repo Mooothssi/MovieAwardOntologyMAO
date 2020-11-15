@@ -52,7 +52,7 @@ TYPE_DEF = {
     date: 'Date',
     datetime: 'DateTime',
     # TODO: Choose a SA representation of float
-    float: 'TODOOOOOOOO',
+    float: 'Float',
 }
 
 
