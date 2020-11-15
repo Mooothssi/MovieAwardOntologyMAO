@@ -86,14 +86,7 @@ def write_models(in_directory: Union[str, Path],
     in_directory = Path(in_directory)
     out_directory = Path(out_directory)
 
-    # Check for required files
-    has_base = False
-    has_init = False
-    for pyfile in out_directory.glob('*.py'):
-        if pyfile.name == 'base.py':
-            has_base = True
-        elif pyfile.name == '__init__.py':
-            has_init = True
+    module_class = []
 
     # Write models file
     for csvfile in in_directory.glob('*.*sv'):
@@ -102,25 +95,31 @@ def write_models(in_directory: Union[str, Path],
         dialect = get_dialect_from_suffix(info['format'])
         with open(csvfile, 'r', encoding='utf-8') as f:
             print(f"Reading from {csvfile}")
-            write_model(out_directory / f'{snakecase(model_name)}.py',
-                        pascalcase(model_name),
+            module_name = snakecase(model_name)
+            class_name = pascalcase(model_name)
+            module_class.append((model_name, class_name))
+            write_model(out_directory / f'{module_name}.py',
+                        class_name,
                         read_xsv_file(csvfile, dialect=dialect, load_at_most=max_lines))
             print(f"Writing to {(out_directory / f'{snakecase(model_name)}.py')}\n")
+
+    # Check for required files
+    has_base = False
+    for pyfile in out_directory.glob('*.py'):
+        if pyfile.name == 'base.py':
+            has_base = True
 
     # Write required files
     if not has_base:
         print(f'base.py not detected in {out_directory}, writing one')
         write_base((out_directory / 'base.py'))
-    if not has_init:
-        print(f'__init__.py not detected in {out_directory}, writing one')
-        open_and_write_file((out_directory / '__init__.py'), '\n')
 
+    print(f'__init__.py generated.')
+    lines = ['# import modules to run it through declarative base'] + \
+            [f'from .{module_name} import {class_name}' for module_name, class_name in module_class] + \
+            ['']
+    open_and_write_file((out_directory / '__init__.py'), '\n'.join(lines))
 
-
-# def main():
-    # write_base('base.py')
-    # write_model('branded_food.py', 'BrandedFood', read_xsv_file('../tests/data/csv/branded_food-10000.csv', dialect='excel'))
-    # write_model('nutrient.py', 'Nutrient', read_xsv_file('../tests/data/csv/nutrient-100.csv', dialect='excel'), pk_cols=['id'])
 
 '''
 Sample script (put this in the root dir:
