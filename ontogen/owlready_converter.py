@@ -51,14 +51,15 @@ class YamlToOwlConverter:
                             continue
                         prop_class = obj._internal_dict[prop]
                         for prop_name in prop_class:
-                            try:
-                                obj.properties.append(self._get_entity(f"{obj.prefix}:{prop_name}"))
-                            except KeyError:
-                                pass
+                            prop_qualifier = f"{obj.prefix}:{prop_name}"
+                            obj.defined_properties[prop_qualifier] = self.get_entity(prop_qualifier)
                 self.entities[class_entity_name] = obj
 
-    def _get_entity(self, entity_qualifier: str) -> OntologyEntity:
-        return self.entities[entity_qualifier]
+    def get_entity(self, entity_qualifier: str) -> OntologyEntity or None:
+        try:
+            return self.entities[entity_qualifier]
+        except KeyError:
+            return None
 
     def convert(self):
         self.sync_with_ontology()
@@ -71,7 +72,7 @@ class YamlToOwlConverter:
             if isinstance(entity, OwlClass):
                 classname = entity.name
                 dep_str = ""
-                d = ', '.join([', '.join(p.dependencies) for p in entity.properties])
+                d = ', '.join([', '.join(p.dependencies) for p in entity.defined_properties])
                 if d.strip() != "":
                     dep_str = f"from . import {d.strip(', ').replace(', , ',', ')}\n\n\n"
                 class_dump = f"{self.imports}"\

@@ -1,5 +1,5 @@
 from owlready2 import Ontology, Thing, ThingClass
-from typing import Type, Dict
+from typing import (Any, Dict, List, Type)
 
 
 class BaseOntologyClass(Thing):
@@ -53,24 +53,78 @@ class OntologyEntity:
         return f"{cls.prefix}:{cls.name}"
 
 
+TYPE_MAPPING = {
+    str: 'xsd:string',
+    int: 'xsd:integer',
+}
+
+
+def check_restrictions(prefix: str, str_types: List[str], value: Any) -> bool:
+    t = type(value)
+    p = {}
+    # check for builtin types
+    if t in TYPE_MAPPING:
+        p = set(str_types).intersection([TYPE_MAPPING[t]])
+        if len(p) == 0:
+            # check in defined classes
+            p = set(str_types).intersection(ENTITIES.keys())
+    return len(p) > 0
+
+
 class OwlClass(OntologyEntity):
+    """
+        A class for ontology classes of instances
+    """
     prefix = "owl"
     name = "Class"
-    properties = []
+    properties_values = {}
     parent_name = "BaseOntologyClass"
+    # Short for an Implementation instance
+    _internal_imp_instance: BaseOntologyClass = None
 
     def __init__(self, entity_qualifier: str):
         super(OwlClass, self).__init__(entity_qualifier=entity_qualifier)
-        self.properties = []
+        self.defined_properties: Dict[str, "OwlProperty"] = {}
+        self.is_instance = False
     
     def __str__(self):
         property_dump = "\n"
-        for prop in self.properties:
+        for prop in self.defined_properties:
             property_dump += f"    {prop}\n"
         else:
             property_dump += "    pass"
         return f"class {self.name}({self.parent_name}):" \
                f"{property_dump}"
+
+    @property
+    def _imp_instance_instantiated(self) -> bool:
+        return self._internal_imp_instance is not None
+
+    # owlready-related implementation
+    def _create_imp_instance(self, onto: Ontology):
+        self._internal_imp_instance = BaseOntologyClass(name=self.name, onto=onto)
+
+    def _sync_internal(self):
+        if not self._imp_instance_instantiated:
+            return
+        inst = self._internal_imp_instance
+        for set_prop in self.properties_values:
+            val = self.properties_values[set_prop]
+            set_prop = set_prop.split(":")[1]
+            if isinstance(val, list):
+                setattr(inst, set_prop, val)
+            else:
+                setattr(inst, set_prop, [val])
+
+    def add_property_assertion(self, property_name: str, value):
+        """
+            Adds property assertions with values
+        """
+        assert ":" in property_name and len(property_name.split(":")) == 2, "Please add prefix"
+        self.properties_values[property_name] = value
+        assert check_restrictions(self.prefix, self.defined_properties[property_name].range, value), \
+            "The value added doesn't match the range restriction!"
+        self._sync_internal()
 
 
 class OwlThing(OwlClass):
