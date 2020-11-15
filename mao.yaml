@@ -67,6 +67,58 @@ owl:Class:
       - CollectiveAgent and (isParticipantIn some MovieWatchingSituation)
     rdfs:subClassOf:
       - CollectiveAgent
+  mao:Award:
+    annotations:
+      rdfs:label:
+        - Award^^rdfs:Literal@en
+    dataProperty:
+      - hasNickname
+    objectProperty:
+      - hasAwardCategory
+      - hasPart
+      - isSettingFor
+      - presentedBy
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
+  mao:AwardCeremony:
+    annotations:
+      rdfs:label:
+        - AwardCeremony^^rdfs:Literal@en
+    dataProperty:
+      - dateHeld
+      - dayHeld
+      - dayScreened
+      - hasEditionNumber
+      - monthHeld
+      - monthScreened
+      - yearHeld
+      - yearScreened
+    objectProperty:
+      - follow
+      - followedBy
+      - hasAward
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - Award
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
   mao:AwardReceivedSituation:
     annotations:
       rdfs:label:
@@ -578,6 +630,12 @@ owl:Class:
 
 owl:DataProperty:
   owl:topDataProperty: ""
+  mao:dateHeld:
+    annotations:
+      rdfs:label:
+        - date held^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:dateTime
   mao:dateReleased:
     annotations:
       rdfs:label:
@@ -585,7 +643,19 @@ owl:DataProperty:
     rdf:type:
       - owl:FunctionalProperty
     rdfs:range:
-      - xsd:date
+      - xsd:dateTime
+  mao:dayHeld:
+    annotations:
+      rdfs:label:
+        - day held^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
+  mao:dayScreened:
+    annotations:
+      rdfs:label:
+        - day screened^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
   mao:hasAggregateRating:
     annotations:
       rdfs:label:
@@ -598,6 +668,12 @@ owl:DataProperty:
         - has character title^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
+  mao:hasEditionNumber:
+    annotations:
+      rdfs:label:
+        - has edition number^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
   mao:hasFeatureLengthInMinutes:
     annotations:
       rdfs:label:
@@ -618,6 +694,12 @@ owl:DataProperty:
         - has name^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
+  mao:hasNickname:
+    annotations:
+      rdfs:label:
+        - has nickname^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:string
   mao:hasTitle:
     annotations:
       rdfs:label:
@@ -630,6 +712,30 @@ owl:DataProperty:
         - has Wikipedia link^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
+  mao:monthHeld:
+    annotations:
+      rdfs:label:
+        - month held^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
+  mao:monthScreened:
+    annotations:
+      rdfs:label:
+        - month screened^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
+  mao:yearHeld:
+    annotations:
+      rdfs:label:
+        - year held^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
+  mao:yearScreened:
+    annotations:
+      rdfs:label:
+        - year screened^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
   mao:win:
     annotations:
       rdfs:label:
@@ -667,6 +773,18 @@ owl:ObjectProperty:
         - eligible for^^rdfs:Literal@en
     rdfs:domain:
       - FilmEligibleForAward
+    rdfs:range:
+      - AwardCategory
+  mao:follow:
+    annotations:
+      rdfs:label:
+        - follow^^rdfs:Literal@en
+    rdfs:range:
+      - AwardCeremony
+  mao:followedBy:
+    annotations:
+      rdfs:label:
+        - followed by^^rdfs:Literal@en
     rdfs:range:
       - AwardCategory
   mao:forFilm:
@@ -977,3 +1095,9 @@ owl:ObjectProperty:
       - Situation
     rdfs:range:
       - Thing
+  mao:presentedBy:
+    annotations:
+      rdfs:label:
+        - presented by^^rdfs:Literal@en
+    rdfs:range:
+      - Organization
