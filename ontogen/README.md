@@ -45,14 +45,16 @@
 ## Getting started
 Feel free to run unit tests in `test_ontogen.py`
 
+### Requirements
+- Python 3.8
+- `owlready2`
+
 ### (`owlready2`) Loading an OWL Ontology
 ```python
-from owlready2 import get_ontology, Ontology
-
+from ontogen import Ontology
 from settings import OWL_FILEPATH
 
-onto: Ontology = get_ontology(f"file:////{OWL_FILEPATH}")
-onto.load()
+onto: Ontology = Ontology.load_from_file(OWL_FILEPATH)
 ```
 
 ### Using an YamlToOwlConverter to generate `OwlClass`es

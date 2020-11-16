@@ -1,7 +1,7 @@
+Cython
 owlready2
-python-decouple
-sqlalchemy
 PyMySQL
 PyMSSQL
-stringcase
+python-decouple
 pyyaml
+sqlalchemy

@@ -26,11 +26,27 @@ class Ontology:
     TODO: A proxy for the real implementation in `owlready2`
     """
 
-    def __init__(self):
+    def __init__(self, namespace_iri: str = ""):
         self._internal_onto: owlready2.Ontology = None
+        self.namespace_iri = namespace_iri
 
-    def load_from_file(self, filename: str):
-        self._internal_onto = get_ontology(f"file:////{filename}")
+    def create(self, namespace_iri: str = ""):
+        """
+            Newly creates an Ontology from an existing namespace
+        """
+        assert self.namespace_iri == "" or namespace_iri == "", "Namespace must be set before creation"
+        self._internal_onto = get_ontology(self.namespace_iri if self.namespace_iri != "" else namespace_iri)
+
+    @classmethod
+    def load_from_file(cls, filename: str) -> "Ontology":
+        """
+        Loads an Ontology from an existing file
+        :param filename: The name of a given file
+        :return: Ontology object
+        """
+        inst = cls()
+        inst._internal_onto = get_ontology(f"file:////{filename}")
+        return inst
 
     def save_to_file(self, filename: str, file_format: str):
         self.implementation.save(file=filename, format=file_format)
