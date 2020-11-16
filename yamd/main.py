@@ -1,31 +1,45 @@
-from typing import List, Optional
+from abc import ABCMeta, abstractmethod
+from typing import List, Optional, Iterable, Union, Dict
 
 import yaml
 
 from dirs import ROOT_DIR
 from table_maker import Table
-
 from yamd.pretty_label import get_pretty_label, get_language_from_code
 
 
-def get_plain_literal(s: str) -> str:
-    return s.split('^^')[0]
+def get_plain_literal(datatype_value: str) -> str:
+    return datatype_value.split('^^')[0]
 
 
-def get_markdown_list_item(level: int, s: str) -> str:
+def get_md_list(level: int, lst: Iterable[Union[str, Iterable[str]]]) -> str:
     """Returns a markdown list indented to the appropriate level.
 
     Args:
-        level: The level to indent to
-        s: The string which is the body of the list
+        level: The base level to indent to.
+        lst: The list of (list of) str to convert to markdown.
 
     Examples:
-        >>> get_markdown_list(0, 'Thing')
+        >>> get_md_list(5, [])
+        ''
+        >>> get_md_list(0, ['Thing'])
         '- Thing'
-        >>> get_markdown_list(2, 'Pizza')
-        '    - Pizza'
+        >>> get_md_list(2, ['Pizza','Basil'])
+        '    - Pizza\\n    - Basil'
+        >>> get_md_list(0, ['Ant', ['Ant man', 'Ant woman']])
+        '- Ant\\n  - Ant man\\n  - Ant woman'
+
+    Notes:
+        Base list item must be `str` in order to support
+        multiple types of iterables. Either the list item
+        type is defined or the iterable type is defined.
+        I chose the former.
     """
-    return ''.join([' ' * 2 * level, '- ', s])
+    if isinstance(lst, str):
+        return ''.join(('  ' * level, '- ', lst))
+    if isinstance(lst, Iterable):
+        return '\n'.join(get_md_list(level + 1, item) for item in lst)
+    raise TypeError(f"item must be a str or an iterable of str, not {lst.__class__.__name__}")
 
 
 def split_locstr(locstr: str) -> (str, str):
@@ -97,26 +111,50 @@ class Annotations:
                 lines.append(table)
             else:
                 lines.append(get_pretty_label(property))
-                for item in value:
-                    lines.append(get_markdown_list_item(1, get_plain_literal(item)))
+                lines.append(get_md_list(1, map(get_plain_literal, value)))
                 lines.append('')
         return '\n'.join(lines)
 
 
-class Class:
-    map = {
-        'rdfs:subClassOf': 'Subclass of',
-        'owl:disjointWith': 'Disjoint with',
-        'owl:equivalentClass': 'Equivalent tp',
-    }
-
+class Entity(metaclass=ABCMeta):
     def __init__(self, name: str, data: dict):
         if isinstance(data, str):
+            # Allow using '' as placeholder when no data
             assert data == ''
             self.data = {}
         else:
             self.data = data
         self._name = name
+
+    @property
+    @abstractmethod
+    def _description_map(self) -> Dict[str, str]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def as_markdown(self) -> str:
+        raise NotImplementedError
+
+    @property
+    def name(self) -> str:
+        return self._name.split(':')[-1]
+
+    @property
+    def annotations(self) -> Optional[str]:
+        try:
+            return Annotations(self.data['annotations']).as_markdown()
+        except KeyError:
+            return None
+
+
+class Class(Entity):
+    @property
+    def _description_map(self) -> Dict[str, str]:
+        return {
+            'rdfs:subClassOf': 'Subclass of',
+            'owl:disjointWith': 'Disjoint with',
+            'owl:equivalentClass': 'Equivalent tp',
+        }
 
     def as_markdown(self) -> str:
         lines = [
@@ -129,33 +167,20 @@ class Class:
         return '\n'.join((line for line in lines if line))
 
     @property
-    def name(self) -> str:
-        return self._name.split(':')[1]
-
-    @property
-    def annotations(self) -> Optional[str]:
-        try:
-            return Annotations(self.data['annotations']).as_markdown()
-        except KeyError:
-            return None
-
-    @property
     def description(self) -> Optional[str]:
         try:
             lines = []
-            for uname, pname in self.map.items():
+            for uname, pname in self._description_map.items():
                 if uname in self.data:
-                    lines.append(f'{pname}:')
-                    value = self.data[uname]
-                    if not isinstance(value, list):
-                        value = [value]
-                    for item in value:
-                        try:
-                            lines.append(get_markdown_list_item(1, item))
-                        except TypeError:
-                            assert isinstance(item, dict)
-                            lines.append(get_markdown_list_item(1, item['owl:equivalentClass']))
-                    lines.append('')
+                    if uname == 'owl:equivalentClass':
+                        data = self.data[uname]['owl:Restriction']
+                    else:
+                        data = self.data[uname]
+                    cleaned_data = parse_lenient_list_of_strings(data)
+                    if cleaned_data:
+                        lines += [f'{pname}:',
+                                  get_md_list(0, cleaned_data),
+                                  '']
             if lines:
                 lines.insert(0, '### Description')
                 return '\n'.join(lines)
@@ -164,48 +189,85 @@ class Class:
 
     @property
     def object_properties(self) -> Optional[str]:
-        try:
-            lines = []
-            value = self.data['objectProperty']
-            if not isinstance(value, list):
-                value = [value]
-            for property in value:
-                lines.append(get_markdown_list_item(1, property))
-            lines.append('')
-            if lines:
-                lines.insert(0, '### Object Properties')
+        if 'objectProperty' in self.data:
+            cleaned_data = parse_lenient_list_of_list_of_string(self.data['objectProperty'])
+            if cleaned_data:
+                lines = ['### Object Properties',
+                         get_md_list(0, cleaned_data),
+                         '']
                 return '\n'.join(lines)
-        except KeyError:
-            return None
+        return
 
     @property
     def data_properties(self) -> Optional[str]:
-        try:
-            lines = []
-            for property in self.data['dataProperty']:
-                lines.append(get_markdown_list_item(1, property))
-            lines.append('')
-            if lines:
-                lines.insert(0, '### Data Properties')
+        if 'dataProperty' in self.data:
+            cleaned_data = parse_lenient_list_of_list_of_string(self.data['dataProperty'])
+            if cleaned_data:
+                lines = ['### Data Properties',
+                         get_md_list(0, cleaned_data),
+                         '']
                 return '\n'.join(lines)
-        except KeyError:
-            return None
+        return
 
 
-class ObjectProperty:
-    map = {
-        'rdfs:domain': 'Domain',
-        'rdfs:range': 'Range',
-        'rdfs:subPropertyOf': 'Subproperties',
-    }
+def parse_lenient_list_of_strings(obj) -> List[str]:
+    if isinstance(obj, str):
+        if obj:
+            # assume using not using list for one string
+            return [obj]
+        # empty string, assume using '' as placeholder
+        assert obj == ''
+        return []
+    if isinstance(obj, list):
+        if all(isinstance(item, str) for item in obj):
+            return obj
+    raise ValueError(f"Object is not a list of strings: '{obj}'")
 
-    def __init__(self, name: str, data: dict):
-        if isinstance(data, str):
-            assert data == ''
-            self.data = {}
-        else:
-            self.data = data
-        self._name = name
+
+def is_recursive_list_of_strings(obj) -> bool:
+    if isinstance(obj, str):
+        return True
+    if isinstance(obj, list):
+        return all(is_recursive_list_of_strings(item) for item in obj)
+    return False
+
+
+def parse_lenient_list_of_list_of_string(obj) -> List[str]:
+    if isinstance(obj, str):
+        if obj:
+            # assume using not using list for one string
+            return [obj]
+        # empty string, assume using '' as placeholder
+        assert obj == ''
+        return []
+    if isinstance(obj, list):
+        if is_recursive_list_of_strings(obj):
+            return obj
+    raise ValueError(f"Object is not a list of (list of) strings: '{obj}'")
+
+
+def parse_lenient_list_of_objects(obj) -> List[dict]:
+    if isinstance(obj, str):
+        if obj == '':
+            # empty string, assume using '' as placeholder
+            return []
+    if isinstance(obj, dict):
+        # assume using not using list for one object
+        return [obj]
+    if isinstance(obj, list):
+        if all(isinstance(item, dict) for item in obj):
+            return obj
+    raise ValueError(f"Object is not a list of dicts: '{obj}'")
+
+
+class Property(Entity):
+    @property
+    def _description_map(self) -> Dict[str, str]:
+        return {
+            'rdfs:domain': 'Domain',
+            'rdfs:range': 'Range',
+            'rdfs:subPropertyOf': 'Sub-properties',
+        }
 
     def as_markdown(self) -> str:
         lines = [
@@ -216,137 +278,36 @@ class ObjectProperty:
         return '\n'.join((line for line in lines if line))
 
     @property
-    def name(self) -> str:
-        return self._name.split(':')[1]
-
-    @property
-    def annotations(self) -> Optional[str]:
-        try:
-            return Annotations(self.data['annotations']).as_markdown()
-        except KeyError:
-            return None
-
-    @property
     def description(self) -> Optional[str]:
-        try:
-            lines = []
-            for uname, pname in self.map.items():
-                if uname in self.data:
-                    lines.append(f'{pname}:')
-                    value = self.data[uname]
-                    if not isinstance(value, list):
-                        value = [value]
-                    for item in value:
-                        lines.append(get_markdown_list_item(1, item))
-                    lines.append('')
-            if lines:
-                lines.insert(0, '### Description')
-                return '\n'.join(lines)
-        except KeyError:
-            return None
+        lines = []
+        for uname, pname in self._description_map.items():
+            if uname in self.data:
+                lines += [
+                    f'{pname}:',
+                    get_md_list(0, self.data[uname]),
+                    ''
+                ]
+        if lines:
+            lines.insert(0, '### Description')
+            return '\n'.join(lines)
 
 
-class DataProperty:
-    map = {
-        'rdfs:domain': 'Domain',
-        'rdfs:range': 'Range',
-        'rdfs:subPropertyOf': 'Subproperties',
-    }
+class ObjectProperty(Property):
+    pass
 
-    def __init__(self, name: str, data: dict):
-        if isinstance(data, str):
-            assert data == ''
-            self.data = {}
-        else:
-            self.data = data
-        self._name = name
 
-    def as_markdown(self) -> str:
-        lines = [
-            f'## {self.name}',
-            self.annotations,
-            self.description,
-        ]
-        return '\n'.join((line for line in lines if line))
+class DataProperty(Property):
+    pass
 
+
+class AnnotationProperty(Property):
     @property
-    def name(self) -> str:
-        return self._name.split(':')[1]
-
-    @property
-    def annotations(self) -> Optional[str]:
-        try:
-            return Annotations(self.data['annotations']).as_markdown()
-        except KeyError:
-            return None
-
-    @property
-    def description(self) -> Optional[str]:
-        try:
-            lines = []
-            for uname, pname in self.map.items():
-                if uname in self.data:
-                    lines.append(f'{pname}:')
-                    for item in self.data[uname]:
-                        lines.append(get_markdown_list_item(1, item))
-                    lines.append('')
-            if lines:
-                lines.insert(0, '### Description')
-                return '\n'.join(lines)
-        except KeyError:
-            return None
-
-
-class AnnotationProperty:
-    map = {
-        'rdfs:domain': 'Domain',
-        'rdfs:range': 'Range',
-        # 'rdf:superProperty': 'Superproperties',
-    }
-
-    def __init__(self, name: str, data: dict):
-        if isinstance(data, str):
-            assert data == ''
-            self.data = {}
-        else:
-            self.data = data
-        self._name = name
-
-    def as_markdown(self) -> str:
-        lines = [
-            f'## {self.name}',
-            self.annotations,
-            self.description,
-        ]
-        return '\n'.join((line for line in lines if line))
-
-    @property
-    def name(self) -> str:
-        return self._name.split(':')[1]
-
-    @property
-    def annotations(self) -> Optional[str]:
-        try:
-            return Annotations(self.data['annotations']).as_markdown()
-        except KeyError:
-            return None
-
-    @property
-    def description(self) -> Optional[str]:
-        try:
-            lines = []
-            for uname, pname in self.map.items():
-                if uname in self.data:
-                    lines.append(f'{pname}:')
-                    for item in self.data[uname]:
-                        lines.append(get_markdown_list_item(1, item))
-                    lines.append('')
-            if lines:
-                lines.insert(0, '### Description')
-                return '\n'.join(lines)
-        except KeyError:
-            return None
-
+    def _description_map(self) -> Dict[str, str]:
+        return {
+            'rdfs:domain': 'Domain',
+            'rdfs:range': 'Range',
+            # 'rdf:superProperty': 'Superproperties',
+        }
 
 
 def main():
