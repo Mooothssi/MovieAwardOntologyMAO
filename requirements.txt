@@ -5,3 +5,4 @@ PyMSSQL
 python-decouple
 pyyaml
 sqlalchemy
+pandas
