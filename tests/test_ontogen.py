@@ -19,9 +19,9 @@ class TestOntogen(TestCase):
 
     def setUp(self):
         self.converter = YamlToOwlConverter("data/mao.yaml")
-        self.onto = get_ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/proto-movie#")
-        # self.onto = get_ontology(f"file:////{OWL_FILEPATH}")
-        # self.onto.load()
+        # self.onto = get_ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/proto-movie#")
+        self.onto = get_ontology(f"file:////{OWL_FILEPATH}")
+        self.onto.load()
 
     def test_assertion(self):
         self.test_instantiation()

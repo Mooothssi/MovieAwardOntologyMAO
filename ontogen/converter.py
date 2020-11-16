@@ -26,7 +26,8 @@ class YamlToOwlConverter:
         self._load_file()
 
     def _load_file(self):
-        dct = load(open(self.spec_filename), Loader=Loader)
+        with open(self.spec_filename) as f:
+            dct = load(f, Loader=Loader)
         temp_classes = []
         for base in BASE_ENTITIES:
             cls = base
@@ -47,8 +48,8 @@ class YamlToOwlConverter:
                         if "rdfs:range" in sub:
                             obj.range = [get_equivalent_datatype(datatype) for datatype in sub["rdfs:range"]]
                     annotations = sub["annotations"]
-                    obj.add_label(annotations.get(LABEL_ENTITY_NAME, [None])[0])
-                    obj.add_comment(annotations.get(COMMENT_ENTITY_NAME, [None])[0])
+                    obj.add_labels(annotations.get(LABEL_ENTITY_NAME, [None]))
+                    obj.add_comments(annotations.get(COMMENT_ENTITY_NAME, [None]))
                 if base == OwlClass:
                     obj._internal_dict = sub
                     for prop in PROPERTY_ENTITIES:
@@ -81,4 +82,5 @@ class YamlToOwlConverter:
 
     def to_owl_ontology(self, onto: Ontology):
         for entity in self.entities.values():
-            entity.instantiate(onto)
+            entity.actualize(onto)
+

@@ -112,7 +112,7 @@ class OwlClass(OntologyEntity):
                f"{property_dump}"
 
     # owlready-related implementation
-    def instantiate(self, onto: Ontology, individual_name: str = ""):
+    def instantiate(self, onto: Ontology, individual_name: str):
         """
         Instantiate Individuals into a given Ontology
 
@@ -120,18 +120,23 @@ class OwlClass(OntologyEntity):
         :param onto: An `owlready2` Ontology
         """
         apply_classes_from(onto)
+        self._sync_internal(onto)
+        inst = self.get_generated_class(onto)()
+        inst.name = individual_name
+        self._internal_imp_instance = inst
+
+    def actualize(self, onto: Ontology):
+        """
+        Makes the entity concrete (saved) in a given Ontology
+        :param onto: a given `owlready2` Ontology
+        """
+        apply_classes_from(onto)
         # TODO: realise all equivalents
         self._sync_internal(onto)
-        individual_name = self.name if individual_name == "" else individual_name
-        if individual_name == self.name:
-            self.get_generated_class(onto)
-            disj = [x.get_generated_class(onto) for x in self._disjoint_classes if x is not None]
-            if len(disj) > 0:
-                AllDisjoint(disj)
-        else:
-            inst = self.get_generated_class(onto)()
-            inst.name = individual_name
-            self._internal_imp_instance = inst
+        self.get_generated_class(onto)
+        disj = [x.get_generated_class(onto) for x in self._disjoint_classes if x is not None]
+        if len(disj) > 0:
+            AllDisjoint(disj)
 
     def add_property_assertion(self, property_name: str, value):
         """

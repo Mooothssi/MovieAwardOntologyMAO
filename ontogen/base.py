@@ -20,6 +20,13 @@ DATATYPE_MAP = {
 }
 
 
+class Ontology:
+    """
+    TODO: A proxy for the real implementation in `owlready2`
+    """
+    pass
+
+
 class OntologyEntity:
     prefix = "owl"
     name = "any"
@@ -45,7 +52,14 @@ class OntologyEntity:
         return f"{cls.prefix}:{cls.name}"
 
     # owlready2-related implementation
-    def instantiate(self, onto: Ontology):
+    def instantiate(self, onto: Ontology, individual_name: str):
+        pass
+
+    def actualize(self, onto: Ontology):
+        """
+            Makes the entity concrete (saved) in a given Ontology
+            :param onto: a given Ontology
+        """
         pass
 
     def get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
@@ -78,15 +92,26 @@ class OntologyEntity:
     def add_disjoint_classes(self, cls: "OntologyEntity"):
         self._disjoint_classes.append(cls)
 
-    def add_label(self, value: BUILTIN_DATA_TYPES):
+    def _add_builtin_prop(self, builtin_name: str, value: BUILTIN_DATA_TYPES):
         if value is None:
             return
-        self.properties_values[LABEL_ENTITY_NAME] = value
+        if builtin_name not in self.properties_values:
+            self.properties_values[builtin_name] = []
+        self.properties_values[builtin_name] += [value]
+
+    def add_label(self, value: BUILTIN_DATA_TYPES):
+        self._add_builtin_prop(LABEL_ENTITY_NAME, value)
+
+    def add_labels(self, values: List[BUILTIN_DATA_TYPES]):
+        for v in values:
+            self.add_label(v)
 
     def add_comment(self, value: BUILTIN_DATA_TYPES):
-        if value is None:
-            return
-        self.properties_values[COMMENT_ENTITY_NAME] = value
+        self._add_builtin_prop(COMMENT_ENTITY_NAME, value)
+
+    def add_comments(self, values: List[BUILTIN_DATA_TYPES]):
+        for v in values:
+            self.add_comment(v)
 
     @property
     def is_individual(self) -> bool:
@@ -99,17 +124,18 @@ class OntologyEntity:
             inst = self._internal_imp_instance
         for set_prop in self.properties_values:
             val = self.properties_values[set_prop]
-            if set_prop in BUILTIN_NAMES:
-                val: str
-                if "^^" in val or "@" in val:
-                    import re
-                    split_values = re.split(r'(?:(.+)\^\^(.+)@(.+)|(.+)\^\^(.+))', val)
-                    if len(split_values) > 2 and split_values[1] is not None:
-                        lit, lang = (split_values[1], split_values[3])
-                        val = locstr(lit, lang)
-                    else:
-                        val, data_type = (split_values[4], split_values[5])
-                        val = DATATYPE_MAP[data_type](val)
+            if set_prop in BUILTIN_NAMES and isinstance(val, list):
+                for i, v in enumerate(val):
+                    v: str
+                    if "^^" in v or "@" in v:
+                        import re
+                        split_values = re.split(r'(?:(.+)\^\^(.+)@(.+)|(.+)\^\^(.+))', v)
+                        if len(split_values) > 2 and split_values[1] is not None:
+                            lit, lang = (split_values[1], split_values[3])
+                            val[i] = locstr(lit, lang)
+                        else:
+                            v, data_type = (split_values[4], split_values[5])
+                            val[i] = DATATYPE_MAP[data_type](v)
             set_prop = set_prop.split(":")[1]
             try:
                 if isinstance(val, list):

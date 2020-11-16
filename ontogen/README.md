@@ -64,17 +64,27 @@ film: OwlClass = converter.get_entity("mao:Film")
 ...
 ```
 
-### Creating an Individual from an Ontology Class
-An individual must be first `instantiate()`d before adding any assertions.
+### Saving (Actualizing) a newly-defined Class to an Ontology
 ```python
-from owlready2 import Ontology
+from ontogen import Ontology, OwlClass
 
-from ontogen import OwlClass
+onto: Ontology
+mao_film: OwlClass = OwlClass("mao:Film")
+# Realise mao:Film class into the given `onto` Ontology
+mao_film.actualize(onto)
+```
+
+
+### Creating an Individual from an Ontology Class
+An individual must be first `actualized` and `instantiated` before adding any assertions.
+```python
+from ontogen import Ontology, OwlClass
 
 onto: Ontology # `owlready2` loaded OWL
 # mao:Film rdfs:subclassOf owl:Thing
-parasite_film: OwlClass = OwlClass("mao:Film") # or selectively `converter.get_entity("mao:Film")` 
-parasite_film.instantiate("Parasite", onto) # Create an mao:Film individual named Parasite in a given OWL Ontology
+parasite_film: OwlClass = OwlClass("mao:Film") # or selectively `converter.get_entity("mao:Film")`
+# Create an mao:Film individual named Parasite in a given OWL Ontology
+parasite_film.instantiate(onto, "Parasite") 
 ```
 
 ### Adding a Property Assertion to an Individual

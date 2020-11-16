@@ -14,6 +14,7 @@ from settings import OWL_FILEPATH
 
 # SESSION = Session()  # connect_database()
 
+# TODO: Manual script for transforming from data in a database to classes and relations in an Ontology
 
 def query_names(cls: Type[Base], onto: Ontology):
     # all_base = SESSION.query(cls).all()
