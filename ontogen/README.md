@@ -4,8 +4,27 @@
 ### Classes
 - [x] `rdfs:type` (Mostly done)
 - [x] `rdfs:subClassOf` (Mostly done)
+   - [x] `Object Property`
+   - [x] `Classes`
 - [ ] `rdfs:equivalentClass`
 - [x] `owl:disjointWith` (Partially)
+- [ ] `owl:Restriction` and class constructs
+   - Protege Class Expressions
+     - HasValue restriction
+       - [ ] `value`
+     - Quantifier
+       - [ ] `some` (Existential)
+       - [ ] `only` (Universal)
+     - Cardinality restriction
+       - [ ] `min`
+       - [ ] `max`
+       - [ ] `exactly` (Exact)
+     - Logical
+       - [ ] `and`
+       - [ ] `or` (triple)
+       - [ ] `not` (double)
+     - Parentheses & Nested parentheses
+   
 
 ### Properties
 - [x] `owl:ObjectProperty` (Partially)
@@ -19,6 +38,9 @@
 - [x] `xsd:string` (`owlready2` builtin as `str`)
 - [x] `xsd:integer` (`owlready2` builtin as `int`)
 - [x] `xsd:float` (`owlready2` builtin as `float`)
+
+### Rules
+- [ ] `SWRL` expressions
 
 ## Getting started
 Feel free to run unit tests in `test_ontogen.py`
@@ -35,7 +57,7 @@ onto.load()
 
 ### Using an YamlToOwlConverter to generate `OwlClass`es
 ```python
-from ontogen.owlready_converter import YamlToOwlConverter
+from ontogen.converter import OwlClass, YamlToOwlConverter
 
 converter = YamlToOwlConverter("data/mao.yaml")
 film: OwlClass = converter.get_entity("mao:Film")
@@ -55,7 +77,7 @@ parasite_film: OwlClass = OwlClass("mao:Film") # or selectively `converter.get_e
 parasite_film.instantiate("Parasite", onto) # Create an mao:Film individual named Parasite in a given OWL Ontology
 ```
 
-### Adding a property assertion to an Individual
+### Adding a Property Assertion to an Individual
 ```python
 from ontogen import OwlClass
 
