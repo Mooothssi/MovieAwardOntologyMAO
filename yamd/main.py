@@ -87,6 +87,14 @@ def write_classes(classes: dict) -> List[str]:
     return lines
 
 
+def is_locstr(s: str) -> bool:
+    """Returns True if `s` is a localized string."""
+    return '^^rdfs:Literal@' in s
+
+
+ALWAYS_USE_TABLE = ['rdfs:label']
+
+
 class Annotations:
     def __init__(self, data: dict):
         self.data = data
@@ -97,21 +105,15 @@ class Annotations:
         lines = [
             '### Annotations',
         ]
-        for property, value in self.data.items():
-            if not isinstance(value, list):
-                value = [value]
-            locstrs = []
-            for item in value:
-                if '^^rdfs:Literal@' in item:
-                    locstrs.append(item)
-            if locstrs or property in ['rdfs:label']:
-                lines.append(get_pretty_label(property))
+        for prop, values in self.data.items():
+            clean_values = parse_lenient_list_of_strings(values)
+            lines.append(get_pretty_label(prop))
+            if any(is_locstr(item) for item in clean_values) or prop in ALWAYS_USE_TABLE:
                 lines.append('')
-                table = write_language_table(value, get_pretty_label(property))
+                table = write_language_table(clean_values, get_pretty_label(prop))
                 lines.append(table)
             else:
-                lines.append(get_pretty_label(property))
-                lines.append(get_md_list(1, map(get_plain_literal, value)))
+                lines.append(get_md_list(0, map(get_plain_literal, clean_values)))
                 lines.append('')
         return '\n'.join(lines)
 
