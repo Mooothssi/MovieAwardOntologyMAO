@@ -2,11 +2,8 @@ from owlready2 import (Ontology, Thing, ThingClass)
 
 
 class BaseOntologyClass(Thing):
-    def __init__(self, name: str, onto: Ontology = None):
-        if onto is not None:
-            self.namespace = onto
-            self.ontology = onto
-        super().__init__(name)
+    def __init__(self):
+        pass
 
     @property
     def instances(self):

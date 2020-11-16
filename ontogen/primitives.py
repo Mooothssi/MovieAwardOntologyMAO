@@ -1,16 +1,28 @@
-from owlready2 import (AllDisjoint, AnnotationProperty, DataProperty,
-                       ObjectProperty, Thing)
+from owlready2 import (AllDisjoint, AnnotationProperty, AsymmetricProperty, DataProperty,
+                       ObjectProperty, SymmetricProperty, FunctionalProperty, IrreflexiveProperty,
+                       InverseFunctionalProperty, ReflexiveProperty,
+                       Thing, ThingClass, TransitiveProperty)
 from typing import Any, Dict, List, Type
 
 from .base import Ontology, OntologyEntity, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
+from .wrapper import BaseOntologyClass
 
-TYPE_MAPPING = [str, int]
+BUILTIN_DATATYPES = [str, int]
+CHARACTERISTICS_MAPPING = {
+    "owl:AsymmetricProperty": AsymmetricProperty,
+    "owl:SymmetricProperty": SymmetricProperty,
+    "owl:TransitiveProperty": TransitiveProperty,
+    "owl:FunctionalProperty": FunctionalProperty,
+    "owl:IrreflexiveProperty": IrreflexiveProperty,
+    "owl:ReflexiveProperty": ReflexiveProperty,
+    "owl:InverseFunctionalProperty": InverseFunctionalProperty
+}
 
 
 def check_restrictions(prefix: str, str_types: List[str], value: Any) -> bool:
     t = type(value)
     # check for builtin types
-    if t in TYPE_MAPPING:
+    if t in BUILTIN_DATATYPES:
         return True
     p = set([f"{prefix}:{str_type}" for str_type in str_types]).intersection(ENTITIES.keys())
     return len(p) > 0
@@ -21,9 +33,9 @@ class OwlProperty(OntologyEntity):
     range = [Type[str]]
 
     # owlready-related implementation
-    def instantiate(self, onto: Ontology):
+    def actualize(self, onto: Ontology):
         """
-        Instantiate a Datatype Property into a given Ontology
+        Instantiate a Property into a given Ontology
 
         :param individual_name: The name of an individual, creating an ontology Class if empty
         :param onto: An `owlready2` Ontology
@@ -37,6 +49,14 @@ class OwlProperty(OntologyEntity):
     def get_generated_range(self, onto: Ontology):
         return self.range
 
+    def __repr__(self):
+        str_obj = f"{self.name}" if len(self.range) > 0 or self.name == "ObjectProperty" else "<unk>"
+        if "owl:Class" not in self.range:
+            str_obj += f": {self.range[0]}"
+        else:
+            str_obj += f": Thing"
+        return str_obj
+
 
 class OwlDataProperty(OwlProperty):
     name = "DataProperty"
@@ -48,9 +68,27 @@ class OwlObjectProperty(OwlProperty):
     name = "ObjectProperty"
     _range = ["owl:Class"]
     _parent_class = ObjectProperty
+    _characteristics = ["owl:SymmetricProperty"]
+
+    def __init__(self, name: str):
+        super().__init__(name)
+        self._realised_parent_classes.append(ObjectProperty)
+        self.inverse_prop: Type or None = None
+
+    def get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
+        u = [CHARACTERISTICS_MAPPING.get(c, None) for c in self._characteristics]
+        if self.inverse_prop is not None:
+            attrs['inverse_property'] = self.get_generated_inverse(onto)
+        if len(u) > 0:
+            self._realised_parent_classes.extend(u)
+        return super(OwlObjectProperty, self).get_generated_class(onto, **attrs)
 
     def get_generated_range(self, onto: Ontology):
         return [x.get_generated_class(onto) for x in self.range if x is not None]
+
+    def get_generated_inverse(self, onto: Ontology) -> Type:
+        self.inverse_prop.inverse_prop = None
+        return self.inverse_prop.get_generated_class(onto)
 
     @property
     def range(self):
@@ -61,14 +99,6 @@ class OwlObjectProperty(OwlProperty):
         self._range = a
         self.dependencies.extend([b for b in a if not b == "Thing" and b != ""])
 
-    def __str__(self):
-        str_obj = f"{self.name}" if len(self.range) > 0 or self.name == "ObjectProperty" else "<unk>"
-        if "owl:Class" not in self.range:
-            str_obj += f": {self.range[0]}"
-        else:
-            str_obj += f": Thing"
-        return str_obj
-
 
 class OwlAnnotationProperty(OwlProperty):
     name = "AnnotationProperty"
@@ -76,14 +106,12 @@ class OwlAnnotationProperty(OwlProperty):
     _parent_class = AnnotationProperty
 
     # owlready-related implementation
-    def instantiate(self, onto: Ontology):
+    def actualize(self, onto: Ontology):
         """
         Instantiate a Datatype Property into a given Ontology
 
-        :param individual_name: The name of an individual, creating an ontology Class if empty
         :param onto: An `owlready2` Ontology
         """
-        apply_classes_from(onto)
         self.get_generated_class(onto, range=self.range)
 
 
@@ -91,6 +119,10 @@ class OwlClass(OntologyEntity):
     """
         A class for ontology classes of instances
     """
+
+    def __repr__(self) -> str:
+        return f"OwlClass<{self.prefix}:{self.name}>"
+
     prefix = "owl"
     name = "Class"
     parent_name = "BaseOntologyClass"
@@ -98,18 +130,9 @@ class OwlClass(OntologyEntity):
     parent_class_names: List[str] = []
     disjoint_class_names: List[str] = []
 
-    def __init__(self, entity_qualifier: str):
-        super(OwlClass, self).__init__(entity_qualifier=entity_qualifier)
+    def __init__(self, entity_name: str):
+        super(OwlClass, self).__init__(entity_qualifier=entity_name)
         self.defined_properties: Dict[str, "OwlProperty" or None] = dict(ENTITIES)
-
-    def __str__(self):
-        property_dump = "\n"
-        for prop in self.defined_properties:
-            property_dump += f"    {prop}\n"
-        else:
-            property_dump += "    pass"
-        return f"class {self.name}({self.parent_name}):" \
-               f"{property_dump}"
 
     # owlready-related implementation
     def instantiate(self, onto: Ontology, individual_name: str):
@@ -119,6 +142,8 @@ class OwlClass(OntologyEntity):
         :param individual_name: The name of an individual, creating an ontology Class if empty
         :param onto: An `owlready2` Ontology
         """
+        if not self.is_actualized:
+            self.actualize(onto)
         apply_classes_from(onto)
         self._sync_internal(onto)
         inst = self.get_generated_class(onto)()
@@ -158,6 +183,14 @@ class OwlClass(OntologyEntity):
 class OwlThing(OwlClass):
     name = "Thing"
     parent_name = "BaseOwlThing"
+    prefix = "owl"
+    _internal_imp_instance = Thing
+
+    def __init__(self):
+        super().__init__(f"{self.prefix}:{self.name}")
+
+    def get_generated_class(self, onto: Ontology, **attrs) -> Type[ThingClass]:
+        return self._internal_imp_instance
 
 
 def all_subclasses(cls):
@@ -166,7 +199,7 @@ def all_subclasses(cls):
 
 
 def apply_classes_from(onto: Ontology):
-    for s in all_subclasses(Thing):
+    for s in all_subclasses(BaseOntologyClass):
         s.namespace = onto.implementation
         setattr(s, 'storid', onto.implementation.world._abbreviate(s.iri))
 

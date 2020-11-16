@@ -1,12 +1,11 @@
-from owlready2 import Ontology
 from typing import Tuple
 from yaml import load, Loader
 
 
 from .base import DATATYPE_MAP
 from .primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, ENTITIES,
-                         LABEL_ENTITY_NAME, PROPERTY_ENTITIES,
-                         OntologyEntity, OwlClass, OwlDataProperty,
+                         LABEL_ENTITY_NAME, PROPERTY_ENTITIES, Ontology,
+                         OntologyEntity, OwlClass, OwlDataProperty, OwlThing,
                          OwlObjectProperty)
 from .wrapper import BaseOntologyClass
 
@@ -17,6 +16,10 @@ def create_owl_thing(name: str, onto: Ontology):
 
 def get_equivalent_datatype(entity_name: str):
     return DATATYPE_MAP.get(entity_name, entity_name)
+
+
+def get_qualified_entity(name: str, fallback_prefix: str = "mao"):
+    return name if ":" in name else f"{fallback_prefix}:{name}"
 
 
 class YamlToOwlConverter:
@@ -42,8 +45,11 @@ class YamlToOwlConverter:
                 sub = classes[class_entity_name]
                 if isinstance(sub, dict):
                     if base == OwlObjectProperty:
-                        if "rdfs:range" in sub:
-                            obj.range = sub["rdfs:range"]
+                        obj._characteristics = sub.get("rdf:type", [])
+                        obj.range = sub.get("rdfs:range", [])
+                        inv = sub.get("owl:inverseOf", [])
+                        if len(inv) == 1:
+                            obj.inverse_prop = inv[0]
                     elif base == OwlDataProperty:
                         if "rdfs:range" in sub:
                             obj.range = [get_equivalent_datatype(datatype) for datatype in sub["rdfs:range"]]
@@ -59,28 +65,38 @@ class YamlToOwlConverter:
                         obj.parent_class_names = sub.get("rdfs:subClassOf", [])
                         obj.disjoint_class_names = sub.get("owl:disjointWith", [])
                         for prop_name in prop_class:
-
-                            prop_qualifier = f"{obj.prefix}:{prop_name}"
-                            obj.defined_properties[prop_qualifier] = self.get_entity(prop_qualifier)
+                            prop_qualifier = get_qualified_entity(prop_name)
+                            obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
                 self.entities[class_entity_name] = obj
         self._load_class_descriptions(tuple(self.entities.values()))
 
     def _load_class_descriptions(self, classes: Tuple[OntologyEntity]):
         for cls in classes:
-            if isinstance(cls, OwlClass):
-                [cls.add_superclass(self.get_entity(f"{cls.prefix}:{name}")) for name in cls.parent_class_names]
-                [cls.add_disjoint_classes(self.get_entity(f"{cls.prefix}:{name}")) for name in cls.disjoint_class_names]
-            elif isinstance(cls, OwlObjectProperty):
-                cls.range = [self.get_entity(f"{cls.prefix}:{name}") for name in cls.range]
+            if isinstance(cls, OwlClass) or isinstance(cls, OwlObjectProperty):
+                [cls.add_superclass(self.get_entity(name, cls.prefix)) for name in cls.parent_class_names]
+                if isinstance(cls, OwlClass):
+                    [cls.add_disjoint_classes(self.get_entity(name, cls.prefix)) for name in cls.disjoint_class_names]
+                elif isinstance(cls, OwlObjectProperty):
+                    cls.range = [self.get_entity(name, cls.prefix) for name in cls.range]
+                    cls.inverse_prop = self.get_entity(cls.inverse_prop, cls.prefix)
 
-    def get_entity(self, entity_name: str) -> OntologyEntity or None:
+    def get_entity(self, entity_name: str, fallback_prefix: str = "mao") -> OntologyEntity or None:
+        if entity_name is None:
+            return None
+        entity_name = get_qualified_entity(entity_name, fallback_prefix)
+        if entity_name == "owl:Thing" or entity_name == "mao:Thing":
+            return OwlThing()
         try:
             return self.entities[entity_name]
         except KeyError:
             return None
 
     def to_owl_ontology(self, onto: Ontology):
+        """
+            Saves changes made into a given Ontology
+            :param onto: A given Ontology
+        """
         for entity in self.entities.values():
             entity.actualize(onto)
 

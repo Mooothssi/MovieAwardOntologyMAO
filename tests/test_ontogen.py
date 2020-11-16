@@ -3,6 +3,7 @@ import os
 from owlready2 import get_ontology
 from unittest import TestCase
 
+from ontogen import Ontology
 from ontogen.converter import YamlToOwlConverter
 from ontogen.primitives import OwlClass
 
@@ -19,9 +20,15 @@ class TestOntogen(TestCase):
 
     def setUp(self):
         self.converter = YamlToOwlConverter("data/mao.yaml")
-        # self.onto = get_ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/proto-movie#")
-        self.onto = get_ontology(f"file:////{OWL_FILEPATH}")
-        self.onto.load()
+        self.onto = Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#")
+        self.onto.create()
+        self.i: OwlClass = self.converter.get_entity("mao:Film")
+        # self.onto = Ontology.load_from_file(OWL_FILEPATH)
+
+    def test_add_rule(self):
+        self.test_realization()
+        self.onto.add_rule("mao:ActingSituation(?p), mao:hasActor(?p, ?a), "
+                           "hasLocation(?p, ?s), mao:Film(?s) -> portrays(?s, ?a)")
 
     def test_assertion(self):
         self.test_instantiation()
@@ -29,17 +36,28 @@ class TestOntogen(TestCase):
         self.assertEqual("Parasite", self.i.properties_values["mao:hasTitle"])
 
     def test_instantiation(self):
-        self.i: OwlClass = self.converter.get_entity("mao:Film")
         self.i.instantiate(self.onto, "Parasite")
         self.i.add_label("Parasite^^rdfs:Literal@en")
         self.assertTrue(self.i.is_individual)
-        self.assertEqual("proto-movie.Film", str(self.i._internal_imp_instance.is_instance_of[0]))
+        self.assertEqual("mao.Film", str(self.i._internal_imp_instance.is_instance_of[0]))
+
+    def test_realization(self):
+        self.converter.to_owl_ontology(self.onto)
 
     # Create an OWL ontology from scratch
     def test_create_ontology(self):
         self.test_instantiation()
         self.i = self.converter.to_owl_ontology(self.onto)
-        self.onto.save(file=str(Path(OUT_PATH) / OUT_FILENAME), format="rdfxml")
+        self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME), "rdfxml")
+
+    def test_super_classes(self):
+        film_making = self.converter.get_entity("mao:FilmMakingSituation")
+        film_making.actualize(self.onto)
+        event = self.converter.get_entity("mao:Event")
+        event.actualize(self.onto)
+        sit = self.converter.get_entity("mao:Situation")
+        sit.actualize(self.onto)
+        self.assertListEqual([event.realized_entity, sit.realized_entity], film_making.realized_entity.is_a)
 
     def tearDown(self):
         pass

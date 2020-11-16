@@ -40,24 +40,38 @@ class Ontology:
     @classmethod
     def load_from_file(cls, filename: str) -> "Ontology":
         """
-        Loads an Ontology from an existing file
-        :param filename: The name of a given file
-        :return: Ontology object
+            Loads an Ontology from an existing file
+            :param filename: The name of a given file
+            :return: Ontology object
         """
         inst = cls()
         inst._internal_onto = get_ontology(f"file:////{filename}")
+        inst._internal_onto.load()
         return inst
 
-    def save_to_file(self, filename: str, file_format: str):
+    def save_to_file(self, filename: str, file_format: str="rdfxml"):
+        """
+            Saves an Ontology with a given filename
+            :param filename: A given filename
+            :param file_format: The file format of given filename. Only `rdfxml` is supported by `owlready2`
+        """
         self.implementation.save(file=filename, format=file_format)
 
     def add_rule(self, swrl_rule: str):
-        rule = Imp(namespace=self._internal_onto)
-        rule.set_as_rule(swrl_rule)
+        """
+            Adds a SWRL rule to the Ontology
+            :param swrl_rule: A rule definition in SWRL
+        """
+        rule = Imp(namespace=self.implementation)
+        rule.set_as_rule(swrl_rule.replace(f"{self.base_name}:", "").replace("^ ", ", "))
 
     @property
     def implementation(self) -> owlready2.Ontology:
         return self._internal_onto
+
+    @property
+    def base_name(self):
+        return self.implementation.name
 
 
 class OntologyEntity:
@@ -79,6 +93,7 @@ class OntologyEntity:
         self._parent_classes = []
         self._disjoint_classes = []
         self.properties_values = {}
+        self._realised_parent_classes = []
 
     @classmethod
     def get_entity_name(cls) -> str:
@@ -100,8 +115,11 @@ class OntologyEntity:
             return GENERATED_TYPES[self.name]
         attrs['namespace'] = onto.implementation
         default = True
-        if len(self._parent_classes) > 0:
-            gen = [x.get_generated_class(onto=onto) for x in self._parent_classes if x is not None]
+        if len(self._parent_classes) > 0 or len(self._realised_parent_classes) > 0:
+            self._realised_parent_classes.extend(
+                [x.get_generated_class(onto=onto) for x in self._parent_classes
+                 if x is not None and isinstance(x, OntologyEntity)])
+            gen = self._realised_parent_classes
             if len(gen) > 0:
                 GENERATED_TYPES[self.name] = type(self.name, tuple(gen), attrs)
                 default = False
@@ -133,14 +151,22 @@ class OntologyEntity:
         self.properties_values[builtin_name] += [value]
 
     def add_label(self, value: BUILTIN_DATA_TYPES):
+        """
+            Add a rdfs:label AnnotationProperty with a given value of supported types
+            :param value: A given label. Can be a `str` or `locstr` (Literal with a language)
+        """
         self._add_builtin_prop(LABEL_ENTITY_NAME, value)
+
+    def add_comment(self, value: BUILTIN_DATA_TYPES):
+        """
+            Add a rdfs:comment AnnotationProperty with a given value of supported types
+            :param value: A given label. Can be a `str` or `locstr` (Literal with a language)
+        """
+        self._add_builtin_prop(COMMENT_ENTITY_NAME, value)
 
     def add_labels(self, values: List[BUILTIN_DATA_TYPES]):
         for v in values:
             self.add_label(v)
-
-    def add_comment(self, value: BUILTIN_DATA_TYPES):
-        self._add_builtin_prop(COMMENT_ENTITY_NAME, value)
 
     def add_comments(self, values: List[BUILTIN_DATA_TYPES]):
         for v in values:
@@ -149,6 +175,15 @@ class OntologyEntity:
     @property
     def is_individual(self) -> bool:
         return self._internal_imp_instance is not None
+
+    @property
+    def is_actualized(self) -> bool:
+        return self.name in GENERATED_TYPES
+
+    @property
+    def realized_entity(self):
+        if self.is_actualized:
+            return GENERATED_TYPES[self.name]
 
     def _sync_internal(self, onto: Ontology):
         if not self.is_individual:

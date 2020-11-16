@@ -2,12 +2,15 @@
 
 ## To-dos
 ### Classes
-- [x] `rdfs:type` (Mostly done)
+- [x] `rdf:type` (for Characteristics)
+   - [x] `owl:SymmetricProperty`
+   - [x] `owl:TransitiveProperty`
 - [x] `rdfs:subClassOf` (Mostly done)
    - [x] `Object Property`
    - [x] `Classes`
 - [ ] `rdfs:equivalentClass`
 - [x] `owl:disjointWith` (Partially)
+- [x] `owl:inverseOf`
 - [ ] `owl:Restriction` and class constructs
    - Protege Class Expressions
      - HasValue restriction
@@ -49,12 +52,20 @@ Feel free to run unit tests in `test_ontogen.py`
 - Python 3.8
 - `owlready2`
 
-### (`owlready2`) Loading an OWL Ontology
+### Loading an OWL Ontology
 ```python
 from ontogen import Ontology
 from settings import OWL_FILEPATH
 
 onto: Ontology = Ontology.load_from_file(OWL_FILEPATH)
+```
+
+### Add a rule to an OWL Ontology
+```python
+from ontogen import Ontology
+
+onto: Ontology
+onto.add_rule("Drug(?d), price(?d, ?p), number_of_tablets(?d, ?n), divide(?r, ?p, ?n) -> price_per_tablet(?d, ?r)")
 ```
 
 ### Using an YamlToOwlConverter to generate `OwlClass`es
@@ -78,7 +89,7 @@ mao_film.actualize(onto)
 
 
 ### Creating an Individual from an Ontology Class
-An individual must be first `actualized` and `instantiated` before adding any assertions.
+An individual must be first `instantiated` before adding any assertions.
 ```python
 from ontogen import Ontology, OwlClass
 
