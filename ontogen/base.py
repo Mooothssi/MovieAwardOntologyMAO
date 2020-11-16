@@ -1,7 +1,8 @@
 from datetime import date
 from typing import List, Type, Union
 
-from owlready2 import Ontology, Thing, locstr
+import owlready2
+from owlready2 import Imp, Thing, locstr, get_ontology
 
 LABEL_ENTITY_NAME = "rdfs:label"
 COMMENT_ENTITY_NAME = "rdfs:comment"
@@ -24,7 +25,23 @@ class Ontology:
     """
     TODO: A proxy for the real implementation in `owlready2`
     """
-    pass
+
+    def __init__(self):
+        self._internal_onto: owlready2.Ontology = None
+
+    def load_from_file(self, filename: str):
+        self._internal_onto = get_ontology(f"file:////{filename}")
+
+    def save_to_file(self, filename: str, file_format: str):
+        self.implementation.save(file=filename, format=file_format)
+
+    def add_rule(self, swrl_rule: str):
+        rule = Imp(namespace=self._internal_onto)
+        rule.set_as_rule(swrl_rule)
+
+    @property
+    def implementation(self) -> owlready2.Ontology:
+        return self._internal_onto
 
 
 class OntologyEntity:
@@ -65,7 +82,7 @@ class OntologyEntity:
     def get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
         if self.name in GENERATED_TYPES:
             return GENERATED_TYPES[self.name]
-        attrs['namespace'] = onto
+        attrs['namespace'] = onto.implementation
         default = True
         if len(self._parent_classes) > 0:
             gen = [x.get_generated_class(onto=onto) for x in self._parent_classes if x is not None]

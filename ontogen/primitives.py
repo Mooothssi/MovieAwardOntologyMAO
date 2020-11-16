@@ -1,8 +1,8 @@
 from owlready2 import (AllDisjoint, AnnotationProperty, DataProperty,
-                       ObjectProperty, Ontology, Thing)
+                       ObjectProperty, Thing)
 from typing import Any, Dict, List, Type
 
-from .base import OntologyEntity, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
+from .base import Ontology, OntologyEntity, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
 
 TYPE_MAPPING = [str, int]
 
@@ -167,8 +167,8 @@ def all_subclasses(cls):
 
 def apply_classes_from(onto: Ontology):
     for s in all_subclasses(Thing):
-        s.namespace = onto
-        setattr(s, 'storid', onto.world._abbreviate(s.iri))
+        s.namespace = onto.implementation
+        setattr(s, 'storid', onto.implementation.world._abbreviate(s.iri))
 
 
 def get_match(identifier: str) -> Type[OntologyEntity]:
