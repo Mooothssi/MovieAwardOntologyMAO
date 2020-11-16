@@ -10,7 +10,7 @@ owl:Class:
     owl:disjointWith: Person
     owl:equivalentClass:
       owl:Restriction:
-        - {Female, Male, Non-binary}
+        - "{Female, Male, Non-binary}"
     rdfs:subClassOf: Thing
   family:Parent:
     annotations:
