@@ -51,19 +51,20 @@ def split_locstr(locstr: str) -> (str, str):
         raise
 
 
-def write_language_table(lst: List[str], property: str) -> str:
+def write_language_table(lst: List[str], header: str) -> str:
     """Returns a markdown table represenation of the value
 
     Args:
-        lst: List of localised string (rdfs:Literal@someLanguage)
+        lst: List of localised string (rdfs:Literal@someRegion)
+        header: The other header besides language.
 
     Examples:
         >>> write_language_table(['Food^^rdfs:Literal@en'], 'label')
         '| Language | label |\\n|----------|-------|\\n| English  | Food  |\\n'
     """
     table = Table.create_table("Markdown")
-    assert isinstance(property, str)
-    table.add_header("Language", property)
+    assert isinstance(header, str)
+    table.add_header("Language", header)
     for item in lst:
         try:
             value, language = split_locstr(item)
