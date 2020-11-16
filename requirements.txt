@@ -5,3 +5,4 @@ PyMySQL
 PyMSSQL
 stringcase
 pyyaml
+pandas
