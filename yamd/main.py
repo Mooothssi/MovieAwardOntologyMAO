@@ -168,24 +168,21 @@ class Class(Entity):
 
     @property
     def description(self) -> Optional[str]:
-        try:
-            lines = []
-            for uname, pname in self._description_map.items():
-                if uname in self.data:
-                    if uname == 'owl:equivalentClass':
-                        data = self.data[uname]['owl:Restriction']
-                    else:
-                        data = self.data[uname]
-                    cleaned_data = parse_lenient_list_of_strings(data)
-                    if cleaned_data:
-                        lines += [f'{pname}:',
-                                  get_md_list(0, cleaned_data),
-                                  '']
-            if lines:
-                lines.insert(0, '### Description')
-                return '\n'.join(lines)
-        except KeyError:
-            return None
+        lines = []
+        for uname, pname in self._description_map.items():
+            if uname in self.data:
+                if uname == 'owl:equivalentClass':
+                    data = self.data[uname]['owl:Restriction']
+                else:
+                    data = self.data[uname]
+                cleaned_data = parse_lenient_list_of_strings(data)
+                if cleaned_data:
+                    lines += [f'{pname}:',
+                              get_md_list(0, cleaned_data),
+                              '']
+        if lines:
+            lines.insert(0, '### Description')
+            return '\n'.join(lines)
 
     @property
     def object_properties(self) -> Optional[str]:
