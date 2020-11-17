@@ -1,5 +1,5 @@
 # Ontogen
-Part of [MAO Project](../README.md)
+Part of [MAO Project](..)
 ## To-dos
 ### Classes
 - [x] `rdf:type`
@@ -109,4 +109,14 @@ from ontogen import OwlClass
 
 parasite_film: OwlClass
 parasite_film.add_property_assertion("mao:hasTitle", "Parasite") # Create a property assertion for an individual
+```
+
+### Adding an Equivalent Class Expression to a Class
+Must be actualized to save an expression into an Ontology
+```python
+from ontogen import OwlClass
+
+award_received_situation: OwlClass = OwlClass("mao:AwardReceivedSituation")
+# Add an equivalent class expression in Protege's Manchester syntax for inference
+award_received_situation.add_equivalent_class_expression("NominationSituation and (win value true)") 
 ```

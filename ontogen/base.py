@@ -145,7 +145,7 @@ class OntologyEntity(metaclass=ABCMeta):
         Adds an equivalent class to this Class
 
         Args:
-            expression: A Class Expression in Manchester Syntax
+            expression: A Class Expression in Protege Manchester Syntax
                         or an `owlready2` Class Construct
 
         Note:
