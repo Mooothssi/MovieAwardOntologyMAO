@@ -16,7 +16,7 @@ TRIPLE_PATTERN = (r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
                   r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\))) '
                   r'(and|or|some|value) '
                   r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
-                  r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\)))', (5, 4, 2, 1), 3)
+                  r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\)))', (2, 1, 5, 4), 3)
 # not is a double (not Pet) and can be parenthesized {not (Pet)}
 
 PATTERNS = (NEW_NOT_PATTERN, TRIPLE_PATTERN)

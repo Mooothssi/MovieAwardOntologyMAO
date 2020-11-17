@@ -37,7 +37,6 @@ class YamlToOwlConverter:
         """
         self.entities = ENTITIES
         self.spec_filename = spec_filename
-        self.class_exp_constructor = ClassExpToConstruct()
         self._load_file()
 
     def _load_file(self):

@@ -63,34 +63,32 @@ class TestOntogen(TestCase):
         pass
 
 
+FIXTURES = (
+    ("(mao:Dog and mao:Croc) or mao:Cat or (mao:Person and mao:Film)",
+     "(mao.Dog & mao.Croc) | mao.Cat | (mao.Person & mao.Film)"),
+    ("(not(Dog or Cat)) and (Horse)",
+     "Not(mao.Dog | mao.Cat) & mao.Horse"),
+    ("(mao:Dog and not(mao:Croc or not(mao:Cat))) "
+     "or mao:Cat or (mao:Person and mao:Film)",
+     "(mao.Dog & Not(mao.Croc | Not(mao.Cat))) | mao.Cat | (mao.Person & mao.Film)"),
+    ("(Horse) and (not(Dog or Cat))", "mao.Horse & Not(mao.Dog | mao.Cat)"),
+    ("(Mo) and (Ding)", "mao.Mo & mao.Ding"),
+    ("Mo or Ding or Bank", "mao.Mo | mao.Ding | mao.Bank"),
+    ("(Cat and Horse and Dog) and Chicken", "mao.Cat & mao.Horse & mao.Dog & mao.Chicken"),
+    ("(mao:Dog and (mao:Done or (mao:Film and mao:Croc))) or mao:Cat or (mao:Person and mao:Film)",
+     "(mao.Dog & (mao.Done | (mao.Film & mao.Croc))) | mao.Cat | (mao.Person & mao.Film)")
+)
+
+
 class OntogenClassExpressionTestCase(TestCase):
     def setUp(self):
         self.onto = Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#")
         self.onto.create()
 
-    def test_horse(self):
+    def test_basic(self):
         cls = ClassExpToConstruct(self.onto)
-        construct = cls.to_construct("(mao:Dog and mao:Croc) or mao:Cat or (mao:Person and mao:Film)")
-        self.assertEqual("(mao.Film & mao.Person) | (mao.Cat | (mao.Croc & mao.Dog))", str(construct))
-
-        construct = cls.to_construct("(not(Dog or Cat)) and (Horse)")
-        self.assertEqual("mao.Horse & Not(mao.Cat | mao.Dog)", str(construct))
-
-        construct = cls.to_construct("(Horse) and (not(Dog or Cat))")
-        self.assertEqual("Not(mao.Cat | mao.Dog) & mao.Horse", str(construct))
-
-        construct = cls.to_construct("(Cat) and (Dog)")
-        self.assertEqual("mao.Dog & mao.Cat", str(construct))
-
-        construct = cls.to_construct("(Cat and Horse and Dog) and Chicken")
-        self.assertEqual("mao.Chicken & (mao.Dog & (mao.Horse & mao.Cat))", str(construct))
-
-        construct = cls.to_construct("(mao:Dog "
-                                     "and (mao:Done or (mao:Film and mao:Croc))) "
-                                     "or mao:Cat or (mao:Person and mao:Film)")
-        self.assertEqual("(mao.Film & mao.Person) | (mao.Cat | (((mao.Croc & mao.Film) | mao.Done) & mao.Dog))", str(construct))
-
-        construct = cls.to_construct("(mao:Dog and not(mao:Croc or not(mao:Cat))) "
-                                     "or mao:Cat or (mao:Person and mao:Film)")
-        self.assertEqual("(mao.Film & mao.Person) | (mao.Cat | (Not(Not(mao.Cat) | mao.Croc) & mao.Dog))",
-                         str(construct))
+        for fixture in FIXTURES:
+            exp, expected = fixture
+            with self.subTest(exp=exp, expected=expected):
+                construct = cls.to_construct(exp)
+                self.assertEqual(expected, str(construct))
