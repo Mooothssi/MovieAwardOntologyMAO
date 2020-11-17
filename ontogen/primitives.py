@@ -11,10 +11,8 @@ __all__ = ('OwlClass', 'OwlAnnotationProperty',
            'OwlDataProperty', 'OwlObjectProperty',
            'OwlThing', 'ENTITIES')
 
-BUILTIN_DATATYPES = [str, int]
-ENTITIES: Dict[str, OntologyEntity] = {
-
-}
+BUILTIN_DATA_TYPES = (str, int, float)
+ENTITIES: Dict[str, OntologyEntity] = {}
 
 
 def get_exp_constructor(onto: Ontology):
@@ -24,7 +22,7 @@ def get_exp_constructor(onto: Ontology):
 def check_restrictions(prefix: str, str_types: List[str], value: Any) -> bool:
     t = type(value)
     # check for builtin types
-    if t in BUILTIN_DATATYPES:
+    if t in BUILTIN_DATA_TYPES:
         return True
     p = set([f"{prefix}:{str_type}" for str_type in str_types]).intersection(ENTITIES.keys())
     return len(p) > 0
@@ -208,12 +206,6 @@ def apply_classes_from(onto: Ontology):
     for s in all_subclasses(BaseOntologyClass):
         s.namespace = onto.implementation
         setattr(s, 'storid', onto.implementation.world._abbreviate(s.iri))
-
-
-def get_match(identifier: str) -> Type[OntologyEntity]:
-    for entity in BASE_ENTITIES:
-        if identifier == entity.get_entity_qualifier():
-            return entity
 
 
 BASE_ENTITIES = [OwlAnnotationProperty, OwlDataProperty, OwlObjectProperty, OwlClass]

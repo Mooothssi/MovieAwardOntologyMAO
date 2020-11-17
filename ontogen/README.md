@@ -63,20 +63,23 @@ from settings import OWL_FILEPATH
 onto: Ontology = Ontology.load_from_file(OWL_FILEPATH)
 ```
 
-### Add a rule to an OWL Ontology
+### Adding a rule to an OWL Ontology
 ```python
 from ontogen import Ontology
 
 onto: Ontology
-onto.add_rule("Drug(?d), price(?d, ?p), number_of_tablets(?d, ?n), divide(?r, ?p, ?n) -> price_per_tablet(?d, ?r)")
+onto.add_rule("mao:ActingSituation(?p) ^ mao:hasActor(?p, ?a) -> mao:actsIn(?a, ?p)", "ActsInRule")
 ```
 
 ### Using an YamlToOwlConverter to generate `OwlClass`es
 ```python
+from ontogen import Ontology
 from ontogen.converter import OwlClass, YamlToOwlConverter
 
+onto: Ontology # An existing Ontology
 converter = YamlToOwlConverter("data/mao.yaml")
 film: OwlClass = converter.get_entity("mao:Film")
+converter.to_owl_ontology(onto) # Save the results to the Ontology
 ...
 ```
 
@@ -96,7 +99,7 @@ An individual must be first `instantiated` before adding any assertions.
 ```python
 from ontogen import Ontology, OwlClass
 
-onto: Ontology # `owlready2` loaded OWL
+onto: Ontology
 # mao:Film rdfs:subclassOf owl:Thing
 parasite_film: OwlClass = OwlClass("mao:Film") # or selectively `converter.get_entity("mao:Film")`
 # Create an mao:Film individual named Parasite in a given OWL Ontology
@@ -112,11 +115,16 @@ parasite_film.add_property_assertion("mao:hasTitle", "Parasite") # Create a prop
 ```
 
 ### Adding an Equivalent Class Expression to a Class
-Must be actualized to save an expression into an Ontology
+Adds an equivalent class expression in Protege's Manchester syntax for inference.
+Must be actualized to save an expression into an Ontology.
 ```python
 from ontogen import OwlClass
 
 award_received_situation: OwlClass = OwlClass("mao:AwardReceivedSituation")
-# Add an equivalent class expression in Protege's Manchester syntax for inference
-award_received_situation.add_equivalent_class_expression("NominationSituation and (win value true)") 
+award_received_situation.add_equivalent_class_expression("NominationSituation and (win value true)")
 ```
+
+## References
+- Manchester Syntax
+  - [W3 OWL2 Manchester Syntax](https://www.w3.org/TR/owl2-manchester-syntax/)
+  - [Protege's Class Expressions Syntax](http://protegeproject.github.io/protege/class-expression-syntax/)

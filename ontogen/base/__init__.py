@@ -147,12 +147,6 @@ class OntologyEntity(metaclass=ABCMeta):
             return GENERATED_TYPES[self.name]
         raise AssertionError("The entity has yet to be actualized")
 
-    def _sync_description(self):
-        """
-        Internally synchronizes with the `owlready2` representation of this Class
-        """
-        self.actualized_entity.equivalent_to = self.equivalent_classes
-
     def _get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
         try:
             self._sync_description()
@@ -172,6 +166,12 @@ class OntologyEntity(metaclass=ABCMeta):
                 GENERATED_TYPES[self.name] = type(self.name, (self._parent_class,), attrs)
             self._sync_description()
             return GENERATED_TYPES[self.name]
+
+    def _sync_description(self):
+        """
+        Internally synchronizes with the `owlready2` representation of this Class
+        """
+        self.actualized_entity.equivalent_to = self.equivalent_classes
 
     def _sync_internal(self, onto: Ontology):
         if not self.is_individual:

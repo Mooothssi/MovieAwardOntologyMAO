@@ -1,5 +1,5 @@
 from re import Match, match, search
-from typing import Dict, Tuple, Type
+from typing import Dict, Tuple
 
 from owlready2 import ClassConstruct, ConstrainedDatatype, Not, ObjectProperty, Thing
 
@@ -136,7 +136,6 @@ class TokenInfo:
                    f"({self.sub_tokens[1] if len(self.sub_tokens) > 1 else ''})"
 
 
-# TODO: ConstrainedDatatype
 class ClassExpToConstruct:
     """
     A class to convert a Class Expression of `Protege` to a Class Construct of `owlready2`

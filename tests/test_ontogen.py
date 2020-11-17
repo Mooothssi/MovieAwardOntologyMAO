@@ -26,7 +26,7 @@ class TestOntogen(TestCase):
 
     def test_add_rule(self):
         self.test_realization()
-        self.onto.add_rule("mao:ActingSituation(?p) ^ mao:hasActor(?p, ?a) -> actsIn(?a, ?p)", "ActsIn")
+        self.onto.add_rule("mao:ActingSituation(?p) ^ mao:hasActor(?p, ?a) -> mao:actsIn(?a, ?p)", "ActsIn")
 
     def test_assertion(self):
         self.test_instantiation()

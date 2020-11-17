@@ -18,5 +18,7 @@ CONSTRAINT_DATATYPE_OPERATOR_MAP = {
     '>=': 'min_inclusive',
     '<': 'max_exclusive',
     '<=': 'max_inclusive',
-    'pattern': 'pattern'
+    'maxLength': 'max_length',
+    'minLength': 'min_length',
+    'langRange': 'lang_range'
 }
