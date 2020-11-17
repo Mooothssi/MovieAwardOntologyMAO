@@ -6,6 +6,7 @@ from unittest import TestCase
 from ontogen import Ontology
 from ontogen.converter import YamlToOwlConverter
 from ontogen.primitives import OwlClass
+from ontogen.utils import ClassExpToConstruct
 
 from settings import OWL_FILEPATH, OUT_PATH, OUT_FILENAME
 
@@ -61,3 +62,23 @@ class TestOntogen(TestCase):
 
     def tearDown(self):
         pass
+
+
+class OntogenClassExpressionTestCase(TestCase):
+    def test_horse(self):
+        cls = ClassExpToConstruct()
+        construct = cls.class_expression_to_construct("(mao:Dog and mao:Croc) or mao:Cat or (mao:Person and mao:Film)")
+        self.assertEqual("(mao.Dog & mao.Croc) | mao.Cat | (mao.Person & mao.Film)", str(construct))
+
+        construct = cls.class_expression_to_construct("(not(Dog or Cat)) and (Horse)")
+        self.assertEqual("Not(mao.Dog or Cat) & mao.Horse", str(construct))
+
+        construct = cls.class_expression_to_construct("(Horse) and (not(Dog or Cat))")
+        self.assertEqual("mao.Horse & Not(mao.Dog or Cat)", str(construct))
+
+        construct = cls.class_expression_to_construct("(Cat) and (Dog)")
+        self.assertEqual("mao.Cat & mao.Dog", str(construct))
+
+        construct = cls.class_expression_to_construct("(Cat and Horse and Dog) and Chicken")
+        self.assertEqual("mao.Cat & mao.Horse & mao.Dog & mao.Chicken", str(construct))
+

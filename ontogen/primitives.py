@@ -153,7 +153,9 @@ class OwlClass(OntologyEntity):
     def actualize(self, onto: Ontology):
         """
         Makes the entity concrete (saved) in a given Ontology
-        :param onto: a given `owlready2` Ontology
+
+        Args:
+            onto: a given Ontology
         """
         apply_classes_from(onto)
         # TODO: realise all equivalents

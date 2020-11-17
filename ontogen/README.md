@@ -1,5 +1,5 @@
 # Ontogen
-
+Part of `MAO Project`
 ## To-dos
 ### Classes
 - [x] `rdf:type` (for Characteristics)
@@ -33,8 +33,8 @@
 - [x] `owl:ObjectProperty` (Partially)
 - [x] `owl:DatatypeProperty` (Mostly done)
 - [ ] `owl:AnnotationProperty`
-    - [ ] `rdfs:comment`
-    - [ ] `rdfs:label`
+    - [x] `rdfs:comment`
+    - [x] `rdfs:label`
 
 ### Datatypes
 - [ ] `rdfs:Literal`
@@ -43,7 +43,7 @@
 - [x] `xsd:float` (`owlready2` builtin as `float`)
 
 ### Rules
-- [ ] `SWRL` expressions
+- [x] `SWRL` expressions (for internal prefixes)
 
 ## Getting started
 Feel free to run unit tests in `test_ontogen.py`

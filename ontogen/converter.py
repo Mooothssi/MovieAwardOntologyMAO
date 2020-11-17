@@ -23,7 +23,17 @@ def get_qualified_entity(name: str, fallback_prefix: str = "mao"):
 
 
 class YamlToOwlConverter:
+    """
+        A converter from YAML to an abstraction of OWL ontology
+    """
     def __init__(self, spec_filename: str):
+        """
+        Loads a file with the given name into a skeleton of an OWL ontology.
+        Needs to be actualized by `Ontology` class.
+
+        Args:
+            spec_filename: The filename of a YAML spec file
+        """
         self.entities = ENTITIES
         self.spec_filename = spec_filename
         self._load_file()

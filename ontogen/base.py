@@ -1,3 +1,4 @@
+from abc import ABCMeta, abstractmethod
 from datetime import date
 from typing import List, Type, Union
 
@@ -59,8 +60,11 @@ class Ontology:
 
     def add_rule(self, swrl_rule: str):
         """
-            Adds a SWRL rule to the Ontology
-            :param swrl_rule: A rule definition in SWRL
+        Adds a SWRL rule to the Ontology
+
+        Args:
+            swrl_rule: A rule definition in SWRL
+
         """
         rule = Imp(namespace=self.implementation)
         rule.set_as_rule(swrl_rule.replace(f"{self.base_name}:", "").replace("^ ", ", "))
@@ -74,7 +78,7 @@ class Ontology:
         return self.implementation.name
 
 
-class OntologyEntity:
+class OntologyEntity(metaclass=ABCMeta):
     prefix = "owl"
     name = "any"
     _internal_dict = {}
@@ -99,16 +103,13 @@ class OntologyEntity:
     def get_entity_name(cls) -> str:
         return f"{cls.prefix}:{cls.name}"
 
-    # owlready2-related implementation
-    def instantiate(self, onto: Ontology, individual_name: str):
-        pass
-
+    @abstractmethod
     def actualize(self, onto: Ontology):
         """
             Makes the entity concrete (saved) in a given Ontology
             :param onto: a given Ontology
         """
-        pass
+        raise NotImplementedError
 
     def get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
         if self.name in GENERATED_TYPES:
