@@ -1,54 +1,13 @@
 from abc import ABCMeta, abstractmethod
-from typing import List, Optional, Iterable, Union, Dict
+from typing import List, Optional, Dict
 
 import yaml
 
 from dirs import ROOT_DIR
 from table_maker import Table
-from yamd.pretty_label import get_pretty_label, get_language_from_code
-
-
-def get_plain_literal(datatype_value: str) -> str:
-    return datatype_value.split('^^')[0]
-
-
-def get_md_list(level: int, lst: Iterable[Union[str, Iterable[str]]]) -> str:
-    """Returns a markdown list indented to the appropriate level.
-
-    Args:
-        level: The base level to indent to.
-        lst: The list of (list of) str to convert to markdown.
-
-    Examples:
-        >>> get_md_list(5, [])
-        ''
-        >>> get_md_list(0, ['Thing'])
-        '- Thing'
-        >>> get_md_list(2, ['Pizza','Basil'])
-        '    - Pizza\\n    - Basil'
-        >>> get_md_list(0, ['Ant', ['Ant man', 'Ant woman']])
-        '- Ant\\n  - Ant man\\n  - Ant woman'
-
-    Notes:
-        Base list item must be `str` in order to support
-        multiple types of iterables. Either the list item
-        type is defined or the iterable type is defined.
-        I chose the former.
-    """
-    if isinstance(lst, str):
-        return ''.join(('  ' * level, '- ', lst))
-    if isinstance(lst, Iterable):
-        return '\n'.join(get_md_list(level + 1, item) for item in lst)
-    raise TypeError(f"item must be a str or an iterable of str, not {lst.__class__.__name__}")
-
-
-def split_locstr(locstr: str) -> (str, str):
-    try:
-        value, type_ = locstr.split('^^')
-        type_, language = type_.split('@')
-        return value, language
-    except ValueError:
-        raise
+from yamd.markdown import get_md_list
+from yamd.parser import parse_lenient_list_of_strings, parse_lenient_list_of_list_of_string
+from yamd.owl import get_pretty_label, get_language_from_code, split_locstr, get_plain_literal, is_locstr
 
 
 def write_language_table(lst: List[str], header: str) -> str:
@@ -77,20 +36,6 @@ def write_language_table(lst: List[str], header: str) -> str:
             table.add_row(get_language_from_code(language), value)
     table.end_table()
     return str(table)
-
-
-def write_classes(classes: dict) -> List[str]:
-    lines = [
-        '# Class',
-    ]
-    for class_, data in classes.items():
-        lines.append(Class(class_, data).as_markdown())
-    return lines
-
-
-def is_locstr(s: str) -> bool:
-    """Returns True if `s` is a localized string."""
-    return '^^rdfs:Literal@' in s
 
 
 ALWAYS_USE_TABLE = ['rdfs:label']
@@ -210,56 +155,6 @@ class Class(Entity):
         return
 
 
-def parse_lenient_list_of_strings(obj) -> List[str]:
-    if isinstance(obj, str):
-        if obj:
-            # assume using not using list for one string
-            return [obj]
-        # empty string, assume using '' as placeholder
-        assert obj == ''
-        return []
-    if isinstance(obj, list):
-        if all(isinstance(item, str) for item in obj):
-            return obj
-    raise ValueError(f"Object is not a list of strings: '{obj}'")
-
-
-def is_recursive_list_of_strings(obj) -> bool:
-    if isinstance(obj, str):
-        return True
-    if isinstance(obj, list):
-        return all(is_recursive_list_of_strings(item) for item in obj)
-    return False
-
-
-def parse_lenient_list_of_list_of_string(obj) -> List[str]:
-    if isinstance(obj, str):
-        if obj:
-            # assume using not using list for one string
-            return [obj]
-        # empty string, assume using '' as placeholder
-        assert obj == ''
-        return []
-    if isinstance(obj, list):
-        if is_recursive_list_of_strings(obj):
-            return obj
-    raise ValueError(f"Object is not a list of (list of) strings: '{obj}'")
-
-
-def parse_lenient_list_of_objects(obj) -> List[dict]:
-    if isinstance(obj, str):
-        if obj == '':
-            # empty string, assume using '' as placeholder
-            return []
-    if isinstance(obj, dict):
-        # assume using not using list for one object
-        return [obj]
-    if isinstance(obj, list):
-        if all(isinstance(item, dict) for item in obj):
-            return obj
-    raise ValueError(f"Object is not a list of dicts: '{obj}'")
-
-
 class Property(Entity):
     @property
     def _description_map(self) -> Dict[str, str]:
@@ -308,6 +203,15 @@ class AnnotationProperty(Property):
             'rdfs:range': 'Range',
             # 'rdf:superProperty': 'Superproperties',
         }
+
+
+def write_classes(classes: dict) -> List[str]:
+    lines = [
+        '# Class',
+    ]
+    for class_, data in classes.items():
+        lines.append(Class(class_, data).as_markdown())
+    return lines
 
 
 def main():

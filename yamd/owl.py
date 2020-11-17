@@ -105,3 +105,21 @@ def get_language_from_code(language_code: str) -> str:
     if language_code == 'pt':
         return 'Portugese'
     raise AssertionError(language_code)
+
+
+def split_locstr(locstr: str) -> (str, str):
+    try:
+        value, type_ = locstr.split('^^')
+        type_, language = type_.split('@')
+        return value, language
+    except ValueError:
+        raise
+
+
+def get_plain_literal(datatype_value: str) -> str:
+    return datatype_value.split('^^')[0]
+
+
+def is_locstr(s: str) -> bool:
+    """Returns True if `s` is a localized string."""
+    return '^^rdfs:Literal@' in s
