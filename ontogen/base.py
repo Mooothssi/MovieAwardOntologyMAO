@@ -3,7 +3,7 @@ from datetime import date
 from typing import List, Type, Union
 
 import owlready2
-from owlready2 import Imp, Thing, locstr, get_ontology
+from owlready2 import Imp, Thing, locstr, get_ontology, ClassConstruct
 
 LABEL_ENTITY_NAME = "rdfs:label"
 COMMENT_ENTITY_NAME = "rdfs:comment"
@@ -86,6 +86,7 @@ class OntologyEntity(metaclass=ABCMeta):
     parent_class_names: List[str] = []
     _parent_classes: List["OntologyEntity"] = []
     _disjoint_classes: List["OntologyEntity"] = []
+
     # Short for an Implementation instance
     _internal_imp_instance: Thing = None
 
@@ -97,7 +98,10 @@ class OntologyEntity(metaclass=ABCMeta):
         self._parent_classes = []
         self._disjoint_classes = []
         self.properties_values = {}
+        self.equivalent_class_expressions: List[str] = []
+        self.equivalent_classes: List[ClassConstruct] = []
         self._realised_parent_classes = []
+        self.equivalent_class_expressions = []
 
     @classmethod
     def get_entity_name(cls) -> str:
@@ -115,6 +119,8 @@ class OntologyEntity(metaclass=ABCMeta):
         if self.name in GENERATED_TYPES:
             return GENERATED_TYPES[self.name]
         attrs['namespace'] = onto.implementation
+        if len(self.equivalent_classes) > 0:
+            attrs['equivalent_to'] = self.equivalent_classes
         default = True
         if len(self._parent_classes) > 0 or len(self._realised_parent_classes) > 0:
             self._realised_parent_classes.extend(
@@ -143,6 +149,11 @@ class OntologyEntity(metaclass=ABCMeta):
 
     def add_disjoint_classes(self, cls: "OntologyEntity"):
         self._disjoint_classes.append(cls)
+
+    def add_equivalent_class_expression(self, obj: ClassConstruct):
+        if obj is None:
+            return
+        self.equivalent_classes.append(obj)
 
     def _add_builtin_prop(self, builtin_name: str, value: BUILTIN_DATA_TYPES):
         if value is None:

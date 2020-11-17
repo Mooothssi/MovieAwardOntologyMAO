@@ -8,6 +8,7 @@ from .primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, ENTITIES,
                          OntologyEntity, OwlClass, OwlDataProperty, OwlThing,
                          OwlObjectProperty)
 from .wrapper import BaseOntologyClass
+from .utils import ClassExpToConstruct
 
 
 def create_owl_thing(name: str, onto: Ontology):
@@ -36,6 +37,7 @@ class YamlToOwlConverter:
         """
         self.entities = ENTITIES
         self.spec_filename = spec_filename
+        self.class_exp_constructor = ClassExpToConstruct()
         self._load_file()
 
     def _load_file(self):
@@ -74,6 +76,7 @@ class YamlToOwlConverter:
                         prop_class = obj._internal_dict[prop]
                         obj.parent_class_names = sub.get("rdfs:subClassOf", [])
                         obj.disjoint_class_names = sub.get("owl:disjointWith", [])
+                        obj.equivalent_class_expressions = sub.get("rdfs:equivalentClass", [])
                         for prop_name in prop_class:
                             prop_qualifier = get_qualified_entity(prop_name)
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)

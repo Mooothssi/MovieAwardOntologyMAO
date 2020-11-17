@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-from owlready2 import get_ontology
 from unittest import TestCase
 
 from ontogen import Ontology
@@ -67,18 +66,22 @@ class TestOntogen(TestCase):
 class OntogenClassExpressionTestCase(TestCase):
     def test_horse(self):
         cls = ClassExpToConstruct()
-        construct = cls.class_expression_to_construct("(mao:Dog and mao:Croc) or mao:Cat or (mao:Person and mao:Film)")
+        construct = cls.to_construct("(mao:Dog and mao:Croc) or mao:Cat or (mao:Person and mao:Film)")
         self.assertEqual("(mao.Dog & mao.Croc) | mao.Cat | (mao.Person & mao.Film)", str(construct))
 
-        construct = cls.class_expression_to_construct("(not(Dog or Cat)) and (Horse)")
+        construct = cls.to_construct("(not(Dog or Cat)) and (Horse)")
         self.assertEqual("Not(mao.Dog or Cat) & mao.Horse", str(construct))
 
-        construct = cls.class_expression_to_construct("(Horse) and (not(Dog or Cat))")
+        construct = cls.to_construct("(Horse) and (not(Dog or Cat))")
         self.assertEqual("mao.Horse & Not(mao.Dog or Cat)", str(construct))
 
-        construct = cls.class_expression_to_construct("(Cat) and (Dog)")
+        construct = cls.to_construct("(Cat) and (Dog)")
         self.assertEqual("mao.Cat & mao.Dog", str(construct))
 
-        construct = cls.class_expression_to_construct("(Cat and Horse and Dog) and Chicken")
+        construct = cls.to_construct("(Cat and Horse and Dog) and Chicken")
         self.assertEqual("mao.Cat & mao.Horse & mao.Dog & mao.Chicken", str(construct))
+
+        construct = cls.to_construct("(mao:Dog and (mao:Done or (mao:Film and mao:Croc))) "
+                                                      "or mao:Cat or (mao:Person and mao:Film)")
+        self.assertEqual("(mao.Dog & (mao.Done | (mao.Film & mao.Croc))) | mao.Cat | (mao.Person & mao.Film)", str(construct))
 

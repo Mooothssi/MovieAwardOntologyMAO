@@ -4,21 +4,25 @@ from typing import Dict, List, Tuple
 import types
 from owlready2 import *
 
+# ConstrainedDatatype
+from .base import GENERATED_TYPES
+
 innermost_pattern = r'((?:\()([^\(\)]+) (and|or) ([^\(\)]+)(?:\)))'
 normal_pattern = r'(.+) (and|or) (.+)'
 # (op, nested)
 NOT_PATTERN: Tuple[str, List[int]] = (r'(not)(?:\(([^\(\)]+)\)| (.+))', [3, 2])
 AND_OR_PAREN_PATTERN = (r'\((.+)\) (and|or) \((.+)\)', [1, 3], 2)
-LOGICAL_PAREN_PATTERN = (r'((?:\()([^\(\)]+) (and|or) ([^\(\)]+)(?:\)))', [2, 4], 3)
-NO_PAREN = r'(([a-z]+:)?[<A-Z>]+[a-z]*) (and|or|some) (([a-z]+:)?[<A-Z>]+[a-z]*)'
-TRIPLE_PATTERN = (r'(?:((?:[a-z]+:)?[<A-Z0-9>#]+[a-z]*)|'
-                  r'(\((?:[a-z]+:)?[<A-Z0-9>#]+[a-z]*\))) '
-                  r'(and|or|some) '
-                  r'(?:((?:[a-z]+:)?[<A-Z0-9>#]+[a-z]*)|'
-                  r'(\((?:[a-z]+:)?[<A-Z0-9>#]+[a-z]*\)))', [5, 4], 3, [2, 1])
+# LOGICAL_PAREN_PATTERN = (r'((?:\()([^\(\)]+) (and|or) ([^\(\)]+)(?:\)))', [2, 4], 3)
+TRIPLE_PATTERN = (r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
+                  r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\))) '
+                  r'(and|or|some|value) '
+                  r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
+                  r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\)))', [5, 4], 3, [2, 1])
 # not is a double (not Pet) and can be parenthesized {not (Pet)}
 
 PATTERNS = (NOT_PATTERN, TRIPLE_PATTERN)
+
+RESERVED = {"True": True, "False": False, "integer": int}
 
 
 class TokenInfo:
@@ -41,9 +45,13 @@ class TokenInfo:
         return f"<TK#{id(self)}>"
 
     @property
-    def construct(self) -> ClassConstruct or type:
+    def construct(self) -> ClassConstruct or type or bool:
         if self.is_class:
             new_str = self.raw_str[0]
+            if new_str in GENERATED_TYPES:
+                return GENERATED_TYPES[new_str]
+            if new_str in RESERVED:
+                return RESERVED[new_str]
             if ":" in self.raw_str[0]:
                 new_str = self.raw_str[0].split(":")[1]
             return type(str(new_str), (Thing,),
@@ -54,6 +62,12 @@ class TokenInfo:
         elif self.operator == "or":
             first, second = self.raw_str
             return first.construct | second.construct
+        elif self.operator == "some":
+            first, second = self.raw_str
+            return first.construct.some(second.construct)
+        elif self.operator == "value":
+            first, second = self.raw_str
+            return first.construct.value(second.construct)
         elif self.operator == "not":
             return Not(self.raw_str[0].construct)
 
@@ -121,7 +135,7 @@ class ClassExpToConstruct:
         residue = self.get_triple_match(residue)
         return residue
 
-    def class_expression_to_construct(self, expression: str):
+    def to_construct(self, expression: str):
         """
         to `owlready` Class Construct
         :param expression:
@@ -135,4 +149,4 @@ class ClassExpToConstruct:
 
 if __name__ == '__main__':
     c = ClassExpToConstruct()
-    print(c.class_expression_to_construct("(mao:Dog and mao:Croc) or mao:Cat or (mao:Person and mao:Film)"))
+    print(c.to_construct("(mao:Dog and mao:Croc) or mao:Cat or (mao:Person and mao:Film)"))
