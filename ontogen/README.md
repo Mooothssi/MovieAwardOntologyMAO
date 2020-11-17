@@ -49,9 +49,10 @@ Part of `MAO Project`
 ## Getting started
 Feel free to run unit tests in `test_ontogen.py`
 
-### Requirements
-- Python 3.8
+### Dependency requirements
+- Python `3.8` or later
 - `owlready2`
+- `pyyaml`
 
 ### Loading an OWL Ontology
 ```python
