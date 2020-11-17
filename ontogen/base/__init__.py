@@ -2,8 +2,10 @@ from abc import ABCMeta, abstractmethod
 from datetime import date
 from typing import List, Type, Union
 
-import owlready2
-from owlready2 import Imp, Thing, locstr, get_ontology, ClassConstruct
+from owlready2 import Thing, locstr, ClassConstruct
+
+from .ontology import Ontology
+from .vars import GENERATED_TYPES
 
 LABEL_ENTITY_NAME = "rdfs:label"
 COMMENT_ENTITY_NAME = "rdfs:comment"
@@ -11,7 +13,6 @@ COMMENT_ENTITY_NAME = "rdfs:comment"
 BUILTIN_DATA_TYPES = Union[str, int]
 BUILTIN_NAMES = (LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME)
 
-GENERATED_TYPES = {}
 DATATYPE_MAP = {
     'xsd:boolean': bool,
     'xsd:string': str,
@@ -20,69 +21,6 @@ DATATYPE_MAP = {
     'xsd:decimal': float,
     'xsd:date': date
 }
-
-
-class Ontology:
-    """
-    TODO: A proxy for the real implementation in `owlready2`
-    """
-
-    def __init__(self, namespace_iri: str = ""):
-        self._internal_onto: owlready2.Ontology = None
-        self.namespace_iri = namespace_iri
-
-    def create(self, namespace_iri: str = ""):
-        """
-            Newly creates an Ontology from an existing namespace
-        """
-        assert self.namespace_iri == "" or namespace_iri == "", "Namespace must be set before creation"
-        self._internal_onto = get_ontology(self.namespace_iri if self.namespace_iri != "" else namespace_iri)
-
-    @classmethod
-    def load_from_file(cls, filename: str) -> "Ontology":
-        """
-        Loads an Ontology from an existing file
-
-        Args:
-            filename: The name of a given file
-
-        Returns: An Ontology object
-
-        """
-        inst = cls()
-        inst._internal_onto = get_ontology(f"file:////{filename}")
-        inst._internal_onto.load()
-        return inst
-
-    def save_to_file(self, filename: str, file_format: str="rdfxml"):
-        """
-        Saves an Ontology with a given filename
-
-        Args:
-            filename: The name of a given file
-            file_format: The file format of given filename. Only `rdfxml` is supported by `owlready2`
-        """
-        self.implementation.save(file=filename, format=file_format)
-
-    def add_rule(self, swrl_rule: str):
-        """
-        Adds a SWRL rule to the Ontology
-
-        Args:
-            swrl_rule: A rule definition in SWRL
-        """
-        rule = Imp(namespace=self.implementation)
-        rule.set_as_rule(swrl_rule.replace(f"{self.base_name}:", "").replace("^ ", ", "))
-
-    @property
-    def implementation(self) -> owlready2.Ontology:
-        if self._internal_onto is None:
-            self.create()  # lazy creation
-        return self._internal_onto
-
-    @property
-    def base_name(self):
-        return self.implementation.name
 
 
 class OntologyEntity(metaclass=ABCMeta):
@@ -116,7 +54,7 @@ class OntologyEntity(metaclass=ABCMeta):
         return f"{cls.prefix}:{cls.name}"
 
     @abstractmethod
-    def actualize(self, onto: Ontology):
+    def actualize(self, onto: Ontology) -> 'OntologyEntity':
         """
             Makes the entity concrete (saved) in a given Ontology
             :param onto: a given Ontology
@@ -157,6 +95,7 @@ class OntologyEntity(metaclass=ABCMeta):
             self.equivalent_classes.append(expression)
         elif isinstance(expression, str):
             self.equivalent_class_expressions.append(expression)
+            self._sync_description()
         else:
             raise TypeError("Invalid type")
 
@@ -199,34 +138,40 @@ class OntologyEntity(metaclass=ABCMeta):
         """
         return self.name in GENERATED_TYPES
 
+    def sync(self):
+        self.actualize(self.actualized_entity.namespace)
+
     @property
-    def realized_entity(self):
+    def actualized_entity(self):
         if self.is_actualized:
             return GENERATED_TYPES[self.name]
+        raise AssertionError("The entity has yet to be actualized")
+
+    def _sync_description(self):
+        """
+        Internally synchronizes with the `owlready2` representation of this Class
+        """
+        self.actualized_entity.equivalent_to = self.equivalent_classes
 
     def _get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
-        if self.name in GENERATED_TYPES:
-            return GENERATED_TYPES[self.name]
-        attrs['namespace'] = onto.implementation
-        if len(self.equivalent_classes) > 0:
-            attrs['equivalent_to'] = self.equivalent_classes
-        default = True
-        if len(self._parent_classes) > 0 or len(self._realised_parent_classes) > 0:
-            self._realised_parent_classes.extend(
-                [x._get_generated_class(onto=onto) for x in self._parent_classes
-                 if x is not None and isinstance(x, OntologyEntity)])
-            gen = self._realised_parent_classes
-            if len(gen) > 0:
-                GENERATED_TYPES[self.name] = type(self.name, tuple(gen), attrs)
-                default = False
-        if default:
-            GENERATED_TYPES[self.name] = type(self.name, (self._parent_class,), attrs)
         try:
-            if len(GENERATED_TYPES[self.name].equivalent_to) > 0:
-                print(GENERATED_TYPES[self.name].equivalent_to[0].__class__)
-        except AttributeError:
-            pass
-        return GENERATED_TYPES[self.name]
+            self._sync_description()
+            return self.actualized_entity
+        except AssertionError:
+            attrs['namespace'] = onto.implementation
+            default = True
+            if len(self._parent_classes) > 0 or len(self._realised_parent_classes) > 0:
+                self._realised_parent_classes.extend(
+                    [x._get_generated_class(onto) for x in self._parent_classes
+                     if x is not None and isinstance(x, OntologyEntity)])
+                gen = self._realised_parent_classes
+                if len(gen) > 0:
+                    GENERATED_TYPES[self.name] = type(self.name, tuple(gen), attrs)
+                    default = False
+            if default:
+                GENERATED_TYPES[self.name] = type(self.name, (self._parent_class,), attrs)
+            self._sync_description()
+            return GENERATED_TYPES[self.name]
 
     def _sync_internal(self, onto: Ontology):
         if not self.is_individual:

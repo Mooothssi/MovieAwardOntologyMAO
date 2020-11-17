@@ -26,8 +26,7 @@ class TestOntogen(TestCase):
 
     def test_add_rule(self):
         self.test_realization()
-        self.onto.add_rule("mao:ActingSituation(?p), mao:hasActor(?p, ?a), "
-                           "hasLocation(?p, ?s), mao:Film(?s) -> portrays(?s, ?a)")
+        self.onto.add_rule("mao:ActingSituation(?p) ^ mao:hasActor(?p, ?a) -> actsIn(?a, ?p)", "ActsIn")
 
     def test_assertion(self):
         self.test_instantiation()
@@ -46,8 +45,9 @@ class TestOntogen(TestCase):
     # Create an OWL ontology from scratch
     def test_create_ontology(self):
         self.test_instantiation()
+        self.test_add_rule()
         self.i = self.converter.to_owl_ontology(self.onto)
-        self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME), "rdfxml")
+        self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
 
     def test_super_classes(self):
         film_making = self.converter.get_entity("mao:FilmMakingSituation")
@@ -56,7 +56,7 @@ class TestOntogen(TestCase):
         event.actualize(self.onto)
         sit = self.converter.get_entity("mao:Situation")
         sit.actualize(self.onto)
-        self.assertListEqual([event.realized_entity, sit.realized_entity], film_making.realized_entity.is_a)
+        self.assertListEqual([event.actualized_entity, sit.actualized_entity], film_making.actualized_entity.is_a)
 
     def tearDown(self):
         pass

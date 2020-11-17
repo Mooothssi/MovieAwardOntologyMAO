@@ -642,7 +642,7 @@ owl:ObjectProperty:
   mao:actedBy:
     annotations:
       rdfs:label:
-        - acted by^^rdfsL:Literal@en
+        - acted by^^rdfs:Literal@en
     rdfs:range:
       - Person
   mao:actsIn:

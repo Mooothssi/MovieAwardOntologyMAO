@@ -1,5 +1,5 @@
 from owlready2 import (AllDisjoint, AnnotationProperty, DataProperty,
-                       ObjectProperty, Thing, ThingClass)
+                       ObjectProperty, Thing)
 from typing import Any, Dict, List, Type
 
 from .base import Ontology, OntologyEntity, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
@@ -7,7 +7,9 @@ from .internal import CHARACTERISTICS_MAPPING
 from .wrapper import BaseOntologyClass
 from .utils import ClassExpToConstruct
 
-# __all__ = (B)
+__all__ = ('OwlClass', 'OwlAnnotationProperty',
+           'OwlDataProperty', 'OwlObjectProperty',
+           'OwlThing', 'ENTITIES')
 
 BUILTIN_DATATYPES = [str, int]
 ENTITIES: Dict[str, OntologyEntity] = {
@@ -114,7 +116,7 @@ class OwlClass(OntologyEntity):
         inst.name = individual_name
         self._internal_imp_instance = inst
 
-    def actualize(self, onto: Ontology):
+    def actualize(self, onto: Ontology) -> 'OwlClass':
         """
         Makes the entity concrete (saved) in a given Ontology
 
@@ -122,7 +124,6 @@ class OwlClass(OntologyEntity):
             onto: a given Ontology
         """
         apply_classes_from(onto)
-        # TODO: realise all equivalents
         [self.add_equivalent_class_expression(get_exp_constructor(onto).to_construct(exp))
          for exp in self.equivalent_class_expressions]
         self._sync_internal(onto)
@@ -130,6 +131,7 @@ class OwlClass(OntologyEntity):
         disj = [x._get_generated_class(onto) for x in self._disjoint_classes if x is not None]
         if len(disj) > 0:
             AllDisjoint(disj)
+        return self
 
     def add_property_assertion(self, property_name: str, value):
         """
@@ -157,7 +159,7 @@ class OwlThing(OwlClass):
     def __init__(self):
         super().__init__(f"{self.prefix}:{self.name}")
 
-    def _get_generated_class(self, onto: Ontology, **attrs) -> Type[ThingClass]:
+    def _get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
         return self._internal_imp_instance
 
 

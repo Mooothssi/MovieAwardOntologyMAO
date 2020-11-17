@@ -1,5 +1,5 @@
 # Ontogen
-Part of [MAO Project](..)
+Part of [MAO Project](https://github.com/th-bunratta/MovieAwardOntologyMAO/tree/ontogen)
 ## To-dos
 ### Classes
 - [x] `rdf:type`
@@ -10,11 +10,11 @@ Part of [MAO Project](..)
 - [x] `rdfs:equivalentClass` (Mostly done)
 - [x] `owl:disjointWith` (Partially)
 - [x] `owl:inverseOf`
-- [ ] `owl:Restriction` and class constructs
+- [x] `owl:Restriction` and class constructs
    - Protege Class Expressions
      - HasValue restriction
        - [x] `value` (Partially)
-         - [ ] Built-in data types
+         - [x] Built-in data types (Mostly)
          - [x] Classes
      - Quantifier
        - [x] `some` (Mostly)

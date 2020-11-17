@@ -1,11 +1,13 @@
-from re import search, Match
-from typing import Dict, Tuple
+from re import Match, match, search
+from typing import Dict, Tuple, Type
 
-from owlready2 import ClassConstruct, Not, ObjectProperty, Thing
+from owlready2 import ClassConstruct, ConstrainedDatatype, Not, ObjectProperty, Thing
 
-from ontogen.base import GENERATED_TYPES, Ontology
+from ontogen.base import Ontology
+from ontogen.base.vars import GENERATED_TYPES
+from ontogen.internal import CONSTRAINT_DATATYPE_OPERATOR_MAP
 
-innermost_pattern = r'((?:\()([^\(\)]+) (and|or) ([^\(\)]+)(?:\)))'
+__all__ = ('ClassExpToConstruct',)
 
 QUANTIFIER_RESTRICTION_KEYWORDS = ("some", "only")
 PROPERTY_RESTRICTION_KEYWORDS = QUANTIFIER_RESTRICTION_KEYWORDS + ("value",)
@@ -22,12 +24,49 @@ NOT_PATTERN = (r'(not)(?:\(([:a-zA-Z0-9<># ]*)\)| '
 TRIPLE_PATTERN = (r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
                   r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\))) '
                   rf'({"|".join(TRIPLE_KEYWORDS)}) (?:([0-9]+) )?'
-                  r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
+                  r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[ A-Za-z0-9\[\]\'<>=]*)|'
                   r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\)))', (2, 1, 6, 5, 4), 3)
 
 PATTERNS = (NOT_PATTERN, TRIPLE_PATTERN)
 
 RESERVED = {"True": True, "False": False, "integer": int}
+
+XSD_LITERAL_DATATYPE_MAP = {
+    'integer': int,
+    'boolean': bool,
+    'string': str,
+    'float': float,
+    'decimal': float
+}
+
+
+def get_imp_literal_type(literal_entity_name: str):
+    if ":" in literal_entity_name:
+        literal_entity_name = literal_entity_name.split(":")[1]
+    return XSD_LITERAL_DATATYPE_MAP.get(literal_entity_name, literal_entity_name)
+
+
+def check_constraint_data_types(expression: str) -> ConstrainedDatatype or str:
+    """
+    Creates a respective ConstrainedDatatype for a given expression
+
+    Args:
+        expression: A literal expression
+
+    Returns: The respective ConstrainedDatatype
+
+    >>> check_constraint_data_types("integer[>=40]")
+    ConstrainedDatatype(int, min_inclusive = 40)
+    """
+    constraint_pattern = r'([A-z]+)(?:\[(?:([A-z]+|[<>=]{0,2})) ?(.+)\])?$'
+    m = match(constraint_pattern, expression)
+    if m is None:
+        return expression
+    literal, operator, val = get_imp_literal_type(m.group(1)), m.group(2), m.group(3)
+    kwargs = {}
+    k = CONSTRAINT_DATATYPE_OPERATOR_MAP.get(operator, operator)
+    kwargs[k] = literal(val)
+    return ConstrainedDatatype(literal, **kwargs)
 
 
 class TokenInfo:
@@ -55,6 +94,8 @@ class TokenInfo:
             if self.is_class:
                 self.keyword = None
                 new_str = self.sub_tokens[0]
+                if '[' in new_str:
+                    return check_constraint_data_types(new_str)
                 if new_str.isdigit():
                     return int(new_str)
                 if new_str in GENERATED_TYPES:
@@ -87,11 +128,11 @@ class TokenInfo:
 
     def __repr__(self):
         if self.keyword == "not":
-            return f"%{self.keyword}({self.sub_tokens[0]})"
+            return f"^{self.keyword}({self.sub_tokens[0]})"
         elif self.is_class:
             return self.sub_tokens[0]
         else:
-            return f"%({self.sub_tokens[0]}) {self.keyword} " \
+            return f"^({self.sub_tokens[0]}) {self.keyword} " \
                    f"({self.sub_tokens[1] if len(self.sub_tokens) > 1 else ''})"
 
 
