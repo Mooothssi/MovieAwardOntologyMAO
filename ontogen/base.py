@@ -93,6 +93,7 @@ class OntologyEntity(metaclass=ABCMeta):
     _internal_imp_instance: Thing = None
 
     def __init__(self, entity_qualifier: str):
+        assert ":" in entity_qualifier, "Must include a prefix"
         pre, n = entity_qualifier.split(":")
         self.prefix = pre
         self.name = n

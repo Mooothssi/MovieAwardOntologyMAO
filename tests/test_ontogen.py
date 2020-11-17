@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from ontogen import Ontology
 from ontogen.converter import YamlToOwlConverter
-from ontogen.primitives import OwlClass
+from ontogen.primitives import OwlClass, OwlObjectProperty
 from ontogen.utils import ClassExpToConstruct
 
 from settings import OWL_FILEPATH, OUT_PATH, OUT_FILENAME
@@ -23,7 +23,6 @@ class TestOntogen(TestCase):
         self.onto = Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#")
         self.onto.create()
         self.i: OwlClass = self.converter.get_entity("mao:Film")
-        # self.onto = Ontology.load_from_file(OWL_FILEPATH)
 
     def test_add_rule(self):
         self.test_realization()
@@ -64,16 +63,18 @@ class TestOntogen(TestCase):
 
 
 FIXTURES = (
-    ("(mao:Dog and mao:Croc) or mao:Cat or (mao:Person and mao:Film)",
-     "(mao.Dog & mao.Croc) | mao.Cat | (mao.Person & mao.Film)"),
+    ("(Mo) and (Ding)", "mao.Mo & mao.Ding"),
+    ("Ding and (hasPet some (Cat or Dog))", "mao.Ding & mao.hasPet.some(mao.Cat | mao.Dog)"),
+    ("Mai and (hasPet some Cat)", "mao.Mai & mao.hasPet.some(mao.Cat)"),
+    ("Mo or Ding or Bank", "mao.Mo | mao.Ding | mao.Bank"),
+    ("(mao:Mai and mao:Student) or mao:SPP",
+     "(mao.Mai & mao.Student) | mao.SPP"),
     ("(not(Dog or Cat)) and (Horse)",
      "Not(mao.Dog | mao.Cat) & mao.Horse"),
     ("(mao:Dog and not(mao:Croc or not(mao:Cat))) "
      "or mao:Cat or (mao:Person and mao:Film)",
      "(mao.Dog & Not(mao.Croc | Not(mao.Cat))) | mao.Cat | (mao.Person & mao.Film)"),
     ("(Horse) and (not(Dog or Cat))", "mao.Horse & Not(mao.Dog | mao.Cat)"),
-    ("(Mo) and (Ding)", "mao.Mo & mao.Ding"),
-    ("Mo or Ding or Bank", "mao.Mo | mao.Ding | mao.Bank"),
     ("(Cat and Horse and Dog) and Chicken", "mao.Cat & mao.Horse & mao.Dog & mao.Chicken"),
     ("(mao:Dog and (mao:Done or (mao:Film and mao:Croc))) or mao:Cat or (mao:Person and mao:Film)",
      "(mao.Dog & (mao.Done | (mao.Film & mao.Croc))) | mao.Cat | (mao.Person & mao.Film)")
@@ -84,6 +85,8 @@ class OntogenClassExpressionTestCase(TestCase):
     def setUp(self):
         self.onto = Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#")
         self.onto.create()
+        obj_prop = OwlObjectProperty("mao:hasPet")
+        obj_prop.actualize(self.onto)
 
     def test_basic(self):
         cls = ClassExpToConstruct(self.onto)

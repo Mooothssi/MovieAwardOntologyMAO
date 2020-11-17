@@ -14,19 +14,20 @@ Part of `MAO Project`
 - [ ] `owl:Restriction` and class constructs
    - Protege Class Expressions
      - HasValue restriction
-       - [ ] `value`
+       - [x] `value` (Partially)
      - Quantifier
-       - [ ] `some` (Existential)
-       - [ ] `only` (Universal)
+       - [x] `some` (Mostly)
+       - [x] `only` (Mostly)
      - Cardinality restriction
        - [ ] `min`
        - [ ] `max`
-       - [ ] `exactly` (Exact)
+       - [ ] `exactly`
      - Logical
-       - [ ] `and`
-       - [ ] `or` (triple)
-       - [ ] `not` (double)
+       - [x] `and` (Mostly)
+       - [x] `or` (Mostly)
+       - [x] `not` (Partially)
      - Parentheses & Nested parentheses
+       - [x] Nested parentheses
    
 
 ### Properties

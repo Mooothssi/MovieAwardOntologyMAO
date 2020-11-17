@@ -10,6 +10,9 @@ from .utils import ClassExpToConstruct
 # __all__ = (B)
 
 BUILTIN_DATATYPES = [str, int]
+ENTITIES: Dict[str, OntologyEntity] = {
+
+}
 
 
 def get_exp_constructor(onto: Ontology):
@@ -59,42 +62,6 @@ class OwlDataProperty(OwlProperty):
     name = "DataProperty"
     range = [str]
     _parent_class = DataProperty
-
-
-class OwlObjectProperty(OwlProperty):
-    name = "ObjectProperty"
-    _range = ["owl:Class"]
-    _parent_class = ObjectProperty
-    _characteristics = ["owl:SymmetricProperty"]
-
-    def __init__(self, name: str):
-        super().__init__(name)
-        self._realised_parent_classes.append(ObjectProperty)
-        self.inverse_prop: Type or None = None
-
-    def get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
-        u = [CHARACTERISTICS_MAPPING.get(c, None) for c in self._characteristics]
-        if self.inverse_prop is not None:
-            attrs['inverse_property'] = self.get_generated_inverse(onto)
-        if len(u) > 0:
-            self._realised_parent_classes.extend(u)
-        return super(OwlObjectProperty, self).get_generated_class(onto, **attrs)
-
-    def get_generated_range(self, onto: Ontology):
-        return [x.get_generated_class(onto) for x in self.range if x is not None]
-
-    def get_generated_inverse(self, onto: Ontology) -> Type:
-        self.inverse_prop.inverse_prop = None
-        return self.inverse_prop.get_generated_class(onto)
-
-    @property
-    def range(self):
-        return self._range
-
-    @range.setter
-    def range(self, a):
-        self._range = a
-        self.dependencies.extend([b for b in a if not b == "Thing" and b != ""])
 
 
 class OwlAnnotationProperty(OwlProperty):
@@ -194,6 +161,42 @@ class OwlThing(OwlClass):
         return self._internal_imp_instance
 
 
+class OwlObjectProperty(OwlProperty):
+    name = "ObjectProperty"
+    _range = [OwlClass("owl:Thing")]
+    _parent_class = ObjectProperty
+    _characteristics = ["owl:SymmetricProperty"]
+
+    def __init__(self, name: str):
+        super().__init__(name)
+        self._realised_parent_classes.append(ObjectProperty)
+        self.inverse_prop: Type or None = None
+
+    def get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
+        u = [CHARACTERISTICS_MAPPING.get(c, None) for c in self._characteristics]
+        if self.inverse_prop is not None:
+            attrs['inverse_property'] = self.get_generated_inverse(onto)
+        if len(u) > 0:
+            self._realised_parent_classes.extend(u)
+        return super(OwlObjectProperty, self).get_generated_class(onto, **attrs)
+
+    def get_generated_range(self, onto: Ontology):
+        return [x.get_generated_class(onto) for x in self.range if x is not None]
+
+    def get_generated_inverse(self, onto: Ontology) -> Type:
+        self.inverse_prop.inverse_prop = None
+        return self.inverse_prop.get_generated_class(onto)
+
+    @property
+    def range(self):
+        return self._range
+
+    @range.setter
+    def range(self, a):
+        self._range = a
+        self.dependencies.extend([b for b in a if not b == "Thing" and b != ""])
+
+
 def all_subclasses(cls):
     return set(cls.__subclasses__()).union(
         [s for c in cls.__subclasses__() for s in all_subclasses(c)]).union([cls])
@@ -215,9 +218,6 @@ BASE_ENTITIES = [OwlAnnotationProperty, OwlDataProperty, OwlObjectProperty, OwlC
 PROPERTY_ENTITIES = {"annotations": OwlAnnotationProperty,
                      "dataProperty": OwlDataProperty,
                      "objectProperty": OwlObjectProperty}
-ENTITIES: Dict[str, OntologyEntity] = {
-
-}
 BUILTIN_ENTITIES = {
     LABEL_ENTITY_NAME: OwlAnnotationProperty(LABEL_ENTITY_NAME),
     COMMENT_ENTITY_NAME: OwlAnnotationProperty(COMMENT_ENTITY_NAME)
