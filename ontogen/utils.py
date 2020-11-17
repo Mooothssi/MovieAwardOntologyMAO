@@ -1,16 +1,16 @@
-import re
-from re import Match
+from re import search, Match
 from typing import Dict, List, Tuple
-import types
-from owlready2 import *
 
+from owlready2 import ClassConstruct, Not, Thing
 # ConstrainedDatatype
-from .base import GENERATED_TYPES
+from ontogen.base import GENERATED_TYPES, Ontology
 
 innermost_pattern = r'((?:\()([^\(\)]+) (and|or) ([^\(\)]+)(?:\)))'
 normal_pattern = r'(.+) (and|or) (.+)'
 # (op, nested)
 NOT_PATTERN: Tuple[str, List[int]] = (r'(not)(?:\(([^\(\)]+)\)| (.+))', [3, 2])
+NEW_NOT_PATTERN = (r'(not)(?:\(([:a-zA-Z0-9<># ]*)\)| '
+                   r'((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*))', [3, 2])
 AND_OR_PAREN_PATTERN = (r'\((.+)\) (and|or) \((.+)\)', [1, 3], 2)
 # LOGICAL_PAREN_PATTERN = (r'((?:\()([^\(\)]+) (and|or) ([^\(\)]+)(?:\)))', [2, 4], 3)
 TRIPLE_PATTERN = (r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
@@ -31,11 +31,12 @@ class TokenInfo:
     operator: str
     sub_tokens: List["TokenInfo"]
 
-    def __init__(self):
+    def __init__(self, onto: Ontology):
         self.operator = ""
         self.sub_tokens = ["", ""]
         self.raw_str: Tuple[TokenInfo, TokenInfo] = ("", "")
         self.is_class = False
+        self.onto = onto.implementation
 
     @property
     def count(self):
@@ -55,7 +56,7 @@ class TokenInfo:
             if ":" in self.raw_str[0]:
                 new_str = self.raw_str[0].split(":")[1]
             return type(str(new_str), (Thing,),
-                        {"namespace": get_ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#")})
+                        {"namespace": self.onto})
         elif self.operator == "and":
             first, second = self.raw_str
             return first.construct & second.construct
@@ -74,33 +75,40 @@ class TokenInfo:
     def __repr__(self):
         if self.operator == "not":
             return f"%{self.operator}({self.raw_str[0]})"
+        elif self.is_class:
+            return self.raw_str[0]
         else:
-            return f"%({self.raw_str[0]}) {self.operator} ()"
+            return f"%({self.raw_str[0]}) {self.operator} " \
+                   f"({self.raw_str[1] if len(self.raw_str) > 1 else ''})"
 
 
 class ClassExpToConstruct:
-    def __init__(self):
+    def __init__(self, onto: Ontology):
         self.reg_tokens: Dict[str, TokenInfo] = {}
+        self.ontology = onto
 
     def match_registered(self, str_match: str) -> TokenInfo:
         str_match = str_match.replace("(", "").replace(")", "")
         if str_match in self.reg_tokens:
             return self.reg_tokens[str_match]
         else:
-            tk = TokenInfo()
-            r = self._cls_to_residue(str_match)
-            tk.raw_str = (str_match,)
-            tk.is_class = True
+            tk = TokenInfo(self.ontology)
+            result = self._cls_to_residue(str_match)
+            if result == str_match:
+                tk.raw_str = (result,)
+                tk.is_class = True
+            else:
+                return self.match_registered(result)
             return tk
 
     def get_triple_match(self, recv_string: str):
         result = recv_string
         m = Match
         while m is not None:
-            m = re.search(TRIPLE_PATTERN[0], result)
+            m = search(TRIPLE_PATTERN[0], result)
             if m is None:
                 break
-            tk = TokenInfo()
+            tk = TokenInfo(self.ontology)
             q = m.groups()
             p = tuple(set(TRIPLE_PATTERN[1] + TRIPLE_PATTERN[3]))
             tk.raw_str = [self.match_registered(n)
@@ -114,32 +122,38 @@ class ClassExpToConstruct:
         return result
 
     def get_match(self, re_pattern: Tuple, recv_string: str) -> str:
-        m = re.search(re_pattern[0], recv_string)
-        if m is None:
-            return recv_string
-        tk = TokenInfo()
-        tk.raw_str = [self.match_registered(n)
-                      for n in [m.group(e) for e in re_pattern[1]]
-                      if n is not None]
-        tk.start_index, tk.end_index = m.span()
-        if len(re_pattern) == 3:
-            tk.operator = m.group(re_pattern[2])
-        else:
-            tk.operator = "not"
-        res = recv_string[:tk.start_index] + tk.get_repr() + recv_string[tk.end_index:]
-        self.reg_tokens[tk.get_repr()] = tk
+        res = recv_string
+        m = Match
+        while m is not None:
+            m = search(NEW_NOT_PATTERN[0], res)
+            if m is None:
+                break
+            tk = TokenInfo(self.ontology)
+            tk.raw_str = [self.match_registered(n)
+                          for n in [m.group(e) for e in re_pattern[1]]
+                          if n is not None]
+            tk.start_index, tk.end_index = m.span()
+            if len(re_pattern) == 3:
+                tk.operator = m.group(re_pattern[2])
+            else:
+                tk.operator = "not"
+            res = res[:tk.start_index] + tk.get_repr() + res[tk.end_index:]
+            self.reg_tokens[tk.get_repr()] = tk
         return res
 
     def _cls_to_residue(self, expression: str):
-        residue = self.get_match(NOT_PATTERN, expression)
+        residue = self.get_match(NEW_NOT_PATTERN, expression)
         residue = self.get_triple_match(residue)
         return residue
 
-    def to_construct(self, expression: str):
+    def to_construct(self, expression: str) -> ClassConstruct:
         """
-        to `owlready` Class Construct
-        :param expression:
-        :return:
+        Converts a Class Expression of `Protege` to a Class Construct of `owlready2`
+        Args:
+            expression: An expression in Class Expression Syntax of Protege
+
+        Returns:
+            A ClassConstruct counterpart of the given expression
         """
         self._cls_to_residue(expression)
         construct_list = [j.construct for j in self.reg_tokens.values()]
@@ -148,5 +162,5 @@ class ClassExpToConstruct:
 
 
 if __name__ == '__main__':
-    c = ClassExpToConstruct()
-    print(c.to_construct("(mao:Dog and mao:Croc) or mao:Cat or (mao:Person and mao:Film)"))
+    c = ClassExpToConstruct(Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#"))
+    c.to_construct("(mao:Dog and not(mao:Croc or not(mao:Cat))) or mao:Cat or (mao:Person and mao:Film)")

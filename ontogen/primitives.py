@@ -20,7 +20,10 @@ CHARACTERISTICS_MAPPING = {
     "owl:ReflexiveProperty": ReflexiveProperty,
     "owl:InverseFunctionalProperty": InverseFunctionalProperty
 }
-EXP_CONSTRUCTOR = ClassExpToConstruct()
+
+
+def get_exp_constructor(onto: Ontology):
+    return ClassExpToConstruct(onto)
 
 
 def check_restrictions(prefix: str, str_types: List[str], value: Any) -> bool:
@@ -163,7 +166,7 @@ class OwlClass(OntologyEntity):
         """
         apply_classes_from(onto)
         # TODO: realise all equivalents
-        [self.add_equivalent_class_expression(EXP_CONSTRUCTOR.to_construct(exp))
+        [self.add_equivalent_class_expression(get_exp_constructor(onto).to_construct(exp))
          for exp in self.equivalent_class_expressions]
         self._sync_internal(onto)
         self.get_generated_class(onto)

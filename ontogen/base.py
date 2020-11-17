@@ -71,6 +71,8 @@ class Ontology:
 
     @property
     def implementation(self) -> owlready2.Ontology:
+        if self._internal_onto is None:
+            self.create()  # lazy creation
         return self._internal_onto
 
     @property
