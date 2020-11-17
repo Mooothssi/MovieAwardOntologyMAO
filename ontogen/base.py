@@ -41,9 +41,13 @@ class Ontology:
     @classmethod
     def load_from_file(cls, filename: str) -> "Ontology":
         """
-            Loads an Ontology from an existing file
-            :param filename: The name of a given file
-            :return: Ontology object
+        Loads an Ontology from an existing file
+
+        Args:
+            filename: The name of a given file
+
+        Returns: An Ontology object
+
         """
         inst = cls()
         inst._internal_onto = get_ontology(f"file:////{filename}")
@@ -52,9 +56,11 @@ class Ontology:
 
     def save_to_file(self, filename: str, file_format: str="rdfxml"):
         """
-            Saves an Ontology with a given filename
-            :param filename: A given filename
-            :param file_format: The file format of given filename. Only `rdfxml` is supported by `owlready2`
+        Saves an Ontology with a given filename
+
+        Args:
+            filename: The name of a given file
+            file_format: The file format of given filename. Only `rdfxml` is supported by `owlready2`
         """
         self.implementation.save(file=filename, format=file_format)
 
@@ -64,7 +70,6 @@ class Ontology:
 
         Args:
             swrl_rule: A rule definition in SWRL
-
         """
         rule = Imp(namespace=self.implementation)
         rule.set_as_rule(swrl_rule.replace(f"{self.base_name}:", "").replace("^ ", ", "))
@@ -118,30 +123,6 @@ class OntologyEntity(metaclass=ABCMeta):
         """
         raise NotImplementedError
 
-    def get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
-        if self.name in GENERATED_TYPES:
-            return GENERATED_TYPES[self.name]
-        attrs['namespace'] = onto.implementation
-        if len(self.equivalent_classes) > 0:
-            attrs['equivalent_to'] = self.equivalent_classes
-        default = True
-        if len(self._parent_classes) > 0 or len(self._realised_parent_classes) > 0:
-            self._realised_parent_classes.extend(
-                [x.get_generated_class(onto=onto) for x in self._parent_classes
-                 if x is not None and isinstance(x, OntologyEntity)])
-            gen = self._realised_parent_classes
-            if len(gen) > 0:
-                GENERATED_TYPES[self.name] = type(self.name, tuple(gen), attrs)
-                default = False
-        if default:
-            GENERATED_TYPES[self.name] = type(self.name, (self._parent_class,), attrs)
-        try:
-            if len(GENERATED_TYPES[self.name].equivalent_to) > 0:
-                print(GENERATED_TYPES[self.name].equivalent_to[0].__class__)
-        except AttributeError:
-            pass
-        return GENERATED_TYPES[self.name]
-
     def add_superclass(self, superclass: "OntologyEntity"):
         """
         Adds a superclass of this Class.
@@ -150,13 +131,34 @@ class OntologyEntity(metaclass=ABCMeta):
         """
         self._parent_classes.append(superclass)
 
-    def add_disjoint_classes(self, cls: "OntologyEntity"):
+    def add_disjoint_class(self, cls: "OntologyEntity"):
+        """
+        Adds a disjoint class to this Class. The given class will be lazy loaded.
+
+        Args:
+            cls: an OntologyEntity
+        """
         self._disjoint_classes.append(cls)
 
-    def add_equivalent_class_expression(self, obj: ClassConstruct):
-        if obj is None:
+    def add_equivalent_class_expression(self, expression: str or ClassConstruct):
+        """
+        Adds an equivalent class to this Class
+
+        Args:
+            expression: A Class Expression in Manchester Syntax
+                        or an `owlready2` Class Construct
+
+        Note:
+            A Class Expression in Manchester Syntax will be lazy loaded.
+        """
+        if expression is None:
             return
-        self.equivalent_classes.append(obj)
+        if isinstance(expression, ClassConstruct):
+            self.equivalent_classes.append(expression)
+        elif isinstance(expression, str):
+            self.equivalent_class_expressions.append(expression)
+        else:
+            raise TypeError("Invalid type")
 
     def _add_builtin_prop(self, builtin_name: str, value: BUILTIN_DATA_TYPES):
         if value is None:
@@ -193,6 +195,8 @@ class OntologyEntity(metaclass=ABCMeta):
 
     @property
     def is_actualized(self) -> bool:
+        """Whether this Class is saved to an Ontology
+        """
         return self.name in GENERATED_TYPES
 
     @property
@@ -200,9 +204,33 @@ class OntologyEntity(metaclass=ABCMeta):
         if self.is_actualized:
             return GENERATED_TYPES[self.name]
 
+    def _get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
+        if self.name in GENERATED_TYPES:
+            return GENERATED_TYPES[self.name]
+        attrs['namespace'] = onto.implementation
+        if len(self.equivalent_classes) > 0:
+            attrs['equivalent_to'] = self.equivalent_classes
+        default = True
+        if len(self._parent_classes) > 0 or len(self._realised_parent_classes) > 0:
+            self._realised_parent_classes.extend(
+                [x._get_generated_class(onto=onto) for x in self._parent_classes
+                 if x is not None and isinstance(x, OntologyEntity)])
+            gen = self._realised_parent_classes
+            if len(gen) > 0:
+                GENERATED_TYPES[self.name] = type(self.name, tuple(gen), attrs)
+                default = False
+        if default:
+            GENERATED_TYPES[self.name] = type(self.name, (self._parent_class,), attrs)
+        try:
+            if len(GENERATED_TYPES[self.name].equivalent_to) > 0:
+                print(GENERATED_TYPES[self.name].equivalent_to[0].__class__)
+        except AttributeError:
+            pass
+        return GENERATED_TYPES[self.name]
+
     def _sync_internal(self, onto: Ontology):
         if not self.is_individual:
-            inst = self.get_generated_class(onto)
+            inst = self._get_generated_class(onto)
         else:
             inst = self._internal_imp_instance
         for set_prop in self.properties_values:

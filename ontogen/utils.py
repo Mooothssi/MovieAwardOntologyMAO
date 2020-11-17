@@ -8,20 +8,22 @@ from ontogen.base import GENERATED_TYPES, Ontology
 innermost_pattern = r'((?:\()([^\(\)]+) (and|or) ([^\(\)]+)(?:\)))'
 
 QUANTIFIER_RESTRICTION_KEYWORDS = ("some", "only")
+PROPERTY_RESTRICTION_KEYWORDS = QUANTIFIER_RESTRICTION_KEYWORDS + ("value",)
 TRIPLE_LOGICAL_OPERATION_KEYWORDS = ("and", "or")
+CARDINALITY_RESTRICTION_KEYWORDS = ("min", "max", "exactly")
 
-TRIPLE_KEYWORDS = (QUANTIFIER_RESTRICTION_KEYWORDS +
+TRIPLE_KEYWORDS = (PROPERTY_RESTRICTION_KEYWORDS +
                    TRIPLE_LOGICAL_OPERATION_KEYWORDS +
-                   ("value",))
+                   CARDINALITY_RESTRICTION_KEYWORDS)
 
 # (op, nested)
 NOT_PATTERN = (r'(not)(?:\(([:a-zA-Z0-9<># ]*)\)| '
                r'((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*))', (3, 2))
 TRIPLE_PATTERN = (r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
                   r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\))) '
-                  rf'({"|".join(TRIPLE_KEYWORDS)}) '
+                  rf'({"|".join(TRIPLE_KEYWORDS)}) (?:([0-9]+) )?'
                   r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
-                  r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\)))', (2, 1, 5, 4), 3)
+                  r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\)))', (2, 1, 6, 5, 4), 3)
 
 PATTERNS = (NOT_PATTERN, TRIPLE_PATTERN)
 
@@ -33,7 +35,7 @@ class TokenInfo:
         Contains the information of a Token
     """
     def __init__(self, onto: Ontology):
-        self.operator = ""
+        self.keyword = None
         self.sub_tokens: Tuple[TokenInfo or str, ...] = tuple()
         self.is_class = False
         self.onto = onto.implementation
@@ -48,10 +50,13 @@ class TokenInfo:
         return f"<TK#{id(self)}>"
 
     @property
-    def construct(self) -> ClassConstruct or type or bool:
+    def construct(self) -> ClassConstruct or type or bool or int:
         try:
             if self.is_class:
+                self.keyword = None
                 new_str = self.sub_tokens[0]
+                if new_str.isdigit():
+                    return int(new_str)
                 if new_str in GENERATED_TYPES:
                     return GENERATED_TYPES[new_str]
                 if new_str in RESERVED:
@@ -59,35 +64,34 @@ class TokenInfo:
                 if ":" in self.sub_tokens[0]:
                     new_str = self.sub_tokens[0].split(":")[1]
                 base_cls = Thing
-                if self.operator in QUANTIFIER_RESTRICTION_KEYWORDS:
+                if self.keyword in QUANTIFIER_RESTRICTION_KEYWORDS:
                     base_cls = ObjectProperty
                 new_type = type(str(new_str), (base_cls,), {"namespace": self.onto})
                 GENERATED_TYPES[new_str] = new_type
                 return new_type
-            elif self.operator == "and":
+            elif self.keyword in CARDINALITY_RESTRICTION_KEYWORDS:
+                first, second, third = self.sub_tokens
+                return getattr(first.construct, self.keyword)(third.construct, second.construct)
+            elif self.keyword in TRIPLE_KEYWORDS:
                 first, second = self.sub_tokens
-                return first.construct & second.construct
-            elif self.operator == "or":
-                first, second = self.sub_tokens
-                return first.construct | second.construct
-            elif self.operator == "some":
-                first, second = self.sub_tokens
-                return first.construct.some(second.construct)
-            elif self.operator == "value":
-                first, second = self.sub_tokens
-                return first.construct.value(second.construct)
-            elif self.operator == "not":
+                if self.keyword in PROPERTY_RESTRICTION_KEYWORDS:
+                    return getattr(first.construct, self.keyword)(second.construct)
+                if self.keyword == "and":
+                    return first.construct & second.construct
+                elif self.keyword == "or":
+                    return first.construct | second.construct
+            elif self.keyword == "not":
                 return Not(self.sub_tokens[0].construct)
         except AttributeError:
             raise SyntaxError("Unable to construct from Class Expression syntax!")
 
     def __repr__(self):
-        if self.operator == "not":
-            return f"%{self.operator}({self.sub_tokens[0]})"
+        if self.keyword == "not":
+            return f"%{self.keyword}({self.sub_tokens[0]})"
         elif self.is_class:
             return self.sub_tokens[0]
         else:
-            return f"%({self.sub_tokens[0]}) {self.operator} " \
+            return f"%({self.sub_tokens[0]}) {self.keyword} " \
                    f"({self.sub_tokens[1] if len(self.sub_tokens) > 1 else ''})"
 
 
@@ -123,14 +127,13 @@ class ClassExpToConstruct:
                 break
             tk = TokenInfo(self.ontology)
             tk.sub_tokens = [self.match_registered(n)
-                             for n in [m.group(e)
-                                    for e in re_pattern[1]]
+                             for n in [m.group(e) for e in re_pattern[1]]
                              if n is not None]
             tk.start_index, tk.end_index = m.span()
             if len(re_pattern) == 3:
-                tk.operator = m.group(re_pattern[2])
+                tk.keyword = m.group(re_pattern[2])
             else:
-                tk.operator = "not"
+                tk.keyword = "not"
             result = result[:tk.start_index] + tk.get_repr() + result[tk.end_index:]
             self.reg_tokens[tk.get_repr()] = tk
         return result

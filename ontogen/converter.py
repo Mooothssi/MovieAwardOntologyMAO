@@ -7,12 +7,6 @@ from .primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, ENTITIES,
                          LABEL_ENTITY_NAME, PROPERTY_ENTITIES, Ontology,
                          OntologyEntity, OwlClass, OwlDataProperty, OwlThing,
                          OwlObjectProperty)
-from .wrapper import BaseOntologyClass
-from .utils import ClassExpToConstruct
-
-
-def create_owl_thing(name: str, onto: Ontology):
-    return BaseOntologyClass(name=name, onto=onto)
 
 
 def get_equivalent_datatype(entity_name: str):
@@ -88,9 +82,9 @@ class YamlToOwlConverter:
             if isinstance(cls, OwlClass) or isinstance(cls, OwlObjectProperty):
                 [cls.add_superclass(self.get_entity(name, cls.prefix)) for name in cls.parent_class_names]
                 if isinstance(cls, OwlClass):
-                    [cls.add_disjoint_classes(self.get_entity(name, cls.prefix)) for name in cls.disjoint_class_names]
+                    [cls.add_disjoint_class(self.get_entity(name, cls.prefix)) for name in cls.disjoint_class_names]
                 elif isinstance(cls, OwlObjectProperty):
-                    cls.range = [self.get_entity(name, cls.prefix) for name in cls.range]
+                    cls.range = [self.get_entity(name, cls.prefix) for name in cls.range if isinstance(name, str)]
                     cls.inverse_prop = self.get_entity(cls.inverse_prop, cls.prefix)
 
     def get_entity(self, entity_name: str, fallback_prefix: str = "mao") -> OntologyEntity or None:

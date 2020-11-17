@@ -43,7 +43,7 @@ class OwlProperty(OntologyEntity):
         if self.name in ["topObjectProperty", "topDataProperty"]:
             return
         apply_classes_from(onto)
-        self.get_generated_class(onto, range=self.get_generated_range(onto))
+        self._get_generated_class(onto, range=self.get_generated_range(onto))
         self._sync_internal(onto)
 
     def get_generated_range(self, onto: Ontology):
@@ -76,7 +76,7 @@ class OwlAnnotationProperty(OwlProperty):
 
         :param onto: An `owlready2` Ontology
         """
-        self.get_generated_class(onto, range=self.range)
+        self._get_generated_class(onto, range=self.range)
 
 
 class OwlClass(OntologyEntity):
@@ -110,7 +110,7 @@ class OwlClass(OntologyEntity):
             self.actualize(onto)
         apply_classes_from(onto)
         self._sync_internal(onto)
-        inst = self.get_generated_class(onto)()
+        inst = self._get_generated_class(onto)()
         inst.name = individual_name
         self._internal_imp_instance = inst
 
@@ -126,8 +126,8 @@ class OwlClass(OntologyEntity):
         [self.add_equivalent_class_expression(get_exp_constructor(onto).to_construct(exp))
          for exp in self.equivalent_class_expressions]
         self._sync_internal(onto)
-        self.get_generated_class(onto)
-        disj = [x.get_generated_class(onto) for x in self._disjoint_classes if x is not None]
+        self._get_generated_class(onto)
+        disj = [x._get_generated_class(onto) for x in self._disjoint_classes if x is not None]
         if len(disj) > 0:
             AllDisjoint(disj)
 
@@ -157,7 +157,7 @@ class OwlThing(OwlClass):
     def __init__(self):
         super().__init__(f"{self.prefix}:{self.name}")
 
-    def get_generated_class(self, onto: Ontology, **attrs) -> Type[ThingClass]:
+    def _get_generated_class(self, onto: Ontology, **attrs) -> Type[ThingClass]:
         return self._internal_imp_instance
 
 
@@ -172,20 +172,20 @@ class OwlObjectProperty(OwlProperty):
         self._realised_parent_classes.append(ObjectProperty)
         self.inverse_prop: Type or None = None
 
-    def get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
+    def _get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
         u = [CHARACTERISTICS_MAPPING.get(c, None) for c in self._characteristics]
         if self.inverse_prop is not None:
             attrs['inverse_property'] = self.get_generated_inverse(onto)
         if len(u) > 0:
             self._realised_parent_classes.extend(u)
-        return super(OwlObjectProperty, self).get_generated_class(onto, **attrs)
+        return super(OwlObjectProperty, self)._get_generated_class(onto, **attrs)
 
     def get_generated_range(self, onto: Ontology):
-        return [x.get_generated_class(onto) for x in self.range if x is not None]
+        return [x._get_generated_class(onto) for x in self.range if x is not None]
 
     def get_generated_inverse(self, onto: Ontology) -> Type:
         self.inverse_prop.inverse_prop = None
-        return self.inverse_prop.get_generated_class(onto)
+        return self.inverse_prop._get_generated_class(onto)
 
     @property
     def range(self):

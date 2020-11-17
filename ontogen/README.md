@@ -1,27 +1,28 @@
 # Ontogen
-Part of `MAO Project`
+Part of [MAO Project](../README.md)
 ## To-dos
 ### Classes
-- [x] `rdf:type` (for Characteristics)
-   - [x] `owl:SymmetricProperty`
-   - [x] `owl:TransitiveProperty`
+- [x] `rdf:type`
+   - [x] Characteristics
 - [x] `rdfs:subClassOf` (Mostly done)
    - [x] `Object Property`
    - [x] `Classes`
-- [ ] `rdfs:equivalentClass`
+- [x] `rdfs:equivalentClass` (Mostly done)
 - [x] `owl:disjointWith` (Partially)
 - [x] `owl:inverseOf`
 - [ ] `owl:Restriction` and class constructs
    - Protege Class Expressions
      - HasValue restriction
        - [x] `value` (Partially)
+         - [ ] Built-in data types
+         - [x] Classes
      - Quantifier
        - [x] `some` (Mostly)
        - [x] `only` (Mostly)
      - Cardinality restriction
-       - [ ] `min`
-       - [ ] `max`
-       - [ ] `exactly`
+       - [x] `min`
+       - [x] `max`
+       - [x] `exactly`
      - Logical
        - [x] `and` (Mostly)
        - [x] `or` (Mostly)
@@ -31,8 +32,8 @@ Part of `MAO Project`
    
 
 ### Properties
-- [x] `owl:ObjectProperty` (Partially)
-- [x] `owl:DatatypeProperty` (Mostly done)
+- [x] `owl:ObjectProperty` (Mostly done)
+- [x] `owl:DatatypeProperty` (Partially)
 - [ ] `owl:AnnotationProperty`
     - [x] `rdfs:comment`
     - [x] `rdfs:label`
