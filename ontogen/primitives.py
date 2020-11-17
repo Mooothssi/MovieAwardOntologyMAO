@@ -1,25 +1,15 @@
-from owlready2 import (AllDisjoint, AnnotationProperty, AsymmetricProperty, DataProperty,
-                       ObjectProperty, SymmetricProperty, FunctionalProperty, IrreflexiveProperty,
-                       InverseFunctionalProperty, ReflexiveProperty,
-                       Thing, ThingClass, TransitiveProperty)
+from owlready2 import (AllDisjoint, AnnotationProperty, DataProperty,
+                       ObjectProperty, Thing, ThingClass)
 from typing import Any, Dict, List, Type
 
 from .base import Ontology, OntologyEntity, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
+from .internal import CHARACTERISTICS_MAPPING
 from .wrapper import BaseOntologyClass
 from .utils import ClassExpToConstruct
 
 # __all__ = (B)
 
 BUILTIN_DATATYPES = [str, int]
-CHARACTERISTICS_MAPPING = {
-    "owl:AsymmetricProperty": AsymmetricProperty,
-    "owl:SymmetricProperty": SymmetricProperty,
-    "owl:TransitiveProperty": TransitiveProperty,
-    "owl:FunctionalProperty": FunctionalProperty,
-    "owl:IrreflexiveProperty": IrreflexiveProperty,
-    "owl:ReflexiveProperty": ReflexiveProperty,
-    "owl:InverseFunctionalProperty": InverseFunctionalProperty
-}
 
 
 def get_exp_constructor(onto: Ontology):

@@ -64,29 +64,33 @@ class TestOntogen(TestCase):
 
 
 class OntogenClassExpressionTestCase(TestCase):
+    def setUp(self):
+        self.onto = Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#")
+        self.onto.create()
+
     def test_horse(self):
-        cls = ClassExpToConstruct()
+        cls = ClassExpToConstruct(self.onto)
         construct = cls.to_construct("(mao:Dog and mao:Croc) or mao:Cat or (mao:Person and mao:Film)")
-        self.assertEqual("(mao.Dog & mao.Croc) | mao.Cat | (mao.Person & mao.Film)", str(construct))
+        self.assertEqual("(mao.Film & mao.Person) | (mao.Cat | (mao.Croc & mao.Dog))", str(construct))
 
         construct = cls.to_construct("(not(Dog or Cat)) and (Horse)")
-        self.assertEqual("Not(mao.Dog or Cat) & mao.Horse", str(construct))
+        self.assertEqual("mao.Horse & Not(mao.Cat | mao.Dog)", str(construct))
 
         construct = cls.to_construct("(Horse) and (not(Dog or Cat))")
-        self.assertEqual("mao.Horse & Not(mao.Dog or Cat)", str(construct))
+        self.assertEqual("Not(mao.Cat | mao.Dog) & mao.Horse", str(construct))
 
         construct = cls.to_construct("(Cat) and (Dog)")
-        self.assertEqual("mao.Cat & mao.Dog", str(construct))
+        self.assertEqual("mao.Dog & mao.Cat", str(construct))
 
         construct = cls.to_construct("(Cat and Horse and Dog) and Chicken")
-        self.assertEqual("mao.Cat & mao.Horse & mao.Dog & mao.Chicken", str(construct))
+        self.assertEqual("mao.Chicken & (mao.Dog & (mao.Horse & mao.Cat))", str(construct))
 
         construct = cls.to_construct("(mao:Dog "
                                      "and (mao:Done or (mao:Film and mao:Croc))) "
                                      "or mao:Cat or (mao:Person and mao:Film)")
-        self.assertEqual("(mao.Dog & (mao.Done | (mao.Film & mao.Croc))) | mao.Cat | (mao.Person & mao.Film)", str(construct))
+        self.assertEqual("(mao.Film & mao.Person) | (mao.Cat | (((mao.Croc & mao.Film) | mao.Done) & mao.Dog))", str(construct))
 
         construct = cls.to_construct("(mao:Dog and not(mao:Croc or not(mao:Cat))) "
                                      "or mao:Cat or (mao:Person and mao:Film)")
-        self.assertEqual("(mao.Dog & Not(mao.Croc | Not(mao.Cat))) | mao.Cat | (mao.Person & mao.Film)",
+        self.assertEqual("(mao.Film & mao.Person) | (mao.Cat | (Not(Not(mao.Cat) | mao.Croc) & mao.Dog))",
                          str(construct))

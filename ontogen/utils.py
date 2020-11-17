@@ -10,17 +10,16 @@ normal_pattern = r'(.+) (and|or) (.+)'
 # (op, nested)
 NOT_PATTERN: Tuple[str, List[int]] = (r'(not)(?:\(([^\(\)]+)\)| (.+))', [3, 2])
 NEW_NOT_PATTERN = (r'(not)(?:\(([:a-zA-Z0-9<># ]*)\)| '
-                   r'((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*))', [3, 2])
-AND_OR_PAREN_PATTERN = (r'\((.+)\) (and|or) \((.+)\)', [1, 3], 2)
-# LOGICAL_PAREN_PATTERN = (r'((?:\()([^\(\)]+) (and|or) ([^\(\)]+)(?:\)))', [2, 4], 3)
+                   r'((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*))', (3, 2))
+AND_OR_PAREN_PATTERN = (r'\((.+)\) (and|or) \((.+)\)', (1, 3), 2)
 TRIPLE_PATTERN = (r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
                   r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\))) '
                   r'(and|or|some|value) '
                   r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
-                  r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\)))', [5, 4], 3, [2, 1])
+                  r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\)))', (5, 4, 2, 1), 3)
 # not is a double (not Pet) and can be parenthesized {not (Pet)}
 
-PATTERNS = (NOT_PATTERN, TRIPLE_PATTERN)
+PATTERNS = (NEW_NOT_PATTERN, TRIPLE_PATTERN)
 
 RESERVED = {"True": True, "False": False, "integer": int}
 
@@ -101,49 +100,31 @@ class ClassExpToConstruct:
                 return self.match_registered(result)
             return tk
 
-    def get_triple_match(self, recv_string: str):
+    def get_match(self, re_pattern: Tuple, recv_string: str):
         result = recv_string
         m = Match
         while m is not None:
-            m = search(TRIPLE_PATTERN[0], result)
+            m = search(re_pattern[0], result)
             if m is None:
                 break
             tk = TokenInfo(self.ontology)
-            q = m.groups()
-            p = tuple(set(TRIPLE_PATTERN[1] + TRIPLE_PATTERN[3]))
             tk.raw_str = [self.match_registered(n)
                           for n in [m.group(e)
-                                    for e in p]
-                          if n is not None]
-            tk.start_index, tk.end_index = m.span()
-            tk.operator = m.group(TRIPLE_PATTERN[2])
-            result = result[:tk.start_index] + tk.get_repr() + result[tk.end_index:]
-            self.reg_tokens[tk.get_repr()] = tk
-        return result
-
-    def get_match(self, re_pattern: Tuple, recv_string: str) -> str:
-        res = recv_string
-        m = Match
-        while m is not None:
-            m = search(NEW_NOT_PATTERN[0], res)
-            if m is None:
-                break
-            tk = TokenInfo(self.ontology)
-            tk.raw_str = [self.match_registered(n)
-                          for n in [m.group(e) for e in re_pattern[1]]
+                                    for e in re_pattern[1]]
                           if n is not None]
             tk.start_index, tk.end_index = m.span()
             if len(re_pattern) == 3:
                 tk.operator = m.group(re_pattern[2])
             else:
                 tk.operator = "not"
-            res = res[:tk.start_index] + tk.get_repr() + res[tk.end_index:]
+            result = result[:tk.start_index] + tk.get_repr() + result[tk.end_index:]
             self.reg_tokens[tk.get_repr()] = tk
-        return res
+        return result
 
     def _cls_to_residue(self, expression: str):
-        residue = self.get_match(NEW_NOT_PATTERN, expression)
-        residue = self.get_triple_match(residue)
+        residue = expression
+        for p in PATTERNS:
+            residue = self.get_match(p, residue)
         return residue
 
     def to_construct(self, expression: str) -> ClassConstruct:
