@@ -25,7 +25,7 @@ def open_and_write_file(file: Union[IO, str, Path], s: str) -> None:
         raise
     except AttributeError:
         if isinstance(file, (str, Path)):
-            with open(file, 'w', 'utf-8') as f:
+            with open(file, mode='w', encoding='utf-8') as f:
                 f.write(s)
                 return
     raise AssertionError
