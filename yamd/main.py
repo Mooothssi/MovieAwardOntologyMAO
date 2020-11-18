@@ -59,8 +59,12 @@ class Node:
     def __str__(self):
         return f"{self.key}"
 
+    def _get_key(self) -> Hashable:
+        return self.key
+
     def show_graph(self, level: int = 0) -> str:
-        lines = [f"{'  ' * level}- {self.key}"] + [child.show_graph(level + 1) for child in self._children]
+        lines = [f"{'  ' * level}- {self.key}"]
+        lines += [child.show_graph(level + 1) for child in sorted(self._children, key=Node._get_key)]
         return '\n'.join(lines)
 
     @property
@@ -145,6 +149,9 @@ class Entity:
         else:
             self.data = data
         self._name = name
+        self.maybe_include_thing(auto_include_thing)
+
+    def maybe_include_thing(self, auto_include_thing: bool) -> None:
         if auto_include_thing:
             try:
                 Node(self.name).add_parents(Node(self._top_type))
@@ -306,6 +313,19 @@ class AnnotationProperty(Property):
     def _top_type(self) -> str:
         return 'DummyTopAnnotationProperty'
 
+    def maybe_include_thing(self, auto_include_thing: bool) -> None:
+        """Definitely include the dummy TopAnnotationProperty"""
+        try:
+            Node(self.name).add_parents(Node(self._top_type))
+        except ValueError as e:
+            if e.args[0] == 'parent must be a separate entity':
+                # Might have 'Thing' etc. defined
+                pass
+            else:
+                print(e.args)
+                raise
+
+
 
 def write_classes(classes: dict) -> List[str]:
     lines = [
@@ -339,21 +359,26 @@ def convert_v1(data: dict, *, auto_include_thing: bool = True) -> List[str]:
         lines += [cls(p, d, auto_include_thing=auto_include_thing).as_markdown() for p, d in data[dict_section].items()]
         lines += ['']
         text_sections.append('\n'.join(lines))
-    lines = [
-        '# Class Hierarchy',
-        Node('Thing').show_graph(),
-        '',
-        '# Property Hierarchy',
-        '## Object Property',
-        Node('TopObjectProperty').show_graph(),
-        '',
-        '## Data Property',
-        Node('TopDataProperty').show_graph(),
-        '',
-        '## Annotation Property',
-    ]
-    lines += [annotation.show_graph() for annotation in Node('DummyTopAnnotationProperty').children]
-    lines += ['']
+    liens = []
+    t = Node('Thing').show_graph()
+    if t:
+        lines = ['# Class Hierarchy',
+                 t,
+                 '']
+    if Node('TopObjectProperty').children or Node('TopDataProperty').children or Node('DummyTopAnnotationProperty').children:
+        lines += ['# Property Hierarchy']
+    if Node('TopObjectProperty').children:
+        lines += ['### Object Property',
+                  Node('TopObjectProperty').show_graph(),
+                  '']
+    if Node('TopDataProperty').children:
+        lines += ['### Data Property',
+                  Node('TopDataProperty').show_graph(),
+                  '']
+    if Node('DummyTopAnnotationProperty').children:
+        lines += ['### Annotation Property']
+        lines += [annotation.show_graph() for annotation in Node('DummyTopAnnotationProperty').children]
+        lines += ['']
     text_sections.insert(1, '\n'.join(lines))
     return text_sections
 
