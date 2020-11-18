@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional, Dict, Union, Tuple, Type
+from typing import List, Optional, Dict, Union, Tuple, Type, IO
 
 import yaml
 
@@ -8,6 +8,7 @@ from table_maker import Table
 from yamd.markdown import get_md_list
 from yamd.parser import parse_lenient_list_of_strings, parse_lenient_list_of_list_of_string
 from yamd.owl import get_pretty_label, get_language_from_code, split_locstr, get_plain_literal, is_locstr
+from utils.temp_io_utils import open_and_write_file
 
 
 def write_language_table(lst: List[str], header: str) -> str:
@@ -236,7 +237,7 @@ def convert_v1(data: dict) -> List[str]:
 
 
 def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
-                           md_file: Union[str, Path]) -> None:
+                           md_file: Union[IO, str, Path]) -> None:
     """Converts a owl yaml specs file to md documentation."""
     with open(owlyaml_file, 'r', encoding='utf-8') as yamlfile:
         data = yaml.load(yamlfile, yaml.FullLoader)
@@ -247,8 +248,7 @@ def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
     else:
         raise NotImplementedError
 
-    with open(md_file, 'w', encoding='utf-8') as mdfile:
-        mdfile.write('\n'.join(lines))
+    open_and_write_file(md_file, '\n'.join(lines))
 
 
 if __name__ == '__main__':
