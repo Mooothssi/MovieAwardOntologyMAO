@@ -3,10 +3,8 @@ import unittest
 from dirs import ROOT_DIR
 from extended_csv import read_xsv_file
 
-TestCase = unittest.TestCase
 
-
-class MyTestCase(TestCase):
+class TestExtendedCsv(unittest.TestCase):
 
     def test_read_xsv_line_spec(self):
         test_cases = [

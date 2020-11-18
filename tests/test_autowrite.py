@@ -5,10 +5,8 @@ from dirs import ROOT_DIR
 from extended_csv import read_xsv_file
 from sa_autowrite.main import write_model
 
-TestCase = unittest.TestCase
 
-
-class TestAutowrite(TestCase):
+class TestAutowrite(unittest.TestCase):
 
     def test_write_model(self):
         args = [
