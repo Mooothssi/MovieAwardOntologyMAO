@@ -1,3 +1,11 @@
+annotations:
+  rdfs:label:
+    - pizza^^xsd:string
+  dc:title:
+    - pizza^^rdfs:Literal@en
+  dcterms:licence:
+    - Creative Commons Attribution 3.0 (CC BY 3.0)^^xsd:string
+
 owl:Class:
   owl:Thing: ""
   pizza:Food:
@@ -22,10 +30,9 @@ owl:Class:
         - Margherita^^rdfs:Literal@pt
     rdfs:subClassOf:
       - NamedPizza
-      owl:Restriction:
-        - hasTopping only (MozzarellaTopping or TomatoTopping)
-        - hasTopping some MozzarellaTopping
-        - hasTopping some TomatoTopping
+      - hasTopping only (MozzarellaTopping or TomatoTopping)
+      - hasTopping some MozzarellaTopping
+      - hasTopping some TomatoTopping
   pizza:MozzarellaTopping:
     annotations:
       rdfs:label:
@@ -51,13 +58,13 @@ owl:Class:
     rdfs:subClassOf:
       - Food
   pizza:PizzaBase:
-     annotations:
-       rdfs:comment:
-         - >
-           Pizza dough that used as
-           a pizza base^^xsd:string
-      rdfs:label:
-        - PizzaBase^^rdfs:Literal@en
+    annotations:
+      rdfs:comment:
+        - >
+          Pizza dough that used as
+          a pizza base^^xsd:string
+    rdfs:label:
+      - PizzaBase^^rdfs:Literal@en
     owl:disjointWith:
       - Pizza
       - PizzaTopping
@@ -82,11 +89,10 @@ owl:Class:
         - Rosa^^rdfs:Literal@pt
     rdfs:subClassOf:
       - NamedPizza
-      owl:Restriction:
-        - hasTopping only (GorgonzolaTopping or MozzarellaTopping or TomatoTopping)
-        - hasTopping some GorgonzolaTopping
-        - hasTopping some MozzarellaTopping
-        - hasTopping some TomatoTopping
+      - hasTopping only (GorgonzolaTopping or MozzarellaTopping or TomatoTopping)
+      - hasTopping some GorgonzolaTopping
+      - hasTopping some MozzarellaTopping
+      - hasTopping some TomatoTopping
   pizza:Spiciness:
     annotations:
       rdfs:comment: Spiciness of Pizza^^xsd:string
@@ -106,8 +112,16 @@ owl:Class:
       - PizzaTopping
 
 owl:AnnotationProperty:
-  rdfs:comment: ""
-  rdfs:label: ""
+  dc:title:
+    annotations:
+      rdfs:comment:
+        - A name given to the resource^^rdfs:Literal@en
+  dcterms:licence:
+    annotations:
+      rdfs:comment:
+        - A legal document giving official permission to do something with the resource.^^rdfs:Literal@en
+      rdfs:label:
+        - License^^rdfs:Literal@en
 
 owl:ObjectProperty:
   owl:topObjectProperty: ""

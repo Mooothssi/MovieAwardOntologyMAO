@@ -10,6 +10,7 @@ Part of [MAO Project](https://github.com/th-bunratta/MovieAwardOntologyMAO/tree/
 - [x] `rdfs:equivalentClass` (Mostly done)
 - [x] `owl:disjointWith` (Partially)
 - [x] `owl:inverseOf`
+- [x] `owl:oneOf`
 - [x] `owl:Restriction` and class constructs
    - Protege Class Expressions
      - HasValue restriction
@@ -39,6 +40,7 @@ Part of [MAO Project](https://github.com/th-bunratta/MovieAwardOntologyMAO/tree/
     - [x] `rdfs:label`
 
 ### Datatypes
+- [ ] Custom `rdfs:Datatype`!
 - [ ] `rdfs:Literal`
 - [x] `xsd:string` (`owlready2` builtin as `str`)
 - [x] `xsd:integer` (`owlready2` builtin as `int`)

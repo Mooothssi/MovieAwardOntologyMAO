@@ -1,7 +1,7 @@
 from re import Match, match, search
 from typing import Dict, Tuple
 
-from owlready2 import ClassConstruct, ConstrainedDatatype, Not, ObjectProperty, Thing
+from owlready2 import ClassConstruct, ConstrainedDatatype, Not, ObjectProperty, OneOf, Thing
 
 from ontogen.base import Ontology
 from ontogen.base.vars import GENERATED_TYPES
@@ -24,7 +24,8 @@ NOT_PATTERN = (r'(not)(?:\(([:a-zA-Z0-9<># ]*)\)| '
 TRIPLE_PATTERN = (r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
                   r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\))) '
                   rf'({"|".join(TRIPLE_KEYWORDS)}) (?:([0-9]+) )?'
-                  r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[ A-Za-z0-9\[\]\'<>=]*)|'
+                  r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z0-9\[\]\'<>=]*)|'
+                  # r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z0-9\[\]\'<>=]*)|'
                   r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\)))', (2, 1, 6, 5, 4), 3)
 
 PATTERNS = (NOT_PATTERN, TRIPLE_PATTERN)
@@ -69,6 +70,26 @@ def check_constraint_data_types(expression: str) -> ConstrainedDatatype or str:
     return ConstrainedDatatype(literal, **kwargs)
 
 
+def get_class_from_literal(onto: Ontology, literal: str, base_cls=Thing):
+    if literal in GENERATED_TYPES:
+        return GENERATED_TYPES[literal]
+    if literal is None:
+        return Thing
+    new_type = type(str(literal), (base_cls,), {"namespace": onto.implementation})
+    GENERATED_TYPES[literal] = new_type
+    return new_type
+
+
+def create_individual_from_literal(onto: Ontology, name: str, cls_literal: str = None, base_cls=Thing):
+    cls = get_class_from_literal(onto, cls_literal, base_cls)
+    if cls is Thing:
+        individual = cls(name, onto.implementation)
+    else:
+        individual = cls()
+    individual.name = name
+    return individual
+
+
 class TokenInfo:
     """
         Contains the information of a Token
@@ -77,7 +98,7 @@ class TokenInfo:
         self.keyword = None
         self.sub_tokens: Tuple[TokenInfo or str, ...] = tuple()
         self.is_class = False
-        self.onto = onto.implementation
+        self.onto = onto
         self.start_index = 0
         self.end_index = 0
 
@@ -107,9 +128,7 @@ class TokenInfo:
                 base_cls = Thing
                 if self.keyword in QUANTIFIER_RESTRICTION_KEYWORDS:
                     base_cls = ObjectProperty
-                new_type = type(str(new_str), (base_cls,), {"namespace": self.onto})
-                GENERATED_TYPES[new_str] = new_type
-                return new_type
+                return get_class_from_literal(self.onto, new_str, base_cls)
             elif self.keyword in CARDINALITY_RESTRICTION_KEYWORDS:
                 first, second, third = self.sub_tokens
                 return getattr(first.construct, self.keyword)(third.construct, second.construct)
@@ -143,6 +162,7 @@ class ClassExpToConstruct:
     def __init__(self, onto: Ontology):
         self.reg_tokens: Dict[str, TokenInfo] = {}
         self.ontology = onto
+        self.existing_constructs = []
 
     def match_registered(self, str_match: str) -> TokenInfo:
         str_match = str_match.replace("(", "").replace(")", "")
@@ -178,8 +198,19 @@ class ClassExpToConstruct:
             self.reg_tokens[tk.get_repr()] = tk
         return result
 
+    def _match_one_of(self, exp):
+        m = search(r'^{(.+)}$', exp)
+        if m is None:
+            return exp
+        y = OneOf([create_individual_from_literal(self.ontology, y.strip()) for y in m.group(1).split(",")])
+        self.existing_constructs.append(y)
+        return
+
     def _cls_to_residue(self, expression: str):
         residue = expression
+        residue = self._match_one_of(residue)
+        if residue is None:
+            return residue
         for p in PATTERNS:
             residue = self.get_match(p, residue)
         return residue
@@ -195,10 +226,13 @@ class ClassExpToConstruct:
         """
         self._cls_to_residue(expression)
         construct_list = [j.construct for j in self.reg_tokens.values()]
+        construct_list.extend(self.existing_constructs)
         self.reg_tokens.clear()
+        self.existing_constructs.clear()
         return construct_list[-1]
 
 
 if __name__ == '__main__':
-    c = ClassExpToConstruct(Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#"))
-    c.to_construct("(mao:Dog and not(mao:Croc or not(mao:Cat))) or mao:Cat or (mao:Person and mao:Film)")
+    o = Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#")
+    c = ClassExpToConstruct(o)
+    print(c.to_construct("(mao:Dog and not(mao:Croc or not(mao:Cat))) or mao:Cat or (mao:Person and mao:Film)"))

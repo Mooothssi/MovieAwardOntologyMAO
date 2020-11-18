@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Type
 
 from .base import Ontology, OntologyEntity, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
 from .internal import CHARACTERISTICS_MAPPING
-from .wrapper import BaseOntologyClass
+from .wrapper import apply_classes_from
 from .utils import ClassExpToConstruct
 
 __all__ = ('OwlClass', 'OwlAnnotationProperty',
@@ -48,14 +48,6 @@ class OwlProperty(OntologyEntity):
 
     def get_generated_range(self, onto: Ontology):
         return self.range
-
-    def __repr__(self):
-        str_obj = f"{self.name}" if len(self.range) > 0 or self.name == "ObjectProperty" else "<unk>"
-        if "owl:Class" not in self.range:
-            str_obj += f": {self.range[0]}"
-        else:
-            str_obj += f": Thing"
-        return str_obj
 
 
 class OwlDataProperty(OwlProperty):
@@ -195,17 +187,6 @@ class OwlObjectProperty(OwlProperty):
     def range(self, a):
         self._range = a
         self.dependencies.extend([b for b in a if not b == "Thing" and b != ""])
-
-
-def all_subclasses(cls):
-    return set(cls.__subclasses__()).union(
-        [s for c in cls.__subclasses__() for s in all_subclasses(c)]).union([cls])
-
-
-def apply_classes_from(onto: Ontology):
-    for s in all_subclasses(BaseOntologyClass):
-        s.namespace = onto.implementation
-        setattr(s, 'storid', onto.implementation.world._abbreviate(s.iri))
 
 
 BASE_ENTITIES = [OwlAnnotationProperty, OwlDataProperty, OwlObjectProperty, OwlClass]

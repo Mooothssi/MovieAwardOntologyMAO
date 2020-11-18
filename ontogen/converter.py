@@ -3,7 +3,8 @@ from yaml import load, Loader
 
 
 from .base import DATATYPE_MAP
-from .primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, ENTITIES,
+import ontogen.primitives as primitives
+from .primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME,
                          LABEL_ENTITY_NAME, PROPERTY_ENTITIES, Ontology,
                          OntologyEntity, OwlClass, OwlDataProperty, OwlThing,
                          OwlObjectProperty)
@@ -29,7 +30,7 @@ class YamlToOwlConverter:
         Args:
             spec_filename: The filename of a YAML spec file
         """
-        self.entities = ENTITIES
+        self.entities = {}
         self.spec_filename = spec_filename
         self._load_file()
 
@@ -58,7 +59,7 @@ class YamlToOwlConverter:
                     elif base == OwlDataProperty:
                         if "rdfs:range" in sub:
                             obj.range = [get_equivalent_datatype(datatype) for datatype in sub["rdfs:range"]]
-                    annotations = sub["annotations"]
+                    annotations = sub.get("annotations", {})
                     obj.add_labels(annotations.get(LABEL_ENTITY_NAME, [None]))
                     obj.add_comments(annotations.get(COMMENT_ENTITY_NAME, [None]))
                 if base == OwlClass:
@@ -76,6 +77,7 @@ class YamlToOwlConverter:
                     temp_classes.append(obj)
                 self.entities[class_entity_name] = obj
         self._load_class_descriptions(tuple(self.entities.values()))
+        primitives.ENTITIES = self.entities
 
     def _load_class_descriptions(self, classes: Tuple[OntologyEntity]):
         for cls in classes:
@@ -97,6 +99,13 @@ class YamlToOwlConverter:
             return self.entities[entity_name]
         except KeyError:
             return None
+
+    def list_entities(self):
+        """
+        Print out list of entities to the console
+        """
+        for entity in self.entities:
+            print(f"- {entity}: {self.entities[entity].__class__.__name__}")
 
     def to_owl_ontology(self, onto: Ontology):
         """

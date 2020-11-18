@@ -64,6 +64,7 @@ class TestOntogen(TestCase):
 
 FIXTURES = (
     ("(Mo) and (Ding)", "mao.Mo & mao.Ding"),
+    ("{Male, Female, NonBinary}", "OneOf([mao.Male, mao.Female, mao.NonBinary])"),
     ("Ding and (hasPet some (Cat or Dog))", "mao.Ding & mao.hasPet.some(mao.Cat | mao.Dog)"),
     ("Mai and (hasPet some Cat)", "mao.Mai & mao.hasPet.some(mao.Cat)"),
     ("Mai and (hasPet exactly 1 Cat)", "mao.Mai & mao.hasPet.exactly(1, mao.Cat)"),

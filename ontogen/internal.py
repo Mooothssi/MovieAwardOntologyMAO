@@ -1,5 +1,6 @@
-from owlready2 import (AsymmetricProperty, SymmetricProperty, FunctionalProperty, IrreflexiveProperty,
-                       InverseFunctionalProperty, ReflexiveProperty, TransitiveProperty)
+from owlready2 import (AsymmetricProperty, SymmetricProperty, FunctionalProperty,
+                       IrreflexiveProperty, InverseFunctionalProperty,
+                       ReflexiveProperty, TransitiveProperty)
 
 # owlready2 stuff here
 
