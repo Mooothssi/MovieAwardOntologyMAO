@@ -1,14 +1,86 @@
 from pathlib import Path
-from typing import List, Optional, Dict, Union, Tuple, Type, IO
+from typing import List, Optional, Dict, Union, Tuple, Type, IO, Hashable, Set
 
 import yaml
 
 from dirs import ROOT_DIR
 from table_maker import Table
-from yamd.markdown import get_md_list
-from yamd.parser import parse_lenient_list_of_strings, parse_lenient_list_of_list_of_string
-from yamd.owl import get_pretty_label, get_language_from_code, split_locstr, get_plain_literal, is_locstr
 from utils.temp_io_utils import open_and_write_file
+from yamd.markdown import get_md_list
+from yamd.owl import get_pretty_label, get_language_from_code, split_locstr, get_plain_literal, is_locstr
+from yamd.parser import parse_lenient_list_of_strings, parse_lenient_list_of_list_of_string
+
+LOLOS = Union[str, List['LOLOS']]
+
+
+class Node:
+    _instances = {}
+
+    def __new__(cls, *args, **kwargs):
+        key = args[0]
+        if key not in cls._instances:
+            cls._instances[key] = super().__new__(cls)
+        return cls._instances[key]
+
+    def __init__(self, key: Hashable):
+        if not hasattr(self, 'key'):
+            # So that attributes don't get rewritten
+            self.key = key
+            self._parents: Set['Node'] = set()
+            self._children: Set['Node'] = set()
+
+    @classmethod
+    def get_instance(cls, key: Hashable) -> 'Node':
+        try:
+            return cls._instances[key]
+        except KeyError:
+            raise KeyError(f"Key '{key}' is not a node.")
+
+    def _add_parent(self, parent) -> None:
+        if not isinstance(parent, Node):
+            raise TypeError(f"parent must be a Node, not a '{parent.__class__.__name__}'")
+        if parent is self:
+            raise ValueError(f"parent must be a separate entity")
+        self._parents.add(parent)
+        parent._children.add(self)
+
+    def add_parents(self, *parents: 'Node') -> None:
+        if len(parents) == 0:
+            raise ValueError("No nodes are given!")
+        for parent in parents:
+            self._add_parent(parent)
+
+    def add_parent_from_keys(self, *keys: Hashable) -> None:
+        if len(keys) == 0:
+            raise ValueError("No keys are given!")
+        for key in keys:
+            self._add_parent(self.get_instance(key))
+
+    def __str__(self):
+        return f"{self.key}"
+
+    def show_graph(self, level: int = 0) -> str:
+        lines = [f"{'  ' * level}- {self.key}"] + [child.show_graph(level + 1) for child in self._children]
+        return '\n'.join(lines)
+
+    @property
+    def parents(self) -> Set['Node']:
+        return self._parents.copy()
+
+    @property
+    def children(self) -> Set['Node']:
+        return self._children.copy()
+
+    @classmethod
+    def from_list_of_parents(cls, child: str, parents: Union[str, List[str]]) -> None:
+        if isinstance(parents, str):
+            Node(child)._add_parent(Node(parents))
+            return
+        if isinstance(parents, list):
+            for parent in parents:
+                cls.from_list_of_parents(child, parent)
+            return
+        raise AssertionError(f"STH WRONG child={child} parents={parents}")
 
 
 def write_language_table(lst: List[str], header: str) -> str:
@@ -73,9 +145,22 @@ class Entity:
         else:
             self.data = data
         self._name = name
+        try:
+            Node(self.name).add_parents(Node(self._top_type))
+        except ValueError as e:
+            if e.args[0] == 'parent must be a separate entity':
+                # Might have 'Thing' etc. defined
+                pass
+            else:
+                print(e.args)
+                raise
 
     @property
     def _description_map(self) -> Dict[str, str]:
+        raise NotImplementedError
+
+    @property
+    def _top_type(self) -> str:
         raise NotImplementedError
 
     def as_markdown(self) -> str:
@@ -83,7 +168,8 @@ class Entity:
 
     @property
     def name(self) -> str:
-        return self._name.split(':')[-1]
+        prefix, *rest = self._name.split(':')
+        return ':'.join(rest)
 
     @property
     def annotations(self) -> Optional[str]:
@@ -101,6 +187,10 @@ class Class(Entity):
             'owl:disjointWith': 'Disjoint with',
             'owl:equivalentClass': 'Equivalent tp',
         }
+
+    @property
+    def _top_type(self) -> str:
+        return 'Thing'
 
     def as_markdown(self) -> str:
         lines = [
@@ -126,6 +216,8 @@ class Class(Entity):
                     lines += [f'{pname}:',
                               get_md_list(0, cleaned_data),
                               '']
+                    if uname == 'rdfs:subClassOf':
+                        Node.from_list_of_parents(self.name, cleaned_data)
         if lines:
             lines.insert(0, '### Description')
             return '\n'.join(lines)
@@ -175,22 +267,29 @@ class Property(Entity):
         lines = []
         for uname, pname in self._description_map.items():
             if uname in self.data:
+                cleaned_data = parse_lenient_list_of_strings(self.data[uname])
                 lines += [
                     f'{pname}:',
-                    get_md_list(0, self.data[uname]),
+                    get_md_list(0, cleaned_data),
                     ''
                 ]
+                if uname == 'rdfs:subPropertyOf':
+                    Node.from_list_of_parents(self.name, cleaned_data)
         if lines:
             lines.insert(0, '### Description')
             return '\n'.join(lines)
 
 
 class ObjectProperty(Property):
-    pass
+    @property
+    def _top_type(self) -> str:
+        return 'TopObjectProperty'
 
 
 class DataProperty(Property):
-    pass
+    @property
+    def _top_type(self) -> str:
+        return 'TopDataProperty'
 
 
 class AnnotationProperty(Property):
@@ -201,6 +300,10 @@ class AnnotationProperty(Property):
             'rdfs:range': 'Range',
             # 'rdf:superProperty': 'Superproperties',
         }
+
+    @property
+    def _top_type(self) -> str:
+        return 'DummyTopAnnotationProperty'
 
 
 def write_classes(classes: dict) -> List[str]:
@@ -214,11 +317,12 @@ def write_classes(classes: dict) -> List[str]:
 
 def convert_v1(data: dict) -> List[str]:
     """Returns the lines of md documentation to write from specs data."""
-    lines = []
+    text_sections = []
     if 'annotations' in data:
-        lines += [f'# Ontology Description',
-                  Annotations(data['annotations']).as_markdown(),
-                  '']
+        lines = [f'# Ontology Description',
+                 Annotations(data['annotations']).as_markdown(),
+                 '']
+        text_sections.append('\n'.join(lines))
 
     sections: List[Tuple[str, str, Type[Entity]]] = [
         ('Classes', 'owl:Class', Class),
@@ -230,10 +334,27 @@ def convert_v1(data: dict) -> List[str]:
     for section, dict_section, cls in sections:
         if dict_section not in data:
             continue
-        lines += [f'# {section}']
+        lines = [f'# {section}']
         lines += [cls(p, d).as_markdown() for p, d in data[dict_section].items()]
         lines += ['']
-    return lines
+        text_sections.append('\n'.join(lines))
+    lines = [
+        '# Class Hierarchy',
+        Node('Thing').show_graph(),
+        '',
+        '# Property Hierarchy',
+        '## Object Property',
+        Node('TopObjectProperty').show_graph(),
+        '',
+        '## Data Property',
+        Node('TopDataProperty').show_graph(),
+        '',
+        '## Annotation Property',
+    ]
+    lines += [annotation.show_graph() for annotation in Node('DummyTopAnnotationProperty').children]
+    lines += ['']
+    text_sections.insert(1, '\n'.join(lines))
+    return text_sections
 
 
 def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
