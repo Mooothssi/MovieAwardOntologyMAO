@@ -15,6 +15,33 @@ Title
 Licence
   - Creative Commons Attribution 3.0 (CC BY 3.0)
 
+# Class Hierarchy
+- Thing
+  - Food
+    - Pizza
+      - NamedPizza
+        - Margherita
+        - Rosa
+    - PizzaBase
+    - PizzaTopping
+      - GorgonzolaTopping
+      - MozzarellaTopping
+      - TomatoTopping
+  - Spiciness
+
+# Property Hierarchy
+## Object Property
+- TopObjectProperty
+  - hasTopping
+  - hasBase
+
+## Data Property
+- TopDataProperty
+
+## Annotation Property
+- licence
+- title
+
 # Classes
 ## Thing
 ## Food

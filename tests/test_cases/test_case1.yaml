@@ -130,6 +130,8 @@ owl:ObjectProperty:
       - Pizza
     rdfs:range:
       - PizzaBase
+    rdfs:subPropertyOf:
+      - topObjectProperty
   pizza:hasTopping:
     rdf:type:
       - owl:InverseFunctionalProperty
@@ -137,3 +139,5 @@ owl:ObjectProperty:
       - Pizza
     rdfs:range:
       - PizzaTopping
+    rdfs:subPropertyOf:
+      - topObjectProperty
