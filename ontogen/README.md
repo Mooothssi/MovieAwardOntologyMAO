@@ -35,7 +35,7 @@ Part of [MAO Project](https://github.com/th-bunratta/MovieAwardOntologyMAO/tree/
 ### Properties
 - [x] `owl:ObjectProperty` (Mostly done)
 - [x] `owl:DatatypeProperty` (Partially)
-- [ ] `owl:AnnotationProperty`
+- [x] `owl:AnnotationProperty`
     - [x] `rdfs:comment`
     - [x] `rdfs:label`
 
@@ -78,11 +78,9 @@ onto.add_rule("mao:ActingSituation(?p) ^ mao:hasActor(?p, ?a) -> mao:actsIn(?a, 
 from ontogen import Ontology
 from ontogen.converter import OwlClass, YamlToOwlConverter
 
-onto: Ontology # An existing Ontology
 converter = YamlToOwlConverter("data/mao.yaml")
 film: OwlClass = converter.get_entity("mao:Film")
-converter.to_owl_ontology(onto) # Save the results to the Ontology
-...
+onto: Ontology = converter.export_to_ontology() # Save the results to an Ontology
 ```
 
 ### Saving (Actualizing) a newly-defined Class to an Ontology
@@ -91,7 +89,7 @@ from ontogen import Ontology, OwlClass
 
 onto: Ontology
 mao_film: OwlClass = OwlClass("mao:Film")
-# Realise mao:Film class into the given `onto` Ontology
+# Saves mao:Film class into the given `onto` Ontology
 mao_film.actualize(onto)
 ```
 

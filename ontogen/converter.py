@@ -1,8 +1,8 @@
-from typing import Tuple
+from typing import Dict, Tuple
 from yaml import load, Loader
 
-
 from .base import DATATYPE_MAP
+from .base.namespaces import OWL_CLASS, OWL_EQUIVALENT_CLASS, OWL_RESTRICTION
 import ontogen.primitives as primitives
 from .primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME,
                          LABEL_ENTITY_NAME, PROPERTY_ENTITIES, Ontology,
@@ -22,7 +22,7 @@ class YamlToOwlConverter:
     """
         A converter from YAML to an abstraction of OWL ontology
     """
-    def __init__(self, spec_filename: str):
+    def __init__(self, spec_filename: str, base_prefix: str="mao"):
         """
         Loads a file with the given name into a skeleton of an OWL ontology.
         Needs to be actualized by `Ontology` class.
@@ -30,14 +30,19 @@ class YamlToOwlConverter:
         Args:
             spec_filename: The filename of a YAML spec file
         """
-        self.entities = {}
+        self.entities: Dict[str, OntologyEntity] = {}
         self.spec_filename = spec_filename
+        self.prefix = base_prefix
+        self.ontology = Ontology(base_prefix=base_prefix)
+        self.ontology.name_from_prefix()
+        self.ontology.create()
         self._load_file()
 
     def _load_file(self):
         with open(self.spec_filename) as f:
             dct = load(f, Loader=Loader)
         temp_classes = []
+
         for base in BASE_ENTITIES:
             cls = base
             q = base.get_entity_name()
@@ -47,7 +52,10 @@ class YamlToOwlConverter:
             for class_entity_name in classes:
                 if class_entity_name == "owl:Thing":
                     continue
-                obj = cls(class_entity_name)
+                e = get_qualified_entity(class_entity_name, self.prefix)
+                prefix, name = e.split(":")
+                obj = cls(e)
+                obj.prefix = prefix
                 sub = classes[class_entity_name]
                 if isinstance(sub, dict):
                     if base == OwlObjectProperty:
@@ -64,20 +72,35 @@ class YamlToOwlConverter:
                     obj.add_comments(annotations.get(COMMENT_ENTITY_NAME, [None]))
                 if base == OwlClass:
                     obj._internal_dict = sub
+                    obj.parent_class_names = sub.get("rdfs:subClassOf", [])
+                    obj.disjoint_class_names = sub.get("owl:disjointWith", [])
+                    obj.equivalent_class_expressions = self._get_equivalent_classes(sub)
                     for prop in PROPERTY_ENTITIES:
-                        if prop not in obj._internal_dict:
+                        if prop not in sub:
                             continue
-                        prop_class = obj._internal_dict[prop]
-                        obj.parent_class_names = sub.get("rdfs:subClassOf", [])
-                        obj.disjoint_class_names = sub.get("owl:disjointWith", [])
-                        obj.equivalent_class_expressions = sub.get("rdfs:equivalentClass", [])
+                        prop_class = sub[prop]
                         for prop_name in prop_class:
                             prop_qualifier = get_qualified_entity(prop_name)
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
                 self.entities[class_entity_name] = obj
+        if "annotations" in dct:
+            anno = dct["annotations"]
+            self.ontology.add_label(anno["rdfs:label"][0])
+            self.ontology.add_annotation("licence", anno["dcterms:licence"][0])
+            self.ontology.add_annotation("title", anno["dc:title"][0])
         self._load_class_descriptions(tuple(self.entities.values()))
         primitives.ENTITIES = self.entities
+
+    @staticmethod
+    def _get_equivalent_classes(sub_dict: dict):
+        if OWL_EQUIVALENT_CLASS not in sub_dict:
+            return []
+        u = sub_dict[OWL_EQUIVALENT_CLASS]
+        if isinstance(u, dict):
+            return u.get(OWL_RESTRICTION, [])
+        else:
+            return u
 
     def _load_class_descriptions(self, classes: Tuple[OntologyEntity]):
         for cls in classes:
@@ -87,18 +110,20 @@ class YamlToOwlConverter:
                     [cls.add_disjoint_class(self.get_entity(name, cls.prefix)) for name in cls.disjoint_class_names]
                 elif isinstance(cls, OwlObjectProperty):
                     cls.range = [self.get_entity(name, cls.prefix) for name in cls.range if isinstance(name, str)]
-                    cls.inverse_prop = self.get_entity(cls.inverse_prop, cls.prefix)
+                    cls.inverse_prop = self.get_entity(cls.inverse_prop)
 
-    def get_entity(self, entity_name: str, fallback_prefix: str = "mao") -> OntologyEntity or None:
+    def get_entity(self, entity_name: str, prefix: str = None) -> OwlClass or OntologyEntity or str:
         if entity_name is None:
             return None
-        entity_name = get_qualified_entity(entity_name, fallback_prefix)
-        if entity_name == "owl:Thing" or entity_name == "mao:Thing":
-            return OwlThing()
-        try:
-            return self.entities[entity_name]
-        except KeyError:
+        if prefix is None:
+            prefix = self.prefix
+        modified_name = get_qualified_entity(entity_name, prefix)
+        if modified_name == "owl:Thing" or modified_name == f"{prefix}:Thing":
             return None
+        try:
+            return self.entities[modified_name]
+        except KeyError:
+            return entity_name
 
     def list_entities(self):
         """
@@ -107,11 +132,17 @@ class YamlToOwlConverter:
         for entity in self.entities:
             print(f"- {entity}: {self.entities[entity].__class__.__name__}")
 
-    def to_owl_ontology(self, onto: Ontology):
+    def export_to_ontology(self, onto: Ontology = None) -> Ontology:
         """
             Saves changes made into a given Ontology
             :param onto: A given Ontology
         """
+        if onto is None:
+            onto = self.ontology
+            onto.name_from_prefix()
+        onto.create()
+        self.prefix = onto.implementation.name
         for entity in self.entities.values():
             entity.actualize(onto)
-
+        onto.actualize()
+        return onto

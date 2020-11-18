@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from ontogen import Ontology
 from ontogen.converter import YamlToOwlConverter
-from ontogen.primitives import OwlClass, OwlObjectProperty
+from ontogen.primitives import Datatype, OwlClass, OwlObjectProperty
 from ontogen.utils import ClassExpToConstruct
 
 from settings import OWL_FILEPATH, OUT_PATH, OUT_FILENAME
@@ -40,13 +40,13 @@ class TestOntogen(TestCase):
         self.assertEqual("mao.Film", str(self.i._internal_imp_instance.is_instance_of[0]))
 
     def test_realization(self):
-        self.converter.to_owl_ontology(self.onto)
+        self.converter.export_to_ontology(self.onto)
 
     # Create an OWL ontology from scratch
     def test_create_ontology(self):
         self.test_instantiation()
         self.test_add_rule()
-        self.i = self.converter.to_owl_ontology(self.onto)
+        self.i = self.converter.export_to_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
 
     def test_super_classes(self):
@@ -58,8 +58,28 @@ class TestOntogen(TestCase):
         sit.actualize(self.onto)
         self.assertListEqual([event.actualized_entity, sit.actualized_entity], film_making.actualized_entity.is_a)
 
-    def tearDown(self):
-        pass
+
+class TestOntogenPizza(TestCase):
+    def test_pizza_ontology(self):
+        converter = YamlToOwlConverter("test_cases/test_case1.yaml", "pizza")
+        onto = converter.export_to_ontology()
+        d = Datatype("Pizza:str")
+        d.data_type = str
+        d.actualize(onto)
+        onto.add_license("MIT License")
+        print(onto.implementation.world._props)
+        from owlready2.base import _universal_abbrev_2_iri, _universal_iri_2_abbrev
+        # print(_universal_abbrev_2_iri)
+        # print(_universal_iri_2_abbrev)
+
+        # print(onto.implementation.metadata.search(label="*"))
+        pizza = converter.get_entity("pizza:Pizza")
+        self.assertTrue(converter.get_entity("pizza:NamedPizza").is_subclass_of(pizza))
+        onto.save_to_file("out/pizza.owl")
+
+    def test_movie_ontology(self):
+        o = Ontology.load_from_file(OWL_FILEPATH)
+        print(o.implementation.metadata.deprecated)
 
 
 FIXTURES = (

@@ -1,41 +1,30 @@
 from abc import ABCMeta, abstractmethod
-from datetime import date
 from typing import List, Type, Union
 
-from owlready2 import Thing, locstr, ClassConstruct
+from owlready2 import Thing, ClassConstruct
 
+from .annotable import OwlAnnotatable
 from .ontology import Ontology
-from .vars import GENERATED_TYPES
-
-LABEL_ENTITY_NAME = "rdfs:label"
-COMMENT_ENTITY_NAME = "rdfs:comment"
+from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
 
 BUILTIN_DATA_TYPES = Union[str, int]
-BUILTIN_NAMES = (LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME)
-
-DATATYPE_MAP = {
-    'xsd:boolean': bool,
-    'xsd:string': str,
-    'xsd:integer': int,
-    'xsd:float': float,
-    'xsd:decimal': float,
-    'xsd:date': date
-}
 
 
-class OntologyEntity(metaclass=ABCMeta):
+class OntologyEntity(OwlAnnotatable, metaclass=ABCMeta):
     prefix = "owl"
     name = "any"
     _internal_dict = {}
     _parent_class = object
     parent_class_names: List[str] = []
-    _parent_classes: List["OntologyEntity"] = []
+    _parent_classes: List["OntologyEntity" or ClassConstruct] = []
     _disjoint_classes: List["OntologyEntity"] = []
 
     # Short for an Implementation instance
     _internal_imp_instance: Thing = None
 
     def __init__(self, entity_qualifier: str):
+        super(OwlAnnotatable).__init__()
+        self.properties_values = {}
         assert ":" in entity_qualifier, "Must include a prefix"
         pre, n = entity_qualifier.split(":")
         self.prefix = pre
@@ -43,15 +32,18 @@ class OntologyEntity(metaclass=ABCMeta):
         self.dependencies = []
         self._parent_classes = []
         self._disjoint_classes = []
-        self.properties_values = {}
         self.equivalent_class_expressions: List[str] = []
         self.equivalent_classes: List[ClassConstruct] = []
         self._realised_parent_classes = []
         self.equivalent_class_expressions = []
 
+
     @classmethod
     def get_entity_name(cls) -> str:
         return f"{cls.prefix}:{cls.name}"
+
+    def get_full_iri(self, onto: Ontology):
+        return f"{onto.lookup_iri(self.prefix)}{self.name}"
 
     @abstractmethod
     def actualize(self, onto: Ontology) -> 'OntologyEntity':
@@ -61,12 +53,14 @@ class OntologyEntity(metaclass=ABCMeta):
         """
         raise NotImplementedError
 
-    def add_superclass(self, superclass: "OntologyEntity"):
+    def add_superclass(self, superclass: "OntologyEntity" or "str"):
         """
         Adds a superclass of this Class.
         This Class will then be a `rdfs:subclassOf` a given superclass
         :param superclass: A given Superclass
         """
+        if superclass is None:
+            return
         self._parent_classes.append(superclass)
 
     def add_disjoint_class(self, cls: "OntologyEntity"):
@@ -164,6 +158,8 @@ class OntologyEntity(metaclass=ABCMeta):
                     default = False
             if default:
                 GENERATED_TYPES[self.name] = type(self.name, (self._parent_class,), attrs)
+            if onto.base_prefix != self.prefix:
+                self.actualized_entity.iri = self.get_full_iri(onto)
             self._sync_description()
             return GENERATED_TYPES[self.name]
 
@@ -178,25 +174,26 @@ class OntologyEntity(metaclass=ABCMeta):
             inst = self._get_generated_class(onto)
         else:
             inst = self._internal_imp_instance
-        for set_prop in self.properties_values:
-            val = self.properties_values[set_prop]
-            if set_prop in BUILTIN_NAMES and isinstance(val, list):
-                for i, v in enumerate(val):
-                    v: str
-                    if "^^" in v or "@" in v:
-                        import re
-                        split_values = re.split(r'(?:(.+)\^\^(.+)@(.+)|(.+)\^\^(.+))', v)
-                        if len(split_values) > 2 and split_values[1] is not None:
-                            lit, lang = (split_values[1], split_values[3])
-                            val[i] = locstr(lit, lang)
-                        else:
-                            v, data_type = (split_values[4], split_values[5])
-                            val[i] = DATATYPE_MAP[data_type](v)
-            set_prop = set_prop.split(":")[1]
-            try:
-                if isinstance(val, list):
-                    setattr(inst, set_prop, val)
-                else:
-                    setattr(inst, set_prop, [val])
-            except AttributeError:
-                pass
+        self.actualize_annotations(inst)
+        # for set_prop in self.properties_values:
+        #     val = self.properties_values[set_prop]
+        #     if set_prop in BUILTIN_NAMES and isinstance(val, list):
+        #         for i, v in enumerate(val):
+        #             v: str
+        #             if "^^" in v or "@" in v:
+        #                 import re
+        #                 split_values = re.split(r'(?:(.+)\^\^(.+)@(.+)|(.+)\^\^(.+))', v)
+        #                 if len(split_values) > 2 and split_values[1] is not None:
+        #                     lit, lang = (split_values[1], split_values[3])
+        #                     val[i] = locstr(lit, lang)
+        #                 else:
+        #                     v, data_type = (split_values[4], split_values[5])
+        #                     val[i] = DATATYPE_MAP[data_type](v)
+        #     set_prop = set_prop.split(":")[1]
+        #     try:
+        #         if isinstance(val, list):
+        #             setattr(inst, set_prop, val)
+        #         else:
+        #             setattr(inst, set_prop, [val])
+        #     except AttributeError:
+        #         pass

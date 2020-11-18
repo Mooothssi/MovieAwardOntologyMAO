@@ -1,22 +1,65 @@
 import owlready2
 from owlready2 import Imp, get_ontology
+from typing import Dict
+
+from .namespaces import lookup_iri
+from .annotable import OwlAnnotatable
 
 
-class Ontology:
+def get_ontology_from_prefix(prefix: str, ld: dict):
+    return get_ontology(lookup_iri(prefix, ld))
+
+
+FREE_DOMAIN = "http://www.semanticweb.org"
+
+
+class Ontology(OwlAnnotatable):
     """
     TODO: A proxy for the real implementation in `owlready2`
     """
+    license: str
+    seeAlso: str
+    contributor: str
+    comment: str
 
-    def __init__(self, namespace_iri: str = ""):
-        self._internal_onto: owlready2.Ontology = None
-        self.namespace_iri = namespace_iri
+    def __init__(self, base_iri: str = "", base_prefix: str = ""):
+        self._internal_onto: owlready2.Ontology or None = None
+        self.base_iri = base_iri
+        self.base_prefix = base_prefix
+        self.iris: Dict[str, str] = {}
+        self.annotations = {}
+
+    def name_from_prefix(self, developer: str = "nomad"):
+        import datetime
+        now = datetime.datetime.now()
+        self.base_iri = f"{FREE_DOMAIN}/{developer}/ontologies/{now.year}/{now.month}/{self.base_prefix}#"
+
+    def _get_onto_from_prefix(self, prefix: str) -> owlready2.Ontology:
+        return get_ontology_from_prefix(prefix, self.iris)
+
+    def lookup_iri(self, prefix: str):
+        """
+        Get a fully qualified IRI from a given prefix
+        Args:
+            prefix:
+
+        Returns:
+
+        """
+        return lookup_iri(prefix, self.iris)
 
     def create(self, namespace_iri: str = ""):
         """
             Newly creates an Ontology from an existing namespace
         """
-        assert self.namespace_iri == "" or namespace_iri == "", "Namespace must be set before creation"
-        self._internal_onto = get_ontology(self.namespace_iri if self.namespace_iri != "" else namespace_iri)
+        assert self.base_iri == "" or namespace_iri == "", "Namespace must be set before creation"
+        self.base_iri = self.base_iri if self.base_iri != "" else namespace_iri
+        self._internal_onto = get_ontology(self.base_iri)
+        self.base_prefix = self.implementation.name
+        self._update_iri()
+
+    def _update_iri(self):
+        self.iris[self.base_prefix] = self.base_iri
 
     @classmethod
     def load_from_file(cls, filename: str) -> "Ontology":
@@ -32,6 +75,8 @@ class Ontology:
         inst = cls()
         inst._internal_onto = get_ontology(f"file:////{filename}")
         inst._internal_onto.load()
+        inst.base_iri, inst.base_prefix = inst.implementation.base_iri, inst.implementation.name
+        inst._update_iri()
         return inst
 
     def save_to_file(self, filename: str, file_format: str="rdfxml"):
@@ -69,3 +114,24 @@ class Ontology:
     @property
     def base_name(self):
         return self.implementation.name
+
+    def add_label(self, label: str or int):
+        self.add_annotation("rdfs:label", label)
+
+    def add_license(self, label: str or int):
+        self.add_annotation("dcterms:licence", label)
+
+    def add_annotation(self, annotation: str, value):
+        if annotation not in self.annotations:
+            self.annotations[annotation] = []
+        self.annotations[annotation].append(value)
+
+    def actualize(self):
+        self.properties_values = self.annotations
+        self.actualize_annotations(self)
+        for a in self.annotations:
+            name = a
+            if ":" in a:
+                name = a.split(":")[1]
+            for t in self.annotations[a]:
+                getattr(self.implementation.metadata, name).append(t)
