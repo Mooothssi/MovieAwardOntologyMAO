@@ -1,5 +1,5 @@
-from abc import ABCMeta, abstractmethod
-from typing import List, Optional, Dict
+from pathlib import Path
+from typing import List, Optional, Dict, Union, Tuple, Type
 
 import yaml
 
@@ -60,11 +60,10 @@ class Annotations:
                 lines.append(table)
             else:
                 lines.append(get_md_list(0, map(get_plain_literal, clean_values)))
-                lines.append('')
         return '\n'.join(lines)
 
 
-class Entity(metaclass=ABCMeta):
+class Entity:
     def __init__(self, name: str, data: dict):
         if isinstance(data, str):
             # Allow using '' as placeholder when no data
@@ -75,11 +74,9 @@ class Entity(metaclass=ABCMeta):
         self._name = name
 
     @property
-    @abstractmethod
     def _description_map(self) -> Dict[str, str]:
         raise NotImplementedError
 
-    @abstractmethod
     def as_markdown(self) -> str:
         raise NotImplementedError
 
@@ -214,47 +211,48 @@ def write_classes(classes: dict) -> List[str]:
     return lines
 
 
-def main():
-    with open(ROOT_DIR / 'tests/test_cases/test_case2.yaml', 'r', encoding='utf-8') as yamlfile:
-        data = yaml.load(yamlfile, yaml.FullLoader)
-    # print(data)
+def convert_v1(data: dict) -> List[str]:
+    """Returns the lines of md documentation to write from specs data."""
+    lines = []
+    if 'annotations' in data:
+        lines += [f'# Ontology Description',
+                  Annotations(data['annotations']).as_markdown(),
+                  '']
 
-    lines: List[str] = [
-        '# Ontology Description',
+    sections: List[Tuple[str, str, Type[Entity]]] = [
+        ('Classes', 'owl:Class', Class),
+        ('Object Properties', 'owl:ObjectProperty', ObjectProperty),
+        ('Data Properties', 'owl:DataProperty', DataProperty),
+        ('Annotation Properties', 'owl:AnnotationProperty', AnnotationProperty),
+        # ('Rules', 'owl:Rule?', Rule?),
     ]
-    try:
-        lines += [Annotations(data['annotations']).as_markdown()]
-    except KeyError:
-        pass
-    lines.append('')
-    lines += write_classes(data['owl:Class'])
+    for section, dict_section, cls in sections:
+        if dict_section not in data:
+            continue
+        lines += [f'# {section}']
+        lines += [cls(p, d).as_markdown() for p, d in data[dict_section].items()]
+        lines += ['']
+    return lines
 
-    try:
-        for p, d in data['owl:ObjectProperty'].items():
-            lines += [ObjectProperty(p, d).as_markdown()]
-        lines.append('')
-    except KeyError:
-        pass
 
-    try:
-        for p, d in data['owl:DataProperty'].items():
-            lines += [DataProperty(p, d).as_markdown()]
-        lines.append('')
-    except KeyError:
-        pass
+def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
+                           md_file: Union[str, Path]) -> None:
+    """Converts a owl yaml specs file to md documentation."""
+    with open(owlyaml_file, 'r', encoding='utf-8') as yamlfile:
+        data = yaml.load(yamlfile, yaml.FullLoader)
 
-    try:
-        for p, d in data['owl:AnnotationProperty'].items():
-            lines += [AnnotationProperty(p, d).as_markdown()]
-    except KeyError:
-        pass
+    if 'specs' not in data:
+        # first version
+        lines = convert_v1(data)
+    else:
+        raise NotImplementedError
 
-    with open(ROOT_DIR / 'yamd/test.md', 'w', encoding='utf-8') as mdfile:
+    with open(md_file, 'w', encoding='utf-8') as mdfile:
         mdfile.write('\n'.join(lines))
 
 
 if __name__ == '__main__':
-    # import doctest
-    #
-    # doctest.testmod()
-    main()
+    import doctest
+
+    doctest.testmod()
+    convert_owl_yaml_to_md(ROOT_DIR / 'tests/test_cases/test_case1.yaml', ROOT_DIR / 'yamd/test.md')
