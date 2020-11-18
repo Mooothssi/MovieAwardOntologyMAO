@@ -137,7 +137,7 @@ class Annotations:
 
 
 class Entity:
-    def __init__(self, name: str, data: dict):
+    def __init__(self, name: str, data: dict, *, auto_include_thing: bool = True):
         if isinstance(data, str):
             # Allow using '' as placeholder when no data
             assert data == ''
@@ -145,15 +145,16 @@ class Entity:
         else:
             self.data = data
         self._name = name
-        try:
-            Node(self.name).add_parents(Node(self._top_type))
-        except ValueError as e:
-            if e.args[0] == 'parent must be a separate entity':
-                # Might have 'Thing' etc. defined
-                pass
-            else:
-                print(e.args)
-                raise
+        if auto_include_thing:
+            try:
+                Node(self.name).add_parents(Node(self._top_type))
+            except ValueError as e:
+                if e.args[0] == 'parent must be a separate entity':
+                    # Might have 'Thing' etc. defined
+                    pass
+                else:
+                    print(e.args)
+                    raise
 
     @property
     def _description_map(self) -> Dict[str, str]:
@@ -315,7 +316,7 @@ def write_classes(classes: dict) -> List[str]:
     return lines
 
 
-def convert_v1(data: dict) -> List[str]:
+def convert_v1(data: dict, *, auto_include_thing: bool = True) -> List[str]:
     """Returns the lines of md documentation to write from specs data."""
     text_sections = []
     if 'annotations' in data:
@@ -335,7 +336,7 @@ def convert_v1(data: dict) -> List[str]:
         if dict_section not in data:
             continue
         lines = [f'# {section}']
-        lines += [cls(p, d).as_markdown() for p, d in data[dict_section].items()]
+        lines += [cls(p, d, auto_include_thing=auto_include_thing).as_markdown() for p, d in data[dict_section].items()]
         lines += ['']
         text_sections.append('\n'.join(lines))
     lines = [
@@ -363,9 +364,11 @@ def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
     with open(owlyaml_file, 'r', encoding='utf-8') as yamlfile:
         data = yaml.load(yamlfile, yaml.FullLoader)
 
-    if 'specs' not in data:
+    if 'specs/version' not in data:
         # first version
         lines = convert_v1(data)
+    elif 'specs/version' == '1.0.0':
+        lines = convert_v1(data, auto_include_thing=False)
     else:
         raise NotImplementedError
 
