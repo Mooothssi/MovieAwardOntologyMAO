@@ -1,14 +1,19 @@
-# Ontology description
-## Annotations
-### label
-  - pizza
+# Ontology Description
+### Annotations
+Label
 
-### title
-  - pizza
+| Language | Label |
+|----------|-------|
+| None     | pizza |
 
-### licence
+Title
+
+| Language | Title |
+|----------|-------|
+| English  | pizza |
+
+Licence
   - Creative Commons Attribution 3.0 (CC BY 3.0)
-
 
 # Class Hierarchy
 - Thing
@@ -24,185 +29,183 @@
       - TomatoTopping
   - Spiciness
 
-
 # Property Hierarchy
-### Object Property
-- hasBase
-- hasTopping
+## Object Property
+- TopObjectProperty
+  - hasTopping
+  - hasBase
 
+## Data Property
+- TopDataProperty
 
-# Class
+## Annotation Property
+- licence
+- title
+
+# Classes
+## Thing
 ## Food
 ### Annotations
-| Language      | Label                |
-| ------------- |:--------------------:|
-| English       | Food                 |
+Label
+
+| Language | Label |
+|----------|-------|
+| English  | Food  |
 
 ### Description
-Subclass Of:
-  - Thing
-
+Subclass of:
+  - owl:Thing
 
 ## GorgonzolaTopping
 ### Annotations
-| Language      | Label                |
-| ------------- |:--------------------:|
-| English       | GorgonzolaTopping    |
+Label
+
+| Language | Label |
+|----------|-------|
+| English  | GorgonzolaTopping |
 
 ### Description
-Disjoint With:
+Subclass of:
+  - PizzaTopping
+
+Disjoint with:
   - MozzarellaTopping
   - TomatoTopping
 
-Subclass Of:
-  - PizzaTopping
-
-
 ## Margherita
 ### Annotations
-| Language      | Label         |
-| ------------- |:-------------:|
-| English       | Margherita    |
-| Portuguese    | Margherita    |
+Label
+
+| Language | Label |
+|----------|-------|
+| English  | Margherita |
+| Portugese | Margherita |
 
 ### Description
-Subclass Of:
+Subclass of:
   - NamedPizza
   - hasTopping only (MozzarellaTopping or TomatoTopping)
   - hasTopping some MozzarellaTopping
   - hasTopping some TomatoTopping
 
-
 ## MozzarellaTopping
 ### Annotations
-| Language      | Label                |
-| ------------- |:--------------------:|
-| English       | MozzarellaTopping    |
+Label
+
+| Language | Label |
+|----------|-------|
+| English  | MozzarellaTopping |
 
 ### Description
-Disjoint With:
+Subclass of:
+  - PizzaTopping
+
+Disjoint with:
   - GorgonzolaTopping
   - TomatoTopping
 
-Subclass Of:
-  - PizzaTopping
-
-
-## NamedPizza:
+## NamedPizza
 ### Description
-Subclass Of:
+Subclass of:
   - Pizza
-
 
 ## Pizza
 ### Description
-Disjoint With:
-  - PizzaBase
-  - Topping
-
-Equivalent To:
-  - Food and (hasBase some PizzaBase)
-
-Subclass Of:
+Subclass of:
   - Food
 
-### Object Property
+Disjoint with:
+  - PizzaBase
+  - PizzaTopping
+
+Equivalent tp:
+  - Food and (hasBase some PizzaBase)
+
+### Object Properties
   - hasBase
   - hasTopping
 
-
 ## PizzaBase
 ### Annotations
-Comment: Pizza dough that used as a pizza base
-
-| Language      | Label         |
-| ------------- |:-------------:|
-| English       | PizzaBase     |
-
+Comment
+  - Pizza dough that used as a pizza base
 ### Description
-Disjoint With:
+Subclass of:
+  - Food
+
+Disjoint with:
   - Pizza
   - PizzaTopping
 
-Subclass Of:
-  - Food
-
-
 ## PizzaTopping
 ### Annotations
-Comment: Topping of pizza
+Label
 
-| Language      | Label         |
-| ------------- |:-------------:|
-| English       | PizzaTopping  |
+| Language | Label |
+|----------|-------|
+| English  | PizzaTopping |
 
+Comment
+  - Topping of pizza
 ### Description
-Disjoint With:
+Subclass of:
+  - Food
+
+Disjoint with:
   - Pizza
   - PizzaBase
 
-Subclass Of:
-  - Food
-
-
 ## Rosa
 ### Annotations
-| Language      | Label         |
-| ------------- |:-------------:|
-| English       | Rosa          |
-| Portuguese    | Rosa          |
+Label
+
+| Language | Label |
+|----------|-------|
+| English  | Rosa  |
+| Portugese | Rosa  |
 
 ### Description
-Subclass Of:
+Subclass of:
   - NamedPizza
-  - hasTopping only (GorgonzolaTopping or MozzarellaTopping  or TomatoTopping)
+  - hasTopping only (GorgonzolaTopping or MozzarellaTopping or TomatoTopping)
   - hasTopping some GorgonzolaTopping
   - hasTopping some MozzarellaTopping
   - hasTopping some TomatoTopping
 
-
 ## Spiciness
 ### Annotations
-Comment: Spiciness of Pizza
+Comment
+  - Spiciness of Pizza
+Label
 
-| Language      | Label         |
-| ------------- |:-------------:|
-| English       | Spiciness     |
-| Portuguese    | Tempero       |
+| Language | Label |
+|----------|-------|
+| English  | Spiciness |
+| Portugese | Tempero |
 
 ### Description
-Subclass Of:
+Subclass of:
   - Thing
-
 
 ## TomatoTopping
 ### Annotations
-| Language      | Label         |
-| ------------- |:-------------:|
-| English       | TomatoTopping |
+Label
+
+| Language | Label |
+|----------|-------|
+| English  | TomatoTopping |
 
 ### Description
-Disjoint With:
+Subclass of:
+  - PizzaTopping
+
+Disjoint with:
   - GorgonzolaTopping
   - MozzarellaTopping
 
-Subclass Of:
-  - PizzaTopping
 
-
-# Annotation property
-## title
-### Annotations
-Comment: A name given to the resource
-
-## licence
-### Annotations
-Comment: A legal document giving official permission to do something with the resource.
-
-Label: License
-
-
-# Object property
+# Object Properties
+## topObjectProperty
 ## hasBase
 ### Description
 Domain:
@@ -211,14 +214,35 @@ Domain:
 Range:
   - PizzaBase
 
-
 ## hasTopping
-### Characteristics
-  - Inverse functional
-
 ### Description
 Domain:
   - Pizza
 
 Range:
   - PizzaTopping
+
+
+# Annotation Properties
+## title
+### Annotations
+Comment
+
+| Language | Comment |
+|----------|---------|
+| English  | A name given to the resource |
+
+## licence
+### Annotations
+Comment
+
+| Language | Comment |
+|----------|---------|
+| English  | A legal document giving official permission to do something with the resource. |
+
+Label
+
+| Language | Label |
+|----------|-------|
+| English  | License |
+
