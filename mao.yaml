@@ -1633,3 +1633,34 @@ owl:Individual:
   family:Non-binary:
     rdf:type:
       - Gender
+
+rules:
+  filmEligible:
+    rule:
+      - > 
+        mao:Film(?m) ^ mao:satisfiesCriterion(?m, ?c) ^ mao:isCriterionFor(?c, ?award) -> mao:eligibleFor(?f, ?award)
+    rdfs:comment: ""
+
+  satisfyFeatureLengthOscarCriterion:
+    rule:
+      - >
+        mao:FeatureLengthOscarCriterion(?c)^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasfeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, ?c)
+    rdfs:comment: ""
+
+  satisfyShortFilmOscarCriterion:
+    rule:
+      - >
+         mao:ShortFilmOscarCriterion(?c) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasfeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, ?c)
+    rdfs:comment: ""
+
+  satisfyFeatureLengthBaftaCriterion:
+    rule:
+      - >
+        mao:FeatureLengthBaftaCriterion(?c) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasfeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 70) -> mao:satisfiesCriterion(?m, ?c)
+    rdfs:comment: ""
+
+  categoryGiveTo:
+    rule:
+      - >
+        mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, ?ac) ^ mao:forOccupation(?ac, ?o) ^ mao:forFilm(?n, ?m) ^ mao:Film(?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasCrewMember(?fm, ?p) ^ mao:hasOccupation(?p, ?o) -> mao:isGivento(?n, ?p)
+    rdfs:comment: ""
