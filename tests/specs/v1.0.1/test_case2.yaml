@@ -8,7 +8,8 @@ owl:Class:
     owl:equivalentClass:
       owl:Restriction:
         - Person and (isAncestorOf some Person)
-    rdfs:subClassOf: Person
+    rdfs:subClassOf: 
+      - Person
   family:Gender:
     owl:disjointWith: 
       - Person
@@ -108,7 +109,8 @@ owl:ObjectProperty:
       - owl:TransitiveProperty
     rdfs:domain:
       - Person
-    rdfs:range: Person
+    rdfs:range: 
+      - Person
     rdfs:subPropertyOf:
       - isBloodRelationOf
   family:hasAunt:
@@ -188,4 +190,5 @@ rdfs:Datatype:
       - xsd:integer[>=0, <=150]
     annotations:
       rdfs:comment:
-        - Age of person which is the integer between 0 to 150
+        - >
+          Age of person which is the integer between 0 to 150
