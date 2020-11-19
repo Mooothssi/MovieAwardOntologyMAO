@@ -295,3 +295,9 @@ Individual of class:
 Individual of class:
   - Gender
 
+# Rules
+## aunt
+```
+family:Person(?p) ^ family:Person(?a) ^ family:Person(?c) ^ family:isSiblingOf(?p,?a) ^ family:isParentOf(?p,?c) ^ family:hasGender(?a,family:Female) -> family:hasAunt(?c,?a)
+```
+
