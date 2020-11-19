@@ -14,6 +14,7 @@ from sa_autowrite.model import DEF_TYPE, TYPE_CONVERTER, TYPE_DEF, Table
 from utils.dict_utils import select_not_null
 from utils.io_utils import open_and_write_file
 from utils.str_utils import snake_to_capwords
+from dirs import ROOT_DIR
 
 __all__ = ['write_models', 'insert_data', 'write_model', 'write_base']
 
@@ -142,7 +143,9 @@ def insert_data(in_directory: Union[str, Path],
     class_names = [snake_to_capwords(name) for name in module_names]
 
     # invalidate_caches()
-    generated_module = import_module('autogen_db_models')
+    path_to_module = Path(out_directory).relative_to(ROOT_DIR.absolute())
+    package_path = str(path_to_module).replace('/', '.').replace('\\', '.')
+    generated_module = import_module(package_path)
     models: Dict[str, DeclaredModel] = {class_name: generated_module.__dict__[class_name] for class_name in class_names}
 
     #
