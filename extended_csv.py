@@ -109,6 +109,7 @@ def read_xsv(file: IO,
     """
     kwargs = {
         'fieldnames': fieldnames,
+        'dialect': dialect,
     }
 
     if not first_line_is_column_header and fieldnames is None:
@@ -119,10 +120,10 @@ def read_xsv(file: IO,
         num_cols = len(first_line.split(delimiter))
         kwargs['fieldnames'] = [f'Column {i + 1}' for i in range(num_cols)]
 
-    reader = csv.DictReader(file, **select_not_null(kwargs, 'fieldnames'))
-
     if first_line_is_column_header and fieldnames is not None:
         raise NotImplementedError("Changing column names isn't supported for simplicity")
+
+    reader = csv.DictReader(file, **select_not_null(kwargs, 'fieldnames', 'dialect'))
 
     stop = None
     if load_at_most is not None:

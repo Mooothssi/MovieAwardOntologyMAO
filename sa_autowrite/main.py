@@ -97,15 +97,14 @@ def write_models(in_directory: Union[str, Path],
         info = _get_info_from_filename(csvfile.name)
         model_name = info['name']
         dialect = get_dialect_from_suffix(info['format'])
-        with open(csvfile, 'r', encoding='utf-8') as f:
-            print(f"Reading from {csvfile}")
-            module_name = snakecase(model_name)
-            class_name = pascalcase(model_name)
-            module_class.append((model_name, class_name))
-            write_model(out_directory / f'{module_name}.py',
-                        class_name,
-                        read_xsv_file(csvfile, dialect=dialect, load_at_most=max_lines))
-            print(f"Writing to {(out_directory / f'{snakecase(model_name)}.py')}\n")
+        print(f"Reading from {csvfile}")
+        module_name = snakecase(model_name)
+        class_name = snake_to_capwords(module_name)
+        module_class.append((module_name, class_name))
+        write_model(out_directory / f'{module_name}.py',
+                    class_name,
+                    read_xsv_file(csvfile, encoding='utf-8', dialect=dialect, load_at_most=max_lines))
+        print(f"Writing to {(out_directory / f'{snakecase(model_name)}.py')}\n")
 
     # Check for required files
     has_base = False
@@ -153,7 +152,7 @@ def insert_data(in_directory: Union[str, Path],
             class_name = pascalcase(model_name)
             if class_name not in class_names:
                 raise AssertionError("class name from data files doesn't match models")
-            data = read_xsv_file(csvfile, dialect=dialect)
+            data = read_xsv_file(csvfile, encoding='utf-8', dialect=dialect)
             df = DataFrame(data)
             instances = []
             for i in range(len(df)):
