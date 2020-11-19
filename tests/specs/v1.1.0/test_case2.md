@@ -278,3 +278,20 @@ Range:
 Sub-properties:
   - hasName
 
+
+# Individuals
+## Female
+### Description
+Individual of class:
+  - Gender
+
+## Male
+### Description
+Individual of class:
+  - Gender
+
+## Non-binary
+### Description
+Individual of class:
+  - Gender
+

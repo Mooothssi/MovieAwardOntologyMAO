@@ -185,6 +185,17 @@ owl:ObjectProperty:
     rdfs:subPropertyOf:
       - isInLawOf
 
+owl:Individual:
+  family:Female:
+    rdf:type:
+      - Gender
+  family:Male:
+    rdf:type:
+      - Gender
+  family:Non-binary:
+    rdf:type:
+      - Gender
+
 rdfs:Datatype:
   family:personAge:
     owl:equivalentClass:
