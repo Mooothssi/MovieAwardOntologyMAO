@@ -162,6 +162,7 @@ def insert_data(in_directory: Union[str, Path],
             data = read_xsv_file(csvfile, encoding='utf-8', dialect=dialect)
             df = DataFrame(data)
             instances = []
+            counter = 0
             for i in range(len(df)):
                 model = models[class_name]
                 datab = {}
@@ -179,6 +180,12 @@ def insert_data(in_directory: Union[str, Path],
                             raise
                 instance = model(**datab)
                 instances.append(instance)
+                counter += 1
+                if counter % 1000 == 0:
+                    session.add_all(instances)
+                    session.commit()
+                    instances = []
+                    print(f'Commited {counter}')
             session.add_all(instances)
             session.commit()
 
