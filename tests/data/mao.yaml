@@ -468,7 +468,7 @@ owl:Class:
       - Animation
       - FilmEligibleForAward
       - ShortFilm
-    rdfs:equivalentClass:
+    owl:equivalentClass:
       - Film and (hasFeatureLengthInMinutes some integer[>=40])
     rdfs:subClassOf:
       - Film
@@ -850,7 +850,7 @@ owl:Class:
       - Animation
       - FeatureFilm
       - FilmEligibleForAward
-    rdfs:equivalentClass:
+    owl:equivalentClass:
       - Film and (hasFeatureLengthInMinutes some integer[<40])
     rdfs:subClassOf:
       - Film
@@ -1610,12 +1610,15 @@ owl:ObjectProperty:
       - violates
 
 owl:Individual:
-  family:Female:
+  mao:Female:
     rdf:type:
       - Gender
-  family:Male:
+  mao:Male:
     rdf:type:
       - Gender
-  family:Non-binary:
+  mao:Non-binary:
     rdf:type:
       - Gender
+  mao:Oscars:
+    rdf:type:
+      - Award

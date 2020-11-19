@@ -3,7 +3,7 @@ from owlready2 import Imp, get_ontology
 from typing import Dict, Optional
 
 from .namespaces import lookup_iri
-from .annotable import OwlAnnotatable
+from .annotatable import OwlAnnotatable
 
 
 def get_ontology_from_prefix(prefix: str, ld: dict):
@@ -48,6 +48,24 @@ class Ontology(OwlAnnotatable):
         """
         return lookup_iri(prefix, self.iris)
 
+    def lookup_prefix(self, iri: str):
+        """
+         Get a fully qualified prefix from a given IRI
+        Args:
+            iri:
+
+        Returns:
+
+        """
+        return lookup_iri(iri, self.prefixes)
+
+    def update_base_prefix(self):
+        self.base_prefix = self.lookup_prefix(self.base_iri)
+
+    @property
+    def prefixes(self):
+        return {v: k for k, v in self.iris.items()}
+
     def create(self, namespace_iri: str = ""):
         """
             Newly creates an Ontology from an existing namespace
@@ -58,10 +76,12 @@ class Ontology(OwlAnnotatable):
         self.base_prefix = self.implementation.name
         self.update_iri()
 
-    def update_iri(self, prefix: Optional[str] = None):
+    def update_iri(self, prefix: Optional[str] = None, iri: Optional[str] = None):
         if prefix is None:
             prefix = self.base_prefix
-        self.iris[prefix] = self.base_iri
+        if iri is None:
+            iri = self.base_iri
+        self.iris[prefix] = iri
 
     @classmethod
     def load_from_file(cls, filename: str) -> "Ontology":

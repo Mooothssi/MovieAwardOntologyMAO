@@ -18,6 +18,7 @@ OWL_CLASS = 'owl:Class'
 OWL_EQUIVALENT_CLASS = 'owl:equivalentClass'
 OWL_RESTRICTION = 'owl:Restriction'
 OWL_INDIVIDUAL = 'owl:Individual'
+OWL_THING = 'owl:Thing'
 
 RDF_TYPE = 'rdf:type'
 

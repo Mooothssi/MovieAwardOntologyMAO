@@ -3,7 +3,7 @@ from typing import List, Type, Union
 
 from owlready2 import Thing, ClassConstruct
 
-from .annotable import OwlAnnotatable
+from .annotatable import OwlAnnotatable
 from .ontology import Ontology
 from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
 

@@ -24,7 +24,7 @@ NOT_PATTERN = (r'(not)(?:\(([:a-zA-Z0-9<># ]*)\)| '
 TRIPLE_PATTERN = (r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*)|'
                   r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\))) '
                   rf'({"|".join(TRIPLE_KEYWORDS)}) (?:([0-9]+) )?'
-                  r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z0-9\[\]\'<>=]*)|'
+                  r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z0-9\'<>=]*(?:\[.+\]))|'
                   # r'(?:((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z0-9\[\]\'<>=]*)|'
                   r'(\((?:[a-z]+:)?[<a-zA-Z0-9>#]+[A-Za-z]*\)))', (2, 1, 6, 5, 4), 3)
 
@@ -80,18 +80,17 @@ def get_class_from_literal(onto: Ontology, literal: str, base_cls=Thing):
     return new_type
 
 
-def create_individual_from_literal(onto: Ontology, name: str, cls_literal: str = None, base_cls=Thing):
-    short_entity_name = f"{onto.base_prefix}:{name}"
-    assert short_entity_name in GENERATED_TYPES, f"Individual {short_entity_name} not yet created"
-    y = GENERATED_TYPES[short_entity_name]
-    return y
+def get_individual_from_literal(onto: Ontology, name: str, cls_literal: str = None, base_cls=Thing):
+    short_entity_name = name # f"{onto.base_prefix}:{name}"
+    assert short_entity_name in GENERATED_TYPES, f"Individual {short_entity_name} has yet to be created"
+    individual = GENERATED_TYPES[short_entity_name]
+    return individual
     # cls = get_class_from_literal(onto, cls_literal, base_cls)
     # if cls is Thing:
     #     individual = cls(name, onto.implementation)
     # else:
     #     individual = cls()
     # individual.name = name
-    return individual
 
 
 class TokenInfo:
@@ -138,9 +137,11 @@ class TokenInfo:
                 return getattr(first.construct, self.keyword)(third.construct, second.construct)
             elif self.keyword in TRIPLE_KEYWORDS:
                 first, second = self.sub_tokens
-                if self.keyword in PROPERTY_RESTRICTION_KEYWORDS:
+                if self.keyword in "value":
+                    return get_individual_from_literal(self.onto, second.sub_tokens[0])
+                elif self.keyword in QUANTIFIER_RESTRICTION_KEYWORDS:
                     return getattr(first.construct, self.keyword)(second.construct)
-                if self.keyword == "and":
+                elif self.keyword == "and":
                     return first.construct & second.construct
                 elif self.keyword == "or":
                     return first.construct | second.construct
@@ -206,7 +207,7 @@ class ClassExpToConstruct:
         m = search(r'^{(.+)}$', exp)
         if m is None:
             return exp
-        y = OneOf([create_individual_from_literal(self.ontology, y.strip()) for y in m.group(1).split(",")])
+        y = OneOf([get_individual_from_literal(self.ontology, y.strip()) for y in m.group(1).split(",")])
         self.existing_constructs.append(y)
         return
 

@@ -3,13 +3,13 @@ from yaml import load, Loader
 from semver import VersionInfo
 
 from .base import DATATYPE_MAP
-from .base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_INDIVIDUAL, RDF_TYPE
+from .base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_INDIVIDUAL, RDF_TYPE, OWL_THING
 import ontogen.primitives as primitives
 from .primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME,
                          LABEL_ENTITY_NAME, PROPERTY_ENTITIES, Ontology,
                          OwlEntity, OwlClass, OwlDataProperty,
                          OwlObjectProperty)
-from .primitives.individual import OwlIndividual
+from .primitives.classes import OwlIndividual
 
 
 def get_equivalent_datatype(entity_name: str):
@@ -26,7 +26,7 @@ class YamlToOwlConverter:
     """
     SUPPORTED_VERSION = "1.1.0"
 
-    def __init__(self, spec_filename: str, base_prefix: str="mao"):
+    def __init__(self, spec_filename: str):
         """
         Loads a file with the given name into a skeleton of an OWL ontology.
         Needs to be actualized by `Ontology` class.
@@ -36,17 +36,26 @@ class YamlToOwlConverter:
         """
         self.entities: Dict[str, OwlEntity] = {}
         self.spec_filename = spec_filename
-        self.prefix = base_prefix
-        self.ontology = Ontology(base_prefix=base_prefix)
+        self.ontology = Ontology()
         self.ontology.name_from_prefix()
-        self.ontology.create()
         self.file_version = ""
         self.individuals: List[OwlIndividual] = []
         self._missing_entities = set()
         self._load_file()
 
-    def _deal_with_iris(self):
-        pass
+    @property
+    def prefix(self):
+        return self.ontology.base_prefix
+
+    def _deal_with_iris(self, base_dict: dict):
+        self.ontology.base_iri = base_dict.get("iri", "")
+        prefixes = base_dict.get("prefixes", {})
+        try:
+            [self.ontology.update_iri(prefix, prefixes[prefix]) for prefix in prefixes]
+            self.ontology.update_base_prefix()
+            self.ontology.create()
+        except KeyError:
+            raise AssertionError("Please define prefix for the base IRI of this Ontology")
 
     def _check_eligible_version(self, base_dict: dict):
         self.file_version = base_dict["version"].replace("v", "")
@@ -56,7 +65,8 @@ class YamlToOwlConverter:
     def _load_file(self):
         with open(self.spec_filename) as f:
             dct = load(f, Loader=Loader)
-            self._check_eligible_version(dct)
+        self._check_eligible_version(dct)
+        self._deal_with_iris(dct)
         temp_classes = []
 
         for base in BASE_ENTITIES:
@@ -66,7 +76,7 @@ class YamlToOwlConverter:
                 continue
             classes = dct[q]
             for class_entity_name in classes:
-                if class_entity_name == "owl:Thing":
+                if class_entity_name == OWL_THING:
                     continue
                 e = get_qualified_entity(class_entity_name, self.prefix)
                 prefix, name = e.split(":")
@@ -75,7 +85,7 @@ class YamlToOwlConverter:
                 sub = classes[class_entity_name]
                 if isinstance(sub, dict):
                     if base == OwlObjectProperty:
-                        obj._characteristics = sub.get("rdf:type", [])
+                        obj._characteristics = sub.get(RDF_TYPE, [])
                         obj.range = sub.get("rdfs:range", [])
                         inv = sub.get("owl:inverseOf", [])
                         if len(inv) == 1:
@@ -91,13 +101,13 @@ class YamlToOwlConverter:
                     obj.parent_class_names = sub.get("rdfs:subClassOf", [])
                     obj.disjoint_class_names = sub.get("owl:disjointWith", [])
                     obj.equivalent_class_expressions = self._get_equivalent_classes(sub)
-                    for prop in PROPERTY_ENTITIES:
-                        if prop not in sub:
-                            continue
-                        prop_class = sub[prop]
-                        for prop_name in prop_class:
-                            prop_qualifier = get_qualified_entity(prop_name)
-                            obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
+                    # for prop in PROPERTY_ENTITIES:
+                    #     if prop not in sub:
+                    #         continue
+                    #     prop_class = sub[prop]
+                    #     for prop_name in prop_class:
+                    #         prop_qualifier = get_qualified_entity(prop_name)
+                    #         obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
                 self.entities[class_entity_name] = obj
         self._add_individuals(dct)
@@ -119,7 +129,7 @@ class YamlToOwlConverter:
             self.individuals.append(ind)
 
     @staticmethod
-    def _get_equivalent_classes(sub_dict: dict):
+    def _get_equivalent_classes(sub_dict: dict) -> List:
         if OWL_EQUIVALENT_CLASS not in sub_dict:
             return []
         u = sub_dict[OWL_EQUIVALENT_CLASS]
@@ -177,7 +187,6 @@ class YamlToOwlConverter:
             onto = self.ontology
             onto.name_from_prefix()
         onto.create()
-        self.prefix = onto.implementation.name
         # for i in self.individuals:
         #     i.actualize()
         for entity in self.entities.values():
