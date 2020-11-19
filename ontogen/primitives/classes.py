@@ -27,23 +27,6 @@ class OwlClass(OwlEntity):
         super(OwlClass, self).__init__(entity_qualifier=entity_name)
         self.individuals: List[OwlIndividual] = []
 
-    # owlready-related implementation
-    # @deprecated
-    def instantiate(self, onto: Ontology, individual_name: str):
-        """
-        Instantiate Individuals into a given Ontology
-
-        :param individual_name: The name of an individual, creating an ontology Class if empty
-        :param onto: An `owlready2` Ontology
-        """
-        if not self.is_actualized:
-            self.actualize(onto)
-        apply_classes_from(onto)
-        self._sync_internal(onto)
-        inst = self._get_generated_class(onto)()
-        inst.name = individual_name
-        self._internal_imp_instance = inst
-
     def actualize(self, onto: Ontology) -> 'OwlClass':
         """
         Makes the entity concrete (saved) in a given Ontology

@@ -40,8 +40,6 @@ class TestOntogen(TestCase):
         p.be_type_of(film)
         p.add_label("Parasite^^rdfs:Literal@en")
         p.actualize(self.onto)
-#        self.assertTrue(self.i.is_individual)
-   #     self.assertEqual("mao.Film", str(self.i._internal_imp_instance.is_instance_of[0]))
 
     def test_realization(self):
         self.converter.export_to_ontology(self.onto)
