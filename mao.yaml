@@ -403,7 +403,6 @@ owl:Class:
       - hasLanguage
       - hasOriginalLanguage
       - hasPrequels
-      - hasRatingStatement
       - hasSequels
       - hasSubTitleInLanguage
     owl:disjointWith:
@@ -500,7 +499,6 @@ owl:Class:
       - hasFilm
       - hasPart
       - hasProducer
-      - hasStudio
     rdfs:subClassOf:
       - Event
       - Situation
@@ -1217,7 +1215,7 @@ owl:ObjectProperty:
       rdfs:label:
         - has cast^^rdfs:Literal@en
     rdfs:range:
-      - MovieCast
+      - FilmCast
   mao:hasCharacter:
     annotations:
       rdfs:label:
@@ -1354,12 +1352,6 @@ owl:ObjectProperty:
     annotations:
       rdfs:label:
         - has producer^^rdfs:Literal@en
-  mao:hasRatingStatement:
-    annotations:
-      rdfs:label:
-        - has rating statement^^rdfs:Literal@en
-    rdfs:range:
-      - AggregateRatingStatement
   mao:hasReviewAggregator:
     annotations:
       rdfs:label:
@@ -1556,6 +1548,12 @@ owl:ObjectProperty:
       - Value
     rdfs:range:
       - Thing
+  mao:locatedIn:
+    annotations:
+      rdfs:label:
+        - located in^^rdfs:Literal@en
+    rdfs:range:
+      - Place
   mao:presentedBy:
     annotations:
       rdfs:label:
