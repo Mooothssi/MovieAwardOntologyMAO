@@ -3,8 +3,11 @@ Part of [MAO Project](https://github.com/th-bunratta/MovieAwardOntologyMAO/tree/
 ## To-dos
 For version: `v1.1.0`
 
+- Fix `'{Female, Male, Non-binary}'` as values
+- Fix `mao:hasLocation value Done` as value
+
 ### Individuals
-- [ ] `owl:Individual`
+- [x] `owl:Individual`
 
 ### Classes
 - [x] `rdf:type`

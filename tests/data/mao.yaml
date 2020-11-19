@@ -1,6 +1,9 @@
 version: v1.1.0
 
+iri: http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#
+
 prefixes:
+  mao: "http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#"
   dc: "http://purl.org/dc/elements/1.1/"
   dcterms: "http://purl.org/dc/terms/"
 

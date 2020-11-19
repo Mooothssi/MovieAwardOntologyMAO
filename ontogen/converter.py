@@ -1,14 +1,15 @@
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple
 from yaml import load, Loader
 from semver import VersionInfo
 
 from .base import DATATYPE_MAP
-from .base.namespaces import OWL_CLASS, OWL_EQUIVALENT_CLASS, OWL_RESTRICTION
+from .base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_INDIVIDUAL, RDF_TYPE
 import ontogen.primitives as primitives
 from .primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME,
                          LABEL_ENTITY_NAME, PROPERTY_ENTITIES, Ontology,
-                         OntologyEntity, OwlClass, OwlDataProperty, OwlThing,
+                         OwlEntity, OwlClass, OwlDataProperty,
                          OwlObjectProperty)
+from .primitives.individual import OwlIndividual
 
 
 def get_equivalent_datatype(entity_name: str):
@@ -33,15 +34,19 @@ class YamlToOwlConverter:
         Args:
             spec_filename: The filename of a YAML spec file
         """
-        self.entities: Dict[str, OntologyEntity] = {}
+        self.entities: Dict[str, OwlEntity] = {}
         self.spec_filename = spec_filename
         self.prefix = base_prefix
         self.ontology = Ontology(base_prefix=base_prefix)
         self.ontology.name_from_prefix()
         self.ontology.create()
         self.file_version = ""
+        self.individuals: List[OwlIndividual] = []
         self._missing_entities = set()
         self._load_file()
+
+    def _deal_with_iris(self):
+        pass
 
     def _check_eligible_version(self, base_dict: dict):
         self.file_version = base_dict["version"].replace("v", "")
@@ -95,6 +100,7 @@ class YamlToOwlConverter:
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
                 self.entities[class_entity_name] = obj
+        self._add_individuals(dct)
         if "annotations" in dct:
             anno = dct["annotations"]
             self.ontology.add_label(anno["rdfs:label"][0])
@@ -102,6 +108,15 @@ class YamlToOwlConverter:
             self.ontology.add_annotation("title", anno["dc:title"][0])
         self._load_class_descriptions(tuple(self.entities.values()))
         primitives.ENTITIES = self.entities
+
+    def _add_individuals(self, base_dict: dict):
+        indivs = base_dict[OWL_INDIVIDUAL]
+        for individual in indivs:
+            ind = OwlIndividual(individual)
+            for t in indivs[individual][RDF_TYPE]:
+                e = self.get_entity(t)
+                ind.be_type_of(e)
+            self.individuals.append(ind)
 
     @staticmethod
     def _get_equivalent_classes(sub_dict: dict):
@@ -113,7 +128,7 @@ class YamlToOwlConverter:
         else:
             return u
 
-    def _load_class_descriptions(self, classes: Tuple[OntologyEntity]):
+    def _load_class_descriptions(self, classes: Tuple[OwlEntity]):
         for cls in classes:
             if isinstance(cls, OwlClass) or isinstance(cls, OwlObjectProperty):
                 [cls.add_superclass(self.get_entity(name, cls.prefix)) for name in cls.parent_class_names]
@@ -123,7 +138,7 @@ class YamlToOwlConverter:
                     cls.range = [self.get_entity(name, cls.prefix) for name in cls.range if isinstance(name, str)]
                     cls.inverse_prop = self.get_entity(cls.inverse_prop)
 
-    def get_entity(self, entity_name: str, prefix: str = None) -> OwlClass or OntologyEntity or str:
+    def get_entity(self, entity_name: str, prefix: str = None) -> OwlClass or OwlEntity or str:
         if entity_name is None:
             return None
         if prefix is None:
@@ -163,6 +178,8 @@ class YamlToOwlConverter:
             onto.name_from_prefix()
         onto.create()
         self.prefix = onto.implementation.name
+        # for i in self.individuals:
+        #     i.actualize()
         for entity in self.entities.values():
             entity.actualize(onto)
         onto.actualize()

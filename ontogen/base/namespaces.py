@@ -17,6 +17,9 @@ WK_IRIS = frozenset(WELL_KNOWN_IRIS)
 OWL_CLASS = 'owl:Class'
 OWL_EQUIVALENT_CLASS = 'owl:equivalentClass'
 OWL_RESTRICTION = 'owl:Restriction'
+OWL_INDIVIDUAL = 'owl:Individual'
+
+RDF_TYPE = 'rdf:type'
 
 
 def lookup_iri(prefix: str, lookup: dict = S_WK_P):

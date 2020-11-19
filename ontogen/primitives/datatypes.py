@@ -2,10 +2,10 @@ from typing import Type
 
 from owlready2.base import declare_datatype, _universal_abbrev_datatype
 
-from ..base import Ontology, OntologyEntity
+from ..base import Ontology, OwlEntity
 
 
-class Datatype(OntologyEntity):
+class Datatype(OwlEntity):
     def __init__(self, n: str):
         super().__init__(n)
         self._data_type: Type = None

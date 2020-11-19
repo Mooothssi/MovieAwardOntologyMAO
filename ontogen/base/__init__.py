@@ -10,14 +10,14 @@ from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAM
 BUILTIN_DATA_TYPES = Union[str, int]
 
 
-class OntologyEntity(OwlAnnotatable, metaclass=ABCMeta):
+class OwlEntity(OwlAnnotatable, metaclass=ABCMeta):
     prefix = "owl"
     name = "any"
     _internal_dict = {}
     _parent_class = object
     parent_class_names: List[str] = []
-    _parent_classes: List["OntologyEntity" or ClassConstruct] = []
-    _disjoint_classes: List["OntologyEntity"] = []
+    _parent_classes: List["OwlEntity" or ClassConstruct] = []
+    _disjoint_classes: List["OwlEntity"] = []
 
     # Short for an Implementation instance
     _internal_imp_instance: Thing = None
@@ -46,14 +46,14 @@ class OntologyEntity(OwlAnnotatable, metaclass=ABCMeta):
         return f"{onto.lookup_iri(self.prefix)}{self.name}"
 
     @abstractmethod
-    def actualize(self, onto: Ontology) -> 'OntologyEntity':
+    def actualize(self, onto: Ontology) -> 'OwlEntity':
         """
             Makes the entity concrete (saved) in a given Ontology
             :param onto: a given Ontology
         """
         raise NotImplementedError
 
-    def add_superclass(self, superclass: "OntologyEntity" or "str"):
+    def add_superclass(self, superclass: "OwlEntity" or "str"):
         """
         Adds a superclass of this Class.
         This Class will then be a `rdfs:subclassOf` a given superclass
@@ -63,7 +63,7 @@ class OntologyEntity(OwlAnnotatable, metaclass=ABCMeta):
             return
         self._parent_classes.append(superclass)
 
-    def add_disjoint_class(self, cls: "OntologyEntity"):
+    def add_disjoint_class(self, cls: "OwlEntity"):
         """
         Adds a disjoint class to this Class. The given class will be lazy loaded.
 
@@ -151,7 +151,7 @@ class OntologyEntity(OwlAnnotatable, metaclass=ABCMeta):
             if len(self._parent_classes) > 0 or len(self._realised_parent_classes) > 0:
                 self._realised_parent_classes.extend(
                     [x._get_generated_class(onto) for x in self._parent_classes
-                     if x is not None and isinstance(x, OntologyEntity)])
+                     if x is not None and isinstance(x, OwlEntity)])
                 gen = self._realised_parent_classes
                 if len(gen) > 0:
                     GENERATED_TYPES[self.name] = type(self.name, tuple(gen), attrs)

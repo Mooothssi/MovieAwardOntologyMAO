@@ -81,12 +81,16 @@ def get_class_from_literal(onto: Ontology, literal: str, base_cls=Thing):
 
 
 def create_individual_from_literal(onto: Ontology, name: str, cls_literal: str = None, base_cls=Thing):
-    cls = get_class_from_literal(onto, cls_literal, base_cls)
-    if cls is Thing:
-        individual = cls(name, onto.implementation)
-    else:
-        individual = cls()
-    individual.name = name
+    short_entity_name = f"{onto.base_prefix}:{name}"
+    assert short_entity_name in GENERATED_TYPES, f"Individual {short_entity_name} not yet created"
+    y = GENERATED_TYPES[short_entity_name]
+    return y
+    # cls = get_class_from_literal(onto, cls_literal, base_cls)
+    # if cls is Thing:
+    #     individual = cls(name, onto.implementation)
+    # else:
+    #     individual = cls()
+    # individual.name = name
     return individual
 
 

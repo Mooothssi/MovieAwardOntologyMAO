@@ -1,6 +1,6 @@
 import owlready2
 from owlready2 import Imp, get_ontology
-from typing import Dict
+from typing import Dict, Optional
 
 from .namespaces import lookup_iri
 from .annotable import OwlAnnotatable
@@ -56,10 +56,12 @@ class Ontology(OwlAnnotatable):
         self.base_iri = self.base_iri if self.base_iri != "" else namespace_iri
         self._internal_onto = get_ontology(self.base_iri)
         self.base_prefix = self.implementation.name
-        self._update_iri()
+        self.update_iri()
 
-    def _update_iri(self):
-        self.iris[self.base_prefix] = self.base_iri
+    def update_iri(self, prefix: Optional[str] = None):
+        if prefix is None:
+            prefix = self.base_prefix
+        self.iris[prefix] = self.base_iri
 
     @classmethod
     def load_from_file(cls, filename: str) -> "Ontology":
@@ -76,7 +78,7 @@ class Ontology(OwlAnnotatable):
         inst._internal_onto = get_ontology(f"file:////{filename}")
         inst._internal_onto.load()
         inst.base_iri, inst.base_prefix = inst.implementation.base_iri, inst.implementation.name
-        inst._update_iri()
+        inst.update_iri()
         return inst
 
     def save_to_file(self, filename: str, file_format: str="rdfxml"):
