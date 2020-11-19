@@ -3,7 +3,7 @@ from importlib import import_module, invalidate_caches
 from pathlib import Path
 from typing import IO, Any, Dict, List, Union
 
-from pandas import DataFrame
+import pandas as pd
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from stringcase import pascalcase, snakecase
 
@@ -30,7 +30,7 @@ def write_model(file: Union[IO, str, Path],
         'gen_pk': gen_pk
     }
 
-    df = DataFrame(data)
+    df = pd.DataFrame(data)
     table = Table(model_name, df, **select_not_null(kwargs))
     open_and_write_file(file, table.as_python())
 
@@ -130,7 +130,9 @@ def write_models(in_directory: Union[str, Path],
 
 
 def insert_data(in_directory: Union[str, Path],
-                out_directory: Union[str, Path]) -> None:
+                out_directory: Union[str, Path],
+                *,
+                null_values: List[str]) -> None:
     # Ensure directories are of type 'Path'
     in_directory = Path(in_directory)
     out_directory = Path(out_directory)
@@ -155,24 +157,34 @@ def insert_data(in_directory: Union[str, Path],
         model_name = info['name']
         dialect = get_dialect_from_suffix(info['format'])
         print(f"Opening {csvfile}")
-        with open(csvfile, 'r', encoding='utf-8') as file:
-            class_name = snake_to_capwords(snakecase(model_name))
-            if class_name not in class_names:
-                raise AssertionError("class name from data files doesn't match models")
-            print(f"Writing from {csvfile} to {class_name}\n")
-            data = read_xsv(file, dialect=dialect)
-            df = DataFrame(data)
+
+        class_name = snake_to_capwords(snakecase(model_name))
+        if class_name not in class_names:
+            raise AssertionError("class name from data files doesn't match models")
+        print(f"Writing from {csvfile} to {class_name}\n")
+        counter = 0
+        for chunk in pd.read_csv(csvfile, chunksize=10_000, dialect=dialect):
+            chunk
+        # with open(csvfile, 'r', encoding='utf-8') as file:
+            # data = read_xsv(file, dialect=dialect)
+            # df = pd.DataFrame(data)
+            df = chunk
             instances = []
-            counter = 0
             for i in range(len(df)):
                 model = models[class_name]
                 datab = {}
                 for col in model.__table__.columns:
                     try:
-                        val = df.get(col.name)[i]
+                        val = df.get(col.name)[counter]
                         type_ = repr(col.type)[:-2]
                         if type_ != 'String':
-                            val = TYPE_CONVERTER[DEF_TYPE[type_]](val)
+                            try:
+                                val = TYPE_CONVERTER[DEF_TYPE[type_]](val)
+                            except ValueError:
+                                if val in null_values:
+                                    val = None
+                                else:
+                                    raise
                         datab[col.name] = val
                     except TypeError:
                         if col.name == '_id':
@@ -187,8 +199,9 @@ def insert_data(in_directory: Union[str, Path],
                     session.commit()
                     instances = []
                     print(f'Commited {counter}')
-            session.add_all(instances)
-            session.commit()
+            if instances:
+                session.add_all(instances)
+                session.commit()
 
 
 if __name__ == '__main__':
