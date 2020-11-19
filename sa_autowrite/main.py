@@ -8,7 +8,7 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from stringcase import pascalcase, snakecase
 
 from engine import Session
-from extended_csv import get_dialect_from_suffix, read_xsv_file
+from extended_csv import get_dialect_from_suffix, read_xsv_file, read_xsv
 from sa_autowrite.hint import DeclaredModel
 from sa_autowrite.model import DEF_TYPE, TYPE_CONVERTER, TYPE_DEF, Table
 from utils.dict_utils import select_not_null
@@ -154,12 +154,13 @@ def insert_data(in_directory: Union[str, Path],
         info = _get_info_from_filename(csvfile.name)
         model_name = info['name']
         dialect = get_dialect_from_suffix(info['format'])
-        with open(csvfile, 'r', encoding='utf-8') as f:
-            print(f"Reading from {csvfile}")
+        print(f"Opening {csvfile}")
+        with open(csvfile, 'r', encoding='utf-8') as file:
             class_name = snake_to_capwords(snakecase(model_name))
             if class_name not in class_names:
                 raise AssertionError("class name from data files doesn't match models")
-            data = read_xsv_file(csvfile, encoding='utf-8', dialect=dialect)
+            print(f"Writing from {csvfile} to {class_name}\n")
+            data = read_xsv(file, dialect=dialect)
             df = DataFrame(data)
             instances = []
             counter = 0
@@ -188,8 +189,6 @@ def insert_data(in_directory: Union[str, Path],
                     print(f'Commited {counter}')
             session.add_all(instances)
             session.commit()
-
-            print(f"Writing from {csvfile} to {class_name}\n")
 
 
 if __name__ == '__main__':
