@@ -1,6 +1,6 @@
 import string
 
-__all__ = ['snake_to_camel', 'camel_to_snake', 'to_all_caps']
+__all__ = ['snake_to_camel', 'camel_to_snake', 'to_all_caps', 'snake_to_capwords']
 
 
 def snake_to_camel(s: str) -> str:
@@ -22,6 +22,33 @@ def snake_to_camel(s: str) -> str:
         return first + ''.join(s.title() for s in others)
     except ValueError:
         return s
+
+
+def snake_to_capwords(s: str) -> str:
+    """Returns a new str in CapWords, given an str in snake_case.
+    Removes all underscore before and after.
+
+    Examples:
+        >>> snake_to_capwords('snake_to_capwords')
+        'SnakeToCapwords'
+        >>> snake_to_capwords('__snake_to_capwords__')
+        'SnakeToCapwords'
+        >>> snake_to_capwords('camelCase')
+        Traceback (most recent call last):
+          ...
+        ValueError: original str is not in snake_case: 'camelCase'
+        >>> snake_to_capwords('lonesnake')
+        'Lonesnake'
+        >>> snake_to_capwords('title_akas')
+        'TitleAkas'
+    """
+    words = [word for word in s.split('_') if word]
+    if len(words) == 1:
+        for char in words[0]:
+            if char.isupper():
+                raise ValueError(f"original str is not in snake_case: '{s}'")
+        return s.title()
+    return ''.join(s.title() for s in words)
 
 
 def camel_to_snake(s: str) -> str:

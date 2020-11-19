@@ -13,6 +13,7 @@ from sa_autowrite.hint import DeclaredModel
 from sa_autowrite.model import DEF_TYPE, TYPE_CONVERTER, TYPE_DEF, Table
 from utils.dict_utils import select_not_null
 from utils.io_utils import open_and_write_file
+from utils.str_utils import snake_to_capwords
 
 
 def write_model(file: Union[IO, str, Path],
@@ -57,15 +58,16 @@ def _get_info_from_filename(filename: str) -> dict:
         >>> _get_info_from_filename('branded_food-1000.csv')
         {'name': 'branded_food', 'num_rows': 1000, 'format': 'csv'}
         >>> _get_info_from_filename('nutrients.csv')
-        {'nutrients': 'branded_food', 'num_rows': None, 'format': 'csv'}
+        {'name': 'nutrients', 'num_rows': None, 'format': 'csv'}
         >>> _get_info_from_filename('BadNaming.tsv')
-        {'BadNaming': 'branded_food', 'num_rows': None, 'format': 'tsv'}
+        {'name': 'BadNaming', 'num_rows': None, 'format': 'tsv'}
     """
-    dct = re.match(r'(?P<name>[A-z0-9]*)(-(?P<num_rows>[0-9]+))?(?P<format>.[a-z]+)?', filename).groupdict()
+    *parts, suffix = filename.split('.')
+    dct = re.match(r'^(?P<name>[A-z0-9.]*)(-(?P<num_rows>[0-9]+))?$', '.'.join(parts)).groupdict()
     return {
         'name': dct['name'],
-        'num_rows': dct['num_rows'] if dct['num_rows'] else None,
-        'format': dct['format'],
+        'num_rows': int(dct['num_rows']) if dct['num_rows'] else None,
+        'format': suffix,
     }
 
 
@@ -135,7 +137,7 @@ def insert_data(in_directory: Union[str, Path],
         if pyfile.name in ['base.py', '__init__.py']:
             continue
         module_names.append(pyfile.stem)
-    class_names = [pascalcase(name) for name in module_names]
+    class_names = [snake_to_capwords(name) for name in module_names]
 
     # invalidate_caches()
     generated_module = import_module('autogen_db_models')
@@ -149,7 +151,7 @@ def insert_data(in_directory: Union[str, Path],
         dialect = get_dialect_from_suffix(info['format'])
         with open(csvfile, 'r', encoding='utf-8') as f:
             print(f"Reading from {csvfile}")
-            class_name = pascalcase(model_name)
+            class_name = snake_to_capwords(snakecase(model_name))
             if class_name not in class_names:
                 raise AssertionError("class name from data files doesn't match models")
             data = read_xsv_file(csvfile, encoding='utf-8', dialect=dialect)
