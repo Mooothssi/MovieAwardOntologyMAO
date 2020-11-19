@@ -1,8 +1,8 @@
 version: v1.1.0
 
 prefixes:
-  dc: http://purl.org/dc/elements/1.1/
-  dcterms: http://purl.org/dc/terms/
+  dc: "http://purl.org/dc/elements/1.1/"
+  dcterms: "http://purl.org/dc/terms/"
 
 annotations:
   dc:title:
