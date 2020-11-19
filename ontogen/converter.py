@@ -1,5 +1,6 @@
 from typing import Dict, Tuple
 from yaml import load, Loader
+from semver import VersionInfo
 
 from .base import DATATYPE_MAP
 from .base.namespaces import OWL_CLASS, OWL_EQUIVALENT_CLASS, OWL_RESTRICTION
@@ -22,6 +23,8 @@ class YamlToOwlConverter:
     """
         A converter from YAML to an abstraction of OWL ontology
     """
+    SUPPORTED_VERSION = "1.1.0"
+
     def __init__(self, spec_filename: str, base_prefix: str="mao"):
         """
         Loads a file with the given name into a skeleton of an OWL ontology.
@@ -36,11 +39,19 @@ class YamlToOwlConverter:
         self.ontology = Ontology(base_prefix=base_prefix)
         self.ontology.name_from_prefix()
         self.ontology.create()
+        self.file_version = ""
+        self._missing_entities = set()
         self._load_file()
+
+    def _check_eligible_version(self, base_dict: dict):
+        self.file_version = base_dict["version"].replace("v", "")
+        assert VersionInfo.parse(self.file_version)\
+            .compare(VersionInfo.parse(YamlToOwlConverter.SUPPORTED_VERSION)) <= 0, "Unsupported version of file"
 
     def _load_file(self):
         with open(self.spec_filename) as f:
             dct = load(f, Loader=Loader)
+            self._check_eligible_version(dct)
         temp_classes = []
 
         for base in BASE_ENTITIES:
@@ -121,9 +132,18 @@ class YamlToOwlConverter:
         if modified_name == "owl:Thing" or modified_name == f"{prefix}:Thing":
             return None
         try:
+            if modified_name in self._missing_entities:
+                self._missing_entities.remove(modified_name)
             return self.entities[modified_name]
         except KeyError:
-            return entity_name
+            self._missing_entities.add(modified_name)
+            return modified_name
+
+    def check_missing_definitions(self):
+        if len(self._missing_entities) > 0:
+            missing = "\n".join([f"- {e}" for e in self._missing_entities])
+            raise AssertionError(f"There are missing entities as follows. "
+                                 f"Please check the consistency of the given specs!\n{missing}")
 
     def list_entities(self):
         """
@@ -137,6 +157,7 @@ class YamlToOwlConverter:
             Saves changes made into a given Ontology
             :param onto: A given Ontology
         """
+        self.check_missing_definitions()
         if onto is None:
             onto = self.ontology
             onto.name_from_prefix()

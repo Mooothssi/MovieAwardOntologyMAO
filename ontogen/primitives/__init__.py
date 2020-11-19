@@ -2,10 +2,11 @@ from owlready2 import (AllDisjoint, AnnotationProperty, DataProperty,
                        ObjectProperty, Thing)
 from typing import Any, Dict, List, Type
 
-from .base import Ontology, OntologyEntity, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
-from .internal import CHARACTERISTICS_MAPPING
-from .wrapper import apply_classes_from
-from .utils import ClassExpToConstruct
+from .datatypes import Datatype
+from ..base import Ontology, OntologyEntity, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
+from ..internal import CHARACTERISTICS_MAPPING
+from ..wrapper import apply_classes_from
+from ..utils import ClassExpToConstruct
 
 __all__ = ('OwlClass', 'OwlAnnotationProperty',
            'OwlDataProperty', 'OwlObjectProperty',
@@ -47,7 +48,7 @@ class OwlProperty(OntologyEntity):
         self._sync_internal(onto)
 
     def get_generated_range(self, onto: Ontology):
-        return self.range
+        return [x._get_generated_class(onto) for x in self.range if isinstance(x, OntologyEntity)]
 
 
 class OwlDataProperty(OwlProperty):
@@ -116,6 +117,10 @@ class OwlClass(OntologyEntity):
         apply_classes_from(onto)
         [self.add_equivalent_class_expression(get_exp_constructor(onto).to_construct(exp))
          for exp in self.equivalent_class_expressions]
+        for idx, x in enumerate(self._parent_classes):
+            if isinstance(x, str):
+                c = get_exp_constructor(onto).to_construct(x)
+                self._parent_classes[idx] = c
         self._sync_internal(onto)
         self._get_generated_class(onto)
         disj = [x._get_generated_class(onto) for x in self._disjoint_classes if x is not None]
@@ -190,7 +195,7 @@ class OwlObjectProperty(OwlProperty):
 
 
 BASE_ENTITIES = [OwlAnnotationProperty, OwlDataProperty, OwlObjectProperty, OwlClass]
-PROPERTY_ENTITIES = {"annotations": OwlAnnotationProperty,
+PROPERTY_ENTITIES = {#"annotations": OwlAnnotationProperty,
                      "dataProperty": OwlDataProperty,
                      "objectProperty": OwlObjectProperty}
 BUILTIN_ENTITIES = {

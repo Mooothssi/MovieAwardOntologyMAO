@@ -159,7 +159,8 @@ class OntologyEntity(OwlAnnotatable, metaclass=ABCMeta):
             if default:
                 GENERATED_TYPES[self.name] = type(self.name, (self._parent_class,), attrs)
             if onto.base_prefix != self.prefix:
-                self.actualized_entity.iri = self.get_full_iri(onto)
+                p = self.get_full_iri(onto)
+                self.actualized_entity.iri = p
             self._sync_description()
             return GENERATED_TYPES[self.name]
 

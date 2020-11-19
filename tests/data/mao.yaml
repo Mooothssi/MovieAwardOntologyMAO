@@ -1,5 +1,43 @@
+version: v1.1.0
+
+prefixes:
+  dc: "http://purl.org/dc/elements/1.1/"
+  dcterms: "http://purl.org/dc/terms/"
+
+annotations:
+  dc:title:
+    - Movie Awards Ontology^^rdfs:Literal@en
+  dcterms:licence:
+    - >
+      Copyright 2020 MAO Team
+      
+      Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+      
+      The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+      
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  rdfs:label:
+    - Movie Awards Ontology^^xsd:string
+    - movie award^^xsd:string
+    - mao^^xsd:string
+  rdfs:comment:
+    - >
+      An ontology about movies and awards^^rdfs:Literal@en
 owl:Class:
   owl:Thing: ""
+  mao:Abstract:
+    annotations:
+      rdfs:comment:
+        - >
+          Any Entity that cannot be located in space-time. E.g. mathematical entities: formal semantics elements, regions within dimensional spaces, etc.^^xsd:string
+      rdfs:label:
+        - Abstract^^rdfs:Literal@en
+    owl:disjointWith:
+      - Event
+      - Object
+      - Value
+    rdfs:subClassOf:
+      - Thing
   mao:ActingSituation:
     annotations:
       rdfs:label:
@@ -25,6 +63,32 @@ owl:Class:
         - Agent^^rdfs:Literal@en
     owl:disjointWith:
       - AggregateRating
+      - Award
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
+  mao:AggregateRating:
+    annotations:
+      rdfs:label:
+        - AggregateRating^^rdfs:Literal@en
+    dataProperty:
+      - hasCount
+      - hasMaxValue
+      - hasMinValue
+      - hasName
+      - hasSource
+      - hasValue
+    objectProperty:
+      - hasPart
+      - hasReviewAggregator
+    owl:disjointWith:
+      - Agent
       - Award
       - AwardCeremony
       - Film
@@ -67,6 +131,70 @@ owl:Class:
       - CollectiveAgent and (isParticipantIn some MovieWatchingSituation)
     rdfs:subClassOf:
       - CollectiveAgent
+  mao:Award:
+    annotations:
+      rdfs:label:
+        - Award^^rdfs:Literal@en
+    dataProperty:
+      - hasNickname
+    objectProperty:
+      - hasAwardCategory
+      - hasPart
+      - isSettingFor
+      - presentedBy
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
+  mao:AwardCategory:
+    annotations:
+      rdfs:label:
+        - AwardCategory^^rdfs:Literal@en
+    owl:disjointWith:
+      - ContentRating
+      - Genre
+      - Gender
+      - Nationality
+      - Race
+    rdfs:subClassOf:
+      - Classification
+  mao:AwardCeremony:
+    annotations:
+      rdfs:label:
+        - AwardCeremony^^rdfs:Literal@en
+    dataProperty:
+      - dateHeld
+      - dayHeld
+      - dayScreened
+      - hasEditionNumber
+      - monthHeld
+      - monthScreened
+      - yearHeld
+      - yearScreened
+    objectProperty:
+      - follow
+      - followedBy
+      - hasAward
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - Award
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
   mao:AwardReceivedSituation:
     annotations:
       rdfs:label:
@@ -77,6 +205,17 @@ owl:Class:
       - NominationSituation and (win value True)
     rdfs:subClassOf:
       - NominationSituation
+  mao:BaftaCriterion:
+    annotations:
+      rdfs:label:
+        - BaftaCriterion^^rdfs:Literal@en
+    owl:disjointWith:
+      - OscarCriterion
+    rdfs:equivalentClass:
+      owl:Restriction:
+        - Criterion and (isCriterionFor value BaftaAward)
+    rdfs:subClassOf:
+      - Criterion
   mao:Building:
     annotations:
       rdfs:label:
@@ -90,7 +229,8 @@ owl:Class:
   mao:Character:
     annotations:
       rdfs:comment:
-        - Character in film^^xsd:string
+        - >
+          Character in film^^xsd:string
       rdfs:label:
         - Character^^rdfs:Literal@en
     dataProperty:
@@ -130,6 +270,14 @@ owl:Class:
       - GeographicalFeature
     rdfs:subClassOf:
       - Place
+  mao:Classification:
+    annotations:
+      rdfs:label:
+        - Classification^^rdfs:Literal@en
+    owl:disjointWith:
+      - Language
+    rdfs:subClassOf:
+      - Abstract
   mao:CollectiveAgent:
     annotations:
       rdfs:label:
@@ -144,6 +292,18 @@ owl:Class:
       - Person
     rdfs:subClassOf:
       - Agent
+  mao:ContentRating:
+    annotations:
+      rdfs:label:
+        - ContentRating^^rdfs:Literal@en
+    owl:disjointWith:
+      - AwardCategory
+      - Gender
+      - Genre
+      - Nationality
+      - Race
+    rdfs:subClassOf:
+      - Classification
   mao:Country:
     annotations:
       rdfs:label:
@@ -154,40 +314,42 @@ owl:Class:
       - GeographicalFeature
     rdfs:subClassOf:
       - Place
+  mao:Criterion:
+    annotations:
+      rdfs:label:
+        - Criterion^^rdfs:Literal@en
+    objectProperty:
+      - isCriterionFor
+      - setBy
+    owl:disjointWith:
+      - Requirement
+    rdfs:subClassOf:
+      - NormativeValue
   mao:Event:
     annotations:
       rdfs:comment:
         - >
           Any physical, social, or mental process, event, or state.
-
           More theoretically, events can be classified in different ways, possibly based on 'aspect' (e.g. stative, continuous, accomplishement, achievement, etc.), on 'agentivity' (e.g. intentional, natural, etc.), or on 'typical participants' (e.g. human, physical, abstract, food, etc.).
           Here no special direction is taken, and the following explains why: events are related to observable situations, and they can have different views at a same time.
           If a position has to be suggested here anyway, the participant-based classification of events seems the most stable and appropriate for many modelling problems.
-
           (1) Alternative aspectual views
-
           Consider a same event 'rock erosion in the Sinni valley': it can be conceptualized as an accomplishment (what has brought a certain state to occur), as an achievement (the state resulting from a previous accomplishment), as a punctual event (if we collapse the time interval of the erosion into a time point), or as a transition (something that has changed from a state to a different one).
           In the erosion case, we could therefore have good motivations to shift from one aspect to another: a) causation focus, b) effectual focus, c) historical condensation, d) transition (causality).
-
           The different views refer to the same event, but are still different: how to live with this seeming paradox?
           A typical solution e.g. in linguistics (cf. Levin's aspectual classes) and in DOLCE Full (cf. WonderWeb D18 axiomatization) is to classify events based on aspectual differences. But this solution would create different identities for a same event, where the difference is only based on the modeller's attitude.
           An alternative solution is applied here, and exploits the notion of (observable) Situation; a Situation is a view, consistent with a Description, which can be observed of a set of entities. It can also be seen as a 'relational context' created by an observer on the basis of a 'frame'. Therefore, a Situation allows to create a context where each particular view can have a proper identity, while the Event preserves its own identity.
           For example, ErosionAsAccomplishment is a Situation where rock erosion is observed as a process leading to a certain achievement: the conditions (roles, parameters) that suggest such view are stated in a Description, which acts as a 'theory of accomplishments'. Similarly, ErosionAsTransition is a Situation where rock erosion is observed as an event that has changed a state to another: the conditions for such interpretation are stated in a different Description, which acts as a 'theory of state transitions'.
           Consider that in no case the actual event is changed or enriched in parts by the aspectual view.
-
           (2) Alternative intentionality views
-
           Similarly to aspectual views, several intentionality views can be provided for a same Event. For example, one can investigate if an avalanche has been caused by immediate natural forces, or if there is any hint of an intentional effort to activate those natural forces.
           Also in this case, the Event as such has not different identities, while the causal analysis generates situations with different identities, according to what Description is taken for interpreting the Event.
           On the other hand, if the possible actions of an Agent causing the starting of an avalanche are taken as parts of the Event, then this makes its identity change, because we are adding a part to it.
           Therefore, if intentionality is a criterion to classify events or not, this depends on if an ontology designer wants to consider causality as a relevant dimension for events' identity.
-
           (3) Alternative participant views
-
           A slightly different case is when we consider the basic participants to an Event. In this case, the identity of the Event is affected by the participating objects, because it depends on them.
           For example, if snow, mountain slopes, wind, waves, etc. are considered as an avalanche basic participants, or if we also want to add water, human agents, etc., that makes the identity of an avalanche change.
           Anyway, this approach to event classification is based on the designer's choices, and more accurately mirrors lexical or commonsense classifications (see. e.g. WordNet 'supersenses' for verb synsets).
-
           Ultimately, this discussion has no end, because realists will keep defending the idea that events in reality are not changed by the way we describe them, while constructivists will keep defending the idea that, whatever 'true reality' is about, it can't be modelled without the theoretical burden of how we observe and describe it.
           Both positions are in principle valid, but, if taken too radically, they focus on issues that are only partly relevant to the aim of computational ontologies, which only attempt to assist domain experts in representing what they want to conceptualize a certain portion of reality according to their own ideas.
           For this reason, in this ontology both events and situations are allowed, together with descriptions, in order to encode the modelling needs, independently from the position (if any) chosen by the designer.^^xsd:string
@@ -246,6 +408,21 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
+  mao:FeatureLengthBaftaCriterion:
+    annotations:
+      rdfs:label:
+        - FeatureLengthBaftaCriterion^^rdfs:Literal@en
+    rdfs:subClassOf:
+      - BaftaCriterion
+  mao:FeatureLengthOscarCriterion:
+    annotations:
+      rdfs:label:
+        - FeatureLengthOscarCriterion^^rdfs:Literal@en
+    owl:disjointWith:
+      - ShortFilmOscarCriterion
+      - ShortFilmReleaseNominationOscarCriterion
+    rdfs:subClassOf:
+      - OscarCriterion
   mao:FilmCast:
     annotations:
       rdfs:label:
@@ -313,10 +490,39 @@ owl:Class:
       - hasFilm
       - hasPart
       - hasProducer
-      - hasStudio
     rdfs:subClassOf:
       - Event
       - Situation
+  mao:Gender:
+    annotations:
+      rdfs:label:
+        - Gender^^rdfs:Literal@en
+    owl:disjointWith:
+      - AwardCategory
+      - ContentRating
+      - Genre
+      - Nationality
+      - Race
+    owl:equivalentClass:
+      owl:Restriction:
+        - "{Female, Male, Non-binary}"
+    rdfs:subClassOf:
+      - Classification
+  mao:Genre:
+    annotations:
+      rdfs:label:
+        - Genre^^rdfs:Literal@en
+    objectProperty:
+      - hasSubGenre
+      - isSubGenreOf
+    owl:disjointWith:
+      - AwardCategory
+      - ContentRating
+      - Gender
+      - Nationality
+      - Race
+    rdfs:subClassOf:
+      - Classification
   mao:GeographicalFeature:
     annotations:
       rdfs:label:
@@ -344,35 +550,14 @@ owl:Class:
       - MaleHero
     rdfs:subClassOf:
       - Hero
-  mao:NominatedForSituation:
+  mao:Language:
     annotations:
       rdfs:label:
-        - NominatedForSituation^^rdfs:Literal@en
+        - Language^^rdfs:Literal@en
     owl:disjointWith:
-      - AwardReceivedSituation
-    rdfs:equivalentClass:
-      - NominationSituation and (win value True)
+      - Classification
     rdfs:subClassOf:
-      - NominationSituation
-  mao:NominationSituation:
-    annotations:
-      rdfs:label:
-        - NominationSituation^^rdfs:Literal@en
-    dataProperty:
-      - win
-    objectProperty:
-      - forFilm
-      - hasAward
-      - hasAwardCategory
-      - hasAwardCeremony
-      - isGivenTo
-    owl:disjointWith:
-      - ActingSituation
-      - FilmMakingSituation
-      - MovieWatchingSituation
-      - VoiceActingSituation
-    rdfs:subClassOf:
-      - Situation
+      - Abstract
   mao:MainCharacter:
     annotations:
       rdfs:label:
@@ -398,12 +583,16 @@ owl:Class:
       - FemaleProtagonist
     rdfs:subClassOf:
       - Protagonist
+  mao:MPAAContentRating:
+    annotations:
+      rdfs:label:
+        - MPAAContentRating^^rdfs:Literal@en
+    rdfs:subClassOf:
+      - ContentRating
   mao:MovieStudio:
     annotations:
       rdfs:label:
         - MovieStudio^^rdfs:Literal@en
-    objectProperty:
-      - locatedIn
     rdfs:subClassOf:
       - Organization
   mao:MovieWatchingSituation:
@@ -417,10 +606,61 @@ owl:Class:
       - VoiceActingSituation
     rdfs:subClassOf:
       - Situation
+  mao:Nationality:
+    annotations:
+      rdfs:label:
+        - Nationality^^rdfs:Literal@en
+    owl:disjointWith:
+      - AwardCategory
+      - ContentRating
+      - Gender
+      - Genre
+      - Race
+    rdfs:subClassOf:
+      - Classification
+  mao:NominatedForSituation:
+    annotations:
+      rdfs:label:
+        - NominatedForSituation^^rdfs:Literal@en
+    owl:disjointWith:
+      - AwardReceivedSituation
+    rdfs:equivalentClass:
+      - NominationSituation and (win value False)
+    rdfs:subClassOf:
+      - NominationSituation
+  mao:NominationSituation:
+    annotations:
+      rdfs:label:
+        - NominationSituation^^rdfs:Literal@en
+    dataProperty:
+      - win
+    objectProperty:
+      - forFilm
+      - hasAward
+      - hasAwardCategory
+      - hasAwardCeremony
+      - isGivenTo
+    owl:disjointWith:
+      - ActingSituation
+      - FilmMakingSituation
+      - MovieWatchingSituation
+      - VoiceActingSituation
+    rdfs:subClassOf:
+      - Situation
+  mao:NormativeValue:
+    annotations:
+      rdfs:comment:
+        - >
+          Value that can serve as a norm, standard, codex, requirement, criterion etc.^^rdfs:Literal@en
+      rdfs:label:
+        - Normative value^^rdfs:Literal@en
+    rdfs:subClassOf:
+      - Value
   mao:Object:
     annotations:
       rdfs:comment:
-        - Any physical, social, or mental object, or a substance. Following DOLCE Full, objects are always participating in some event (at least their own life), and are spatially located.^^xsd:string
+        - >
+          Any physical, social, or mental object, or a substance. Following DOLCE Full, objects are always participating in some event (at least their own life), and are spatially located.^^xsd:string
       rdfs:label:
         - Object^^rdfs:Literal@en
     objectProperty:
@@ -461,6 +701,17 @@ owl:Class:
       - Person
     rdfs:subClassOf:
       - Agent
+  mao:OscarCriterion:
+    annotations:
+      rdfs:label:
+        - OscarCriterion^^rdfs:Literal@en
+    owl:disjointWith:
+      - BaftaCriterion
+    rdfs:equivalentClass:
+      owl:Restriction:
+        - Criterion and (isCriterionFor value OscarAward)
+    rdfs:subClassOf:
+      - Criterion
   mao:OscarEligible:
     annotations:
       rdfs:label:
@@ -489,7 +740,8 @@ owl:Class:
   mao:Person:
     annotations:
       rdfs:comment:
-        - Persons in commonsense intuition, which does not apparently distinguish between either natural or social persons.^^xsd:string
+        - >
+          Persons in commonsense intuition, which does not apparently distinguish between either natural or social persons.^^xsd:string
       rdfs:label:
         - Person^^rdfs:Literal@en
     dataProperty:
@@ -514,6 +766,79 @@ owl:Class:
       - Hero
     rdfs:subClassOf:
       - MainCharacter
+  mao:Race:
+    annotations:
+      rdfs:label:
+        - Race^^rdfs:Literal@en
+    owl:disjointWith:
+      - AwardCategory
+      - ContentRating
+      - Gender
+      - Genre
+      - Nationality
+    rdfs:subClassOf:
+      - Classification
+  mao:Rating:
+    annotations:
+      rdfs:label:
+        - Rating^^rdfs:Literal@en
+    dataProperty:
+      - hasMaxValue
+      - hasMinValue
+      - hasValue
+    objectProperty:
+      - hasAuthor
+      - hasReviewAggregator
+      - isPartOf
+      - reviewOf
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - Award
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
+  mao:Requirement:
+    annotations:
+      rdfs:label:
+        - Requirement^^rdfs:Literal@en
+    objectProperty:
+      - isRequirementFor
+      - satisfiesRequirement
+      - violatesRequirement
+    owl:disjointWith:
+      - Criterion
+    rdfs:subClassOf:
+      - NormativeValue
+  mao:Review:
+    annotations:
+      rdfs:label:
+        - Review^^rdfs:Literal@en
+    dataProperty:
+      - hasContent
+    objectProperty:
+      - hasAuthor
+      - hasLanguage
+      - hasPart
+      - hasReviewAggregator 
+      - reviewOf
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - Award
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Situation
+    rdfs:subClassOf:
+      - Object
   mao:ShortFilm:
     annotations:
       rdfs:label:
@@ -526,6 +851,24 @@ owl:Class:
       - Film and (hasFeatureLengthInMinutes some integer[<40])
     rdfs:subClassOf:
       - Film
+  mao:ShortFilmOscarCriterion:
+    annotations:
+      rdfs:label:
+        - ShortFilmOscarCriterion^^rdfs:Literal@en
+    owl:disjointWith:
+      - FeatureLengthOscarCriterion
+      - ShortFilmReleaseNominationOscarCriterion
+    rdfs:subClassOf:
+      - OscarCriterion
+  mao:ShortFilmReleaseNominationOscarCriterion:
+    annotations:
+      rdfs:label:
+        - ShortFilmReleaseNominationOscarCriterion^^rdfs:Literal@en
+    owl:disjointWith:
+      - FeatureLengthOscarCriterion
+      - ShortFilmOscarCriterion
+    rdfs:subClassOf:
+      - OscarCriterion
   mao:SideCharacter:
     annotations:
       rdfs:label:
@@ -559,6 +902,28 @@ owl:Class:
       - Review
     rdfs:subClassOf:
       - Object
+  mao:Value:
+    annotations:
+      rdfs:comment:
+        - >
+          Value is everything that has validity for something and what determines how it would be satisfied.
+          Examples: self-interest, reliability, warranty, benefit, norm, requirement, criterion, recommendation...^^rdfs:Literal@en
+      rdfs:label:
+        - Value^^rdfs:Literal@en
+    objectProperty:
+      - hasException
+      - isAffectedByValidityOf
+      - isSatisfiedBy
+      - isValidFor
+      - isViolatedBy
+      - satisfies
+      - violates
+    owl:disjointWith:
+      - Abstract
+      - Event
+      - Object
+    rdfs:subClassOf:
+      - Thing
   mao:VoiceActingSituation:
     annotations:
       rdfs:label:
@@ -576,8 +941,28 @@ owl:Class:
     rdfs:subClassOf:
       - Situation
 
+owl:AnnotationProperty:
+  dc:title:
+    annotations:
+      rdfs:comment:
+        - >
+          A name given to the resource^^rdfs:Literal@en
+  dcterms:licence:
+    annotations:
+      rdfs:comment:
+        - >
+          A legal document giving official permission to do something with the resource.^^rdfs:Literal@en
+      rdfs:label:
+        - License^^rdfs:Literal@en
+
 owl:DataProperty:
   owl:topDataProperty: ""
+  mao:dateHeld:
+    annotations:
+      rdfs:label:
+        - date held^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:dateTime
   mao:dateReleased:
     annotations:
       rdfs:label:
@@ -585,7 +970,19 @@ owl:DataProperty:
     rdf:type:
       - owl:FunctionalProperty
     rdfs:range:
-      - xsd:date
+      - xsd:dateTime
+  mao:dayHeld:
+    annotations:
+      rdfs:label:
+        - day held^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
+  mao:dayScreened:
+    annotations:
+      rdfs:label:
+        - day screened^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
   mao:hasAggregateRating:
     annotations:
       rdfs:label:
@@ -598,6 +995,24 @@ owl:DataProperty:
         - has character title^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
+  mao:hasContent:
+    annotations:
+      rdfs:label:
+        - has content^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:string
+  mao:hasCount:
+    annotations:
+      rdfs:label:
+        - has count^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
+  mao:hasEditionNumber:
+    annotations:
+      rdfs:label:
+        - has edition number^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
   mao:hasFeatureLengthInMinutes:
     annotations:
       rdfs:label:
@@ -612,10 +1027,28 @@ owl:DataProperty:
       - owl:FunctionalProperty
     rdfs:range:
       - xsd:integer
+  mao:hasMaxValue:
+    annotations:
+      rdfs:label:
+        - has max value^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:decimal
+  mao:hasMinValue:
+    annotations:
+      rdfs:label:
+        - has min value^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:decimal
   mao:hasName:
     annotations:
       rdfs:label:
         - has name^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:string
+  mao:hasNickname:
+    annotations:
+      rdfs:label:
+        - has nickname^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
   mao:hasTitle:
@@ -624,12 +1057,48 @@ owl:DataProperty:
         - has title^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
+  mao:hasSource:
+    annotations:
+      rdfs:label:
+        - has source^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:string
+  mao:hasValue:
+    annotations:
+      rdfs:label:
+        - has value^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:decimal
   mao:hasWikipediaLink:
     annotations:
       rdfs:label:
         - has Wikipedia link^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
+  mao:monthHeld:
+    annotations:
+      rdfs:label:
+        - month held^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
+  mao:monthScreened:
+    annotations:
+      rdfs:label:
+        - month screened^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
+  mao:yearHeld:
+    annotations:
+      rdfs:label:
+        - year held^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
+  mao:yearScreened:
+    annotations:
+      rdfs:label:
+        - year screened^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:integer
   mao:win:
     annotations:
       rdfs:label:
@@ -642,7 +1111,7 @@ owl:ObjectProperty:
   mao:actedBy:
     annotations:
       rdfs:label:
-        - acted by^^rdfs:Literal@en
+        - acted by^^rdfsL:Literal@en
     rdfs:range:
       - Person
   mao:actsIn:
@@ -654,7 +1123,8 @@ owl:ObjectProperty:
   mao:coparticipatesWith:
     annotations:
       rdfs:comment:
-        - A relation between two objects participating in a same Event; e.g., 'Vitas and Jimmy are playing tennis'.^^xsd:string
+        - >
+          A relation between two objects participating in a same Event; e.g., 'Vitas and Jimmy are playing tennis'.^^xsd:string
       rdfs:label:
         - co-participates with^^rdfs:Literal@en
     rdfs:domain:
@@ -667,6 +1137,18 @@ owl:ObjectProperty:
         - eligible for^^rdfs:Literal@en
     rdfs:domain:
       - FilmEligibleForAward
+    rdfs:range:
+      - AwardCategory
+  mao:follow:
+    annotations:
+      rdfs:label:
+        - follow^^rdfs:Literal@en
+    rdfs:range:
+      - AwardCeremony
+  mao:followedBy:
+    annotations:
+      rdfs:label:
+        - followed by^^rdfs:Literal@en
     rdfs:range:
       - AwardCategory
   mao:forFilm:
@@ -693,6 +1175,12 @@ owl:ObjectProperty:
         - has audience^^rdfs:Literal@en
     rdfs:range:
       - CollectiveAgent
+  mao:hasAuthor:
+    annotations:
+      rdfs:label:
+        - has author^^rdfs:Literal@en
+    rdfs:range:
+      - Agent
   mao:hasAward:
     annotations:
       rdfs:label:
@@ -715,8 +1203,6 @@ owl:ObjectProperty:
     annotations:
       rdfs:label:
         - has cast^^rdfs:Literal@en
-    rdfs:range:
-      - MovieCast
   mao:hasCharacter:
     annotations:
       rdfs:label:
@@ -759,6 +1245,14 @@ owl:ObjectProperty:
         - has director^^rdfs:Literal@en
     rdfs:range:
       - Person
+  mao:hasException:
+    annotations:
+      rdfs:label:
+        - has exception^^rdfs:Literal@en
+    rdfs:domain:
+      - Value
+    rdfs:range:
+      - Thing
   mao:hasFilm:
     annotations:
       rdfs:label:
@@ -849,8 +1343,12 @@ owl:ObjectProperty:
     annotations:
       rdfs:label:
         - has rating statement^^rdfs:Literal@en
+  mao:hasReviewAggregator:
+    annotations:
+      rdfs:label:
+        - has review aggregator^^rdfs:Literal@en
     rdfs:range:
-      - AggregateRatingStatement
+      - Organization
   mao:hasRole:
     annotations:
       rdfs:label:
@@ -876,6 +1374,12 @@ owl:ObjectProperty:
       - Thing
     rdfs:range:
       - Situation
+  mao:hasSubGenre:
+    annotations:
+      rdfs:label:
+        - has sub-genre^^rdfs:Literal@en
+    rdfs:range:
+      - Genre
   mao:hasSubTitleInLanguage:
     annotations:
       rdfs:label:
@@ -885,7 +1389,8 @@ owl:ObjectProperty:
   mao:hasParticipant:
     annotations:
       rdfs:comment:
-        - A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.^^xsd:string
+        - >
+          A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.^^xsd:string
       rdfs:label:
         - has participant^^rdfs:Literal@en
     owl:inverseOf:
@@ -912,6 +1417,14 @@ owl:ObjectProperty:
       - Agent
     rdfs:subPropertyOf:
       - hasParticipant
+  mao:isAffectedByValidityOf:
+    annotations:
+      rdfs:label:
+        - is affected by validity of^^rdfs:Literal@en
+    rdfs:domain:
+      - Value
+    rdfs:range:
+      - Thing
   mao:isAgentInvolvedIn:
     annotations:
       rdfs:label:
@@ -924,6 +1437,12 @@ owl:ObjectProperty:
       - Event
     rdfs:subPropertyOf:
       - isParticipantIn
+  mao:isCriterionFor:
+    annotations:
+      rdfs:label:
+        - is criterion for^^rdfs:Literal@en
+    rdfs:subPropertyOf:
+      - isValidFor
   mao:isGivenTo:
     annotations:
       rdfs:label:
@@ -943,7 +1462,8 @@ owl:ObjectProperty:
   mao:isPartOf:
     annotations:
       rdfs:comment:
-        - A relation between any entities, e.g.'brain is a part of the human body'.^^xsd:string
+        - >
+          A relation between any entities, e.g.'brain is a part of the human body'.^^xsd:string
       rdfs:label:
         - is part of^^rdfs:Literal@en
     owl:inverseOf:
@@ -957,7 +1477,8 @@ owl:ObjectProperty:
   mao:isParticipantIn:
     annotations:
       rdfs:comment:
-        - A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.^^xsd:string
+        - >
+          A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.^^xsd:string
       rdfs:label:
         - is participant in^^rdfs:Literal@en
     owl:inverseOf:
@@ -966,6 +1487,22 @@ owl:ObjectProperty:
       - Object
     rdfs:range:
       - Event
+  mao:isRequirementFor:
+    annotations:
+      rdfs:label:
+        - is requirement for^^rdfs:Literal@en
+    rdfs:range:
+      - Thing
+    rdfs:subPropertyOf:
+      - isValidFor
+  mao:isSatisfiedBy:
+    annotations:
+      rdfs:label:
+        - is satisfied by^^rdfs:Literal@en
+    rdfs:domain:
+      - Thing
+    rdfs:range:
+      - Value
   mao:isSettingFor:
     annotations:
       rdfs:comment:
@@ -977,3 +1514,105 @@ owl:ObjectProperty:
       - Situation
     rdfs:range:
       - Thing
+  mao:isSubGenreOf:
+    annotations:
+      rdfs:label:
+        - is sub-genre of^^rdfs:Literal@en
+    rdfs:range:
+      - Genre
+  mao:isValidFor:
+    annotations:
+      rdfs:comment:
+        - >
+          A value is always valid for some specific thing. This relation should point to an entity which is expected to satisfy a given value. Sometimes a temporal or spatial context needs to be provided, e.g. Non-EU students, 2011 graduates etc. Exceptions describing special conditions affecting the validity of a value can be described using the 'has exception' relation.^^rdfs:Literal@en
+      rdfs:label:
+        - is valid for^^rdfs:Literal@en
+    rdfs:domain:
+      - Value
+    rdfs:range:
+      - Thing
+  mao:isViolatedBy:
+    annotations:
+      rdfs:label:
+        - is violated by^^rdfs:Literal@en
+    rdfs:domain:
+      - Value
+    rdfs:range:
+      - Thing
+  mao:presentedBy:
+    annotations:
+      rdfs:label:
+        - presented by^^rdfs:Literal@en
+    rdfs:range:
+      - Organization
+  mao:reviewOf:
+    annotations:
+      rdfs:label:
+        - review of^^rdfs:Literal@en
+    rdfs:range:
+      - Object
+  mao:satisfies:
+    annotations:
+      rdfs:label:
+        - satisfies^^rdfs:Literal@en
+    rdfs:domain:
+      - Thing
+    rdfs:range:
+      - Value
+  mao:satisfiesCriterion:
+    annotations:
+      rdfs:label:
+        - satisfies criterion^^rdfs:Literal@en
+    rdfs:range:
+      - Criterion
+    rdfs:subPropertyOf:
+      - satisfies
+  mao:satisfiesRequirement:
+    annotations:
+      rdfs:label:
+        - satisfies requirement^^rdfs:Literal@en
+    rdfs:range:
+      - Requirement
+    rdfs:subPropertyOf:
+      - satisfies
+  mao:setBy:
+    annotations:
+      rdfs:label:
+        - set by^^rdfs:Literal@en
+    rdfs:range:
+      - Agent
+  mao:violates:
+    annotations:
+      rdfs:label:
+        - violates^^rdfs:Literal@en
+    rdfs:domain:
+      - Thing
+    rdfs:range:
+      - Value
+  mao:violatesCriterion:
+    annotations:
+      rdfs:label:
+        - violates criterion^^rdfs:Literal@en
+    rdfs:range:
+      - Criterion
+    rdfs:subPropertyOf:
+      - violates
+  mao:violatesRequirement:
+    annotations:
+      rdfs:label:
+        - violates requirement^^rdfs:Literal@en
+    rdfs:range:
+      - Requirement
+    rdfs:subPropertyOf:
+      - violates
+
+owl:Individual:
+  family:Female:
+    rdf:type:
+      - Gender
+  family:Male:
+    rdf:type:
+      - Gender
+  family:Non-binary:
+    rdf:type:
+      - Gender

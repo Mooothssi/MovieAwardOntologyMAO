@@ -1,6 +1,11 @@
 # Ontogen
 Part of [MAO Project](https://github.com/th-bunratta/MovieAwardOntologyMAO/tree/ontogen)
 ## To-dos
+For version: `v1.1.0`
+
+### Individuals
+- [ ] `owl:Individual`
+
 ### Classes
 - [x] `rdf:type`
    - [x] Characteristics

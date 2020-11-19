@@ -4,7 +4,8 @@ from unittest import TestCase
 
 from ontogen import Ontology
 from ontogen.converter import YamlToOwlConverter
-from ontogen.primitives import Datatype, OwlClass, OwlObjectProperty
+from ontogen.primitives import OwlClass, OwlObjectProperty
+from ontogen.primitives.datatypes import Datatype
 from ontogen.utils import ClassExpToConstruct
 
 from settings import OWL_FILEPATH, OUT_PATH, OUT_FILENAME

@@ -6,3 +6,4 @@ python-decouple
 pyyaml
 sqlalchemy
 pandas
+semver
