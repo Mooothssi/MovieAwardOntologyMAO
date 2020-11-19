@@ -3,14 +3,24 @@ from typing import List, Type, Union
 
 from owlready2 import Thing, ClassConstruct
 
-from .annotatable import OwlAnnotatable
+from .assertable import OwlAssertable
 from .ontology import Ontology
-from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
-
-BUILTIN_DATA_TYPES = Union[str, int]
+from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME, BUILTIN_DATA_TYPES
 
 
-class OwlEntity(OwlAnnotatable, metaclass=ABCMeta):
+# BUILTIN_DATA_TYPES = Union[str, int]
+
+class OwlActualizable(metaclass=ABCMeta):
+    @abstractmethod
+    def actualize(self, onto: Ontology) -> 'OwlEntity':
+        """
+            Makes the entity concrete (saved) in a given Ontology
+            :param onto: a given Ontology
+        """
+        raise NotImplementedError
+
+
+class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
     prefix = "owl"
     name = "any"
     _internal_dict = {}
@@ -23,7 +33,7 @@ class OwlEntity(OwlAnnotatable, metaclass=ABCMeta):
     _internal_imp_instance: Thing = None
 
     def __init__(self, entity_qualifier: str):
-        super(OwlAnnotatable).__init__()
+        super().__init__()
         self.properties_values = {}
         assert ":" in entity_qualifier, "Must include a prefix"
         pre, n = entity_qualifier.split(":")
@@ -93,27 +103,6 @@ class OwlEntity(OwlAnnotatable, metaclass=ABCMeta):
         else:
             raise TypeError("Invalid type")
 
-    def _add_builtin_prop(self, builtin_name: str, value: BUILTIN_DATA_TYPES):
-        if value is None:
-            return
-        if builtin_name not in self.properties_values:
-            self.properties_values[builtin_name] = []
-        self.properties_values[builtin_name] += [value]
-
-    def add_label(self, value: BUILTIN_DATA_TYPES):
-        """
-            Add a rdfs:label AnnotationProperty with a given value of supported types
-            :param value: A given label. Can be a `str` or `locstr` (Literal with a language)
-        """
-        self._add_builtin_prop(LABEL_ENTITY_NAME, value)
-
-    def add_comment(self, value: BUILTIN_DATA_TYPES):
-        """
-            Add a rdfs:comment AnnotationProperty with a given value of supported types
-            :param value: A given label. Can be a `str` or `locstr` (Literal with a language)
-        """
-        self._add_builtin_prop(COMMENT_ENTITY_NAME, value)
-
     def add_labels(self, values: List[BUILTIN_DATA_TYPES]):
         for v in values:
             self.add_label(v)
@@ -169,32 +158,3 @@ class OwlEntity(OwlAnnotatable, metaclass=ABCMeta):
         Internally synchronizes with the `owlready2` representation of this Class
         """
         self.actualized_entity.equivalent_to = self.equivalent_classes
-
-    def _sync_internal(self, onto: Ontology):
-        if not self.is_individual:
-            inst = self._get_generated_class(onto)
-        else:
-            inst = self._internal_imp_instance
-        self.actualize_annotations(inst)
-        # for set_prop in self.properties_values:
-        #     val = self.properties_values[set_prop]
-        #     if set_prop in BUILTIN_NAMES and isinstance(val, list):
-        #         for i, v in enumerate(val):
-        #             v: str
-        #             if "^^" in v or "@" in v:
-        #                 import re
-        #                 split_values = re.split(r'(?:(.+)\^\^(.+)@(.+)|(.+)\^\^(.+))', v)
-        #                 if len(split_values) > 2 and split_values[1] is not None:
-        #                     lit, lang = (split_values[1], split_values[3])
-        #                     val[i] = locstr(lit, lang)
-        #                 else:
-        #                     v, data_type = (split_values[4], split_values[5])
-        #                     val[i] = DATATYPE_MAP[data_type](v)
-        #     set_prop = set_prop.split(":")[1]
-        #     try:
-        #         if isinstance(val, list):
-        #             setattr(inst, set_prop, val)
-        #         else:
-        #             setattr(inst, set_prop, [val])
-        #     except AttributeError:
-        #         pass

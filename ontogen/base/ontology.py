@@ -3,7 +3,7 @@ from owlready2 import Imp, get_ontology
 from typing import Dict, Optional
 
 from .namespaces import lookup_iri
-from .annotatable import OwlAnnotatable
+from .assertable import OwlAssertable
 
 
 def get_ontology_from_prefix(prefix: str, ld: dict):
@@ -13,7 +13,7 @@ def get_ontology_from_prefix(prefix: str, ld: dict):
 FREE_DOMAIN = "http://www.semanticweb.org"
 
 
-class Ontology(OwlAnnotatable):
+class Ontology(OwlAssertable):
     """
     TODO: A proxy for the real implementation in `owlready2`
     """
@@ -150,7 +150,7 @@ class Ontology(OwlAnnotatable):
 
     def actualize(self):
         self.properties_values = self.annotations
-        self.actualize_annotations(self)
+        self.actualize_assertions(self)
         for a in self.annotations:
             name = a
             if ":" in a:

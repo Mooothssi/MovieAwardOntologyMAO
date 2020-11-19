@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 from unittest import TestCase
 
-from ontogen import Ontology
+from ontogen import Ontology, OwlIndividual
 from ontogen.converter import YamlToOwlConverter
 from ontogen.primitives import OwlClass, OwlObjectProperty
 from ontogen.primitives.datatypes import Datatype
@@ -35,10 +35,13 @@ class TestOntogen(TestCase):
         self.assertEqual("Parasite", self.i.properties_values["mao:hasTitle"])
 
     def test_instantiation(self):
-        self.i.instantiate(self.onto, "Parasite")
-        self.i.add_label("Parasite^^rdfs:Literal@en")
-        self.assertTrue(self.i.is_individual)
-        self.assertEqual("mao.Film", str(self.i._internal_imp_instance.is_instance_of[0]))
+        film: OwlClass = OwlClass("mao:Film")
+        p = OwlIndividual("mao:Parasite")
+        p.be_type_of(film)
+        p.add_label("Parasite^^rdfs:Literal@en")
+        p.actualize(self.onto)
+#        self.assertTrue(self.i.is_individual)
+   #     self.assertEqual("mao.Film", str(self.i._internal_imp_instance.is_instance_of[0]))
 
     def test_realization(self):
         self.converter.export_to_ontology(self.onto)

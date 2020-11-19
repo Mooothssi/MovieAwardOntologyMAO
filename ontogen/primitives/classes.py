@@ -2,8 +2,10 @@ from typing import List, Dict, Type
 
 from owlready2 import Thing, AllDisjoint
 
+from ontogen.base import OwlActualizable
 from ontogen.base.vars import GENERATED_TYPES
 from .base import OwlEntity, Ontology, ENTITIES, apply_classes_from, get_exp_constructor, check_restrictions
+from ..base.assertable import OwlAssertable
 
 
 class OwlClass(OwlEntity):
@@ -51,15 +53,18 @@ class OwlClass(OwlEntity):
         """
         apply_classes_from(onto)
         for i in self.individuals:
-            i.actualize()
+            i.actualize_imp()
         [self.add_equivalent_class_expression(get_exp_constructor(onto).to_construct(exp))
          for exp in self.equivalent_class_expressions]
         for idx, x in enumerate(self._parent_classes):
             if isinstance(x, str):
                 c = get_exp_constructor(onto).to_construct(x)
                 self._parent_classes[idx] = c
-        self._sync_internal(onto)
-        self._get_generated_class(onto)
+        # self._sync_internal(onto)
+        inst = self._get_generated_class(onto)
+        self.actualize_assertions(inst)
+        for i in self.individuals:
+            i.actualize_imp()
         disjoints = [x._get_generated_class(onto) for x in self._disjoint_classes if x is not None]
         if len(disjoints) > 0:
             AllDisjoint(disjoints)
@@ -79,7 +84,7 @@ class OwlThing(OwlClass):
         return self._internal_imp_instance
 
 
-class OwlIndividual:
+class OwlIndividual(OwlActualizable, OwlAssertable):
     """
     An Individual of Ontology classes
     """
@@ -91,35 +96,42 @@ class OwlIndividual:
         self.properties_values = {}
         self.prefix = self.name.split(":")[0]
 
-    def be_type_of(self, t: OwlClass):
-        t.individuals.append(self)
-        self.onto_types.append(t)
+    def be_type_of(self, cls: OwlClass):
+        """
+        Sets the type of this Individual to be of a given Class
 
-    # GENERATED_TYPES
-    # TODO: GENERATED_ENTITIES #
-    def actualize(self):
+        Args:
+            cls: A given Class
         """
-        ...
-        """
+        cls.individuals.append(self)
+        self.onto_types.append(cls)
+
+    def actualize(self, onto: Ontology):
+        self.onto_types[0].actualize(onto)
+
+    def actualize_imp(self):
         if self._imp:
             return
-            # raise AssertionError("Already actualized")
-        inst = self.onto_types[0].actualized_entity()
-        inst.name = self.name.split(":")[1]
-        GENERATED_TYPES[inst.name] = inst
-        self._imp = inst
+        try:
+            inst = self.onto_types[0].actualized_entity()
+            inst.name = self.name.split(":")[1]
+            GENERATED_TYPES[inst.name] = inst
+            self.actualize_assertions(inst)
+            self._imp = inst
+        except AssertionError:
+            pass
 
     def add_property_assertion(self, property_name: str, value):
         """
-            Adds a property assertion with value
+            Adds a property assertion with a given value
         """
         assert self._imp, \
             "Must be an Individual before adding any assertion. Please call instantiate() first"
         assert ":" in property_name and len(property_name.split(":")) == 2, "Please add prefix"
         self.properties_values[property_name] = value
-        assert property_name in self.defined_properties, \
-            "Must associate a subclass of OwlProperty with the given name before any assertion can be done"
-        self._assert_restrictions(self.defined_properties[property_name].range, value)
+        # assert property_name in self.defined_properties, \
+        #     "Must associate a subclass of OwlProperty with the given name before any assertion can be done"
+        # self._assert_restrictions(self.defined_properties[property_name].range, value)
 
     def _assert_restrictions(self, types: List[str], value):
         assert check_restrictions(self.prefix, types, value), \

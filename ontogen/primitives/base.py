@@ -2,7 +2,7 @@ from typing import Any, Dict, List, Type
 
 from owlready2 import AnnotationProperty, DataProperty
 
-from ..base import Ontology, OwlEntity
+from ..base import Ontology, OwlEntity, BUILTIN_DATA_TYPES
 from ..wrapper import apply_classes_from
 from ..utils import ClassExpToConstruct
 
@@ -10,7 +10,6 @@ __all__ = ('OwlAnnotationProperty',
            'OwlDataProperty',
            'ENTITIES')
 
-BUILTIN_DATA_TYPES = (str, int, float)
 ENTITIES: Dict[str, OwlEntity] = {}
 
 
@@ -42,8 +41,8 @@ class OwlProperty(OwlEntity):
         if self.name in ["topObjectProperty", "topDataProperty"]:
             return
         apply_classes_from(onto)
-        self._get_generated_class(onto, range=self.get_generated_range(onto))
-        self._sync_internal(onto)
+        p = self._get_generated_class(onto, range=self.get_generated_range(onto))
+        self.actualize_assertions(p)
 
     def get_generated_range(self, onto: Ontology):
         return [x._get_generated_class(onto) for x in self.range if isinstance(x, OwlEntity)]

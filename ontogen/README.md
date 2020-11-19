@@ -3,8 +3,8 @@ Part of [MAO Project](https://github.com/th-bunratta/MovieAwardOntologyMAO/tree/
 ## To-dos
 For version: `v1.1.0`
 
-- Fix `'{Female, Male, Non-binary}'` as values
-- Fix `mao:hasLocation value Done` as value
+- [x] Fix `'{Female, Male, Non-binary}'` as values
+- [x] Fix `mao:hasLocation value Done` as value
 
 ### Individuals
 - [x] `owl:Individual`
@@ -105,20 +105,23 @@ mao_film.actualize(onto)
 ### Creating an Individual from an Ontology Class
 An individual must be first `instantiated` before adding any assertions.
 ```python
-from ontogen import Ontology, OwlClass
+from ontogen import Ontology, OwlClass, OwlIndividual
+
 
 onto: Ontology
 # mao:Film rdfs:subclassOf owl:Thing
-parasite_film: OwlClass = OwlClass("mao:Film") # or selectively `converter.get_entity("mao:Film")`
+film: OwlClass = OwlClass("mao:Film") # or selectively `converter.get_entity("mao:Film")`
+parasite_film: OwlIndividual = OwlIndividual("mao:Parasite")
+parasite_film.be_type_of(film)
 # Create an mao:Film individual named Parasite in a given OWL Ontology
-parasite_film.instantiate(onto, "Parasite") 
+parasite_film.actualize(onto)
 ```
 
 ### Adding a Property Assertion to an Individual
 ```python
-from ontogen import OwlClass
+from ontogen import OwlIndividual
 
-parasite_film: OwlClass
+parasite_film: OwlIndividual
 parasite_film.add_property_assertion("mao:hasTitle", "Parasite") # Create a property assertion for an individual
 ```
 
