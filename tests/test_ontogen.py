@@ -23,6 +23,7 @@ class TestOntogen(TestCase):
         self.converter = YamlToOwlConverter("data/mao.yaml")
         self.onto = Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#")
         self.onto.create()
+        self.parasite_film = OwlIndividual("mao:Parasite")
         self.i: OwlClass = self.converter.get_entity("mao:Film")
 
     def test_add_rule(self):
@@ -31,22 +32,25 @@ class TestOntogen(TestCase):
 
     def test_assertion(self):
         self.test_instantiation()
-        self.i.add_property_assertion("mao:hasTitle", "Parasite")
-        self.assertEqual("Parasite", self.i.properties_values["mao:hasTitle"])
+        self.parasite_film.add_property_assertion("mao:hasTitle", "Parasite")
+        self.parasite_film.actualize(self.onto)
+        self.assertEqual("Parasite", self.parasite_film.properties_values["mao:hasTitle"])
 
     def test_instantiation(self):
         film: OwlClass = OwlClass("mao:Film")
-        p = OwlIndividual("mao:Parasite")
-        p.be_type_of(film)
-        p.add_label("Parasite^^rdfs:Literal@en")
-        p.actualize(self.onto)
+
+        self.parasite_film.be_type_of(film)
+        self.parasite_film.add_label("Parasite^^rdfs:Literal@en")
+        self.parasite_film.add_property_assertion("mao:hasTitle", "Parasite")
+        self.parasite_film.actualize(self.onto)
+        self.parasite_film._imp.hasTitle = ""
 
     def test_realization(self):
         self.converter.export_to_ontology(self.onto)
 
     # Create an OWL ontology from scratch
     def test_create_ontology(self):
-        self.test_instantiation()
+        self.test_assertion()
         self.test_add_rule()
         self.i = self.converter.export_to_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
@@ -115,6 +119,16 @@ class OntogenClassExpressionTestCase(TestCase):
         obj_prop.actualize(self.onto)
 
     def test_basic(self):
+        c = OwlClass("mao:Gender")
+        i = OwlIndividual("mao:Male")
+        i.be_type_of(c)
+        i.actualize(self.onto)
+        i = OwlIndividual("mao:Female")
+        i.be_type_of(c)
+        i.actualize(self.onto)
+        i = OwlIndividual("mao:NonBinary")
+        i.be_type_of(c)
+        i.actualize(self.onto)
         cls = ClassExpToConstruct(self.onto)
         for fixture in FIXTURES:
             exp, expected = fixture

@@ -130,7 +130,7 @@ owl:Class:
     owl:disjointWith:
       - FilmCast
       - FilmCrew
-    rdfs:equivalentClass:
+    owl:equivalentClass:
       - CollectiveAgent and (isParticipantIn some MovieWatchingSituation)
     rdfs:subClassOf:
       - CollectiveAgent
@@ -204,7 +204,7 @@ owl:Class:
         - AwardReceivedSituation^^rdfs:Literal@en
     owl:disjointWith:
       - NominatedForSituation
-    rdfs:equivalentClass:
+    owl:equivalentClass:
       - NominationSituation and (win value True)
     rdfs:subClassOf:
       - NominationSituation
@@ -214,7 +214,7 @@ owl:Class:
         - BaftaCriterion^^rdfs:Literal@en
     owl:disjointWith:
       - OscarCriterion
-    rdfs:equivalentClass:
+    owl:equivalentClass:
       owl:Restriction:
         - Criterion and (isCriterionFor value BaftaAward)
     rdfs:subClassOf:
@@ -433,7 +433,7 @@ owl:Class:
     owl:disjointWith:
       - Audience
       - FilmCrew
-    rdfs:equivalentClass:
+    owl:equivalentClass:
       - CollectiveAgent and (isParticipantIn some ActingSituation)
     rdfs:subClassOf:
       - CollectiveAgent
@@ -444,7 +444,7 @@ owl:Class:
     owl:disjointWith:
       - Audience
       - FilmCast
-    rdfs:equivalentClass:
+    owl:equivalentClass:
       - CollectiveAgent and (isParticipantIn some FilmMakingSituation)
     rdfs:subClassOf:
       - CollectiveAgent
@@ -627,7 +627,7 @@ owl:Class:
         - NominatedForSituation^^rdfs:Literal@en
     owl:disjointWith:
       - AwardReceivedSituation
-    rdfs:equivalentClass:
+    owl:equivalentClass:
       - NominationSituation and (win value False)
     rdfs:subClassOf:
       - NominationSituation
@@ -710,7 +710,7 @@ owl:Class:
         - OscarCriterion^^rdfs:Literal@en
     owl:disjointWith:
       - BaftaCriterion
-    rdfs:equivalentClass:
+    owl:equivalentClass:
       owl:Restriction:
         - Criterion and (isCriterionFor value OscarAward)
     rdfs:subClassOf:
@@ -1620,5 +1620,11 @@ owl:Individual:
     rdf:type:
       - Gender
   mao:Oscars:
+    rdf:type:
+      - Award
+  mao:BaftaAward:
+    rdf:type:
+      - Award
+  mao:OscarAward:
     rdf:type:
       - Award
