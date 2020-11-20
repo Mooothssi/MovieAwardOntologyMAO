@@ -111,14 +111,14 @@ class Ontology(OwlAssertable):
             filename: The name of a given file
             file_format: The file format of given filename. Only `rdfxml` is supported by `owlready2`
         """
-        self.implementation.save(file=filename, format=file_format)
-        g = Graph()
-        g.parse(filename)
-        if len(self.iris) > 0:
-            for iri in self.iris:
-                g.namespace_manager.bind(iri, Namespace(self.iris[iri]))
-        with open(filename, mode="wb") as file:
-            file.write(g.serialize(format='pretty-xml'))
+        # self.implementation.save(file=filename, format=file_format)
+        g = self.implementation.world.as_rdflib_graph()
+        with self.implementation:
+            if len(self.iris) > 0:
+                for iri in self.iris:
+                    g.namespace_manager.bind(iri, Namespace(self.iris[iri]))
+            with open(filename, mode="wb") as file:
+                file.write(g.serialize(format='pretty-xml'))
 
     def add_rule(self, swrl_rule: str, rule_name: str = None, comment: str = None):
         """

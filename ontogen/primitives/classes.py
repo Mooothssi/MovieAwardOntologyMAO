@@ -5,7 +5,7 @@ from owlready2 import Thing, AllDisjoint
 from ontogen.base import OwlActualizable
 from ontogen.base.vars import GENERATED_TYPES
 from .base import OwlEntity, Ontology, ENTITIES, apply_classes_from, get_exp_constructor, check_restrictions, \
-    get_qualified_entity
+    absolutize_entity_name
 from ..base.assertable import OwlAssertable
 
 
@@ -94,7 +94,7 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
         self.onto_types[0].actualize(onto)
 
     def _get_entity(self, onto: Ontology, relative_name: str) -> object or None:
-        name = get_qualified_entity(relative_name)
+        name = absolutize_entity_name(relative_name)
         return onto.entities.get(name, None)
 
     def actualize_imp(self, onto: Ontology):

@@ -13,7 +13,7 @@ __all__ = ('OwlAnnotationProperty',
 ENTITIES: Dict[str, OwlEntity] = {}
 
 
-def get_qualified_entity(name: str, fallback_prefix: str = "mao"):
+def absolutize_entity_name(name: str, fallback_prefix: str = "mao") -> str:
     return name if ":" in name else f"{fallback_prefix}:{name}"
 
 

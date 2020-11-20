@@ -7,7 +7,7 @@ from ontogen.base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_I
 import ontogen.primitives as primitives
 from ontogen.primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, LABEL_ENTITY_NAME, PROPERTY_ENTITIES,
                                 Ontology, OwlEntity, OwlClass, OwlDataProperty,
-                                OwlObjectProperty, get_qualified_entity)
+                                OwlObjectProperty, absolutize_entity_name)
 from ontogen.primitives.classes import OwlIndividual
 
 
@@ -81,7 +81,7 @@ class OntogenConverter:
             for class_entity_name in classes:
                 if class_entity_name == OWL_THING:
                     continue
-                e = get_qualified_entity(class_entity_name, self.prefix)
+                e = absolutize_entity_name(class_entity_name, self.prefix)
                 prefix, name = e.split(":")
                 obj = cls(e)
                 obj.prefix = prefix
@@ -109,7 +109,7 @@ class OntogenConverter:
                             continue
                         prop_class = sub[prop]
                         for prop_name in prop_class:
-                            prop_qualifier = get_qualified_entity(prop_name)
+                            prop_qualifier = absolutize_entity_name(prop_name)
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
                 self.entities[class_entity_name] = obj
@@ -156,7 +156,7 @@ class OntogenConverter:
             return None
         if prefix is None:
             prefix = self.prefix
-        modified_name = get_qualified_entity(entity_name, prefix)
+        modified_name = absolutize_entity_name(entity_name, prefix)
         if modified_name == "owl:Thing" or modified_name == f"{prefix}:Thing":
             return None
         try:
