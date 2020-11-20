@@ -2,11 +2,21 @@ from abc import ABCMeta, abstractmethod
 from typing import List, Type, Union
 
 from owlready2 import Thing, ClassConstruct
+from owlready2.prop import destroy_entity
 
 from .assertable import OwlAssertable
 from .ontology import Ontology
 from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME, BUILTIN_DATA_TYPES
 
+
+def cleanup(onto: Ontology):
+    onto.implementation.graph.destroy()
+    for e in GENERATED_TYPES:
+        try:
+            destroy_entity(GENERATED_TYPES[e])
+        except:
+            pass
+    GENERATED_TYPES.clear()
 
 # BUILTIN_DATA_TYPES = Union[str, int]
 

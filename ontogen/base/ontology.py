@@ -1,5 +1,5 @@
 import owlready2
-from rdflib import Graph, Namespace
+from rdflib import Graph, Namespace, term
 from owlready2 import Imp, get_ontology
 from typing import Dict, Optional
 
@@ -112,7 +112,8 @@ class Ontology(OwlAssertable):
             file_format: The file format of given filename. Only `rdfxml` is supported by `owlready2`
         """
         # self.implementation.save(file=filename, format=file_format)
-        g = self.implementation.world.as_rdflib_graph()
+        g: Graph = self.implementation.world.as_rdflib_graph()
+       # term.bind()
         with self.implementation:
             if len(self.iris) > 0:
                 for iri in self.iris:

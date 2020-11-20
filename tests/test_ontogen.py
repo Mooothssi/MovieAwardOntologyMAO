@@ -4,7 +4,7 @@ from unittest import TestCase
 from dirs import ROOT_DIR
 
 from ontogen import Ontology, OwlIndividual
-from ontogen.base import GENERATED_TYPES
+from ontogen.base import GENERATED_TYPES, cleanup
 from ontogen.converter import OntogenConverter
 from ontogen.primitives import OwlClass, OwlObjectProperty, OwlAnnotationProperty
 from ontogen.primitives.datatypes import Datatype
@@ -75,13 +75,8 @@ class TestOntogen(TestCase):
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
 
     def tearDown(self):
-        from owlready2.prop import destroy_entity
-        for e in GENERATED_TYPES:
-            try:
-                destroy_entity(GENERATED_TYPES[e])
-            except:
-                pass
-        GENERATED_TYPES.clear()
+        cleanup(self.onto)
+        # self.onto.implementation.load()
 
 
 class TestOntogenPizza(TestCase):
