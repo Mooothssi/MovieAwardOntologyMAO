@@ -1,3 +1,4 @@
+from rdflib import Graph, Namespace
 from typing import Dict, List, Tuple
 from yaml import load, Loader
 from semver import VersionInfo
@@ -197,4 +198,5 @@ class YamlToOwlConverter:
         for entity in self.entities.values():
             entity.actualize(onto)
         onto.actualize()
+
         return onto

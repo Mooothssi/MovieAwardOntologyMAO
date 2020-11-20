@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from unittest import TestCase
+from dirs import ROOT_DIR
 
 from ontogen import Ontology, OwlIndividual
 from ontogen.converter import YamlToOwlConverter
@@ -20,7 +21,7 @@ class TestOntogen(TestCase):
     converter: YamlToOwlConverter
 
     def setUp(self):
-        self.converter = YamlToOwlConverter("data/mao.yaml")
+        self.converter = YamlToOwlConverter(ROOT_DIR / "data/mao.yaml")
         self.onto = Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#")
         self.onto.create()
         self.parasite_film = OwlIndividual("mao:Parasite")
