@@ -41,7 +41,6 @@ class OntogenConverter:
     def _add_rules(self, base_dict: dict):
         b = base_dict.get("rules", {})
         for rule_name in b:
-
             self.ontology.add_rule(b[rule_name]["rule"], rule_name)
 
     def _deal_with_iris(self, base_dict: dict):
@@ -182,19 +181,19 @@ class OntogenConverter:
 
     def export_to_ontology(self, onto: Ontology = None) -> Ontology:
         """
-            Saves changes made into a given Ontology
-            :param onto: A given Ontology
+        Saves changes made into a given Ontology
+        Args:
+            onto: A given Ontology
+
+        Returns: A resultant Ontology
         """
         self.check_missing_definitions()
         if onto is None:
             onto = self.ontology
             onto.name_from_prefix()
         onto.create()
-        # for i in self.individuals:
-        #     i.actualize()
         for entity in self.entities.values():
             entity.actualize(onto)
         self._add_rules(self._dct)
         onto.actualize()
-
         return onto

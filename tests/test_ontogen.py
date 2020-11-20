@@ -52,7 +52,7 @@ class TestOntogen(TestCase):
     # Create an OWL ontology from scratch
     def test_create_ontology(self):
         self.test_assertion()
-        self.i = self.converter.export_to_ontology(self.onto)
+        self.converter.export_to_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
 
     def test_super_classes(self):
@@ -65,7 +65,15 @@ class TestOntogen(TestCase):
         self.assertListEqual([event.actualized_entity, sit.actualized_entity], film_making.actualized_entity.is_a)
 
     def test_annotation_property(self):
-        prop = OwlAnnotationProperty("mao:SomeProp")
+        prop = OwlAnnotationProperty("mao:someProp")
+        prop.actualize(self.onto)
+        event = self.converter.get_entity("mao:Event")
+        event.actualize(self.onto)
+        self.test_instantiation()
+        self.parasite_film.add_property_assertion("mao:someProp", "Parasite")
+        self.parasite_film.actualize(self.onto)
+        self.converter.export_to_ontology(self.onto)
+        self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
 
 
 class TestOntogenPizza(TestCase):

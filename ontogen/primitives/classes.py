@@ -98,12 +98,14 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
         return onto.entities.get(name, None)
 
     def actualize_imp(self, onto: Ontology):
-        if self._imp:
-            return
+        name = self.name.split(":")[1]
         try:
-            inst = self.onto_types[0].actualized_entity()
-            inst.name = self.name.split(":")[1]
-            lu = [y.actualize(onto) for y in [self._get_entity(onto, prop) for prop in self.properties_values] if y]
+            if self._imp:
+                inst = GENERATED_TYPES[name]
+            else:
+                inst = self.onto_types[0].actualized_entity()
+            inst.name = name
+            [y.actualize(onto) for y in [self._get_entity(onto, prop) for prop in self.properties_values] if y]
             GENERATED_TYPES[inst.name] = inst
             self.actualize_assertions(inst)
             self._imp = inst
