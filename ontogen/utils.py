@@ -137,9 +137,12 @@ class TokenInfo:
                 return getattr(first.construct, self.keyword)(third.construct, second.construct)
             elif self.keyword in TRIPLE_KEYWORDS:
                 first, second = self.sub_tokens
-                if self.keyword in "value":
-                    return get_individual_from_literal(self.onto, second.sub_tokens[0])
-                elif self.keyword in QUANTIFIER_RESTRICTION_KEYWORDS:
+                # if self.keyword in "value":
+                #     k = second.sub_tokens[0]
+                #     if k in RESERVED:
+                #         return RESERVED[k]
+                #     return get_individual_from_literal(self.onto, k)
+                if self.keyword in QUANTIFIER_RESTRICTION_KEYWORDS + ("value", ):
                     return getattr(first.construct, self.keyword)(second.construct)
                 elif self.keyword == "and":
                     return first.construct & second.construct
