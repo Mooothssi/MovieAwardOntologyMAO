@@ -4,8 +4,8 @@ from unittest import TestCase
 from dirs import ROOT_DIR
 
 from ontogen import Ontology, OwlIndividual
-from ontogen.converter import YamlToOwlConverter
-from ontogen.primitives import OwlClass, OwlObjectProperty
+from ontogen.converter import OntogenConverter
+from ontogen.primitives import OwlClass, OwlObjectProperty, OwlAnnotationProperty
 from ontogen.primitives.datatypes import Datatype
 from ontogen.utils import ClassExpToConstruct
 
@@ -18,12 +18,12 @@ def count_files(directory: str) -> int:
 
 
 class TestOntogen(TestCase):
-    converter: YamlToOwlConverter
+    converter: OntogenConverter
 
     def setUp(self):
-        self.converter = YamlToOwlConverter(ROOT_DIR / "data/mao.yaml")
-        self.onto = Ontology("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#")
-        self.onto.create()
+        self.converter = OntogenConverter()
+        self.converter.read_yaml(ROOT_DIR / "data/mao.yaml")
+        self.onto = self.converter.ontology
         self.parasite_film = OwlIndividual("mao:Parasite")
         self.i: OwlClass = self.converter.get_entity("mao:Film")
 
@@ -44,7 +44,7 @@ class TestOntogen(TestCase):
         self.parasite_film.add_label("Parasite^^rdfs:Literal@en")
         self.parasite_film.add_property_assertion("mao:hasTitle", "Parasite")
         self.parasite_film.actualize(self.onto)
-        self.parasite_film._imp.hasTitle = ""
+        self.assertEqual(len(self.parasite_film._imp.hasTitle), 1)
 
     def test_realization(self):
         self.converter.export_to_ontology(self.onto)
@@ -65,10 +65,13 @@ class TestOntogen(TestCase):
         sit.actualize(self.onto)
         self.assertListEqual([event.actualized_entity, sit.actualized_entity], film_making.actualized_entity.is_a)
 
+    def test_annotation_property(self):
+        prop = OwlAnnotationProperty("mao:SomeProp")
+
 
 class TestOntogenPizza(TestCase):
     def test_pizza_ontology(self):
-        converter = YamlToOwlConverter("test_cases/test_case1.yaml", "pizza")
+        converter = OntogenConverter("test_cases/test_case1.yaml", "pizza")
         onto = converter.export_to_ontology()
         d = Datatype("Pizza:str")
         d.data_type = str

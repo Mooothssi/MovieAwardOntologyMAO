@@ -13,6 +13,10 @@ __all__ = ('OwlAnnotationProperty',
 ENTITIES: Dict[str, OwlEntity] = {}
 
 
+def get_qualified_entity(name: str, fallback_prefix: str = "mao"):
+    return name if ":" in name else f"{fallback_prefix}:{name}"
+
+
 def get_exp_constructor(onto: Ontology):
     return ClassExpToConstruct(onto)
 

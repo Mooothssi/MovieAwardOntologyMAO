@@ -1,48 +1,37 @@
-from rdflib import Graph, Namespace
 from typing import Dict, List, Tuple
 from yaml import load, Loader
 from semver import VersionInfo
 
-from .base import DATATYPE_MAP
-from .base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_INDIVIDUAL, RDF_TYPE, OWL_THING
+from ontogen.base import DATATYPE_MAP
+from ontogen.base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_INDIVIDUAL, RDF_TYPE, OWL_THING
 import ontogen.primitives as primitives
-from .primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME,
-                         LABEL_ENTITY_NAME, PROPERTY_ENTITIES, Ontology,
-                         OwlEntity, OwlClass, OwlDataProperty,
-                         OwlObjectProperty)
-from .primitives.classes import OwlIndividual
+from ontogen.primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, LABEL_ENTITY_NAME, PROPERTY_ENTITIES,
+                                Ontology, OwlEntity, OwlClass, OwlDataProperty,
+                                OwlObjectProperty, get_qualified_entity)
+from ontogen.primitives.classes import OwlIndividual
 
 
 def get_equivalent_datatype(entity_name: str):
     return DATATYPE_MAP.get(entity_name, entity_name)
 
 
-def get_qualified_entity(name: str, fallback_prefix: str = "mao"):
-    return name if ":" in name else f"{fallback_prefix}:{name}"
-
-
-class YamlToOwlConverter:
+class OntogenConverter:
     """
         A converter from YAML to an abstraction of OWL ontology
     """
     SUPPORTED_VERSION = "1.1.0"
 
-    def __init__(self, spec_filename: str):
+    def __init__(self):
         """
         Loads a file with the given name into a skeleton of an OWL ontology.
         Needs to be actualized by `Ontology` class.
-
-        Args:
-            spec_filename: The filename of a YAML spec file
         """
         self.entities: Dict[str, OwlEntity] = {}
-        self.spec_filename = spec_filename
         self.ontology = Ontology()
         self.ontology.name_from_prefix()
         self.file_version = ""
         self.individuals: List[OwlIndividual] = []
         self._missing_entities = set()
-        self._load_file()
 
     @property
     def prefix(self) -> str:
@@ -66,10 +55,15 @@ class YamlToOwlConverter:
     def _check_eligible_version(self, base_dict: dict):
         self.file_version = base_dict["version"].replace("v", "")
         assert VersionInfo.parse(self.file_version)\
-            .compare(VersionInfo.parse(YamlToOwlConverter.SUPPORTED_VERSION)) <= 0, "Unsupported version of file"
+            .compare(VersionInfo.parse(OntogenConverter.SUPPORTED_VERSION)) <= 0, "Unsupported version of file"
 
-    def _load_file(self):
-        with open(self.spec_filename) as f:
+    def read_yaml(self, spec_filename: str):
+        """
+        Internally reads a file with the given filename
+        Args:
+            spec_filename: The filename of a specs file in YAML
+        """
+        with open(spec_filename) as f:
             dct = load(f, Loader=Loader)
         self._check_eligible_version(dct)
         self._deal_with_iris(dct)
@@ -123,7 +117,7 @@ class YamlToOwlConverter:
             self.ontology.add_annotation("licence", anno["dcterms:licence"][0])
             self.ontology.add_annotation("title", anno["dc:title"][0])
         self._load_class_descriptions(tuple(self.entities.values()))
-        primitives.ENTITIES = self.entities
+        self.ontology.entities = self.entities
 
     def _add_individuals(self, base_dict: dict):
         individuals = base_dict[OWL_INDIVIDUAL]

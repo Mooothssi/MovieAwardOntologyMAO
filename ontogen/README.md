@@ -1,9 +1,11 @@
 # Ontogen
+For converting `.yaml` specs to RDF `.owl`
+
 Part of [MAO Project](https://github.com/th-bunratta/MovieAwardOntologyMAO/tree/ontogen)
 ## To-dos
 For version: `v1.1.0`
 
-- [ ] Support prefixes
+- [x] Support custom prefixes
 - [x] Fix `'{Female, Male, Non-binary}'` as values
 - [x] Fix `mao:hasLocation value Done` as value
 
@@ -64,6 +66,7 @@ Feel free to run unit tests in `test_ontogen.py`
 ### Dependency requirements
 - Python `3.8` or later
 - `owlready2`
+- `rdflib` for direct `RDF/XML` manipulation
 - `pyyaml`
 
 ### Loading an OWL Ontology
@@ -87,9 +90,10 @@ onto.add_rule("mao:ActingSituation(?p) ^ mao:hasActor(?p, ?a) -> mao:actsIn(?a, 
 from dirs import ROOT_DIR
 
 from ontogen import Ontology
-from ontogen.converter import OwlClass, YamlToOwlConverter
+from ontogen.converter import OwlClass, OntogenConverter
 
-converter = YamlToOwlConverter(ROOT_DIR / "data/mao.yaml")
+converter = OntogenConverter()
+converter.read_yaml(ROOT_DIR / "data/mao.yaml")
 film: OwlClass = converter.get_entity("mao:Film")
 onto: Ontology = converter.export_to_ontology() # Save the results to an Ontology
 ```

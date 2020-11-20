@@ -4,7 +4,8 @@ from owlready2 import Thing, AllDisjoint
 
 from ontogen.base import OwlActualizable
 from ontogen.base.vars import GENERATED_TYPES
-from .base import OwlEntity, Ontology, ENTITIES, apply_classes_from, get_exp_constructor, check_restrictions
+from .base import OwlEntity, Ontology, ENTITIES, apply_classes_from, get_exp_constructor, check_restrictions, \
+    get_qualified_entity
 from ..base.assertable import OwlAssertable
 
 
@@ -37,18 +38,17 @@ class OwlClass(OwlEntity):
         """
         apply_classes_from(onto)
         for i in self.individuals:
-            i.actualize_imp()
+            i.actualize_imp(onto)
         [self.add_equivalent_class_expression(get_exp_constructor(onto).to_construct(exp))
          for exp in self.equivalent_class_expressions]
         for idx, x in enumerate(self._parent_classes):
             if isinstance(x, str):
                 c = get_exp_constructor(onto).to_construct(x)
                 self._parent_classes[idx] = c
-        # self._sync_internal(onto)
         inst = self._get_generated_class(onto)
         self.actualize_assertions(inst)
         for i in self.individuals:
-            i.actualize_imp()
+            i.actualize_imp(onto)
         disjoints = [x._get_generated_class(onto) for x in self._disjoint_classes if x is not None]
         if len(disjoints) > 0:
             AllDisjoint(disjoints)
@@ -77,7 +77,7 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
         self.onto_types: List[OwlClass] = []
         self.defined_properties: Dict[str, "OwlProperty" or None] = dict(ENTITIES)
         self._imp = None
-        self.properties_values = {}
+        self.properties_values: Dict[str, ] = {}
         self.prefix = self.name.split(":")[0]
 
     def be_type_of(self, cls: OwlClass):
@@ -93,12 +93,17 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
     def actualize(self, onto: Ontology):
         self.onto_types[0].actualize(onto)
 
-    def actualize_imp(self):
+    def _get_entity(self, onto: Ontology, relative_name: str) -> object or None:
+        name = get_qualified_entity(relative_name)
+        return onto.entities.get(name, None)
+
+    def actualize_imp(self, onto: Ontology):
         if self._imp:
             return
         try:
             inst = self.onto_types[0].actualized_entity()
             inst.name = self.name.split(":")[1]
+            lu = [y.actualize(onto) for y in [self._get_entity(onto, prop) for prop in self.properties_values] if y]
             GENERATED_TYPES[inst.name] = inst
             self.actualize_assertions(inst)
             self._imp = inst

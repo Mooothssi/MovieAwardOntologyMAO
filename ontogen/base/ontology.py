@@ -29,6 +29,7 @@ class Ontology(OwlAssertable):
         self.base_prefix = base_prefix
         self.iris: Dict[str, str] = {}
         self.annotations = {}
+        self.entities: Dict[str, "OwlEntity"] = {}
 
     def name_from_prefix(self, developer: str = "nomad"):
         import datetime
