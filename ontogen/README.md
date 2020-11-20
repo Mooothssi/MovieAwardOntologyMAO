@@ -3,6 +3,7 @@ Part of [MAO Project](https://github.com/th-bunratta/MovieAwardOntologyMAO/tree/
 ## To-dos
 For version: `v1.1.0`
 
+- [ ] Support prefixes
 - [x] Fix `'{Female, Male, Non-binary}'` as values
 - [x] Fix `mao:hasLocation value Done` as value
 
@@ -83,10 +84,12 @@ onto.add_rule("mao:ActingSituation(?p) ^ mao:hasActor(?p, ?a) -> mao:actsIn(?a, 
 
 ### Using an YamlToOwlConverter to generate `OwlClass`es
 ```python
+from dirs import ROOT_DIR
+
 from ontogen import Ontology
 from ontogen.converter import OwlClass, YamlToOwlConverter
 
-converter = YamlToOwlConverter("data/mao.yaml")
+converter = YamlToOwlConverter(ROOT_DIR / "data/mao.yaml")
 film: OwlClass = converter.get_entity("mao:Film")
 onto: Ontology = converter.export_to_ontology() # Save the results to an Ontology
 ```

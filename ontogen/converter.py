@@ -44,8 +44,13 @@ class YamlToOwlConverter:
         self._load_file()
 
     @property
-    def prefix(self):
+    def prefix(self) -> str:
         return self.ontology.base_prefix
+
+    def _add_rules(self, base_dict: dict):
+        b = base_dict["rules"]
+        for rule_name in b:
+            self.ontology.add_rule(b[rule_name]["rule"], rule_name)
 
     def _deal_with_iris(self, base_dict: dict):
         self.ontology.base_iri = base_dict.get("iri", "")
@@ -101,13 +106,13 @@ class YamlToOwlConverter:
                     obj.parent_class_names = sub.get("rdfs:subClassOf", [])
                     obj.disjoint_class_names = sub.get("owl:disjointWith", [])
                     obj.equivalent_class_expressions = self._get_equivalent_classes(sub)
-                    # for prop in PROPERTY_ENTITIES:
-                    #     if prop not in sub:
-                    #         continue
-                    #     prop_class = sub[prop]
-                    #     for prop_name in prop_class:
-                    #         prop_qualifier = get_qualified_entity(prop_name)
-                    #         obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
+                    for prop in PROPERTY_ENTITIES:
+                        if prop not in sub:
+                            continue
+                        prop_class = sub[prop]
+                        for prop_name in prop_class:
+                            prop_qualifier = get_qualified_entity(prop_name)
+                            obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
                 self.entities[class_entity_name] = obj
         self._add_individuals(dct)
@@ -120,12 +125,12 @@ class YamlToOwlConverter:
         primitives.ENTITIES = self.entities
 
     def _add_individuals(self, base_dict: dict):
-        indivs = base_dict[OWL_INDIVIDUAL]
-        for individual in indivs:
+        individuals = base_dict[OWL_INDIVIDUAL]
+        for individual in individuals:
             ind = OwlIndividual(individual)
-            for t in indivs[individual][RDF_TYPE]:
-                e = self.get_entity(t)
-                ind.be_type_of(e)
+            for t in individuals[individual][RDF_TYPE]:
+                entity = self.get_entity(t)
+                ind.be_type_of(entity)
             self.individuals.append(ind)
 
     @staticmethod

@@ -26,6 +26,7 @@ class OwlClass(OwlEntity):
     def __init__(self, entity_name: str):
         super(OwlClass, self).__init__(entity_qualifier=entity_name)
         self.individuals: List[OwlIndividual] = []
+        self.defined_properties: Dict[str, "OwlProperty" or None] = dict(ENTITIES)
 
     def actualize(self, onto: Ontology) -> 'OwlClass':
         """
@@ -108,8 +109,8 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
         """
             Adds a property assertion with a given value
         """
-        assert self._imp, \
-            "Must be an Individual before adding any assertion. Please call instantiate() first"
+        # assert self._imp, \
+        #     "Must be an Individual before adding any assertion. Please call instantiate() first"
         assert ":" in property_name and len(property_name.split(":")) == 2, "Please add prefix"
         self.properties_values[property_name] = value
         # assert property_name in self.defined_properties, \
