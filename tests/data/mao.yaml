@@ -1628,3 +1628,8 @@ owl:Individual:
   mao:OscarAward:
     rdf:type:
       - Award
+
+rules:
+  actsInRule:
+    rule: mao:ActingSituation(?p) ^ mao:hasActor(?p, ?a) -> mao:actsIn(?a, ?p)
+    rdfs:comment: ""

@@ -52,7 +52,6 @@ class TestOntogen(TestCase):
     # Create an OWL ontology from scratch
     def test_create_ontology(self):
         self.test_assertion()
-        self.test_add_rule()
         self.i = self.converter.export_to_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
 
@@ -71,18 +70,14 @@ class TestOntogen(TestCase):
 
 class TestOntogenPizza(TestCase):
     def test_pizza_ontology(self):
-        converter = OntogenConverter("test_cases/test_case1.yaml", "pizza")
+        converter = OntogenConverter()
+        converter.read_yaml("test_cases/test_case1.yaml")
         onto = converter.export_to_ontology()
         d = Datatype("Pizza:str")
         d.data_type = str
         d.actualize(onto)
         onto.add_license("MIT License")
         print(onto.implementation.world._props)
-        from owlready2.base import _universal_abbrev_2_iri, _universal_iri_2_abbrev
-        # print(_universal_abbrev_2_iri)
-        # print(_universal_iri_2_abbrev)
-
-        # print(onto.implementation.metadata.search(label="*"))
         pizza = converter.get_entity("pizza:Pizza")
         self.assertTrue(converter.get_entity("pizza:NamedPizza").is_subclass_of(pizza))
         onto.save_to_file("out/pizza.owl")

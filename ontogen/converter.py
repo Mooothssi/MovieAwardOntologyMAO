@@ -18,13 +18,13 @@ def get_equivalent_datatype(entity_name: str):
 class OntogenConverter:
     """
         A converter from YAML to an abstraction of OWL ontology
+        Needs to be actualized by an instance of the class `Ontology`.
     """
     SUPPORTED_VERSION = "1.1.0"
 
     def __init__(self):
         """
         Loads a file with the given name into a skeleton of an OWL ontology.
-        Needs to be actualized by `Ontology` class.
         """
         self.entities: Dict[str, OwlEntity] = {}
         self.ontology = Ontology()
@@ -32,14 +32,16 @@ class OntogenConverter:
         self.file_version = ""
         self.individuals: List[OwlIndividual] = []
         self._missing_entities = set()
+        self._dct = {}
 
     @property
     def prefix(self) -> str:
         return self.ontology.base_prefix
 
     def _add_rules(self, base_dict: dict):
-        b = base_dict["rules"]
+        b = base_dict.get("rules", {})
         for rule_name in b:
+
             self.ontology.add_rule(b[rule_name]["rule"], rule_name)
 
     def _deal_with_iris(self, base_dict: dict):
@@ -64,7 +66,8 @@ class OntogenConverter:
             spec_filename: The filename of a specs file in YAML
         """
         with open(spec_filename) as f:
-            dct = load(f, Loader=Loader)
+            self._dct = load(f, Loader=Loader)
+            dct = self._dct
         self._check_eligible_version(dct)
         self._deal_with_iris(dct)
         temp_classes = []
@@ -191,6 +194,7 @@ class OntogenConverter:
         #     i.actualize()
         for entity in self.entities.values():
             entity.actualize(onto)
+        self._add_rules(self._dct)
         onto.actualize()
 
         return onto
