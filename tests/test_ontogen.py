@@ -4,7 +4,7 @@ from unittest import TestCase
 from dirs import ROOT_DIR
 
 from ontogen import Ontology, OwlIndividual
-from ontogen.base import GENERATED_TYPES, cleanup
+from ontogen.base import cleanup
 from ontogen.converter import OntogenConverter
 from ontogen.primitives import OwlClass, OwlObjectProperty, OwlAnnotationProperty
 from ontogen.primitives.datatypes import Datatype
@@ -76,7 +76,6 @@ class TestOntogen(TestCase):
 
     def tearDown(self):
         cleanup(self.onto)
-        # self.onto.implementation.load()
 
 
 class TestOntogenPizza(TestCase):
