@@ -4,6 +4,7 @@ from unittest import TestCase
 from dirs import ROOT_DIR
 
 from ontogen import Ontology, OwlIndividual
+from ontogen.base import GENERATED_TYPES
 from ontogen.converter import OntogenConverter
 from ontogen.primitives import OwlClass, OwlObjectProperty, OwlAnnotationProperty
 from ontogen.primitives.datatypes import Datatype
@@ -18,10 +19,8 @@ def count_files(directory: str) -> int:
 
 
 class TestOntogen(TestCase):
-    converter: OntogenConverter
-
     def setUp(self):
-        self.converter = OntogenConverter()
+        self.converter: OntogenConverter = OntogenConverter()
         self.converter.read_yaml(ROOT_DIR / "data/mao.yaml")
         self.onto = self.converter.ontology
         self.parasite_film = OwlIndividual("mao:Parasite")
@@ -74,6 +73,15 @@ class TestOntogen(TestCase):
         self.parasite_film.actualize(self.onto)
         self.converter.export_to_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
+
+    def tearDown(self):
+        from owlready2.prop import destroy_entity
+        for e in GENERATED_TYPES:
+            try:
+                destroy_entity(GENERATED_TYPES[e])
+            except:
+                pass
+        GENERATED_TYPES.clear()
 
 
 class TestOntogenPizza(TestCase):

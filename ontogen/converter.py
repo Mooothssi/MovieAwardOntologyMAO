@@ -18,7 +18,7 @@ def get_equivalent_datatype(entity_name: str):
 class OntogenConverter:
     """
         A converter from YAML to an abstraction of OWL ontology
-        Needs to be actualized by an instance of the class `Ontology`.
+        Needs to be actualized by an instance of the class ``Ontology``.
     """
     SUPPORTED_VERSION = "1.1.0"
 
