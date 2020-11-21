@@ -11,6 +11,7 @@ from sa_autowrite.hint import DeclaredModel
 from sa_autowrite.model import TYPE_CONVERTER, DEF_TYPE
 from sa_autowrite.create import _get_info_from_filename
 from utils.str_utils import snake_to_capwords, snake_case
+from sqlalchemy.sql.sqltypes import TypeEngine
 
 
 # def read_in_chunks(file_object, chunk_size=1024):
@@ -21,11 +22,12 @@ from utils.str_utils import snake_to_capwords, snake_case
 #         if not data:
 #             break
 #         yield data
-def get_converter(col_type: str) -> Callable[[str], Any]:
-    type_ = repr(col_type)[:-2]
-    if type_ != 'String':
-        return TYPE_CONVERTER[DEF_TYPE[type_]]
-    return str
+
+
+def get_converter(col_type: TypeEngine) -> Callable[[str], Any]:
+    if col_type.python_type == str:
+        return str
+    return TYPE_CONVERTER[col_type.python_type]
 
 
 def create_instance(cls: Type[DeclaredModel], row: pd.Series,
