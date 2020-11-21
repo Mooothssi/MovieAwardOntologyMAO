@@ -220,7 +220,6 @@ owl:Individual:
     rdf:type:
       - Gender
 
-
 rdfs:Datatype:
   family:personAge:
     owl:equivalentClass:
