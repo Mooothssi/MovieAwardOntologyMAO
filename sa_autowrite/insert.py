@@ -62,6 +62,7 @@ def insert_xsv_data(filename: Union[str, Path],
                     encoding: str = None,
                     skip_rows_data: int = None,
                     read_lines_data: int = None,
+                    verbose: int = 2
                     ):
     filename = Path(filename)
 
@@ -91,10 +92,12 @@ def insert_xsv_data(filename: Union[str, Path],
             line, series = row
             counter += 1
             session.add(create_instance(model_cls, series, null_values=null_values, ignore_cols=ignore_cols))
-            if counter % 5000 == 0:
-                print(f"Added till row {counter}")
+            if verbose > 1:
+                if counter % 5000 == 0:
+                    print(f"Added till row {counter}")
         session.commit()
-        print(f'Committed till row {counter}')
+        if verbose > 0:
+            print(f'Committed till row {counter}')
         if counter == read_until:
             break
 
