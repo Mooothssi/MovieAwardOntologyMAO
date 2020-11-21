@@ -1,6 +1,29 @@
 import string
 
-__all__ = ['snake_to_camel', 'camel_to_snake', 'to_all_caps', 'snake_to_capwords']
+from utils.iter import remove_consecs
+
+__all__ = ['snake_to_camel', 'camel_to_snake', 'to_all_caps', 'snake_to_capwords', 'snake_case']
+
+
+def snake_case(s: str) -> str:
+    """Convert string into snake case.
+    Join punctuation (-, space, .) with underscore
+
+    Args:
+        string: String to convert.
+
+    Returns:
+        string: Snake cased string.
+    """
+    lst = []
+    for c in s:
+        if c in '-.' + string.whitespace:
+            lst.append('_')
+        elif c in string.ascii_uppercase:
+            lst.extend(['_', c.lower()])
+        else:
+            lst.append(c)
+    return ''.join(remove_consecs(lst, '_'))
 
 
 def snake_to_camel(s: str) -> str:

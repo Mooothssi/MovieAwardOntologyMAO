@@ -1,22 +1,16 @@
 import re
-from importlib import import_module, invalidate_caches
 from pathlib import Path
 from typing import IO, Any, Dict, List, Union
 
 import pandas as pd
-from sqlalchemy.orm.attributes import InstrumentedAttribute
-from stringcase import pascalcase, snakecase
 
-from engine import Session
-from extended_csv import get_dialect_from_suffix, read_xsv_file, read_xsv
-from sa_autowrite.hint import DeclaredModel
-from sa_autowrite.model import DEF_TYPE, TYPE_CONVERTER, TYPE_DEF, Table
+from extended_csv import get_dialect_from_suffix, read_xsv_file
+from sa_autowrite.model import Table
 from utils.dict_utils import select_not_null
 from utils.io_utils import open_and_write_file
-from utils.str_utils import snake_to_capwords
-from dirs import ROOT_DIR
+from utils.str_utils import snake_to_capwords, snake_case
 
-__all__ = ['write_models', 'insert_data', 'write_model', 'write_base']
+__all__ = ['write_models', 'write_model', 'write_base']
 
 
 def write_model(file: Union[IO, str, Path],
@@ -103,13 +97,13 @@ def write_models(in_directory: Union[str, Path],
         model_name = info['name']
         dialect = get_dialect_from_suffix(info['format'])
         print(f"Reading from {csvfile}")
-        module_name = snakecase(model_name)
+        module_name = snake_case(model_name)
         class_name = snake_to_capwords(module_name)
         module_class.append((module_name, class_name))
         write_model(out_directory / f'{module_name}.py',
                     class_name,
                     read_xsv_file(csvfile, encoding='utf-8', dialect=dialect, load_at_most=max_lines))
-        print(f"Writing to {(out_directory / f'{snakecase(model_name)}.py')}\n")
+        print(f"Writing to {(out_directory / f'{snake_case(model_name)}.py')}\n")
 
     # Check for required files
     has_base = False
@@ -127,81 +121,6 @@ def write_models(in_directory: Union[str, Path],
             [f'from .{module_name} import {class_name}' for module_name, class_name in module_class] + \
             ['']
     open_and_write_file((out_directory / '__init__.py'), '\n'.join(lines))
-
-
-def insert_data(in_directory: Union[str, Path],
-                out_directory: Union[str, Path],
-                *,
-                null_values: List[str]) -> None:
-    # Ensure directories are of type 'Path'
-    in_directory = Path(in_directory)
-    out_directory = Path(out_directory)
-
-    module_names = []
-    for pyfile in out_directory.glob('*.py'):
-        if pyfile.name in ['base.py', '__init__.py']:
-            continue
-        module_names.append(pyfile.stem)
-    class_names = [snake_to_capwords(name) for name in module_names]
-
-    # invalidate_caches()
-    path_to_module = Path(out_directory).relative_to(ROOT_DIR.absolute())
-    package_path = str(path_to_module).replace('/', '.').replace('\\', '.')
-    generated_module = import_module(package_path)
-    models: Dict[str, DeclaredModel] = {class_name: generated_module.__dict__[class_name] for class_name in class_names}
-
-    #
-    session = Session()
-    for csvfile in in_directory.glob('*.*sv'):
-        info = _get_info_from_filename(csvfile.name)
-        model_name = info['name']
-        dialect = get_dialect_from_suffix(info['format'])
-        print(f"Opening {csvfile}")
-
-        class_name = snake_to_capwords(snakecase(model_name))
-        if class_name not in class_names:
-            raise AssertionError("class name from data files doesn't match models")
-        print(f"Writing from {csvfile} to {class_name}\n")
-        counter = 0
-        for chunk in pd.read_csv(csvfile, chunksize=10_000, dialect=dialect):
-            chunk
-        # with open(csvfile, 'r', encoding='utf-8') as file:
-            # data = read_xsv(file, dialect=dialect)
-            # df = pd.DataFrame(data)
-            df = chunk
-            instances = []
-            for i in range(len(df)):
-                model = models[class_name]
-                datab = {}
-                for col in model.__table__.columns:
-                    try:
-                        val = df.get(col.name)[counter]
-                        type_ = repr(col.type)[:-2]
-                        if type_ != 'String':
-                            try:
-                                val = TYPE_CONVERTER[DEF_TYPE[type_]](val)
-                            except ValueError:
-                                if val in null_values:
-                                    val = None
-                                else:
-                                    raise
-                        datab[col.name] = val
-                    except TypeError:
-                        if col.name == '_id':
-                            pass
-                        else:
-                            raise
-                instance = model(**datab)
-                instances.append(instance)
-                counter += 1
-                if counter % 1000 == 0:
-                    session.add_all(instances)
-                    session.commit()
-                    instances = []
-                    print(f'Commited {counter}')
-            if instances:
-                session.add_all(instances)
-                session.commit()
 
 
 if __name__ == '__main__':

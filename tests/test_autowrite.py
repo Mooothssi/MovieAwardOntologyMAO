@@ -3,7 +3,7 @@ from io import StringIO
 
 from dirs import ROOT_DIR
 from extended_csv import read_xsv_file
-from sa_autowrite.main import write_model
+from sa_autowrite.create import write_model
 
 
 class TestAutowrite(unittest.TestCase):
