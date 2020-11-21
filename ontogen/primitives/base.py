@@ -6,9 +6,8 @@ from ..base import Ontology, OwlEntity, BUILTIN_DATA_TYPES
 from ..wrapper import apply_classes_from
 from ..utils import ClassExpToConstruct
 
-__all__ = ('OwlAnnotationProperty',
-           'OwlDataProperty',
-           'ENTITIES')
+__all__ = ('OwlProperty', 'OwlAnnotationProperty',
+           'OwlDataProperty', 'ENTITIES')
 
 ENTITIES: Dict[str, OwlEntity] = {}
 

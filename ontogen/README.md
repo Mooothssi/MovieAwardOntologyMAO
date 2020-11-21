@@ -20,7 +20,7 @@ from settings import OWL_FILEPATH
 onto: Ontology = Ontology.load_from_file(OWL_FILEPATH)
 ```
 
-### Using an YAML-to-OWL Converter to generate `OwlClass`es
+### Using a YAML-to-OWL Converter to generate `OwlClass`es
 ```python
 from dirs import ROOT_DIR
 
@@ -86,12 +86,21 @@ award_received_situation: OwlClass = OwlClass("mao:AwardReceivedSituation")
 award_received_situation.add_equivalent_class_expression("NominationSituation and (win value true)")
 ```
 
+### Making a SPARQL query in an Ontology
+```python
+from ontogen import Ontology, OwlClass
+
+onto: Ontology
+# [URI]
+onto.sparql_query("""SELECT ?individual WHERE { ?individual rdf:type mao:Film }""")
+# bool
+onto.sparql_query("""ASK { mao:Parasite rdf:type mao:Film }""")
+```
+
 ## Supported OWL features
 For version: `v1.1.0`
 
 - [x] Support custom prefixes
-- [x] ~~Fix `'{Female, Male, Non-binary}'` as values~~
-- [x] ~~Fix `mao:hasLocation value Done` as value~~
 
 ### Individuals
 - [x] `owl:Individual`
