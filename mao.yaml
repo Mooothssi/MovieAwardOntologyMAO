@@ -1,8 +1,11 @@
-version: v1.1.0
+version: v2.1.0
+
+iri: "http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#"
 
 prefixes:
   dc: "http://purl.org/dc/elements/1.1/"
   dcterms: "http://purl.org/dc/terms/"
+  mao: "http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#"
 
 annotations:
   dc:title:
@@ -16,10 +19,10 @@ annotations:
       The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
       
       THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  owl:versionInfo:
+    - 1.0.0
   rdfs:label:
-    - Movie Awards Ontology^^xsd:string
-    - movie award^^xsd:string
-    - mao^^xsd:string
+    - Movie Awards Ontology^^rdfs:Literal@en
   rdfs:comment:
     - >
       An ontology about movies and awards^^rdfs:Literal@en
@@ -1122,10 +1125,8 @@ owl:ObjectProperty:
     annotations:
       rdfs:label:
         - eligible for^^rdfs:Literal@en
-    rdfs:domain:
-      - FilmEligibleForAward
     rdfs:range:
-      - AwardCategory
+      - Award
   mao:follow:
     annotations:
       rdfs:label:
@@ -1304,12 +1305,6 @@ owl:ObjectProperty:
         - has occupation^^rdfs:Literal@en
     rdfs:range:
       - Occupation
-  mao:eligibleFor:
-    annotations:
-      rdfs:label:
-        - eligible for^^rdfs:Literal@en
-    rdfs:range:
-      - Award
   mao:hasOriginalLanguage:
     annotations:
       rdfs:label:
@@ -1385,12 +1380,6 @@ owl:ObjectProperty:
         - has sub title in language^^rdfs:Literal@en
     rdfs:range:
       - Language
-  mao:eligibleFor:
-    annotations:
-      rdfs:label:
-        - eligible for^^rdfs:Literal@en
-    rdfs:range:
-      - Award
   mao:hasParticipant:
     annotations:
       rdfs:comment:
@@ -1627,7 +1616,6 @@ owl:Individual:
   mao:Non-binary:
     rdf:type:
       - Gender
-
   mao:BestFilm:
     rdf:type:
       - AwardCategory
