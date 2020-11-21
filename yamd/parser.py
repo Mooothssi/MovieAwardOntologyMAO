@@ -49,3 +49,20 @@ def parse_lenient_list_of_objects(obj) -> List[dict]:
         if all(isinstance(item, dict) for item in obj):
             return obj
     raise ValueError(f"Object is not a list of dicts: '{obj}'")
+
+
+def trim_dict(dct):
+    """
+    :param dct:
+    :return:
+    >>> trim_dict({'A': {'B': {'C': 'D\\n'}, 'E': 'F\\n'}})
+    {'A': {'B': {'C': 'D'}, 'E': 'F'}}
+    >>> trim_dict({'A': {'B': "C\\n"}})
+    {'A': {'B': 'C'}}
+    """
+    for key, value in dct.items():
+        if isinstance(value, dict):
+            dct[key] = trim_dict(value)
+        elif isinstance(value, str):
+            dct[key] = value.strip()
+    return dct
