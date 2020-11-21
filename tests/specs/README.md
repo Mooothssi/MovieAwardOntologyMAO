@@ -12,7 +12,7 @@ The specification for representing an ontology as a YAML file. This YAML file wi
 annotaions:
   rdfs:label:
     - v1.0.0 example^^xsd:string
-    - v1.1.0 example^^rdfs:Literal@en
+    - v1.0.0 example^^rdfs:Literal@en
   dc:title:
     - v1.0.0^^rdfs:Literal@en
   dcterms:licence:
@@ -121,10 +121,10 @@ rules:
 - Allow the value of any key to be either string or array
 - Rules section is in the separated file and should be named with `*_rules.yaml` convension
 
-### v1.0.1
+### v1.1.0
 #### Specification
 ```YAML
-version: v1.0.1
+version: v1.1.0
 
 # the rest of the spec is the same as v1.0.0
 ...
@@ -133,19 +133,19 @@ version: v1.0.1
 - Add version number of the specification
 - Only allow the value of key to be an array
 
-### v1.1.0
+### v2.0.0
 #### Specification
 ```YAML
-version: v1.1.0
+version: v2.0.0
 
 # Self IRI
-iri: "http://www.semanticweb.org/ontology-specs/v1.1.0#"
+iri: "http://www.semanticweb.org/ontology-specs/v2.0.0#"
 
 # Prefixes used in an ontology
 prefixes:
   dc: "http://purl.org/dc/elements/1.1/"
   dcterms: "http://purl.org/dc/terms/"
-  example: "http://www.semanticweb.org/ontology-specs/v1.1.0#"
+  example: "http://www.semanticweb.org/ontology-specs/v2.0.0#"
   owl: "http://www.w3.org/2002/07/owl#"
   rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
@@ -269,12 +269,12 @@ rdfs:Datatype:
 - Remove `owl:restriction` from `owl:equivalentClass` and `rdfs:subClassOf`
 - Add `iri` section to keep self IRI
 
-### v2.0.0
+### v2.1.0
 #### Specification
 ```YAML
-version: v2.0.0
+version: v2.1.0
 
-# Other sections are the same as v1.1.0
+# Other sections are the same as v2.0.0
 ...
 
 # Individuals section
@@ -292,7 +292,7 @@ owl:Individual:
       isClass3Of:
         - Individual_Class1
 
-# the rest of the spec is the same as v1.1.0
+# the rest of the spec is the same as v2.0.0
 ...
 ```
 #### Changes in this version
