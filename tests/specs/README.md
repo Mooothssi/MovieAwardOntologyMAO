@@ -122,6 +122,7 @@ rules:
 - Rules section is in the separated file and should be named with `*_rules.yaml` convension
 
 ### v1.1.0
+*The old version number is v1.0.1*
 #### Specification
 ```YAML
 version: v1.1.0
@@ -134,6 +135,7 @@ version: v1.1.0
 - Only allow the value of key to be an array
 
 ### v2.0.0
+*The old version munber is v1.1.0*
 #### Specification
 ```YAML
 version: v2.0.0
@@ -270,6 +272,7 @@ rdfs:Datatype:
 - Add `iri` section to keep self IRI
 
 ### v2.1.0
+*The old version number is v2.0.0*
 #### Specification
 ```YAML
 version: v2.1.0
