@@ -120,6 +120,8 @@ def write_models(in_directory: Union[str, Path],
     lines = ['# import modules to run it through declarative base'] + \
             [f'from .{module_name} import {class_name}' for module_name, class_name in module_class] + \
             ['']
+    lines += [f"models = [{', '.join(class_name for _, class_name in module_class)}]",
+              '']
     open_and_write_file((out_directory / '__init__.py'), '\n'.join(lines))
 
 
