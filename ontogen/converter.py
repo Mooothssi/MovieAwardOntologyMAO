@@ -133,13 +133,14 @@ class OntogenConverter:
         for individual in individuals:
             ind = OwlIndividual(individual)
             for t in individuals[individual]:
-                val = individuals[individual][t]
-                for value in val:
-                    if t == RDF_TYPE:
+                values = individuals[individual][t]
+                if t == RDF_TYPE:
+                    for value in values:
                         entity = self.get_entity(value)
                         ind.be_type_of(entity)
-                    else:
-                        ind.add_property_assertion(t, value)
+                elif t == "relations":
+                    for key in values:
+                        ind.add_property_assertion(key, values[key])
             self.individuals.append(ind)
 
     @staticmethod
@@ -207,5 +208,5 @@ class OntogenConverter:
         for entity in self.entities.values():
             entity.actualize(onto)
         self._add_rules(self._dct)
-        onto.actualize()
+#        onto.actualize()
         return onto

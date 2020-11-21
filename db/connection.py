@@ -6,8 +6,8 @@ from settings import (DB_DIALECT, DB_DRIVER, DB_HOST, DB_NAME, DB_PASSWORD,
 
 if DB_DIALECT == "mssql":
     CONNECTION_STRING = f"{DB_DIALECT}+{DB_DRIVER}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}"
-elif DB_DIALECT == "sqlite":
-    CONNECTION_STRING = f"{DB_DIALECT}:///{DB_NAME}"
+elif DB_DIALECT == 'sqlite':
+    CONNECTION_STRING = f"sqlite:///{DB_NAME}"
 else:
     CONNECTION_STRING = f"{DB_DIALECT}+{DB_DRIVER}://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}?driver=SQL+Server+Native+Client+10.0"
 

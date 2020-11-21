@@ -40,7 +40,7 @@ class OwlAssertable:
                 pass
 
     def _prepare_assertion_value(self, set_prop: str, values: Union[List, Any]) -> object:
-        return
+        return values
 
     def _add_builtin_prop(self, builtin_name: str, value: BUILTIN_DATA_TYPES):
         if value is None:

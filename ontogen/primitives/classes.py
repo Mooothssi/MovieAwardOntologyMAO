@@ -1,4 +1,4 @@
-from typing import List, Dict, Type
+from typing import List, Dict, Type, Union
 
 from owlready2 import Thing, AllDisjoint
 
@@ -115,13 +115,13 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
         except AssertionError:
             pass
 
-    def _prepare_assertion_value(self, prop_name: str, value: list) -> object:
+    def _prepare_assertion_value(self, prop_name: str, value: Union[List, str]) -> object:
         val = value
         if isinstance(val, str) and prop_name in self.onto_types[0].defined_properties:
             prop = self.onto_types[0].defined_properties[prop_name]
             if isinstance(prop, OwlObjectProperty):
-                n = val.split(":")[1]
-                if isinstance(val, str) and n in GENERATED_TYPES:
+                n = value.split(":")[1]
+                if n in GENERATED_TYPES:
                     return GENERATED_TYPES[n]
         return val
 

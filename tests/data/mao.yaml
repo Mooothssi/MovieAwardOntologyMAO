@@ -10,7 +10,7 @@ prefixes:
 annotations:
   dc:title:
     - Movie Awards Ontology^^rdfs:Literal@en
-  dcterms:licence:
+  dcterms:license:
     - >
       Copyright 2020 MAO Team
       
@@ -1631,10 +1631,11 @@ owl:Individual:
   mao:Parasite92ndOscarInternationalFeatureFilm:
     rdf:type:
       - NominationSituation
-    mao:forFilm:
-      - mao:Parasite
-    mao:win:
-      - True
+    relations:
+      mao:forFilm:
+        - mao:Parasite
+      mao:win:
+        - True
 
 rules:
   actsInRule:
