@@ -1,6 +1,12 @@
 version v1.1.0
 
+# IRI
+http://www.co-ode.org/roberts/family-tree.owl#
+
 # Prefixes
+## family
+http://www.co-ode.org/roberts/family-tree.owl#
+
 ## owl
 http://www.w3.org/2002/07/owl#
 

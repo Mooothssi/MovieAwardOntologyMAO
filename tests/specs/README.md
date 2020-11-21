@@ -126,10 +126,14 @@ version: v1.0.1
 ```YAML
 version: v1.1.0
 
+# Self IRI
+iri: "http://www.semanticweb.org/ontology-specs/v1.1.0#"
+
 # Prefixes used in an ontology
 prefixes:
   dc: "http://purl.org/dc/elements/1.1/"
   dcterms: "http://purl.org/dc/terms/"
+  example: "http://www.semanticweb.org/ontology-specs/v1.1.0#"
   owl: "http://www.w3.org/2002/07/owl#"
   rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   rdfs: "http://www.w3.org/2000/01/rdf-schema#"
@@ -246,7 +250,9 @@ rdfs:Datatype:
 ```
 #### Changes in this version
 - Add prefixes section
-  - Allow essential prefixes such as `owl`, `rdf`, `rdfs`, and `xsd` to be ignored in the spec
+  - Allow essential prefixes such as `owl`, `rdf`, `rdfs`, and `xsd` to be ignored in the specs
+  - Add self prefix
 - Add individuals section
   - Only keep information about the individual that is used in class definition
 - Remove `owl:restriction` from `owl:equivalentClass` and `rdfs:subClassOf`
+- Add `iri` section to keep self IRI

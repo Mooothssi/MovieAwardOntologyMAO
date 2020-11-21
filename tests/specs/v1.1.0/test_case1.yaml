@@ -1,8 +1,11 @@
 version: v1.1.0
 
+iri: "http://www.co-ode.org/ontologies/pizza/pizza.owl#"
+
 prefixes:
   dc: "http://purl.org/dc/elements/1.1/"
   dcterms: "http://purl.org/dc/terms/"
+  pizza: "http://www.co-ode.org/ontologies/pizza/pizza.owl#"
 
 annotations:
   rdfs:label:

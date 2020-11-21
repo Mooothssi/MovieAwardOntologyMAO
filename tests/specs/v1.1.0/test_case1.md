@@ -1,11 +1,17 @@
 version v1.1.0
 
+# IRI
+http://www.co-ode.org/ontologies/pizza/pizza.owl#
+
 # Prefixes
 ## dc
 http://purl.org/dc/elements/1.1/
 
 ## dcterms
 http://purl.org/dc/terms/
+
+## pizza
+http://www.co-ode.org/ontologies/pizza/pizza.owl#
 
 
 # Ontology Description
