@@ -115,8 +115,8 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
         except AssertionError:
             pass
 
-    def _prepare_assertion(self, prop_name: str) -> object:
-        val = super()._prepare_assertion(prop_name)
+    def _prepare_assertion_value(self, prop_name: str, value: list) -> object:
+        val = value
         if isinstance(val, str) and prop_name in self.onto_types[0].defined_properties:
             prop = self.onto_types[0].defined_properties[prop_name]
             if isinstance(prop, OwlObjectProperty):

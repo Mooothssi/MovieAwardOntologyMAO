@@ -1,4 +1,5 @@
 import re
+from typing import Union, List, Any
 
 from owlready2 import locstr
 
@@ -12,7 +13,11 @@ class OwlAssertable:
 
     def actualize_assertions(self, inst):
         for set_prop in self.properties_values:
-            val = self._prepare_assertion(set_prop)
+            v = self.properties_values[set_prop]
+            if isinstance(v, list):
+                val = [self._prepare_assertion_value(set_prop, val) for val in v]
+            else:
+                val = self._prepare_assertion_value(set_prop, v)
             if set_prop in BUILTIN_NAMES and isinstance(val, list):
                 for i, v in enumerate(val):
                     v: str
@@ -34,8 +39,8 @@ class OwlAssertable:
             except AttributeError:
                 pass
 
-    def _prepare_assertion(self, prop_name: str) -> object:
-        return self.properties_values[prop_name]
+    def _prepare_assertion_value(self, set_prop: str, values: Union[List, Any]) -> object:
+        return
 
     def _add_builtin_prop(self, builtin_name: str, value: BUILTIN_DATA_TYPES):
         if value is None:
