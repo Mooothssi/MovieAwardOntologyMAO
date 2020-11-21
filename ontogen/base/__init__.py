@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import List, Type, Union
+from typing import List, Type
 
 from owlready2 import Thing, ClassConstruct
 from owlready2.prop import destroy_entity
@@ -19,6 +19,7 @@ def cleanup(onto: Ontology):
     GENERATED_TYPES.clear()
 
 # BUILTIN_DATA_TYPES = Union[str, int]
+
 
 class OwlActualizable(metaclass=ABCMeta):
     @abstractmethod

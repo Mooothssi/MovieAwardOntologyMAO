@@ -147,7 +147,9 @@ For version: `v1.1.0`
 ### SPARQL queries with a reasoner
 For testing CQs
 - [ ] `SPARQL` + `Pellet` reasoner
-  - `SELECT`, `??`, `ASK` statements
+  - [x] `SELECT`
+  - [ ] `CONSTRUCT/DESCRIBE`
+  - [x] `ASK`
 
 ## References
 - Manchester Syntax

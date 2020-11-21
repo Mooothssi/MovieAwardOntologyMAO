@@ -5,17 +5,19 @@ from owlready2 import ObjectProperty, Thing
 from ontogen import Ontology
 from ontogen.internal import CHARACTERISTICS_MAPPING
 from ontogen.primitives.base import OwlProperty
-from ontogen.primitives.classes import OwlThing
+# from ontogen.primitives.classes import OwlThing
 
 
 class OwlObjectProperty(OwlProperty):
     name = "ObjectProperty"
-    _range = [OwlThing()]
+    # _range = [OwlThing()]
     _parent_class = ObjectProperty
-    _characteristics = ["owl:SymmetricProperty"]
+    # _characteristics = ["owl:SymmetricProperty"]
 
     def __init__(self, name: str):
         super().__init__(name)
+        self._range = []
+        self._characteristics = []
         self._realised_parent_classes.append(ObjectProperty)
         self.inverse_prop: Type or None = None
 

@@ -10,7 +10,7 @@ class OwlAssertable:
 
     def actualize_assertions(self, inst):
         for set_prop in self.properties_values:
-            val = self.properties_values[set_prop]
+            val = self._prepare_assertion(set_prop)
             if set_prop in BUILTIN_NAMES and isinstance(val, list):
                 for i, v in enumerate(val):
                     v: str
@@ -32,6 +32,9 @@ class OwlAssertable:
                     setattr(inst, set_prop, [val])
             except AttributeError:
                 pass
+
+    def _prepare_assertion(self, prop_name: str) -> object:
+        return self.properties_values[prop_name]
 
     def _add_builtin_prop(self, builtin_name: str, value: BUILTIN_DATA_TYPES):
         if value is None:

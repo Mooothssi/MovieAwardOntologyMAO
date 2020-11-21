@@ -4,7 +4,6 @@ from semver import VersionInfo
 
 from ontogen.base import DATATYPE_MAP
 from ontogen.base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_INDIVIDUAL, RDF_TYPE, OWL_THING
-import ontogen.primitives as primitives
 from ontogen.primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, LABEL_ENTITY_NAME, PROPERTY_ENTITIES,
                                 Ontology, OwlEntity, OwlClass, OwlDataProperty,
                                 OwlObjectProperty, absolutize_entity_name)
@@ -125,9 +124,14 @@ class OntogenConverter:
         individuals = base_dict[OWL_INDIVIDUAL]
         for individual in individuals:
             ind = OwlIndividual(individual)
-            for t in individuals[individual][RDF_TYPE]:
-                entity = self.get_entity(t)
-                ind.be_type_of(entity)
+            for t in individuals[individual]:
+                val = individuals[individual][t]
+                for value in val:
+                    if t == RDF_TYPE:
+                        entity = self.get_entity(value)
+                        ind.be_type_of(entity)
+                    else:
+                        ind.add_property_assertion(t, value)
             self.individuals.append(ind)
 
     @staticmethod

@@ -1,3 +1,5 @@
+from typing import Dict
+
 WELL_KNOWN_PREFIXES = {
     'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
     'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
@@ -37,3 +39,11 @@ def lookup_prefix(iri: str, lookup: dict = WK_IRIS):
 
 def get_full_iri_from_prefix(prefix, short_name: str, lookup: dict = S_WK_P):
     return short_name.replace(f"{prefix}:", lookup_iri(prefix, lookup))
+
+
+def build_prefixes(prefixes: Dict[str, str]) -> str:
+    p = ""
+    prefixes.update(WELL_KNOWN_PREFIXES)
+    for prefix in prefixes:
+        p += f"PREFIX {prefix}: <{prefixes[prefix]}>\n"
+    return p

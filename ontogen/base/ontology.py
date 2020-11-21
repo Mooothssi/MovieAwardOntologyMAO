@@ -1,9 +1,12 @@
+import re
+
 import owlready2
 from rdflib import Graph, Namespace, term
-from owlready2 import Imp, get_ontology
+from owlready2 import Imp, get_ontology, sync_reasoner_pellet
 from typing import Dict, Optional
+from collections.abc import Iterable
 
-from .namespaces import lookup_iri
+from .namespaces import lookup_iri, build_prefixes
 from .assertable import OwlAssertable
 
 
@@ -112,8 +115,8 @@ class Ontology(OwlAssertable):
             file_format: The file format of given filename. Only `rdfxml` is supported by `owlready2`
         """
         # self.implementation.save(file=filename, format=file_format)
-        g: Graph = self.implementation.world.as_rdflib_graph()
-       # term.bind()
+        g: Graph = self.rdflib_graph
+        # term.bind()
         with self.implementation:
             if len(self.iris) > 0:
                 for iri in self.iris:
@@ -167,3 +170,31 @@ class Ontology(OwlAssertable):
                 name = a.split(":")[1]
             for t in self.annotations[a]:
                 getattr(self.implementation.metadata, name).append(t)
+
+    @property
+    def rdflib_graph(self):
+        return self.implementation.world.as_rdflib_graph()
+
+    def sparql_query(self, query: str, with_prefixes=True, sync_reasoner=True) -> list or bool:
+        """
+        Queries the Ontology in SPARQL
+
+        Args:
+            query: A query in SPARQL
+            with_prefixes: Whether the prefixes will be included prior to the query
+            sync_reasoner: Whether to sync the Pellet reasoner or not
+
+        Returns: A result
+
+        """
+        if sync_reasoner:
+            sync_reasoner_pellet()
+        if with_prefixes:
+            m = re.match(r"PREFIX (.+): <(.+)>", query)
+            assert m is None, "Prefixes are already included."
+            query = build_prefixes(self.iris) + query
+        q = self.rdflib_graph.query(query)
+        if q.type == 'ASK':
+            return q.askAnswer
+        else:
+            return list(q)

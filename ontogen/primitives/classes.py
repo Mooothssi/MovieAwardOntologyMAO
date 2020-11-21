@@ -6,7 +6,8 @@ from ontogen.base import OwlActualizable
 from ontogen.base.vars import GENERATED_TYPES
 from .base import OwlEntity, Ontology, ENTITIES, apply_classes_from, get_exp_constructor, check_restrictions, \
     absolutize_entity_name
-from ..base.assertable import OwlAssertable
+from ontogen.primitives.properties import OwlObjectProperty
+from ontogen.base.assertable import OwlAssertable
 
 
 class OwlClass(OwlEntity):
@@ -98,7 +99,9 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
         return onto.entities.get(name, None)
 
     def actualize_imp(self, onto: Ontology):
-        name = self.name.split(":")[1]
+        res = self.name.split(":")
+        assert len(res) > 1, "Must include a prefix"
+        name = res[1]
         try:
             if self._imp:
                 inst = GENERATED_TYPES[name]
@@ -111,6 +114,16 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
             self._imp = inst
         except AssertionError:
             pass
+
+    def _prepare_assertion(self, prop_name: str) -> object:
+        val = super()._prepare_assertion(prop_name)
+        if isinstance(val, str) and prop_name in self.onto_types[0].defined_properties:
+            prop = self.onto_types[0].defined_properties[prop_name]
+            if isinstance(prop, OwlObjectProperty):
+                n = val.split(":")[1]
+                if isinstance(val, str) and n in GENERATED_TYPES:
+                    return GENERATED_TYPES[n]
+        return val
 
     def add_property_assertion(self, property_name: str, value):
         """

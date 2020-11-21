@@ -41,6 +41,10 @@ XSD_LITERAL_DATATYPE_MAP = {
 }
 
 
+def build_prefixes() -> str:
+    pass
+
+
 def get_imp_literal_type(literal_entity_name: str):
     if ":" in literal_entity_name:
         literal_entity_name = literal_entity_name.split(":")[1]
@@ -225,12 +229,13 @@ class ClassExpToConstruct:
 
     def to_construct(self, expression: str) -> ClassConstruct:
         """
-        Converts a Class Expression of `Protege` to a Class Construct of `owlready2`
+        Converts a Class Expression of ``Protege`` syntax to an ``owlready2`` Class Construct
+
         Args:
             expression: An expression in Class Expression Syntax of Protege
 
         Returns:
-            A ClassConstruct counterpart of the given expression
+            An owlready2 ClassConstruct counterpart of the given expression
         """
         self._cls_to_residue(expression)
         construct_list = [j.construct for j in self.reg_tokens.values()]

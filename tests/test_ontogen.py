@@ -1,3 +1,4 @@
+import unittest
 from pathlib import Path
 import os
 from unittest import TestCase
@@ -44,6 +45,13 @@ class TestOntogen(TestCase):
         self.parasite_film.add_property_assertion("mao:hasTitle", "Parasite")
         self.parasite_film.actualize(self.onto)
         self.assertEqual(len(self.parasite_film._imp.hasTitle), 1)
+
+    def test_sparql_query(self):
+        self.test_assertion()
+        lst = self.onto.sparql_query("""SELECT ?individual WHERE { ?individual rdf:type mao:Film }""")
+        self.assertEqual("http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#Parasite", str(lst[0][0]))
+        answer = self.onto.sparql_query("""ASK { mao:Parasite rdf:type mao:Film }""")
+        self.assertTrue(answer)
 
     def test_realization(self):
         self.converter.export_to_ontology(self.onto)
@@ -144,3 +152,7 @@ class OntogenClassExpressionTestCase(TestCase):
             with self.subTest(exp=exp, expected=expected):
                 construct = cls.to_construct(exp)
                 self.assertEqual(expected, str(construct))
+
+
+if __name__ == '__main__':
+    unittest.main()
