@@ -389,10 +389,10 @@ def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
     with open(owlyaml_file, 'r', encoding='utf-8') as yamlfile:
         data = yaml.load(yamlfile, yaml.FullLoader)
 
-    if 'specs/version' not in data:
+    if 'version' not in data:
         # first version
         lines = convert_v1(data)
-    elif 'specs/version' == '1.0.0':
+    elif 'version' == '1.0.0':
         lines = convert_v1(data, auto_include_thing=False)
     else:
         raise NotImplementedError
