@@ -268,3 +268,32 @@ rdfs:Datatype:
   - Only keep information about the individual that is used in class definition
 - Remove `owl:restriction` from `owl:equivalentClass` and `rdfs:subClassOf`
 - Add `iri` section to keep self IRI
+
+### v2.0.0
+#### Specification
+```YAML
+version: v2.0.0
+
+# Other sections are the same as v1.1.0
+...
+
+# Individuals section
+owl:Individual:
+  example:Individual_Class1:
+    rdf:type:
+      - Class1
+    relations:
+      hasClass3:
+        - Individual_Class3
+  example:Individual_Class3:
+    rdf:type:
+      - Class3
+    relations:
+      isClass3Of:
+        - Individual_Class1
+
+# the rest of the spec is the same as v1.1.0
+...
+```
+#### Changes in this version
+- Add relations key in the owl:Individual section to keep the data about the individual and its relations
