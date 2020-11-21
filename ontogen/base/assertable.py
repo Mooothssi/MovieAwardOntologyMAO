@@ -1,3 +1,5 @@
+import re
+
 from owlready2 import locstr
 
 from .vars import BUILTIN_NAMES, DATATYPE_MAP, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
@@ -15,7 +17,6 @@ class OwlAssertable:
                 for i, v in enumerate(val):
                     v: str
                     if "^^" in v or "@" in v:
-                        import re
                         split_values = re.split(r'(?:(.+)\^\^(.+)@(.+)|(.+)\^\^(.+))', v)
                         if len(split_values) > 2 and split_values[1] is not None:
                             lit, lang = (split_values[1], split_values[3])

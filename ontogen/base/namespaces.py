@@ -42,8 +42,6 @@ def get_full_iri_from_prefix(prefix, short_name: str, lookup: dict = S_WK_P):
 
 
 def build_prefixes(prefixes: Dict[str, str]) -> str:
-    p = ""
     prefixes.update(WELL_KNOWN_PREFIXES)
-    for prefix in prefixes:
-        p += f"PREFIX {prefix}: <{prefixes[prefix]}>\n"
-    return p
+    joined_prefixes = "".join([f"PREFIX {prefix}: <{prefixes[prefix]}>\n" for prefix in prefixes])
+    return joined_prefixes

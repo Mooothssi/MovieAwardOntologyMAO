@@ -4,7 +4,6 @@ import owlready2
 from rdflib import Graph, Namespace, term
 from owlready2 import Imp, get_ontology, sync_reasoner_pellet
 from typing import Dict, Optional
-from collections.abc import Iterable
 
 from .namespaces import lookup_iri, build_prefixes
 from .assertable import OwlAssertable
@@ -43,24 +42,18 @@ class Ontology(OwlAssertable):
         return get_ontology_from_prefix(prefix, self.iris)
 
     def lookup_iri(self, prefix: str):
-        """
-        Get a fully qualified IRI from a given prefix
+        """Get a fully qualified IRI from a given prefix
+
         Args:
-            prefix:
-
-        Returns:
-
+            prefix: A given prefix
         """
         return lookup_iri(prefix, self.iris)
 
     def lookup_prefix(self, iri: str):
-        """
-         Get a fully qualified prefix from a given IRI
+        """Get a fully qualified prefix from a given IRI
+
         Args:
-            iri:
-
-        Returns:
-
+            iri: A given IRI
         """
         return lookup_iri(iri, self.prefixes)
 
@@ -90,14 +83,12 @@ class Ontology(OwlAssertable):
 
     @classmethod
     def load_from_file(cls, filename: str) -> "Ontology":
-        """
-        Loads an Ontology from an existing file
+        """Loads an Ontology from an existing file
 
         Args:
             filename: The name of a given file
 
         Returns: An Ontology object
-
         """
         inst = cls()
         inst._internal_onto = get_ontology(f"file://{filename}")
@@ -117,8 +108,7 @@ class Ontology(OwlAssertable):
         return inst
 
     def save_to_file(self, filename: str, file_format: str="rdfxml"):
-        """
-        Saves an Ontology with a given filename
+        """Saves an Ontology with a given filename
 
         Args:
             filename: The name of a given file
@@ -135,8 +125,7 @@ class Ontology(OwlAssertable):
                 file.write(g.serialize(format='pretty-xml'))
 
     def add_rule(self, swrl_rule: str, rule_name: str = None, comment: str = None):
-        """
-        Adds a SWRL rule to the Ontology
+        """Adds a SWRL rule to the Ontology
 
         Args:
             swrl_rule: A rule definition in SWRL
@@ -186,8 +175,7 @@ class Ontology(OwlAssertable):
         return self.implementation.world.as_rdflib_graph()
 
     def sparql_query(self, query: str, with_prefixes=True, sync_reasoner=True) -> list or bool:
-        """
-        Queries the Ontology in SPARQL
+        """Queries the Ontology in SPARQL
 
         Args:
             query: A query in SPARQL
@@ -195,7 +183,6 @@ class Ontology(OwlAssertable):
             sync_reasoner: Whether to sync the Pellet reasoner or not
 
         Returns: A result
-
         """
         if sync_reasoner:
             sync_reasoner_pellet()

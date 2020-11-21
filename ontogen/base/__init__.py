@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import List, Type
+from typing import List, Type, Union
 
 from owlready2 import Thing, ClassConstruct
 from owlready2.prop import destroy_entity
@@ -74,7 +74,7 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
         """
         raise NotImplementedError
 
-    def add_superclass(self, superclass: "OwlEntity" or "str"):
+    def add_superclass(self, superclass: Union["OwlEntity", "str"]):
         """
         Adds a superclass of this Class.
         This Class will then be a `rdfs:subclassOf` a given superclass
@@ -93,7 +93,7 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
         """
         self._disjoint_classes.append(cls)
 
-    def add_equivalent_class_expression(self, expression: str or ClassConstruct):
+    def add_equivalent_class_expression(self, expression: Union[str, ClassConstruct]):
         """
         Adds an equivalent class to this Class
 
@@ -101,8 +101,7 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
             expression: A Class Expression in Protege Manchester Syntax
                         or an `owlready2` Class Construct
 
-        Note:
-            A Class Expression in Manchester Syntax will be lazy loaded.
+        Note: A Class Expression in Manchester Syntax will be lazy loaded.
         """
         if expression is None:
             return
