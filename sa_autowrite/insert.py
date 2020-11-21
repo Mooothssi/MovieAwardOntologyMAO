@@ -74,9 +74,10 @@ def insert_xsv_data(filename: Union[str, Path],
         skip_rows_data = 1
     if skip_rows_data % chunksize != 0:
         raise ValueError(f"skip_rows_data must be a multiple of chunk_size")
-    if read_lines_data % chunksize != 0:
-        raise ValueError(f"read_lines_data must be a multiple of chunk_size")
-    read_until = skip_rows_data + read_lines_data
+    if read_lines_data is not None:
+        if read_lines_data % chunksize != 0:
+            raise ValueError(f"read_lines_data must be a multiple of chunk_size")
+        read_until = skip_rows_data + read_lines_data
 
     info = _get_info_from_filename(filename.name)
     dialect = get_dialect_from_suffix(info['format'])
@@ -100,7 +101,7 @@ def insert_xsv_data(filename: Union[str, Path],
         session.commit()
         if verbose > 0:
             print(f'Committed till row {counter}')
-        if counter == read_until:
+        if read_lines_data is not None and counter == read_until:
             break
 
 
