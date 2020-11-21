@@ -41,10 +41,6 @@ XSD_LITERAL_DATATYPE_MAP = {
 }
 
 
-def build_prefixes() -> str:
-    pass
-
-
 def get_imp_literal_type(literal_entity_name: str):
     if ":" in literal_entity_name:
         literal_entity_name = literal_entity_name.split(":")[1]

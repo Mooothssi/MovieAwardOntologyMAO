@@ -177,7 +177,7 @@ dmypy.json
 
 database/
 out/
-
+tests/generated/
 
 ##### MISC #####
 .DS_Store

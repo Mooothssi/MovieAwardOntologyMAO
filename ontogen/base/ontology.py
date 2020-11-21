@@ -110,12 +110,6 @@ class Ontology(OwlAssertable):
             if hasattr(internal.metadata, k):
                 [getattr(inst, ANNOTATION_FUNCTION_MAP[k])(prop)
                  for prop in getattr(internal.metadata, k)]
-        # if hasattr(internal.metadata, 'license'):
-        #     [inst.add_license(label) for label in internal.metadata.license]
-        # if hasattr(internal.metadata, 'licence'):
-        #     [inst.add_license(label) for label in internal.metadata.licence]
-        # if hasattr(internal.metadata, 'comment'):
-        #     [inst.add_comment(label) for label in internal.metadata.comment]
         inst.base_iri, inst.base_prefix = inst.implementation.base_iri, inst.implementation.name
         inst.update_iri()
         return inst
@@ -174,13 +168,7 @@ class Ontology(OwlAssertable):
 
     def actualize(self):
         self.properties_values = self.annotations
-        self.actualize_assertions(self)
-        for a in self.annotations:
-            name = a
-            if ":" in a:
-                name = a.split(":")[1]
-            for t in self.annotations[a]:
-                getattr(self.implementation.metadata, name).append(t)
+        self.actualize_assertions(self.implementation.metadata)
 
     @property
     def rdflib_graph(self):

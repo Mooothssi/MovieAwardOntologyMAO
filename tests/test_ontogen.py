@@ -88,7 +88,7 @@ class TestOntogen(TestCase):
     def test_write(self):
         c = OntogenConverter()
         c.write_yaml(str(ROOT_DIR / Path(OUT_PATH) / OUT_FILENAME) # OWL_FILEPATH
-        , ROOT_DIR / "data/out.yaml")
+        , ROOT_DIR / "out/out.yaml")
 
     def tearDown(self):
         cleanup(self.onto)

@@ -208,5 +208,5 @@ class OntogenConverter:
         for entity in self.entities.values():
             entity.actualize(onto)
         self._add_rules(self._dct)
-#        onto.actualize()
+        onto.actualize()
         return onto

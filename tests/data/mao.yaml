@@ -950,7 +950,7 @@ owl:AnnotationProperty:
       rdfs:comment:
         - >
           A name given to the resource^^rdfs:Literal@en
-  dcterms:licence:
+  dcterms:license:
     annotations:
       rdfs:comment:
         - >

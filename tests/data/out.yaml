@@ -1,5 +1,0 @@
-annotations: {}
-iri: file://out/out.owl#
-prefixes:
-  out: file://out/out.owl#
-version: 1.1.0

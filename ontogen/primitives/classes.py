@@ -126,18 +126,20 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
         return val
 
     def add_property_assertion(self, property_name: str, value):
+        """Adds a property assertion with a given value
+
+        Args:
+            property_name: A given name
+            value: A given value to be associated with a property with the given name
+
+        Returns:
+            None
         """
-            Adds a property assertion with a given value
-        """
-        # assert self._imp, \
-        #     "Must be an Individual before adding any assertion. Please call instantiate() first"
-        assert ":" in property_name and len(property_name.split(":")) == 2, "Please add prefix"
+        if not (":" in property_name and len(property_name.split(":")) == 2):
+            raise AssertionError("Please add prefix.")
         self.properties_values[property_name] = value
-        # assert property_name in self.defined_properties, \
-        #     "Must associate a subclass of OwlProperty with the given name before any assertion can be done"
-        # self._assert_restrictions(self.defined_properties[property_name].range, value)
 
     def _assert_restrictions(self, types: List[str], value):
-        assert check_restrictions(self.prefix, types, value), \
-            "The added value doesn't match the range restriction!"
+        if not check_restrictions(self.prefix, types, value):
+            raise AssertionError("The added value doesn't match the range restriction!")
 
