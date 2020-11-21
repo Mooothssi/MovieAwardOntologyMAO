@@ -161,6 +161,7 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
             if onto.base_prefix != self.prefix:
                 p = self.get_full_iri(onto)
                 self.actualized_entity.iri = p
+            self.actualize_assertions(GENERATED_TYPES[self.name])
             self._sync_description()
             return GENERATED_TYPES[self.name]
 

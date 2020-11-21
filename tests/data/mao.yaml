@@ -851,7 +851,7 @@ owl:Class:
       - FeatureFilm
       - FilmEligibleForAward
     owl:equivalentClass:
-      - Film and (hasFeatureLengthInMinutes some integer[<40])
+      - Film and (hasFeatureLengthInMinutes some integer[<40, >= 5])
     rdfs:subClassOf:
       - Film
   mao:ShortFilmOscarCriterion:

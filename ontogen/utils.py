@@ -63,14 +63,22 @@ def check_constraint_data_types(expression: str) -> ConstrainedDatatype or str:
     >>> check_constraint_data_types("integer[>=40]")
     ConstrainedDatatype(int, min_inclusive = 40)
     """
-    constraint_pattern = r'([A-z]+)(?:\[(?:([A-z]+|[<>=]{0,2})) ?(.+)\])?$'
+    constraint_pattern = r'([A-z]+)(?:\[(.+)\])$'
+    facet_pattern = r'(?:([A-z]+|[<>=]{0,2})) ?(.+)'
     m = match(constraint_pattern, expression)
     if m is None:
         return expression
-    literal, operator, val = get_imp_literal_type(m.group(1)), m.group(2), m.group(3)
+    literal = get_imp_literal_type(m.group(1))
     kwargs = {}
-    k = CONSTRAINT_DATATYPE_OPERATOR_MAP.get(operator, operator)
-    kwargs[k] = literal(val)
+    raw_facets = m.group(2)
+    facets = raw_facets.split(",")
+    for facet in facets:
+        m = match(facet_pattern, facet.strip())
+        if m is None:
+            continue
+        operator, val = m.group(1), m.group(2)
+        k = CONSTRAINT_DATATYPE_OPERATOR_MAP.get(operator, operator)
+        kwargs[k] = literal(val)
     return ConstrainedDatatype(literal, **kwargs)
 
 
@@ -141,11 +149,6 @@ class TokenInfo:
                 return getattr(first.construct, self.keyword)(third.construct, second.construct)
             elif self.keyword in TRIPLE_KEYWORDS:
                 first, second = self.sub_tokens
-                # if self.keyword in "value":
-                #     k = second.sub_tokens[0]
-                #     if k in RESERVED:
-                #         return RESERVED[k]
-                #     return get_individual_from_literal(self.onto, k)
                 if self.keyword in QUANTIFIER_RESTRICTION_KEYWORDS + ("value", ):
                     return getattr(first.construct, self.keyword)(second.construct)
                 elif self.keyword == "and":

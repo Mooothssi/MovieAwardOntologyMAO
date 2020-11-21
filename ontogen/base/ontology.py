@@ -100,10 +100,20 @@ class Ontology(OwlAssertable):
 
         """
         inst = cls()
-        inst._internal_onto = get_ontology(f"file:////{filename}")
-        inst._internal_onto.load()
+        inst._internal_onto = get_ontology(f"file://{filename}")
+        internal = inst._internal_onto
+        internal.load()
+        if hasattr(internal.metadata, 'label'):
+            [inst.add_label(label) for label in internal.metadata.label]
+        if hasattr(internal.metadata, 'license'):
+            [inst.add_license(label) for label in internal.metadata.license]
+        if hasattr(internal.metadata, 'licence'):
+            [inst.add_license(label) for label in internal.metadata.licence]
+        if hasattr(internal.metadata, 'comment'):
+            [inst.add_comment(label) for label in internal.metadata.comment]
         inst.base_iri, inst.base_prefix = inst.implementation.base_iri, inst.implementation.name
         inst.update_iri()
+        print(inst._internal_onto.metadata)
         return inst
 
     def save_to_file(self, filename: str, file_format: str="rdfxml"):

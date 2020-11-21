@@ -62,6 +62,9 @@ class TestOntogen(TestCase):
         self.converter.export_to_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
 
+    def test_load_ontology(self):
+        onto = Ontology.load_from_file(str(ROOT_DIR / Path(OUT_PATH) / OUT_FILENAME))
+
     def test_super_classes(self):
         film_making = self.converter.get_entity("mao:FilmMakingSituation")
         film_making.actualize(self.onto)
@@ -81,6 +84,11 @@ class TestOntogen(TestCase):
         self.parasite_film.actualize(self.onto)
         self.converter.export_to_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
+
+    def test_write(self):
+        c = OntogenConverter()
+        c.write_yaml(str(ROOT_DIR / Path(OUT_PATH) / OUT_FILENAME) # OWL_FILEPATH
+        , ROOT_DIR / "data/out.yaml")
 
     def tearDown(self):
         cleanup(self.onto)
@@ -110,9 +118,9 @@ FIXTURES = (
     ("{Male, Female, NonBinary}", "OneOf([mao.Male, mao.Female, mao.NonBinary])"),
     ("Ding and (hasPet some (Cat or Dog))", "mao.Ding & mao.hasPet.some(mao.Cat | mao.Dog)"),
     ("Mai and (hasPet some Cat)", "mao.Mai & mao.hasPet.some(mao.Cat)"),
-    ("Mai and (hasPet exactly 1 Cat)", "mao.Mai & mao.hasPet.exactly(1, mao.Cat)"),
-    ("(Mai and (hasPet exactly 1 Cat)) or (hasPet min 1 Cat)",
-     "(mao.Mai & mao.hasPet.exactly(1, mao.Cat)) | mao.hasPet.min(1, mao.Cat)"),
+    ("Mai and (hasPet exactly 2 Cat)", "mao.Mai & mao.hasPet.exactly(2, mao.Cat)"),
+    ("(Mai and (hasPet exactly 2 Cat)) or (hasPet min 1 Cat)",
+     "(mao.Mai & mao.hasPet.exactly(2, mao.Cat)) | mao.hasPet.min(1, mao.Cat)"),
     ("Mo or Ding or Bank", "mao.Mo | mao.Ding | mao.Bank"),
     ("(mao:Mai and mao:Student) or mao:SPP",
      "(mao.Mai & mao.Student) | mao.SPP"),

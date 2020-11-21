@@ -33,7 +33,7 @@ film: OwlClass = converter.get_entity("mao:Film")
 onto: Ontology = converter.export_to_ontology() # Save the results to an Ontology
 ```
 
-### Adding a rule to an OWL Ontology
+### Adding a SWRL rule to an OWL Ontology
 ```python
 from ontogen import Ontology
 
@@ -101,6 +101,7 @@ onto.sparql_query("""ASK { mao:Parasite rdf:type mao:Film }""")
 For version: `v1.1.0`
 
 - [x] Support custom prefixes
+- [ ] Fix faceting conjunction
 
 ### Individuals
 - [x] `owl:Individual`

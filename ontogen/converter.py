@@ -1,5 +1,5 @@
 from typing import Dict, List, Tuple
-from yaml import load, Loader
+from yaml import load, Loader, dump
 from semver import VersionInfo
 
 from ontogen.base import DATATYPE_MAP
@@ -119,6 +119,13 @@ class OntogenConverter:
             self.ontology.add_annotation("title", anno["dc:title"][0])
         self._load_class_descriptions(tuple(self.entities.values()))
         self.ontology.entities = self.entities
+
+    def write_yaml(self, owl_filename: str, spec_filename: str):
+        onto = Ontology.load_from_file(owl_filename)
+        dct = {'version': self.SUPPORTED_VERSION, 'iri': onto.base_iri, 'prefixes': onto.iris,
+               'annotations': onto.annotations}
+        with open(spec_filename, "w") as f:
+            self._dct = dump(dct, f)
 
     def _add_individuals(self, base_dict: dict):
         individuals = base_dict[OWL_INDIVIDUAL]
