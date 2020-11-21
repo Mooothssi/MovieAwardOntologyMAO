@@ -6,6 +6,7 @@ The specification for representing an ontology as a YAML file. This YAML file wi
 ## Version
 ### v1.0.0
 #### Specification
+`example.yaml`
 ```YAML
 # Description of an ontology
 annotaions:
@@ -105,9 +106,20 @@ rdfs:Datatype:
       rdfs:comment:
         - Just an example of how to specify a custom datatype in this YAML specification^^rdfs:Literal@en
 ```
+
+`example_rules.yaml`
+```YAML
+rules:
+  # example rule
+  s1:
+    rule:
+      - example:Class2(?c2) ^ example:Class3(?c3) -> example:hasClass3(?c2, ?c3)
+    rdfs:comment: ""
+```
 - No specified version number
 - Consist of `annotations`, `owl:Class`, `owl:annotationProperty`, `owl:dataProperty`, `owl:objectProperty`, and `rdfs:Datatype` sections
 - Allow the value of any key to be either string or array
+- Rules section is in the separated file and should be named with `*_rules.yaml` convension
 
 ### v1.0.1
 #### Specification
