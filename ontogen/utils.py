@@ -1,5 +1,5 @@
 from re import Match, match, search
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Type, Union
 
 from owlready2 import ClassConstruct, ConstrainedDatatype, Not, ObjectProperty, OneOf, Thing
 
@@ -58,10 +58,12 @@ def check_constraint_data_types(expression: str) -> ConstrainedDatatype or str:
     Args:
         expression: A literal expression
 
-    Returns: The respective ConstrainedDatatype
+    Returns:
+        The respective ConstrainedDatatype
 
-    >>> check_constraint_data_types("integer[>=40]")
-    ConstrainedDatatype(int, min_inclusive = 40)
+    Examples:
+        >>> check_constraint_data_types("integer[>=40]")
+        ConstrainedDatatype(int, min_inclusive = 40)
     """
     constraint_pattern = r'([A-z]+)(?:\[(.+)\])$'
     facet_pattern = r'(?:([A-z]+|[<>=]{0,2})) ?(.+)'
@@ -82,7 +84,7 @@ def check_constraint_data_types(expression: str) -> ConstrainedDatatype or str:
     return ConstrainedDatatype(literal, **kwargs)
 
 
-def get_class_from_literal(onto: Ontology, literal: str, base_cls=Thing):
+def get_class_from_literal(onto: Ontology, literal: str, base_cls: Type[Thing] = Thing):
     if literal in GENERATED_TYPES:
         return GENERATED_TYPES[literal]
     if literal is None:
@@ -92,9 +94,11 @@ def get_class_from_literal(onto: Ontology, literal: str, base_cls=Thing):
     return new_type
 
 
-def get_individual_from_literal(onto: Ontology, name: str, cls_literal: str = None, base_cls=Thing):
-    short_entity_name = name # f"{onto.base_prefix}:{name}"
-    assert short_entity_name in GENERATED_TYPES, f"Individual {short_entity_name} has yet to be created"
+def get_individual_from_literal(onto: Ontology, name: str,
+                                cls_literal: str = None, base_cls: Type[Thing] = Thing):
+    short_entity_name = name  # f"{onto.base_prefix}:{name}"
+    if short_entity_name not in GENERATED_TYPES:
+        raise AssertionError(f"Individual {short_entity_name} has yet to be created")
     individual = GENERATED_TYPES[short_entity_name]
     return individual
     # cls = get_class_from_literal(onto, cls_literal, base_cls)
@@ -106,12 +110,10 @@ def get_individual_from_literal(onto: Ontology, name: str, cls_literal: str = No
 
 
 class TokenInfo:
-    """
-        Contains the information of a Token
-    """
+    """Contains the information of a Token"""
     def __init__(self, onto: Ontology):
         self.keyword = None
-        self.sub_tokens: Tuple[TokenInfo or str, ...] = tuple()
+        self.sub_tokens: Tuple[Union[TokenInfo,str], ...] = tuple()
         self.is_class = False
         self.onto = onto
         self.start_index = 0
@@ -125,7 +127,7 @@ class TokenInfo:
         return f"<TK#{id(self)}>"
 
     @property
-    def construct(self) -> ClassConstruct or type or bool or int:
+    def construct(self) -> Union[ClassConstruct, type, bool, int]:
         try:
             if self.is_class:
                 self.keyword = None

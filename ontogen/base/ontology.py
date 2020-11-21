@@ -1,9 +1,10 @@
+import datetime
 import re
 
 import owlready2
 from rdflib import Graph, Namespace, term
 from owlready2 import Imp, get_ontology, sync_reasoner_pellet
-from typing import Dict, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from .namespaces import lookup_iri, build_prefixes
 from .assertable import OwlAssertable
@@ -14,6 +15,11 @@ def get_ontology_from_prefix(prefix: str, ld: dict):
 
 
 FREE_DOMAIN = "http://www.semanticweb.org"
+ANNOTATION_FUNCTION_MAP = {
+    'license': 'add_license',
+    'label': 'add_label',
+    'comment': 'add_comment'
+}
 
 
 class Ontology(OwlAssertable):
@@ -30,27 +36,27 @@ class Ontology(OwlAssertable):
         self.base_iri = base_iri
         self.base_prefix = base_prefix
         self.iris: Dict[str, str] = {}
-        self.annotations = {}
+        self.annotations: Dict[str, List[Union["OwlAnnotationProperty", Any]]] = {}
         self.entities: Dict[str, "OwlEntity"] = {}
 
     def name_from_prefix(self, developer: str = "nomad"):
-        import datetime
         now = datetime.datetime.now()
         self.base_iri = f"{FREE_DOMAIN}/{developer}/ontologies/{now.year}/{now.month}/{self.base_prefix}#"
 
     def _get_onto_from_prefix(self, prefix: str) -> owlready2.Ontology:
         return get_ontology_from_prefix(prefix, self.iris)
 
-    def lookup_iri(self, prefix: str):
-        """Get a fully qualified IRI from a given prefix
+    def lookup_iri(self, prefix: str) -> str:
+        """Returns a fully qualified IRI from a given prefix
 
         Args:
             prefix: A given prefix
+
         """
         return lookup_iri(prefix, self.iris)
 
-    def lookup_prefix(self, iri: str):
-        """Get a fully qualified prefix from a given IRI
+    def lookup_prefix(self, iri: str) -> str:
+        """Returns a fully qualified prefix from a given IRI
 
         Args:
             iri: A given IRI
@@ -65,10 +71,16 @@ class Ontology(OwlAssertable):
         return {v: k for k, v in self.iris.items()}
 
     def create(self, namespace_iri: str = ""):
+        """Newly creates an Ontology from an existing namespace
+
+        Args:
+            namespace_iri: A given namespace
+
+        Returns:
+            None
         """
-            Newly creates an Ontology from an existing namespace
-        """
-        assert self.base_iri == "" or namespace_iri == "", "Namespace must be set before creation"
+        if not (self.base_iri == "" or namespace_iri == ""):
+            raise AssertionError("Namespace must be set before creation")
         self.base_iri = self.base_iri if self.base_iri != "" else namespace_iri
         self._internal_onto = get_ontology(self.base_iri)
         self.base_prefix = self.implementation.name
@@ -94,27 +106,27 @@ class Ontology(OwlAssertable):
         inst._internal_onto = get_ontology(f"file://{filename}")
         internal = inst._internal_onto
         internal.load()
-        if hasattr(internal.metadata, 'label'):
-            [inst.add_label(label) for label in internal.metadata.label]
-        if hasattr(internal.metadata, 'license'):
-            [inst.add_license(label) for label in internal.metadata.license]
-        if hasattr(internal.metadata, 'licence'):
-            [inst.add_license(label) for label in internal.metadata.licence]
-        if hasattr(internal.metadata, 'comment'):
-            [inst.add_comment(label) for label in internal.metadata.comment]
+        for k in ANNOTATION_FUNCTION_MAP:
+            if hasattr(internal.metadata, k):
+                [getattr(inst, ANNOTATION_FUNCTION_MAP[k])(prop)
+                 for prop in getattr(internal.metadata, k)]
+        # if hasattr(internal.metadata, 'license'):
+        #     [inst.add_license(label) for label in internal.metadata.license]
+        # if hasattr(internal.metadata, 'licence'):
+        #     [inst.add_license(label) for label in internal.metadata.licence]
+        # if hasattr(internal.metadata, 'comment'):
+        #     [inst.add_comment(label) for label in internal.metadata.comment]
         inst.base_iri, inst.base_prefix = inst.implementation.base_iri, inst.implementation.name
         inst.update_iri()
-        print(inst._internal_onto.metadata)
         return inst
 
-    def save_to_file(self, filename: str, file_format: str="rdfxml"):
+    def save_to_file(self, filename: str, file_format: str = "pretty-xml"):
         """Saves an Ontology with a given filename
 
         Args:
             filename: The name of a given file
             file_format: The file format of given filename. Only `rdfxml` is supported by `owlready2`
         """
-        # self.implementation.save(file=filename, format=file_format)
         g: Graph = self.rdflib_graph
         # term.bind()
         with self.implementation:
@@ -122,7 +134,7 @@ class Ontology(OwlAssertable):
                 for iri in self.iris:
                     g.namespace_manager.bind(iri, Namespace(self.iris[iri]))
             with open(filename, mode="wb") as file:
-                file.write(g.serialize(format='pretty-xml'))
+                file.write(g.serialize(format=file_format))
 
     def add_rule(self, swrl_rule: str, rule_name: str = None, comment: str = None):
         """Adds a SWRL rule to the Ontology
@@ -149,13 +161,13 @@ class Ontology(OwlAssertable):
     def base_name(self):
         return self.implementation.name
 
-    def add_label(self, label: str or int):
+    def add_label(self, label: Union[str, int]):
         self.add_annotation("rdfs:label", label)
 
-    def add_license(self, label: str or int):
+    def add_license(self, label: Union[str, int]):
         self.add_annotation("dcterms:licence", label)
 
-    def add_annotation(self, annotation: str, value):
+    def add_annotation(self, annotation: str, value: Any):
         if annotation not in self.annotations:
             self.annotations[annotation] = []
         self.annotations[annotation].append(value)
@@ -182,13 +194,15 @@ class Ontology(OwlAssertable):
             with_prefixes: Whether the prefixes will be included prior to the query
             sync_reasoner: Whether to sync the Pellet reasoner or not
 
-        Returns: A result
+        Returns:
+            A result
         """
         if sync_reasoner:
             sync_reasoner_pellet()
         if with_prefixes:
             m = re.match(r"PREFIX (.+): <(.+)>", query)
-            assert m is None, "Prefixes are already included."
+            if m is not None:
+                raise AssertionError("Prefixes are already included.")
             query = build_prefixes(self.iris) + query
         q = self.rdflib_graph.query(query)
         if q.type == 'ASK':

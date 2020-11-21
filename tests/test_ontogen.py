@@ -53,8 +53,8 @@ class TestOntogen(TestCase):
         answer = self.onto.sparql_query("""ASK { mao:Parasite rdf:type mao:Film }""")
         self.assertTrue(answer)
 
-    def test_realization(self):
-        self.converter.export_to_ontology(self.onto)
+    # def test_realization(self):
+    #     self.converter.export_to_ontology(self.onto)
 
     # Create an OWL ontology from scratch
     def test_create_ontology(self):

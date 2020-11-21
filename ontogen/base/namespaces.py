@@ -25,19 +25,23 @@ OWL_THING = 'owl:Thing'
 RDF_TYPE = 'rdf:type'
 
 
-def lookup_iri(prefix: str, lookup: dict = S_WK_P):
+def lookup_iri(prefix: str, lookup: dict = None) -> str:
+    if lookup is None:
+        return WELL_KNOWN_PREFIXES[prefix.lower()]
     lookup = dict(lookup)
     lookup.update(WELL_KNOWN_PREFIXES)
     return lookup[prefix.lower()]
 
 
-def lookup_prefix(iri: str, lookup: dict = WK_IRIS):
+def lookup_prefix(iri: str, lookup: dict = None) -> str:
+    if lookup is None:
+        return WELL_KNOWN_IRIS[iri.lower()]
     lookup = dict(lookup)
     lookup.update(WELL_KNOWN_IRIS)
     return lookup[iri]
 
 
-def get_full_iri_from_prefix(prefix, short_name: str, lookup: dict = S_WK_P):
+def get_full_iri_from_prefix(prefix, short_name: str, lookup: dict = S_WK_P) -> str:
     return short_name.replace(f"{prefix}:", lookup_iri(prefix, lookup))
 
 

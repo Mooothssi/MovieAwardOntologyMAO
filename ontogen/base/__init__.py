@@ -12,10 +12,7 @@ from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAM
 def cleanup(onto: Ontology):
     onto.implementation.graph.destroy()
     for e in GENERATED_TYPES:
-        try:
-            destroy_entity(GENERATED_TYPES[e])
-        except:
-            pass
+        destroy_entity(GENERATED_TYPES[e])
     GENERATED_TYPES.clear()
 
 # BUILTIN_DATA_TYPES = Union[str, int]
@@ -24,9 +21,12 @@ def cleanup(onto: Ontology):
 class OwlActualizable(metaclass=ABCMeta):
     @abstractmethod
     def actualize(self, onto: Ontology) -> 'OwlEntity':
-        """
-            Makes the entity concrete (saved) in a given Ontology
-            :param onto: a given Ontology
+        """Makes the entity concrete (saved) in a given Ontology
+
+        Args:
+            onto: A given Ontology
+
+        Returns: An OwlEntity
         """
         raise NotImplementedError
 
@@ -46,7 +46,8 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
     def __init__(self, entity_qualifier: str):
         super().__init__()
         self.properties_values = {}
-        assert ":" in entity_qualifier, "Must include a prefix"
+        if ":" not in entity_qualifier:
+            raise AssertionError("Must include a prefix")
         pre, n = entity_qualifier.split(":")
         self.prefix = pre
         self.name = n
@@ -58,7 +59,6 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
         self._realised_parent_classes = []
         self.equivalent_class_expressions = []
 
-
     @classmethod
     def get_entity_name(cls) -> str:
         return f"{cls.prefix}:{cls.name}"
@@ -68,25 +68,28 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
 
     @abstractmethod
     def actualize(self, onto: Ontology) -> 'OwlEntity':
-        """
-            Makes the entity concrete (saved) in a given Ontology
-            :param onto: a given Ontology
+        """Makes the entity concrete (saved) in a given Ontology
+
+        Args:
+            onto: a given Ontology
+
+        Returns: An actualized OwlEntity
         """
         raise NotImplementedError
 
     def add_superclass(self, superclass: Union["OwlEntity", "str"]):
-        """
-        Adds a superclass of this Class.
-        This Class will then be a `rdfs:subclassOf` a given superclass
-        :param superclass: A given Superclass
+        """Adds a superclass of this Class.
+        This Class will then be an ``rdfs:subclassOf`` a given superclass
+
+        Args:
+            superclass: A given Superclass
         """
         if superclass is None:
             return
         self._parent_classes.append(superclass)
 
     def add_disjoint_class(self, cls: "OwlEntity"):
-        """
-        Adds a disjoint class to this Class. The given class will be lazy loaded.
+        """Adds a disjoint class to this Class. The given class will be lazy loaded.
 
         Args:
             cls: an OntologyEntity
@@ -94,14 +97,14 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
         self._disjoint_classes.append(cls)
 
     def add_equivalent_class_expression(self, expression: Union[str, ClassConstruct]):
-        """
-        Adds an equivalent class to this Class
+        """Adds an equivalent class to this Class
 
         Args:
             expression: A Class Expression in Protege Manchester Syntax
                         or an `owlready2` Class Construct
 
-        Note: A Class Expression in Manchester Syntax will be lazy loaded.
+        Note:
+            A Class Expression in Manchester Syntax will be lazy loaded.
         """
         if expression is None:
             return
@@ -127,7 +130,7 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
 
     @property
     def is_actualized(self) -> bool:
-        """Whether this Class is saved to an Ontology
+        """Returns whether this Class is saved to an Ontology
         """
         return self.name in GENERATED_TYPES
 
@@ -165,7 +168,6 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
             return GENERATED_TYPES[self.name]
 
     def _sync_description(self):
-        """
-        Internally synchronizes with the `owlready2` representation of this Class
+        """Internally synchronizes with the `owlready2` representation of this Class
         """
         self.actualized_entity.equivalent_to = self.equivalent_classes

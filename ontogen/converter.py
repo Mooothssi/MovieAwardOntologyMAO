@@ -1,5 +1,5 @@
-from typing import Dict, List, Tuple
-from yaml import load, Loader, dump
+from typing import Dict, List, Union, Tuple
+import yaml
 from semver import VersionInfo
 
 from ontogen.base import DATATYPE_MAP
@@ -10,7 +10,7 @@ from ontogen.primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, LABEL_ENTITY
 from ontogen.primitives.classes import OwlIndividual
 
 
-def get_equivalent_datatype(entity_name: str):
+def get_equivalent_datatype(entity_name: str) -> Union[type, str]:
     return DATATYPE_MAP.get(entity_name, entity_name)
 
 
@@ -22,8 +22,7 @@ class OntogenConverter:
     SUPPORTED_VERSION = "1.1.0"
 
     def __init__(self):
-        """
-        Loads a file with the given name into a skeleton of an OWL ontology.
+        """Loads a file with the given name into a skeleton of an OWL ontology.
         """
         self.entities: Dict[str, OwlEntity] = {}
         self.ontology = Ontology()
@@ -47,35 +46,37 @@ class OntogenConverter:
         prefixes = base_dict.get("prefixes", {})
         try:
             [self.ontology.update_iri(prefix, prefixes[prefix]) for prefix in prefixes]
-            self.ontology.update_base_prefix()
-            self.ontology.create()
         except KeyError:
             raise AssertionError("Please define prefix for the base IRI of this Ontology")
+        else:
+            self.ontology.update_base_prefix()
+            self.ontology.create()
 
     def _check_eligible_version(self, base_dict: dict):
         self.file_version = base_dict["version"].replace("v", "")
-        assert VersionInfo.parse(self.file_version)\
-            .compare(VersionInfo.parse(OntogenConverter.SUPPORTED_VERSION)) <= 0, "Unsupported version of file"
+        if (VersionInfo.parse(self.file_version)
+                .compare(VersionInfo.parse(OntogenConverter.SUPPORTED_VERSION)) > 0):
+            raise AssertionError("Unsupported version of file")
 
     def read_yaml(self, spec_filename: str):
-        """
-        Internally reads a file with the given filename
+        """Internally reads a file with the given filename
+
         Args:
             spec_filename: The filename of a specs file in YAML
         """
         with open(spec_filename) as f:
-            self._dct = load(f, Loader=Loader)
-            dct = self._dct
-        self._check_eligible_version(dct)
-        self._deal_with_iris(dct)
+            self._dct = yaml.load(f, Loader=yaml.Loader)
+            root = self._dct
+        self._check_eligible_version(root)
+        self._deal_with_iris(root)
         temp_classes = []
 
         for base in BASE_ENTITIES:
             cls = base
             q = base.get_entity_name()
-            if q not in dct:
+            if q not in root:
                 continue
-            classes = dct[q]
+            classes = root[q]
             for class_entity_name in classes:
                 if class_entity_name == OWL_THING:
                     continue
@@ -111,11 +112,11 @@ class OntogenConverter:
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
                 self.entities[class_entity_name] = obj
-        self._add_individuals(dct)
-        if "annotations" in dct:
-            anno = dct["annotations"]
+        self._add_individuals(root)
+        if "annotations" in root:
+            anno = root["annotations"]
             self.ontology.add_label(anno["rdfs:label"][0])
-            self.ontology.add_annotation("licence", anno["dcterms:licence"][0])
+            self.ontology.add_annotation("license", anno["dcterms:license"][0])
             self.ontology.add_annotation("title", anno["dc:title"][0])
         self._load_class_descriptions(tuple(self.entities.values()))
         self.ontology.entities = self.entities
@@ -125,7 +126,7 @@ class OntogenConverter:
         dct = {'version': self.SUPPORTED_VERSION, 'iri': onto.base_iri, 'prefixes': onto.iris,
                'annotations': onto.annotations}
         with open(spec_filename, "w") as f:
-            self._dct = dump(dct, f)
+            self._dct = yaml.dump(dct, f)
 
     def _add_individuals(self, base_dict: dict):
         individuals = base_dict[OWL_INDIVIDUAL]
@@ -151,7 +152,7 @@ class OntogenConverter:
         else:
             return u
 
-    def _load_class_descriptions(self, classes: Tuple[OwlEntity]):
+    def _load_class_descriptions(self, classes: Tuple[OwlEntity, ...]):
         for cls in classes:
             if isinstance(cls, OwlClass) or isinstance(cls, OwlObjectProperty):
                 [cls.add_superclass(self.get_entity(name, cls.prefix)) for name in cls.parent_class_names]
@@ -161,7 +162,7 @@ class OntogenConverter:
                     cls.range = [self.get_entity(name, cls.prefix) for name in cls.range if isinstance(name, str)]
                     cls.inverse_prop = self.get_entity(cls.inverse_prop)
 
-    def get_entity(self, entity_name: str, prefix: str = None) -> OwlClass or OwlEntity or str:
+    def get_entity(self, entity_name: str, prefix: str = None) -> Union[OwlClass, OwlEntity, str]:
         if entity_name is None:
             return None
         if prefix is None:
@@ -184,19 +185,19 @@ class OntogenConverter:
                                  f"Please check the consistency of the given specs!\n{missing}")
 
     def list_entities(self):
-        """
-        Print out list of entities to the console
+        """Print out list of entities to the console
         """
         for entity in self.entities:
             print(f"- {entity}: {self.entities[entity].__class__.__name__}")
 
     def export_to_ontology(self, onto: Ontology = None) -> Ontology:
-        """
-        Saves changes made into a given Ontology
+        """Saves changes made into a given Ontology
+
         Args:
             onto: A given Ontology
 
-        Returns: A resultant Ontology
+        Returns:
+            A resultant Ontology
         """
         self.check_missing_definitions()
         if onto is None:

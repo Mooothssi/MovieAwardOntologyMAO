@@ -45,15 +45,23 @@ class OwlAssertable:
         self.properties_values[builtin_name] += [value]
 
     def add_label(self, value: BUILTIN_DATA_TYPES):
-        """
-            Add a rdfs:label AnnotationProperty with a given value of supported types
-            :param value: A given label. Can be a `str` or `locstr` (Literal with a language)
+        """Add a rdfs:label AnnotationProperty with a given value of supported types
+
+        Args:
+            value: A given label. Can be a `str` or `locstr` (Literal with a language)
+
+        Returns:
+            None
         """
         self._add_builtin_prop(LABEL_ENTITY_NAME, value)
 
     def add_comment(self, value: BUILTIN_DATA_TYPES):
-        """
-            Add a rdfs:comment AnnotationProperty with a given value of supported types
-            :param value: A given label. Can be a `str` or `locstr` (Literal with a language)
+        """Add a rdfs:comment AnnotationProperty with a given value of supported types
+
+        Args:
+            value: A given label. Can be a `str` or `locstr` (Literal with a language)
+
+        Returns:
+            None
         """
         self._add_builtin_prop(COMMENT_ENTITY_NAME, value)
