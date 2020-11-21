@@ -159,6 +159,8 @@ owl:Class:
     annotations:
       rdfs:label:
         - AwardCategory^^rdfs:Literal@en
+    objectProperty:
+      - forOccupation
     owl:disjointWith:
       - ContentRating
       - Genre
@@ -173,12 +175,7 @@ owl:Class:
         - AwardCeremony^^rdfs:Literal@en
     dataProperty:
       - dateHeld
-      - dayHeld
-      - dayScreened
       - hasEditionNumber
-      - monthHeld
-      - monthScreened
-      - yearHeld
       - yearScreened
     objectProperty:
       - follow
@@ -394,6 +391,7 @@ owl:Class:
       - hasInitialReleaseYear
       - hasTitle
       - hasWikipediaLink
+      - isBritishFilm
     objectProperty:
       - hasAudience
       - hasContentRating
@@ -405,6 +403,7 @@ owl:Class:
       - hasPrequels
       - hasSequels
       - hasSubTitleInLanguage
+      - eligibleFor
     owl:disjointWith:
       - Agent
       - AggregateRating
@@ -761,6 +760,7 @@ owl:Class:
       - actsIn
       - hasGender
       - hasOccupation
+      - eligibleFor
     owl:disjointWith:
       - Character
       - CharacterImportance
@@ -973,7 +973,7 @@ owl:DataProperty:
       rdfs:label:
         - date held^^rdfs:Literal@en
     rdfs:range:
-      - xsd:dateTime
+      - xsd:date
   mao:dateReleased:
     annotations:
       rdfs:label:
@@ -982,18 +982,6 @@ owl:DataProperty:
       - owl:FunctionalProperty
     rdfs:range:
       - xsd:dateTime
-  mao:dayHeld:
-    annotations:
-      rdfs:label:
-        - day held^^rdfs:Literal@en
-    rdfs:range:
-      - xsd:integer
-  mao:dayScreened:
-    annotations:
-      rdfs:label:
-        - day screened^^rdfs:Literal@en
-    rdfs:range:
-      - xsd:integer
   mao:hasAggregateRating:
     annotations:
       rdfs:label:
@@ -1086,24 +1074,12 @@ owl:DataProperty:
         - has Wikipedia link^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
-  mao:monthHeld:
+  mao:isBritishFilm:
     annotations:
       rdfs:label:
-        - month held^^rdfs:Literal@en
+        - is British film^^rdfs:Literal@en
     rdfs:range:
-      - xsd:integer
-  mao:monthScreened:
-    annotations:
-      rdfs:label:
-        - month screened^^rdfs:Literal@en
-    rdfs:range:
-      - xsd:integer
-  mao:yearHeld:
-    annotations:
-      rdfs:label:
-        - year held^^rdfs:Literal@en
-    rdfs:range:
-      - xsd:integer
+      - xsd:boolean
   mao:yearScreened:
     annotations:
       rdfs:label:
@@ -1170,6 +1146,14 @@ owl:ObjectProperty:
       - NominationSituation
     rdfs:range:
       - Film
+  mao:forOccupation:
+    annotations:
+      rdfs:label:
+        - for occupation^^rdfs:Literal@en
+    rdfs:domain:
+      - AwardCategory
+    rdfs:range:
+      - Occupation
   mao:hasActor:
     annotations:
       rdfs:label:
@@ -1320,6 +1304,12 @@ owl:ObjectProperty:
         - has occupation^^rdfs:Literal@en
     rdfs:range:
       - Occupation
+  mao:eligibleFor:
+    annotations:
+      rdfs:label:
+        - eligible for^^rdfs:Literal@en
+    rdfs:range:
+      - Award
   mao:hasOriginalLanguage:
     annotations:
       rdfs:label:
@@ -1395,6 +1385,12 @@ owl:ObjectProperty:
         - has sub title in language^^rdfs:Literal@en
     rdfs:range:
       - Language
+  mao:eligibleFor:
+    annotations:
+      rdfs:label:
+        - eligible for^^rdfs:Literal@en
+    rdfs:range:
+      - Award
   mao:hasParticipant:
     annotations:
       rdfs:comment:
@@ -1622,15 +1618,67 @@ owl:ObjectProperty:
       - violates
 
 owl:Individual:
-  family:Female:
+  mao:Female:
     rdf:type:
       - Gender
-  family:Male:
+  mao:Male:
     rdf:type:
       - Gender
-  family:Non-binary:
+  mao:Non-binary:
     rdf:type:
       - Gender
+
+  mao:BestFilm:
+    rdf:type:
+      - AwardCategory
+  mao:BestPicture:
+    rdf:type:
+      - AwardCategory
+  mao:BestDirector:
+    rdf:type:
+      - AwardCategory
+  mao:BestActor:
+    rdf:type:
+      - AwardCategory
+  mao:BestActress:
+    rdf:type:
+      - AwardCategory
+  mao:BestSupportingActor:
+    rdf:type:
+      - AwardCategory
+  mao:BestSupportingActress:
+    rdf:type:
+      - AwardCategory
+  mao:Newcomer:
+    rdf:type:
+      - AwardCategory
+  mao:BestScreenWriter:
+    rdf:type:
+      - AwardCategory
+  mao:BestCinematographer:
+    rdf:type:
+      - AwardCategory
+  mao:BestProductionDesigner:
+    rdf:type:
+      - AwardCategory
+  mao:BestComposer:
+    rdf:type:
+      - AwardCategory
+  mao:BestEditor:
+    rdf:type:
+      - AwardCategory
+  mao:BestVisualEffects:
+    rdf:type:
+      - AwardCategory
+  mao:BestCostumeDesigner:
+    rdf:type:
+      - AwardCategory
+  mao:OutstandingBritishFilm:
+    rdf:type:
+      - AwardCategory
+  mao:OutstandingDebut:
+    rdf:type:
+      - AwardCategory
 
 rules:
   filmEligible:
