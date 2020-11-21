@@ -50,7 +50,8 @@ def create_instance(cls: Type[DeclaredModel], row: pd.Series,
         assert val is not None
         if val in null_values:
             val = None
-        val = get_converter(col.type)(val)
+        else:
+            val = get_converter(col.type)(val)
         data[col.name] = val
     return cls(**data)
 
