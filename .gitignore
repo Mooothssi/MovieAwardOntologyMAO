@@ -176,7 +176,7 @@ dmypy.json
 ###### PROJECT ######
 
 # Large data files
-tests/large_data/
+tests/data/large/
 
 # Autogen folder
 autogen_db_models
