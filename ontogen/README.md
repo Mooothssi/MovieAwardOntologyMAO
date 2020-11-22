@@ -12,25 +12,31 @@ Feel free to run unit tests in `test_ontogen.py`
 - `rdflib` for direct `RDF/XML` manipulation
 - `pyyaml`
 
+### Using a YAML-to-OWL Converter to generate `OwlClass`es
+```python
+from dirs import ROOT_DIR
+
+from ontogen import Ontology
+from ontogen.converter import OntogenConverter, OwlClass, OwlIndividual
+
+converter = OntogenConverter()
+converter.load_from_spec(ROOT_DIR / "data/mao.yaml")
+film: OwlClass = converter.get_entity("mao:Film")
+
+# You can start mapping rows from the database to an Individual from here.
+parasite_film: OwlIndividual = OwlIndividual("mao:Parasite")
+parasite_film.be_type_of(film)
+
+
+onto: Ontology = converter.export_to_ontology() # Save the results to an Ontology
+```
+
 ### Loading an OWL Ontology
 ```python
 from ontogen import Ontology
 from settings import OWL_FILEPATH
 
 onto: Ontology = Ontology.load_from_file(OWL_FILEPATH)
-```
-
-### Using a YAML-to-OWL Converter to generate `OwlClass`es
-```python
-from dirs import ROOT_DIR
-
-from ontogen import Ontology
-from ontogen.converter import OwlClass, OntogenConverter
-
-converter = OntogenConverter()
-converter.read_yaml(ROOT_DIR / "data/mao.yaml")
-film: OwlClass = converter.get_entity("mao:Film")
-onto: Ontology = converter.export_to_ontology() # Save the results to an Ontology
 ```
 
 ### Adding a SWRL rule to an OWL Ontology
@@ -98,7 +104,7 @@ onto.sparql_query("""ASK { mao:Parasite rdf:type mao:Film }""")
 ```
 
 ## Supported OWL features
-For version: `v1.1.0`
+For version: `v2.1.0`
 
 - [x] Support custom prefixes
 - [ ] Fix faceting conjunction

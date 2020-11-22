@@ -62,8 +62,8 @@ class OntogenConverter:
                 .compare(VersionInfo.parse(OntogenConverter.SUPPORTED_VERSION)) > 0):
             raise AssertionError("Unsupported version of file")
 
-    def read_yaml(self, spec_filename: str):
-        """Internally reads a file with the given filename
+    def load_from_spec(self, spec_filename: str):
+        """Creates an abstract Ontology from a specs file with the given filename
 
         Args:
             spec_filename: The filename of a specs file in YAML
@@ -235,9 +235,6 @@ class OntogenConverter:
     @property
     def data_properties(self):
         return self._get_with_type(OwlDataProperty)
-
-    def _resolve_annotations(self):
-        isinstance(a, AnnotationPropertyClass)
 
     def _get_with_type(self, t: Type[Union[OwlEntity, OwlIndividual]]):
         return {x: self.entities[x] for x in self.entities if isinstance(self.entities[x], t)}

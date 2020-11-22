@@ -22,7 +22,7 @@ def count_files(directory: str) -> int:
 class TestOntogen(TestCase):
     def setUp(self):
         self.converter: OntogenConverter = OntogenConverter()
-        self.converter.read_yaml(ROOT_DIR / "data/mao.yaml")
+        self.converter.load_from_spec(ROOT_DIR / "data/mao.yaml")
         self.onto = self.converter.ontology
         self.parasite_film = OwlIndividual("mao:Parasite")
         self.i: OwlClass = self.converter.get_entity("mao:Film")
@@ -96,7 +96,7 @@ class TestOntogen(TestCase):
 class TestOntogenPizza(TestCase):
     def test_pizza_ontology(self):
         converter = OntogenConverter()
-        converter.read_yaml("test_cases/test_case1.yaml")
+        converter.load_from_spec("test_cases/test_case1.yaml")
         onto = converter.export_to_ontology()
         d = Datatype("Pizza:str")
         d.data_type = str
