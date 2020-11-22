@@ -41,6 +41,7 @@ for filename, clsname in [
     # (IMDB_FOLDER / 'title.ratings.tsv', TitleRatings),
 ]:
     confirmation = input(f"Confirm table '{clsname.__name__}' deletion (y/N): ")
+    Base.metadata.create_all(engine)
     if confirmation == 'y':
         clsname.__table__.drop(engine)
         Base.metadata.create_all(engine)
