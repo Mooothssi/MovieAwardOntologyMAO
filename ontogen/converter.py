@@ -23,7 +23,7 @@ class OntogenConverter:
         A converter from YAML to an abstraction of OWL ontology
         Needs to be actualized by an instance of the class ``Ontology``.
     """
-    SUPPORTED_VERSION = "1.1.0"
+    SUPPORTED_VERSION = "2.1.0"
 
     def __init__(self):
         """Loads a file with the given name into a skeleton of an OWL ontology.
@@ -138,7 +138,7 @@ class OntogenConverter:
             self._dct = yaml.dump(dct, f)
 
     def _add_individuals(self, base_dict: dict):
-        individuals = base_dict[OWL_INDIVIDUAL]
+        individuals = base_dict.get(OWL_INDIVIDUAL, {})
         for individual in individuals:
             ind = OwlIndividual(individual)
             for t in individuals[individual]:

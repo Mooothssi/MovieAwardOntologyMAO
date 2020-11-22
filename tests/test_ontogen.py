@@ -22,7 +22,7 @@ def count_files(directory: str) -> int:
 class TestOntogen(TestCase):
     def setUp(self):
         self.converter: OntogenConverter = OntogenConverter()
-        self.converter.load_from_spec(ROOT_DIR / "tests/data/mao.yaml")
+        self.converter.load_from_spec(ROOT_DIR / "tests/specs/v2.1.0/test_case1.yaml")
         self.onto = self.converter.ontology
         self.parasite_film = OwlIndividual("mao:Parasite")
         self.i: OwlClass = self.converter.get_entity("mao:Film")
