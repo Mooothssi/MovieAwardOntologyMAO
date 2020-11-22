@@ -145,6 +145,7 @@ Equivalent to:
 ### Annotations
 Comment
   - Pizza dough that used as a pizza base
+
 ### Description
 Subclass of:
   - Food
@@ -163,6 +164,7 @@ Label
 
 Comment
   - Topping of pizza
+
 ### Description
 Subclass of:
   - Food
@@ -192,6 +194,7 @@ Subclass of:
 ### Annotations
 Comment
   - Spiciness of Pizza
+
 Label
 
 | Language | Label |
