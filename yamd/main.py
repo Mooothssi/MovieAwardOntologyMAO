@@ -8,7 +8,7 @@ from table_maker import Table
 from utils.temp_io_utils import open_and_write_file
 from yamd.markdown import get_md_list
 from yamd.owl import get_pretty_label, get_language_from_code, split_locstr, get_plain_literal, is_locstr
-from yamd.parser import parse_lenient_list_of_strings, parse_lenient_list_of_list_of_string
+from yamd.parser import parse_lenient_list_of_strings, parse_lenient_list_of_list_of_string, trim_dict
 
 LOLOS = Union[str, List['LOLOS']]
 
@@ -193,7 +193,7 @@ class Class(Entity):
         return {
             'rdfs:subClassOf': 'Subclass of',
             'owl:disjointWith': 'Disjoint with',
-            'owl:equivalentClass': 'Equivalent tp',
+            'owl:equivalentClass': 'Equivalent to',
         }
 
     @property
@@ -211,7 +211,13 @@ class Class(Entity):
         return '\n'.join((line for line in lines if line))
 
     @property
-    def description(self) -> Optional[str]:
+    def description(self, version=2) -> Optional[str]:
+        if version == 1:
+            return self._description_v1()
+        elif version >= 2:
+            return self._description_v2()
+
+    def _description_v1(self) -> Optional[str]:
         lines = []
         for uname, pname in self._description_map.items():
             if uname in self.data:
@@ -219,6 +225,22 @@ class Class(Entity):
                     data = self.data[uname]['owl:Restriction']
                 else:
                     data = self.data[uname]
+                cleaned_data = parse_lenient_list_of_strings(data)
+                if cleaned_data:
+                    lines += [f'{pname}:',
+                              get_md_list(0, cleaned_data),
+                              '']
+                    if uname == 'rdfs:subClassOf':
+                        Node.from_list_of_parents(self.name, cleaned_data)
+        if lines:
+            lines.insert(0, '### Description')
+            return '\n'.join(lines)
+
+    def _description_v2(self) -> Optional[str]:
+        lines = []
+        for uname, pname in self._description_map.items():
+            if uname in self.data:
+                data = self.data[uname]
                 cleaned_data = parse_lenient_list_of_strings(data)
                 if cleaned_data:
                     lines += [f'{pname}:',
@@ -251,6 +273,25 @@ class Class(Entity):
                          '']
                 return '\n'.join(lines)
         return
+
+
+class IRIPrefix(Entity):
+    def __init__(self, data_iri: dict, data_prefix: dict):
+        self.data_iri = data_iri
+        self.data_prefix = data_prefix
+
+    def as_markdown(self) -> str:
+        lines = [
+            '# IRI',
+            self.data_iri,
+            '',
+            '# Prefixes',
+        ]
+        print(self.data_prefix.items())
+        for prop, value in self.data_prefix.items():
+            heading_prop = f'## {prop}'
+            lines.append('\n'.join([heading_prop, value, '']))
+        return '\n'.join(lines)
 
 
 class Property(Entity):
@@ -326,7 +367,6 @@ class AnnotationProperty(Property):
                 raise
 
 
-
 def write_classes(classes: dict) -> List[str]:
     lines = [
         '# Class',
@@ -383,17 +423,76 @@ def convert_v1(data: dict, *, auto_include_thing: bool = True) -> List[str]:
     return text_sections
 
 
+def convert_v2(data: dict, *, auto_include_thing: bool = True) -> List[str]:
+    """Returns the lines of md documentation to write from specs data."""
+    text_sections = [
+        f"version {data['version']}\n",
+    ]
+    if 'prefixes' in data:
+        lines = [IRIPrefix(data['iri'], data['prefixes']).as_markdown(),
+                 '']
+        text_sections.append('\n'.join(lines))
+
+    if 'annotations' in data:
+        lines = [f'# Ontology Description',
+                 Annotations(data['annotations']).as_markdown(),
+                 '']
+        text_sections.append('\n'.join(lines))
+
+    sections: List[Tuple[str, str, Type[Entity]]] = [
+        ('Classes', 'owl:Class', Class),
+        ('Object Properties', 'owl:ObjectProperty', ObjectProperty),
+        ('Data Properties', 'owl:DataProperty', DataProperty),
+        ('Annotation Properties', 'owl:AnnotationProperty', AnnotationProperty),
+        # ('Rules', 'owl:Rule?', Rule?),
+    ]
+    for section, dict_section, cls in sections:
+        if dict_section not in data:
+            continue
+        lines = [f'# {section}']
+        lines += [cls(p, d, auto_include_thing=auto_include_thing).as_markdown() for p, d in data[dict_section].items()]
+        lines += ['']
+        text_sections.append('\n'.join(lines))
+    liens = []
+    t = Node('Thing').show_graph()
+    if t:
+        lines = ['# Class Hierarchy',
+                 t,
+                 '']
+    if Node('TopObjectProperty').children or Node('TopDataProperty').children or Node('DummyTopAnnotationProperty').children:
+        lines += ['# Property Hierarchy']
+    if Node('TopObjectProperty').children:
+        lines += ['### Object Property',
+                  Node('TopObjectProperty').show_graph(),
+                  '']
+    if Node('TopDataProperty').children:
+        lines += ['### Data Property',
+                  Node('TopDataProperty').show_graph(),
+                  '']
+    if Node('DummyTopAnnotationProperty').children:
+        lines += ['### Annotation Property']
+        lines += [annotation.show_graph() for annotation in Node('DummyTopAnnotationProperty').children]
+        lines += ['']
+    text_sections.insert(2, '\n'.join(lines))
+    return text_sections
+
+
 def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
                            md_file: Union[IO, str, Path]) -> None:
     """Converts a owl yaml specs file to md documentation."""
     with open(owlyaml_file, 'r', encoding='utf-8') as yamlfile:
         data = yaml.load(yamlfile, yaml.FullLoader)
+        data = trim_dict(data)
+    #     print(str(data))
+    # print(data['version'])
 
     if 'version' not in data:
         # first version
         lines = convert_v1(data)
-    elif 'version' == '1.0.0':
+    elif data['version'] == 'v1.0.0':
         lines = convert_v1(data, auto_include_thing=False)
+    elif data['version'] == 'v2.1.0':
+        lines = convert_v2(data, auto_include_thing=True)
     else:
         raise NotImplementedError
 
@@ -404,4 +503,4 @@ if __name__ == '__main__':
     import doctest
 
     doctest.testmod()
-    convert_owl_yaml_to_md(ROOT_DIR / 'tests/test_cases/test_case1.yaml', ROOT_DIR / 'yamd/test.md')
+    convert_owl_yaml_to_md(ROOT_DIR / 'tests/specs/v2.1.0/test_case1.yaml', ROOT_DIR / 'yamd/test.md')
