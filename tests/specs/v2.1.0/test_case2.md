@@ -1,4 +1,4 @@
-version v2.1.0
+mao specs version: v2.1.0
 
 # IRI
 http://www.co-ode.org/roberts/family-tree.owl#
