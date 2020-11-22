@@ -51,9 +51,6 @@ License
   - hasTopping
   - hasBase
 
-## Data Property
-- TopDataProperty
-
 ## Annotation Property
 - license
 - title
