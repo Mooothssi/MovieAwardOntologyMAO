@@ -508,7 +508,7 @@ def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
         lines = convert_v1(data)
     elif data['version'] == 'v1.0.0':
         lines = convert_v1(data, auto_include_thing=False)
-    elif data['version'] == 'v2.1.0':
+    elif data['version'] == 'v2.0.0':
         lines = convert_v2(data, auto_include_thing=True)
     else:
         raise NotImplementedError
@@ -520,4 +520,4 @@ if __name__ == '__main__':
     import doctest
 
     doctest.testmod()
-    convert_owl_yaml_to_md(ROOT_DIR / 'tests/specs/v2.1.0/test_case2.yaml', ROOT_DIR / 'yamd/test.md')
+    convert_owl_yaml_to_md(ROOT_DIR / 'tests/specs/v2.0.0/test_case2.yaml', ROOT_DIR / 'yamd/test.md')

@@ -13,7 +13,7 @@ def load_tests(loader: unittest.TestLoader, tests: unittest.TestSuite, ignore) -
 
 class TestOwlYamlMd(unittest.TestCase):
     def test_main_test_cases(self):
-        version = 'v2.1.0'
+        version = 'v2.0.0'
         specs = [
             ('test_case1.yaml', 'test_case1.md'),
             ('test_case2.yaml', 'test_case2.md')
