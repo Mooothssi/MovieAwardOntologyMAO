@@ -54,3 +54,13 @@ for filename, clsname in [
                     skip_rows_data=0, read_lines_data=None,
                     verbose=1)
 ```
+
+Sample script to read data from IMDb .list files
+```python
+from sa_autowrite.parsers import parse_imdb_list
+from dirs import ROOT_DIR
+
+for file in ['countries.list', 'certificates.lit', 'production-companies.list']:
+    for df in parse_imdb_list(ROOT_DIR / f'tests/data/large/imdb/{file}', encoding='windows-1252', chunksize=10000):
+        print(df)
+```
