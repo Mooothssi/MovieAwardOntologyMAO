@@ -175,8 +175,12 @@ dmypy.json
 
 ###### PROJECT ######
 
-database/
-out/
+# Large data files
+tests/data/large/
+*.sqlite3
+
+# Autogen folder
+autogen_db_models
 
 
 ##### MISC #####

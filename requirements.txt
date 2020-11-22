@@ -3,6 +3,5 @@ python-decouple
 sqlalchemy
 PyMySQL
 PyMSSQL
-stringcase
 pyyaml
 pandas
