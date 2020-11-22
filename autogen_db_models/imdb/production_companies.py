@@ -23,11 +23,14 @@ class ProductionCompanies(Base):
 
     @classmethod
     def create_instance(cls, row: 'Series'):
-        m = re.match(r'(?P<production_company>.*) \[(?P<country_code>[a-z]+)\](\t(?P<comment>.*))?', row.get('data'))
+        m = re.match(r'(?P<production_company>.*) \[(?P<country_code>[a-z]+)\](\t(?P<comment>.*))?|(?P<prod_comp>.*)', row.get('data'))
         if m is None:
             raise ValueError(f"SOmE EROROR {row}")
         dct = m.groupdict()
         prod_comp = dct.get('production_company')
+        if prod_comp is None:
+            prod_comp = dct.get('prod_comp')
+        assert prod_comp is not None
         cc = dct.get('country_code')
         comment = dct.get('comment')
         data = {
