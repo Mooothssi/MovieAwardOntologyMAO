@@ -1,18 +1,18 @@
 from importlib import import_module
 from pathlib import Path
-from typing import Union, List, Dict, IO, Type, Callable, Any
+from typing import IO, Any, Callable, Dict, List, Type, Union
 
 import pandas as pd
+from sqlalchemy.sql.sqltypes import TypeEngine
 
 from dirs import ROOT_DIR
 from engine import Session
 from extended_csv import get_dialect_from_suffix
-from sa_autowrite.hint import DeclaredModel
-from sa_autowrite.model import TYPE_CONVERTER, DEF_TYPE
 from sa_autowrite.create import _get_info_from_filename
-from utils.str_utils import snake_to_capwords, snake_case
-from sqlalchemy.sql.sqltypes import TypeEngine
-
+from sa_autowrite.hint import DeclaredModel
+from sa_autowrite.model import DEF_TYPE, TYPE_CONVERTER
+from utils.misc import depreciated
+from utils.str_utils import snake_case, snake_to_capwords
 
 # def read_in_chunks(file_object, chunk_size=1024):
 #     """Lazy function (generator) to read a file piece by piece.
@@ -106,7 +106,7 @@ def insert_xsv_data(filename: Union[str, Path],
             break
 
 
-# Depreciated
+@depreciated('n/a')
 def insert_data(in_directory: Union[str, Path],
                 out_directory: Union[str, Path],
                 *,

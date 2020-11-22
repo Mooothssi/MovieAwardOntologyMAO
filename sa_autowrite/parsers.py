@@ -1,13 +1,16 @@
-from abc import abstractmethod
-from pathlib import Path
-from typing import IO, Iterable, Sequence, overload, TypeVar, Union, Iterator, Tuple
-from utils.dict_utils import select_not_null
-import pandas as pd
 import re
+from pathlib import Path
+from typing import IO, Iterator, Tuple, Union
 
-__all__ = ['MAP']
+import pandas as pd
+
+from utils.dict_utils import select_not_null
+from utils.misc import depreciated
+
+__all__ = ['parse_imdb_list']
 
 
+@depreciated('n/a')
 def parse_csv(file: IO, chunksize: int = None) -> pd.DataFrame:
     kwd = {
         chunksize: chunksize
@@ -15,6 +18,7 @@ def parse_csv(file: IO, chunksize: int = None) -> pd.DataFrame:
     return pd.read_csv(file, dialect='excel', **select_not_null(kwd))
 
 
+@depreciated('n/a')
 def parse_tsv(file: IO, chunksize: int = None) -> pd.DataFrame:
     kwd = {
         chunksize: chunksize
@@ -103,6 +107,7 @@ def read_str_untils(it: Iterator[str], *stops: str) -> (str, str):
     return ''.join(lst), c
 
 
+@depreciated('n/a')
 def parse_line_iter(line: str) -> Tuple[str, str, str, str, bool, str]:
     """Parse a line in IMDB list file using iterator method.
 
