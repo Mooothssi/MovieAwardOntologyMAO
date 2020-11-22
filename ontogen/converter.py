@@ -43,7 +43,7 @@ class OntogenConverter:
     def _add_rules(self, base_dict: dict):
         b = base_dict.get("rules", {})
         for rule_name in b:
-            self.ontology.add_rule(b[rule_name]["rule"][0], rule_name)
+            self.ontology.add_rule(b[rule_name]["rule"], rule_name)
 
     def _deal_with_iris(self, base_dict: dict):
         self.ontology.base_iri = base_dict.get("iri", "")

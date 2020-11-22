@@ -143,7 +143,7 @@ class Ontology(OwlAssertable):
             rule.label = rule_name
         if comment is not None:
             rule.comment = comment
-        rule.set_as_rule(swrl_rule.replace(f"{self.base_name}:", "").replace("^ ", ", "))
+        rule.set_as_rule(swrl_rule.replace(f"swrlb:", "").replace(f"{self.base_name}:", "").replace("^ ", ", "))
 
     @property
     def implementation(self) -> owlready2.Ontology:
