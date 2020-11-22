@@ -150,7 +150,7 @@ Domain:
 Range:
   - Person
 
-Sub-properties:
+Subproperty of:
   - isBloodRelationOf
 
 ## hasAunt
@@ -161,7 +161,7 @@ Domain:
 Range:
   - Person
 
-Sub-properties:
+Subproperty of:
   - isBloodRelationOf
 
 ## hasGender
@@ -172,7 +172,7 @@ Domain:
 Range:
   - Gender
 
-Sub-properties:
+Subproperty of:
   - topObjectProperty
 
 ## hasParent
@@ -183,7 +183,7 @@ Domain:
 Range:
   - Person
 
-Sub-properties:
+Subproperty of:
   - hasAncestor
 
 ## isAncestorOf
@@ -195,7 +195,7 @@ Domain:
 Range:
   - Person
 
-Sub-properties:
+Subproperty of:
   - topObjectProperty
 
 ## isInlawOf
@@ -206,11 +206,11 @@ Domain:
 Range:
   - Person
 
-Sub-properties:
+Subproperty of:
   - topObjectProperty
 
 ## isParentOf
-Sub-properties:
+Subproperty of:
   - topObjectProperty
 
 ## isSiblingOf
@@ -221,7 +221,7 @@ Domain:
 Range:
   - Person
 
-Sub-properties:
+Subproperty of:
   - isBloodRelationOf
 
 ## isSpouseOf
@@ -232,7 +232,7 @@ Domain:
 Range:
   - Person
 
-Sub-properties:
+Subproperty of:
   - isInLawOf
 
 
@@ -254,7 +254,7 @@ Domain:
 Range:
   - xsd:string
 
-Sub-properties:
+Subproperty of:
   - hasName
 
 ## hasFirstGivenName
@@ -265,7 +265,7 @@ Domain:
 Range:
   - xsd:string
 
-Sub-properties:
+Subproperty of:
   - hasName
 
 ## hasName
@@ -284,7 +284,7 @@ Domain:
 Range:
   - xsd:string
 
-Sub-properties:
+Subproperty of:
   - hasName
 
 
