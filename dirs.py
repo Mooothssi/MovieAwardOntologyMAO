@@ -1,5 +1,5 @@
 from pathlib import Path
 
-ROOT_DIR = Path()
-DATA_SRC_DIR = ROOT_DIR / 'database/src'
-DATA_OUT_DIR = ROOT_DIR / 'database/out'
+__all__ = ['ROOT_DIR']
+
+ROOT_DIR = Path(__file__).parent

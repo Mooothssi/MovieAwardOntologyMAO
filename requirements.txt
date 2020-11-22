@@ -2,9 +2,14 @@ Cython
 owlready2
 PyMySQL
 PyMSSQL
+<<<<<<< HEAD
 python-decouple
 pyyaml
 sqlalchemy
 pandas
 rdflib
 semver
+=======
+pyyaml
+pandas
+>>>>>>> 722081892927d59887c574dc497ba3a9d7cdd510

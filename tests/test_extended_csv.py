@@ -1,11 +1,10 @@
 import unittest
 
+from dirs import ROOT_DIR
 from extended_csv import read_xsv_file
 
-TestCase = unittest.TestCase
 
-
-class MyTestCase(TestCase):
+class TestExtendedCsv(unittest.TestCase):
 
     def test_read_xsv_line_spec(self):
         test_cases = [
@@ -17,7 +16,7 @@ class MyTestCase(TestCase):
         ]
         for file, to_read, read, skip in test_cases:
             with self.subTest(f"{file=},{to_read=},{read=},{skip=}"):
-                result = read_xsv_file(f'data/csv/{file}', dialect='excel', load_at_most=to_read, discard=skip)
+                result = read_xsv_file(ROOT_DIR / f'tests/data/csv/{file}', dialect='excel', load_at_most=to_read, discard=skip)
                 self.assertEqual(read, len(result))
 
 

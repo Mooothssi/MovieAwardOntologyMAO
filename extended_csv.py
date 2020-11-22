@@ -1,21 +1,41 @@
 import csv
 from itertools import islice
+from pathlib import Path
+from typing import IO, Dict, Iterable, List, Union
 
-from typing import List, Dict, Iterable, TextIO
+from utils.dict import select_not_null
 
-
-def get_differing_keys_and_values(dct: dict) -> dict:
-    return {k: v for k, v in dct.items() if k != v}
-
-
-def select_not_null(dct: dict, *keys: str) -> dict:
-    """Return a new dict with specified keys with values that are not null."""
-    if keys:
-        return {k: dct[k] for k in keys if dct.get(k) is not None}
-    return {k: v for k, v in dct.items() if v is not None}
+__all__ = ['read_xsv', 'read_xsv_file', 'get_dialect_from_suffix']
 
 
-def read_xsv_file(filename: str,
+_FORMAT_DIALECT = {
+    'csv': 'excel',
+    'tsv': 'excel-tab',
+    '.csv': 'excel',
+    '.tsv': 'excel-tab',
+}
+
+
+def get_dialect_from_suffix(suffix: str) -> str:
+    """Returns `csv` module dialect given file ending.
+    
+    Examples:
+        >>> get_dialect_from_suffix('.csv')
+        'excel'
+        >>> get_dialect_from_suffix('.tsv')
+        'excel-tab'
+        >>> get_dialect_from_suffix('csv')
+        'excel'
+        >>> get_dialect_from_suffix('tsv')
+        'excel-tab'
+    """
+    try:
+        return _FORMAT_DIALECT[suffix]
+    except KeyError:
+        raise ValueError(f"Unrecognized file format: '{suffix}'") from None
+
+
+def read_xsv_file(filename: Union[str, Path],
                   dialect: str,
                   *,
                   encoding: str = None,
@@ -58,7 +78,7 @@ def read_xsv_file(filename: str,
         return list(read_xsv(file, dialect, **select_not_null(kwargs)))
 
 
-def read_xsv(file: TextIO,
+def read_xsv(file: IO,
              dialect: str,
              fieldnames: List[str] = None,
              first_line_is_column_header: bool = True,
@@ -89,6 +109,7 @@ def read_xsv(file: TextIO,
     """
     kwargs = {
         'fieldnames': fieldnames,
+        'dialect': dialect,
     }
 
     if not first_line_is_column_header and fieldnames is None:
@@ -99,10 +120,10 @@ def read_xsv(file: TextIO,
         num_cols = len(first_line.split(delimiter))
         kwargs['fieldnames'] = [f'Column {i + 1}' for i in range(num_cols)]
 
-    reader = csv.DictReader(file, **select_not_null(kwargs, 'fieldnames'))
-
     if first_line_is_column_header and fieldnames is not None:
         raise NotImplementedError("Changing column names isn't supported for simplicity")
+
+    reader = csv.DictReader(file, **select_not_null(kwargs, 'fieldnames', 'dialect'))
 
     stop = None
     if load_at_most is not None:

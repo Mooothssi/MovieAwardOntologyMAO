@@ -1,6 +1,6 @@
 # MAO Project
 
-Movie Awards Ontology.
+Movie Awards Ontology (MAO)
 
 ## Getting Started
 
