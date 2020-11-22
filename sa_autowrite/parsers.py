@@ -31,7 +31,7 @@ def get_data_lines(filename: Union[str, Path], encoding: str = 'utf-8') -> str:
         while not line.startswith('==='):
             line = file.readline()
         # now at data
-        while line != '':
+        while not line.startswith('---'):
             line = file.readline()
             yield line
     raise StopIteration
@@ -191,12 +191,19 @@ def parse_line_re(line: str) -> dict:
 
     Examples:
         See unittest.
+
+    Raises:
+        ValueError when line does not match regex
     """
-    m = re.match(r'\"?(?P<title>[^\"]*)\"? \((?P<year>(\d\d\d\d)|(\?\?\?\?))(/(?P<roman>[IVX]+))?\)( \((?P<type>\S*)\))?( {(?P<episode_info>.*)?})?\t+(?P<data>.*)\n?', line)
-    dct = m.groupdict()
+    m = re.match(r'(?P<title>.*) \((?P<year>(\d\d\d\d)|(\?\?\?\?))(/(?P<roman>[IVXLCDM]+))?\)( \((?P<type>\S*)\))?( {(?P<episode_info>.*)?})?\t+(?P<data>.*)\n?', line)
+    try:
+        dct = m.groupdict()
+    except AttributeError as e:
+        raise ValueError(f"line doesn't match regex: {line}") from e
+    title = dct.get('title')
     year = dct.get('year')
     out = {
-        'title': dct.get('title'),
+        'title': title[1:-1] if title[0] == title[-1] == '"' else title,
         'year': None if year == '????' else int(year),
         'roman': dct.get('roman'),
         'type': dct.get('type'),
@@ -205,23 +212,25 @@ def parse_line_re(line: str) -> dict:
     }
     return out
 
+
 def parse_imdb_list(filename: Union[str, Path], *, chunksize: int, encoding: str = None) -> pd.DataFrame:
     count = 0
     lst = []
     for line in get_data_lines(filename, encoding=encoding):
-        title, year, episode, episode_num, rest = parse_line_iter(line)
-        lst.append({
-            'title': title,
-            'year': year,
-            'episode': episode,
-            'episode_num': episode_num,
-            'rest': rest,
-        })
-        count += 1
-        if count % chunksize == 0:
-            yield pd.DataFrame(lst)
-            lst = []
-    raise StopIteration
+        try:
+            dct = parse_line_re(line)
+        except ValueError:
+            if line.startswith('---'):
+                # last line
+                return
+            else:
+                raise
+        else:
+            lst.append(dct)
+            count += 1
+            if count % chunksize == 0:
+                yield pd.DataFrame(lst)
+                lst = []
 
 MAP = {
     'csv': parse_csv,
