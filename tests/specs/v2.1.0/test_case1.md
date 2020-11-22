@@ -28,7 +28,7 @@ Title
 |----------|-------|
 | English  | pizza |
 
-Licence
+License
   - Creative Commons Attribution 3.0 (CC BY 3.0)
 
 # Class Hierarchy
@@ -55,7 +55,7 @@ Licence
 - TopDataProperty
 
 ## Annotation Property
-- licence
+- license
 - title
 
 # Classes
@@ -253,7 +253,7 @@ Comment
 |----------|---------|
 | English  | A name given to the resource |
 
-## licence
+## license
 ### Annotations
 Comment
 
