@@ -1,3 +1,12 @@
+version: v2.1.0
+
+iri: "http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#"
+
+prefixes:
+  dc: "http://purl.org/dc/elements/1.1/"
+  dcterms: "http://purl.org/dc/terms/"
+  mao: "http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#"
+
 annotations:
   dc:title:
     - Movie Awards Ontology^^rdfs:Literal@en
@@ -10,10 +19,10 @@ annotations:
       The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
       
       THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  owl:versionInfo:
+    - 1.0.0
   rdfs:label:
-    - Movie Awards Ontology^^xsd:string
-    - movie award^^xsd:string
-    - mao^^xsd:string
+    - Movie Awards Ontology^^rdfs:Literal@en
   rdfs:comment:
     - >
       An ontology about movies and awards^^rdfs:Literal@en
@@ -153,6 +162,8 @@ owl:Class:
     annotations:
       rdfs:label:
         - AwardCategory^^rdfs:Literal@en
+    objectProperty:
+      - forOccupation
     owl:disjointWith:
       - ContentRating
       - Genre
@@ -167,12 +178,7 @@ owl:Class:
         - AwardCeremony^^rdfs:Literal@en
     dataProperty:
       - dateHeld
-      - dayHeld
-      - dayScreened
       - hasEditionNumber
-      - monthHeld
-      - monthScreened
-      - yearHeld
       - yearScreened
     objectProperty:
       - follow
@@ -224,7 +230,8 @@ owl:Class:
   mao:Character:
     annotations:
       rdfs:comment:
-        - Character in film^^xsd:string
+        - >
+          Character in film^^xsd:string
       rdfs:label:
         - Character^^rdfs:Literal@en
     dataProperty:
@@ -387,6 +394,7 @@ owl:Class:
       - hasInitialReleaseYear
       - hasTitle
       - hasWikipediaLink
+      - isBritishFilm
     objectProperty:
       - hasAudience
       - hasContentRating
@@ -396,9 +404,9 @@ owl:Class:
       - hasLanguage
       - hasOriginalLanguage
       - hasPrequels
-      - hasRatingStatement
       - hasSequels
       - hasSubTitleInLanguage
+      - eligibleFor
     owl:disjointWith:
       - Agent
       - AggregateRating
@@ -493,7 +501,6 @@ owl:Class:
       - hasFilm
       - hasPart
       - hasProducer
-      - hasStudio
     rdfs:subClassOf:
       - Event
       - Situation
@@ -509,7 +516,7 @@ owl:Class:
       - Race
     owl:equivalentClass:
       owl:Restriction:
-        - {Female, Male, Non-binary}
+        - "{Female, Male, Non-binary}"
     rdfs:subClassOf:
       - Classification
   mao:Genre:
@@ -665,7 +672,8 @@ owl:Class:
   mao:Object:
     annotations:
       rdfs:comment:
-        - Any physical, social, or mental object, or a substance. Following DOLCE Full, objects are always participating in some event (at least their own life), and are spatially located.^^xsd:string
+        - >
+          Any physical, social, or mental object, or a substance. Following DOLCE Full, objects are always participating in some event (at least their own life), and are spatially located.^^xsd:string
       rdfs:label:
         - Object^^rdfs:Literal@en
     objectProperty:
@@ -745,7 +753,8 @@ owl:Class:
   mao:Person:
     annotations:
       rdfs:comment:
-        - Persons in commonsense intuition, which does not apparently distinguish between either natural or social persons.^^xsd:string
+        - >
+          Persons in commonsense intuition, which does not apparently distinguish between either natural or social persons.^^xsd:string
       rdfs:label:
         - Person^^rdfs:Literal@en
     dataProperty:
@@ -754,6 +763,7 @@ owl:Class:
       - actsIn
       - hasGender
       - hasOccupation
+      - eligibleFor
     owl:disjointWith:
       - Character
       - CharacterImportance
@@ -949,11 +959,13 @@ owl:AnnotationProperty:
   dc:title:
     annotations:
       rdfs:comment:
-        - A name given to the resource^^rdfs:Literal@en
+        - >
+          A name given to the resource^^rdfs:Literal@en
   dcterms:licence:
     annotations:
       rdfs:comment:
-        - A legal document giving official permission to do something with the resource.^^rdfs:Literal@en
+        - >
+          A legal document giving official permission to do something with the resource.^^rdfs:Literal@en
       rdfs:label:
         - License^^rdfs:Literal@en
 
@@ -964,7 +976,7 @@ owl:DataProperty:
       rdfs:label:
         - date held^^rdfs:Literal@en
     rdfs:range:
-      - xsd:dateTime
+      - xsd:date
   mao:dateReleased:
     annotations:
       rdfs:label:
@@ -973,18 +985,6 @@ owl:DataProperty:
       - owl:FunctionalProperty
     rdfs:range:
       - xsd:dateTime
-  mao:dayHeld:
-    annotations:
-      rdfs:label:
-        - day held^^rdfs:Literal@en
-    rdfs:range:
-      - xsd:integer
-  mao:dayScreened:
-    annotations:
-      rdfs:label:
-        - day screened^^rdfs:Literal@en
-    rdfs:range:
-      - xsd:integer
   mao:hasAggregateRating:
     annotations:
       rdfs:label:
@@ -1077,24 +1077,12 @@ owl:DataProperty:
         - has Wikipedia link^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
-  mao:monthHeld:
+  mao:isBritishFilm:
     annotations:
       rdfs:label:
-        - month held^^rdfs:Literal@en
+        - is British film^^rdfs:Literal@en
     rdfs:range:
-      - xsd:integer
-  mao:monthScreened:
-    annotations:
-      rdfs:label:
-        - month screened^^rdfs:Literal@en
-    rdfs:range:
-      - xsd:integer
-  mao:yearHeld:
-    annotations:
-      rdfs:label:
-        - year held^^rdfs:Literal@en
-    rdfs:range:
-      - xsd:integer
+      - xsd:boolean
   mao:yearScreened:
     annotations:
       rdfs:label:
@@ -1125,7 +1113,8 @@ owl:ObjectProperty:
   mao:coparticipatesWith:
     annotations:
       rdfs:comment:
-        - A relation between two objects participating in a same Event; e.g., 'Vitas and Jimmy are playing tennis'.^^xsd:string
+        - >
+          A relation between two objects participating in a same Event; e.g., 'Vitas and Jimmy are playing tennis'.^^xsd:string
       rdfs:label:
         - co-participates with^^rdfs:Literal@en
     rdfs:domain:
@@ -1136,10 +1125,8 @@ owl:ObjectProperty:
     annotations:
       rdfs:label:
         - eligible for^^rdfs:Literal@en
-    rdfs:domain:
-      - FilmEligibleForAward
     rdfs:range:
-      - AwardCategory
+      - Award
   mao:follow:
     annotations:
       rdfs:label:
@@ -1160,6 +1147,14 @@ owl:ObjectProperty:
       - NominationSituation
     rdfs:range:
       - Film
+  mao:forOccupation:
+    annotations:
+      rdfs:label:
+        - for occupation^^rdfs:Literal@en
+    rdfs:domain:
+      - AwardCategory
+    rdfs:range:
+      - Occupation
   mao:hasActor:
     annotations:
       rdfs:label:
@@ -1205,7 +1200,7 @@ owl:ObjectProperty:
       rdfs:label:
         - has cast^^rdfs:Literal@en
     rdfs:range:
-      - MovieCast
+      - FilmCast
   mao:hasCharacter:
     annotations:
       rdfs:label:
@@ -1342,12 +1337,6 @@ owl:ObjectProperty:
     annotations:
       rdfs:label:
         - has producer^^rdfs:Literal@en
-  mao:hasRatingStatement:
-    annotations:
-      rdfs:label:
-        - has rating statement^^rdfs:Literal@en
-    rdfs:range:
-      - AggregateRatingStatement
   mao:hasReviewAggregator:
     annotations:
       rdfs:label:
@@ -1394,7 +1383,8 @@ owl:ObjectProperty:
   mao:hasParticipant:
     annotations:
       rdfs:comment:
-        - A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.^^xsd:string
+        - >
+          A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.^^xsd:string
       rdfs:label:
         - has participant^^rdfs:Literal@en
     owl:inverseOf:
@@ -1466,7 +1456,8 @@ owl:ObjectProperty:
   mao:isPartOf:
     annotations:
       rdfs:comment:
-        - A relation between any entities, e.g.'brain is a part of the human body'.^^xsd:string
+        - >
+          A relation between any entities, e.g.'brain is a part of the human body'.^^xsd:string
       rdfs:label:
         - is part of^^rdfs:Literal@en
     owl:inverseOf:
@@ -1480,7 +1471,8 @@ owl:ObjectProperty:
   mao:isParticipantIn:
     annotations:
       rdfs:comment:
-        - A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.^^xsd:string
+        - >
+          A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.^^xsd:string
       rdfs:label:
         - is participant in^^rdfs:Literal@en
     owl:inverseOf:
@@ -1541,6 +1533,12 @@ owl:ObjectProperty:
       - Value
     rdfs:range:
       - Thing
+  mao:locatedIn:
+    annotations:
+      rdfs:label:
+        - located in^^rdfs:Literal@en
+    rdfs:range:
+      - Place
   mao:presentedBy:
     annotations:
       rdfs:label:
@@ -1607,3 +1605,96 @@ owl:ObjectProperty:
       - Requirement
     rdfs:subPropertyOf:
       - violates
+
+owl:Individual:
+  mao:Female:
+    rdf:type:
+      - Gender
+  mao:Male:
+    rdf:type:
+      - Gender
+  mao:Non-binary:
+    rdf:type:
+      - Gender
+  mao:BestFilm:
+    rdf:type:
+      - AwardCategory
+  mao:BestPicture:
+    rdf:type:
+      - AwardCategory
+  mao:BestDirector:
+    rdf:type:
+      - AwardCategory
+  mao:BestActor:
+    rdf:type:
+      - AwardCategory
+  mao:BestActress:
+    rdf:type:
+      - AwardCategory
+  mao:BestSupportingActor:
+    rdf:type:
+      - AwardCategory
+  mao:BestSupportingActress:
+    rdf:type:
+      - AwardCategory
+  mao:Newcomer:
+    rdf:type:
+      - AwardCategory
+  mao:BestScreenWriter:
+    rdf:type:
+      - AwardCategory
+  mao:BestCinematographer:
+    rdf:type:
+      - AwardCategory
+  mao:BestProductionDesigner:
+    rdf:type:
+      - AwardCategory
+  mao:BestComposer:
+    rdf:type:
+      - AwardCategory
+  mao:BestEditor:
+    rdf:type:
+      - AwardCategory
+  mao:BestVisualEffects:
+    rdf:type:
+      - AwardCategory
+  mao:BestCostumeDesigner:
+    rdf:type:
+      - AwardCategory
+  mao:OutstandingBritishFilm:
+    rdf:type:
+      - AwardCategory
+  mao:OutstandingDebut:
+    rdf:type:
+      - AwardCategory
+
+rules:
+  filmEligible:
+    rule:
+      - > 
+        mao:Film(?m) ^ mao:satisfiesCriterion(?m, ?c) ^ mao:isCriterionFor(?c, ?award) -> mao:eligibleFor(?f, ?award)
+    rdfs:comment: ""
+
+  satisfyFeatureLengthOscarCriterion:
+    rule:
+      - >
+        mao:FeatureLengthOscarCriterion(?c)^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasfeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, ?c)
+    rdfs:comment: ""
+
+  satisfyShortFilmOscarCriterion:
+    rule:
+      - >
+         mao:ShortFilmOscarCriterion(?c) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasfeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, ?c)
+    rdfs:comment: ""
+
+  satisfyFeatureLengthBaftaCriterion:
+    rule:
+      - >
+        mao:FeatureLengthBaftaCriterion(?c) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasfeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 70) -> mao:satisfiesCriterion(?m, ?c)
+    rdfs:comment: ""
+
+  categoryGiveTo:
+    rule:
+      - >
+        mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, ?ac) ^ mao:forOccupation(?ac, ?o) ^ mao:forFilm(?n, ?m) ^ mao:Film(?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasCrewMember(?fm, ?p) ^ mao:hasOccupation(?p, ?o) -> mao:isGivento(?n, ?p)
+    rdfs:comment: ""
