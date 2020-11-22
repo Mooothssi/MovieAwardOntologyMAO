@@ -27,8 +27,11 @@ film: OwlClass = converter.get_entity("mao:Film")
 parasite_film: OwlIndividual = OwlIndividual("mao:Parasite")
 parasite_film.be_type_of(film)
 
+# Save the results to an in-memory Ontology
+onto: Ontology = converter.export_to_ontology() 
 
-onto: Ontology = converter.export_to_ontology() # Save the results to an Ontology
+# Save the results to an OWL-file Ontology
+onto.save_to_file("<filename>")
 ```
 
 ### Loading an OWL Ontology
