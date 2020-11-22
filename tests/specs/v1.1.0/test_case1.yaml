@@ -1,0 +1,148 @@
+version: v1.1.0
+
+annotations:
+  rdfs:label:
+    - pizza^^xsd:string
+  dc:title:
+    - pizza^^rdfs:Literal@en
+  dcterms:licence:
+    - Creative Commons Attribution 3.0 (CC BY 3.0)^^xsd:string
+
+owl:Class:
+  owl:Thing: ""
+  pizza:Food:
+    annotations:
+      rdfs:label:
+        - Food^^rdfs:Literal@en
+    rdfs:subClassOf:
+      - owl:Thing
+  pizza:GorgonzolaTopping:
+    annotations:
+      rdfs:label:
+        - GorgonzolaTopping^^rdfs:Literal@en
+    owl:disjointWith:
+      - MozzarellaTopping
+      - TomatoTopping
+    rdfs:subClassOf:
+      - PizzaTopping
+  pizza:Margherita:
+    annotations:
+      rdfs:label:
+        - Margherita^^rdfs:Literal@en
+        - Margherita^^rdfs:Literal@pt
+    rdfs:subClassOf:
+      - NamedPizza
+      - hasTopping only (MozzarellaTopping or TomatoTopping)
+      - hasTopping some MozzarellaTopping
+      - hasTopping some TomatoTopping
+  pizza:MozzarellaTopping:
+    annotations:
+      rdfs:label:
+        - MozzarellaTopping^^rdfs:Literal@en
+    owl:disjointWith:
+      - GorgonzolaTopping
+      - TomatoTopping
+    rdfs:subClassOf:
+      - PizzaTopping
+  pizza:NamedPizza:
+    rdfs:subClassOf:
+      - Pizza
+  pizza:Pizza:
+    objectProperty:
+      - hasBase
+      - hasTopping
+    owl:disjointWith:
+      - PizzaBase
+      - PizzaTopping
+    owl:equivalentClass:
+      owl:Restriction:
+        - Food and (hasBase some PizzaBase)
+    rdfs:subClassOf:
+      - Food
+  pizza:PizzaBase:
+    annotations:
+      rdfs:comment:
+        - >
+          Pizza dough that used as a pizza base^^xsd:string
+    rdfs:label:
+      - PizzaBase^^rdfs:Literal@en
+    owl:disjointWith:
+      - Pizza
+      - PizzaTopping
+    rdfs:subClassOf:
+      - Food
+  pizza:PizzaTopping:
+    annotations:
+      rdfs:label:
+        - PizzaTopping^^rdfs:Literal@en
+      rdfs:comment:
+        - >
+          Topping of pizza^^xsd:string
+    owl:disjointWith:
+      - Pizza
+      - PizzaBase
+    rdfs:subClassOf:
+      - Food
+  pizza:Rosa:
+    annotations:
+      rdfs:label:
+        - Rosa^^rdfs:Literal@en
+        - Rosa^^rdfs:Literal@pt
+    rdfs:subClassOf:
+      - NamedPizza
+      - hasTopping only (GorgonzolaTopping or MozzarellaTopping or TomatoTopping)
+      - hasTopping some GorgonzolaTopping
+      - hasTopping some MozzarellaTopping
+      - hasTopping some TomatoTopping
+  pizza:Spiciness:
+    annotations:
+      rdfs:comment: 
+        - > 
+          Spiciness of Pizza^^xsd:string
+      rdfs:label:
+        - Spiciness^^rdfs:Literal@en
+        - Tempero^^rdfs:Literal@pt
+    rdfs:subClassOf:
+      - Thing
+  pizza:TomatoTopping:
+    annotations:
+      rdfs:label:
+        - TomatoTopping^^rdfs:Literal@en
+    owl:disjointWith:
+      - GorgonzolaTopping
+      - MozzarellaTopping
+    rdfs:subClassOf:
+      - PizzaTopping
+
+owl:AnnotationProperty:
+  dc:title:
+    annotations:
+      rdfs:comment:
+        - >
+          A name given to the resource^^rdfs:Literal@en
+  dcterms:licence:
+    annotations:
+      rdfs:comment:
+        - >
+          A legal document giving official permission to do something with the resource.^^rdfs:Literal@en
+      rdfs:label:
+        - License^^rdfs:Literal@en
+
+owl:ObjectProperty:
+  owl:topObjectProperty: ""
+  pizza:hasBase:
+    rdfs:domain:
+      - Pizza
+    rdfs:range:
+      - PizzaBase
+    rdfs:subPropertyOf:
+      - topObjectProperty
+  pizza:hasTopping:
+    rdf:type:
+      - owl:InverseFunctionalProperty
+    rdfs:domain:
+      - Pizza
+    rdfs:range:
+      - PizzaTopping
+    rdfs:subPropertyOf:
+      - topObjectProperty

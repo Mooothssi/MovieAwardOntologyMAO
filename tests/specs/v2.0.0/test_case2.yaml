@@ -1,27 +1,41 @@
+version: v2.0.0
+
+iri: "http://www.co-ode.org/roberts/family-tree.owl#"
+
+prefixes:
+  family: "http://www.co-ode.org/roberts/family-tree.owl#"
+  owl: "http://www.w3.org/2002/07/owl#"
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+
 owl:Class:
   owl:Thing: ""
   family:Ancestor:
-    objectProperty: isAncestorOf
+    objectProperty: 
+      - isAncestorOf
     owl:equivalentClass:
-      owl:Restriction:
-        - Person and (isAncestorOf some Person)
-    rdfs:subClassOf: Person
+      - Person and (isAncestorOf some Person)
+    rdfs:subClassOf: 
+      - Person
   family:Gender:
-    owl:disjointWith: Person
+    owl:disjointWith: 
+      - Person
     owl:equivalentClass:
-      owl:Restriction:
-        - "{Female, Male, Non-binary}"
-    rdfs:subClassOf: Thing
+      - "{Female, Male, Non-binary}"
+    rdfs:subClassOf: 
+      - Thing
   family:Parent:
     annotations:
       rdfs:label:
           - Parent^^rdfs:Literal@en
           - Parent^^xsd:string
-    objectProperty: isParentOf
+    objectProperty: 
+      - isParentOf
     owl:equivalentClass:
-      owl:Restriction:
-        - Person and (isParentOf some Person)
-    rdfs:subClassOf: Person
+      - Person and (isParentOf some Person)
+    rdfs:subClassOf: 
+      - Person
   family:Person:
     annotations:
       rdfs:label:
@@ -34,19 +48,21 @@ owl:Class:
       - hasParent
       - hasGender
     owl:equivalentClass:
-      owl:Restriction:
-        - (hasParent some Person) and (hasGender some Gender)
-    owl:disjointWith: Gender
-    rdfs:subClassOf: Thing
+      - (hasParent some Person) and (hasGender some Gender)
+    owl:disjointWith: 
+      - Gender
+    rdfs:subClassOf: 
+      - Thing
   family:Spouse:
     annotations:
       rdfs:label:
         - Spouse^^xsd:string
-    objectProperty: isSpouseOf
+    objectProperty: 
+      - isSpouseOf
     owl:equivalentClass:
-      owl:Restriction:
-        - Person and (isSpouseOf some Person)
-    rdfs:subClassOf: Person
+      - Person and (isSpouseOf some Person)
+    rdfs:subClassOf: 
+      - Person
 
 owl:DataProperty:
   owl:topDataProperty: ""
@@ -55,6 +71,8 @@ owl:DataProperty:
       - Person
     rdfs:range:
       - xsd:integer
+    rdfs:subPropertyOf:
+      - topDataProperty
     rdf:type:
       - owl:FunctionalProperty
   family:hasFamilyName:
@@ -76,6 +94,8 @@ owl:DataProperty:
       - Person
     rdfs:range:
       - xsd:string
+    rdfs:subPropertyOf:
+      - topDataProperty
   family:knownAs:
     rdfs:domain:
       - Person
@@ -93,7 +113,8 @@ owl:ObjectProperty:
       - owl:TransitiveProperty
     rdfs:domain:
       - Person
-    rdfs:range: Person
+    rdfs:range: 
+      - Person
     rdfs:subPropertyOf:
       - isBloodRelationOf
   family:hasAunt:
@@ -108,6 +129,8 @@ owl:ObjectProperty:
       - Person
     rdfs:range:
       - Gender
+    rdfs:subPropertyOf:
+      - topObjectProperty
     rdf:type:
       - owl:FunctionalProperty
   family:hasParent:
@@ -143,6 +166,8 @@ owl:ObjectProperty:
   family:isParentOf:
     owl:inverseOf:
       - hasParent
+    rdfs:subPropertyOf:
+      - topObjectProperty
   family:isSiblingOf:
     rdf:type:
       - owl:SymmetricProperty
@@ -163,14 +188,29 @@ owl:ObjectProperty:
     rdfs:subPropertyOf:
       - isInLawOf
 
+owl:Individual:
+  family:Female:
+    rdf:type:
+      - Gender
+  family:Male:
+    rdf:type:
+      - Gender
+  family:Non-binary:
+    rdf:type:
+      - Gender
+
 rdfs:Datatype:
   family:personAge:
     owl:equivalentClass:
       - xsd:integer[>=0, <=150]
     annotations:
       rdfs:comment:
-        - Age of person which is the integer between 0 to 150
-<<<<<<< HEAD
-=======
+        - >
+          Age of person which is the integer between 0 to 150^^rdfs:Literal@en
 
->>>>>>> 722081892927d59887c574dc497ba3a9d7cdd510
+rules:
+  aunt:
+    rule:
+      - >
+        family:Person(?p) ^ family:Person(?a) ^ family:Person(?c) ^ family:isSiblingOf(?p,?a) ^ family:isParentOf(?p,?c) ^ family:hasGender(?a,family:Female) -> family:hasAunt(?c,?a)
+    rdfs:comment: ""
