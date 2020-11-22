@@ -95,7 +95,11 @@ def insert_xsv_data(filename: Union[str, Path],
         for row in chunk.iterrows():
             line, series = row
             counter += 1
-            session.add(create_instance(model_cls, series, null_values=null_values, ignore_cols=ignore_cols))
+            if hasattr(model_cls, 'create_instance'):
+                instance = model_cls.create_instance(series)
+            else:
+                instance = create_instance(model_cls, series, null_values=null_values, ignore_cols=ignore_cols)
+            session.add(instance)
             if verbose > 1:
                 if counter % 5000 == 0:
                     print(f"Added till row {counter}")
