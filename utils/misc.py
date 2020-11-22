@@ -1,7 +1,7 @@
-from typing import Callable
 import warnings
 from functools import wraps
 from types import FunctionType
+from typing import Callable
 
 
 def depreciated(version: str, reason: str = None):

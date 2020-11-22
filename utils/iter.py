@@ -1,4 +1,4 @@
-from itertools import tee, chain
+from itertools import chain, tee
 from typing import Iterable, overload
 
 __all__ = ['pairwise', 'remove_consecs']
