@@ -177,6 +177,7 @@ dmypy.json
 
 # Large data files
 tests/data/large/
+*.sqlite3
 
 # Autogen folder
 autogen_db_models
