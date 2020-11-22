@@ -10,7 +10,7 @@ prefixes:
 annotations:
   dc:title:
     - Movie Awards Ontology^^rdfs:Literal@en
-  dcterms:licence:
+  dcterms:license:
     - >
       Copyright 2020 MAO Team
       
@@ -424,7 +424,7 @@ owl:Class:
       rdfs:label:
         - FeatureLengthBaftaCriterion^^rdfs:Literal@en
     rdfs:subClassOf:
-      - BaftaCriterio
+      - BaftaCriterion
   mao:FeatureLengthOscarCriterion:
     annotations:
       rdfs:label:
@@ -961,7 +961,7 @@ owl:AnnotationProperty:
       rdfs:comment:
         - >
           A name given to the resource^^rdfs:Literal@en
-  dcterms:licence:
+  dcterms:license:
     annotations:
       rdfs:comment:
         - >
@@ -1678,19 +1678,19 @@ rules:
   satisfyFeatureLengthOscarCriterion:
     rule:
       - >
-        mao:FeatureLengthOscarCriterion(?c)^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasfeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, ?c)
+        mao:FeatureLengthOscarCriterion(?c)^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, ?c)
     rdfs:comment: ""
 
   satisfyShortFilmOscarCriterion:
     rule:
       - >
-         mao:ShortFilmOscarCriterion(?c) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasfeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, ?c)
+         mao:ShortFilmOscarCriterion(?c) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, ?c)
     rdfs:comment: ""
 
   satisfyFeatureLengthBaftaCriterion:
     rule:
       - >
-        mao:FeatureLengthBaftaCriterion(?c) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasfeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 70) -> mao:satisfiesCriterion(?m, ?c)
+        mao:FeatureLengthBaftaCriterion(?c) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 70) -> mao:satisfiesCriterion(?m, ?c)
     rdfs:comment: ""
 
   categoryGiveTo:
