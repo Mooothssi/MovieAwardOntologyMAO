@@ -134,7 +134,7 @@ Disjoint with:
   - PizzaBase
   - PizzaTopping
 
-Equivalent tp:
+Equivalent to:
   - Food and (hasBase some PizzaBase)
 
 ### Object Properties
