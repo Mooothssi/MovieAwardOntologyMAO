@@ -13,6 +13,7 @@ class Certificates(Base):
     type = Column(String)
     episode_info = Column(String)
     certificate = Column(String)
+    country = Column(String)
     comment = Column(String)
 
     def __repr__(self):
@@ -20,7 +21,13 @@ class Certificates(Base):
 
     @classmethod
     def create_instance(cls, row: 'Series'):
-        cert, comment = row.get('data').split('\t')
+        data = row.get('data')
+        if '\t' in data:
+            first, rest = data.split('\t')
+        else:
+            first = data
+            rest = None
+        country, cert = first.split(':')
         data = {
             'title': row.get('title'),
             'year': row.get('year'),
@@ -28,7 +35,8 @@ class Certificates(Base):
             'type': row.get('type'),
             'episode_info': row.get('episode_info'),
             'certificate': cert,
-            'comment': comment,
+            'country': country,
+            'comment': rest,
         }
         return cls(**data)
 
