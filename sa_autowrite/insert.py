@@ -12,7 +12,7 @@ from sa_autowrite.create import _get_info_from_filename
 from sa_autowrite.hint import DeclaredModel
 from sa_autowrite.model import DEF_TYPE, TYPE_CONVERTER
 from utils.misc import depreciated
-from utils.str_utils import snake_case, snake_to_capwords
+from utils.str import snake_case, snake_to_capwords
 
 # def read_in_chunks(file_object, chunk_size=1024):
 #     """Lazy function (generator) to read a file piece by piece.

@@ -4,7 +4,7 @@ from typing import IO, Iterator, Tuple, Union
 
 import pandas as pd
 
-from utils.dict_utils import select_not_null
+from utils.dict import select_not_null
 from utils.misc import depreciated
 
 __all__ = ['parse_imdb_list']

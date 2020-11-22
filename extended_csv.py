@@ -3,7 +3,7 @@ from itertools import islice
 from pathlib import Path
 from typing import IO, Dict, Iterable, List, Union
 
-from utils.dict_utils import select_not_null
+from utils.dict import select_not_null
 
 __all__ = ['read_xsv', 'read_xsv_file', 'get_dialect_from_suffix']
 

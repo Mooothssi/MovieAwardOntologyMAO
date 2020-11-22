@@ -6,9 +6,9 @@ import pandas as pd
 
 from extended_csv import get_dialect_from_suffix, read_xsv_file
 from sa_autowrite.model import Table
-from utils.dict_utils import select_not_null
-from utils.io_utils import open_and_write_file
-from utils.str_utils import snake_case, snake_to_capwords
+from utils.dict import select_not_null
+from utils.io import open_and_write_file
+from utils.str import snake_case, snake_to_capwords
 
 __all__ = ['write_models', 'write_model', 'write_base']
 

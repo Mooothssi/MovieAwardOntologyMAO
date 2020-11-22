@@ -3,8 +3,8 @@ from typing import List
 
 from pandas import DataFrame, Series
 
-from utils.date_utils import parse_date
-from utils.str_utils import camel_to_snake
+from utils.date import parse_date
+from utils.str import camel_to_snake
 
 
 class Table:

@@ -1,11 +1,11 @@
 import unittest
 from doctest import DocTestSuite
 
-from utils import date_utils, dict_utils, str_utils
+from utils import date, dict, str
 
 
 def load_tests(loader: unittest.TestLoader, tests: unittest.TestSuite, ignore) -> unittest.TestSuite:
-    tests.addTests(map(DocTestSuite, (date_utils, dict_utils, str_utils)))
+    tests.addTests(map(DocTestSuite, (date, dict, str)))
     return tests
 
 

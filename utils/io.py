@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import IO, Union
 
-from utils.dict_utils import select_not_null
+from utils.dict import select_not_null
 
 
 def open_and_write_file(file: Union[IO, str, Path],
