@@ -39,4 +39,3 @@ class Certificates(Base):
             'comment': rest,
         }
         return cls(**data)
-
