@@ -24,7 +24,7 @@ class Countries(Base):
             'year': row.get('year'),
             'roman': row.get('roman'),
             'type': row.get('type'),
-            'episode_info ': row.get('episode_info'),
+            'episode_info': row.get('episode_info'),
             'country': row.get('data'),
         }
         return cls(**data)
