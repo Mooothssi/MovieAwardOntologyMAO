@@ -6,6 +6,7 @@ from .base import Base
 class ProductionCompanies(Base):
     __tablename__ = 'production_companies'
 
+    id = Column(Integer, primary_key=True)
     title = Column(String)
     year = Column(Integer)
     roman = Column(String)
@@ -14,5 +15,5 @@ class ProductionCompanies(Base):
     productionCompany = Column(String)
 
     def __repr__(self):
-        return f"<ProductionCompanies(title='{self.title}', year='{self.year}', roman='{self.roman}', type='{self.type}', episodeInfo='{self.episodeInfo}', productionCompany='{self.productionCompany}')>"
+        return f"<ProductionCompanies(id='{self.id}', title='{self.title}', year='{self.year}', roman='{self.roman}', type='{self.type}', episodeInfo='{self.episodeInfo}', productionCompany='{self.productionCompany}')>"
 
