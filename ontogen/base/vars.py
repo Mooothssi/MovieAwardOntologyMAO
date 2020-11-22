@@ -17,3 +17,4 @@ DATATYPE_MAP = {
     'xsd:date': date,
     'rdfs:Literal': str
 }
+ANNO_ATTRS = BUILTIN_NAMES

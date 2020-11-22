@@ -1,12 +1,15 @@
 from abc import ABCMeta, abstractmethod
 from typing import List, Type, Union
 
-from owlready2 import Thing, ClassConstruct
+from owlready2 import Thing, ClassConstruct, locstr
 from owlready2.prop import destroy_entity
 
 from .assertable import OwlAssertable
+from .namespaces import RDFS_SUBCLASS_OF
 from .ontology import Ontology
-from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME, BUILTIN_DATA_TYPES
+from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME, \
+    BUILTIN_DATA_TYPES, ANNO_ATTRS
+from ..utils.basics import assign_optional_dct
 
 
 def cleanup(onto: Ontology):
@@ -171,3 +174,15 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
         """Internally synchronizes with the `owlready2` representation of this Class
         """
         self.actualized_entity.equivalent_to = self.equivalent_classes
+
+    def _sanitize(self, val: list) -> list:
+        for i, ele in enumerate(val):
+            if isinstance(ele, locstr):
+                val[i] = f"{ele}^^xsd:string@{ele.lang}"
+        return list(val)
+
+    def to_dict(self) -> dict:
+        dct = {}
+        assign_optional_dct(dct, RDFS_SUBCLASS_OF, [name for name in self.parent_class_names])
+        assign_optional_dct(dct, 'annotations', {v: self._sanitize(self.properties_values[v][0]) for v in self.properties_values if v in ANNO_ATTRS})
+        return dct

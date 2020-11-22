@@ -4,16 +4,12 @@ from owlready2 import AnnotationProperty, DataProperty
 
 from ..base import Ontology, OwlEntity, BUILTIN_DATA_TYPES
 from ..wrapper import apply_classes_from
-from ..utils import ClassExpToConstruct
+from ontogen.utils.classexp import ClassExpToConstruct
 
 __all__ = ('OwlProperty', 'OwlAnnotationProperty',
            'OwlDataProperty', 'ENTITIES')
 
 ENTITIES: Dict[str, OwlEntity] = {}
-
-
-def absolutize_entity_name(name: str, fallback_prefix: str = "mao") -> str:
-    return name if ":" in name else f"{fallback_prefix}:{name}"
 
 
 def get_exp_constructor(onto: Ontology):

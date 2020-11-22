@@ -2,11 +2,11 @@ import datetime
 import re
 
 import owlready2
-from rdflib import Graph, Namespace, term
+from rdflib import Graph, Namespace
 from owlready2 import Imp, get_ontology, sync_reasoner_pellet
 from typing import Any, Dict, List, Optional, Union
 
-from .namespaces import lookup_iri, build_prefixes
+from .namespaces import lookup_iri, lookup_prefix
 from .assertable import OwlAssertable
 
 
@@ -61,7 +61,7 @@ class Ontology(OwlAssertable):
         Args:
             iri: A given IRI
         """
-        return lookup_iri(iri, self.prefixes)
+        return lookup_prefix(iri, self.prefixes)
 
     def update_base_prefix(self):
         self.base_prefix = self.lookup_prefix(self.base_iri)

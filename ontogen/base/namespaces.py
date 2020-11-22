@@ -17,12 +17,16 @@ WELL_KNOWN_IRIS = {v: k for k, v in WELL_KNOWN_PREFIXES.items()}
 WK_IRIS = frozenset(WELL_KNOWN_IRIS)
 
 OWL_CLASS = 'owl:Class'
+OWL_ANNOTATION_PROPERTY = 'owl:AnnotationProperty'
+OWL_OBJECT_PROPERTY = 'owl:ObjectProperty'
+OWL_DATA_PROPERTY = 'owl:DataProperty'
 OWL_EQUIVALENT_CLASS = 'owl:equivalentClass'
 OWL_RESTRICTION = 'owl:Restriction'
 OWL_INDIVIDUAL = 'owl:Individual'
 OWL_THING = 'owl:Thing'
 
 RDF_TYPE = 'rdf:type'
+RDFS_SUBCLASS_OF = 'rdfs:subclassOf'
 
 
 def lookup_iri(prefix: str, lookup: dict = None) -> str:

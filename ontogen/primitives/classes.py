@@ -4,10 +4,12 @@ from owlready2 import Thing, AllDisjoint
 
 from ontogen.base import OwlActualizable
 from ontogen.base.vars import GENERATED_TYPES
-from .base import OwlEntity, Ontology, ENTITIES, apply_classes_from, get_exp_constructor, check_restrictions, \
-    absolutize_entity_name
+from .base import OwlEntity, Ontology, ENTITIES, apply_classes_from, get_exp_constructor, check_restrictions
+from ontogen.utils.basics import absolutize_entity_name
 from ontogen.primitives.properties import OwlObjectProperty
+from ontogen.utils.basics import assign_optional_dct
 from ontogen.base.assertable import OwlAssertable
+from ..base.namespaces import RDF_TYPE
 
 
 class OwlClass(OwlEntity):
@@ -137,9 +139,16 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
         """
         if not (":" in property_name and len(property_name.split(":")) == 2):
             raise AssertionError("Please add prefix.")
+        # if property_name not in self.properties_values:
+        #     self.properties_values[property_name] = []
         self.properties_values[property_name] = value
 
     def _assert_restrictions(self, types: List[str], value):
         if not check_restrictions(self.prefix, types, value):
             raise AssertionError("The added value doesn't match the range restriction!")
 
+    def to_dict(self) -> dict:
+        dct = {}
+        assign_optional_dct(dct, RDF_TYPE, [cls.name for cls in self.onto_types])
+        assign_optional_dct(dct, 'relations', {prop: [self.properties_values[prop]] for prop in self.properties_values})
+        return dct

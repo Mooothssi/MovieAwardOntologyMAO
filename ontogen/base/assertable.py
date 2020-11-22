@@ -5,6 +5,7 @@ from owlready2 import locstr
 
 from .vars import BUILTIN_NAMES, DATATYPE_MAP, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
 from .vars import BUILTIN_DATA_TYPES
+from ontogen.utils.basics import absolutize_entity_name
 
 
 class OwlAssertable:
@@ -42,12 +43,16 @@ class OwlAssertable:
     def _prepare_assertion_value(self, set_prop: str, values: Union[List, Any]) -> object:
         return values
 
-    def _add_builtin_prop(self, builtin_name: str, value: BUILTIN_DATA_TYPES):
+    def add_builtin_prop(self, builtin_name: str, value: BUILTIN_DATA_TYPES):
         if value is None:
             return
         if builtin_name not in self.properties_values:
             self.properties_values[builtin_name] = []
         self.properties_values[builtin_name] += [value]
+
+    def retrieve_builtin_prop(self, builtin_name: str, obj, prefix):
+        val = getattr(obj, builtin_name)
+        self.add_builtin_prop(absolutize_entity_name(builtin_name, prefix), val)
 
     def add_label(self, value: BUILTIN_DATA_TYPES):
         """Add a rdfs:label AnnotationProperty with a given value of supported types
@@ -58,7 +63,7 @@ class OwlAssertable:
         Returns:
             None
         """
-        self._add_builtin_prop(LABEL_ENTITY_NAME, value)
+        self.add_builtin_prop(LABEL_ENTITY_NAME, value)
 
     def add_comment(self, value: BUILTIN_DATA_TYPES):
         """Add a rdfs:comment AnnotationProperty with a given value of supported types
@@ -69,4 +74,4 @@ class OwlAssertable:
         Returns:
             None
         """
-        self._add_builtin_prop(COMMENT_ENTITY_NAME, value)
+        self.add_builtin_prop(COMMENT_ENTITY_NAME, value)

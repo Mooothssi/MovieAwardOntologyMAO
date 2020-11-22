@@ -1,13 +1,17 @@
-from typing import Dict, List, Union, Tuple
+from typing import Any, Dict, List, Union, Tuple, Type
 import yaml
+from owlready2 import AnnotationPropertyClass, ClassValueList, DataPropertyClass, ObjectPropertyClass, Thing, IndividualValueList
 from semver import VersionInfo
 
 from ontogen.base import DATATYPE_MAP
-from ontogen.base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_INDIVIDUAL, RDF_TYPE, OWL_THING
+from ontogen.base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_INDIVIDUAL, RDF_TYPE, OWL_THING, \
+    OWL_CLASS, OWL_ANNOTATION_PROPERTY, OWL_OBJECT_PROPERTY, OWL_DATA_PROPERTY
 from ontogen.primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, LABEL_ENTITY_NAME, PROPERTY_ENTITIES,
                                 Ontology, OwlEntity, OwlClass, OwlDataProperty,
-                                OwlObjectProperty, absolutize_entity_name)
+                                OwlObjectProperty)
+from ontogen.utils.basics import absolutize_entity_name
 from ontogen.primitives.classes import OwlIndividual
+from ontogen.utils.basics import assign_optional_dct
 
 
 def get_equivalent_datatype(entity_name: str) -> Union[type, str]:
@@ -24,11 +28,11 @@ class OntogenConverter:
     def __init__(self):
         """Loads a file with the given name into a skeleton of an OWL ontology.
         """
-        self.entities: Dict[str, OwlEntity] = {}
+        self.entities: Dict[str, Union[OwlEntity, OwlIndividual]] = {}
         self.ontology = Ontology()
         self.ontology.name_from_prefix()
         self.file_version = ""
-        self.individuals: List[OwlIndividual] = []
+        self._individuals: List[OwlIndividual] = []
         self._missing_entities = set()
         self._dct = {}
 
@@ -86,6 +90,7 @@ class OntogenConverter:
                 obj.prefix = prefix
                 sub = classes[class_entity_name]
                 if isinstance(sub, dict):
+                    obj.parent_class_names = sub.get("rdfs:subClassOf", [])
                     if base == OwlObjectProperty:
                         obj._characteristics = sub.get(RDF_TYPE, [])
                         obj.range = sub.get("rdfs:range", [])
@@ -100,7 +105,6 @@ class OntogenConverter:
                     obj.add_comments(annotations.get(COMMENT_ENTITY_NAME, [None]))
                 if base == OwlClass:
                     obj._internal_dict = sub
-                    obj.parent_class_names = sub.get("rdfs:subClassOf", [])
                     obj.disjoint_class_names = sub.get("owl:disjointWith", [])
                     obj.equivalent_class_expressions = self._get_equivalent_classes(sub)
                     for prop in PROPERTY_ENTITIES:
@@ -122,9 +126,14 @@ class OntogenConverter:
         self.ontology.entities = self.entities
 
     def write_yaml(self, owl_filename: str, spec_filename: str):
-        onto = Ontology.load_from_file(owl_filename)
-        dct = {'version': self.SUPPORTED_VERSION, 'iri': onto.base_iri, 'prefixes': onto.iris,
+        self.ontology = Ontology.load_from_file(owl_filename)
+        onto = self.ontology
+        internals = self._from_internals_to_dict()
+        dct = {'version': self.SUPPORTED_VERSION,
+               'iri': onto.base_iri,
+               'prefixes': onto.iris,
                'annotations': onto.annotations}
+        dct.update(internals)
         with open(spec_filename, "w") as f:
             self._dct = yaml.dump(dct, f)
 
@@ -141,7 +150,7 @@ class OntogenConverter:
                 elif t == "relations":
                     for key in values:
                         ind.add_property_assertion(key, values[key])
-            self.individuals.append(ind)
+            self.individuals[individual] = ind
 
     @staticmethod
     def _get_equivalent_classes(sub_dict: dict) -> List:
@@ -210,3 +219,76 @@ class OntogenConverter:
         self._add_rules(self._dct)
         onto.actualize()
         return onto
+
+    @property
+    def individuals(self):
+        return self._get_with_type(OwlIndividual)
+
+    @property
+    def classes(self):
+        return self._get_with_type(OwlClass)
+
+    @property
+    def object_properties(self):
+        return self._get_with_type(OwlObjectProperty)
+
+    @property
+    def data_properties(self):
+        return self._get_with_type(OwlDataProperty)
+
+    def _resolve_annotations(self):
+        isinstance(a, AnnotationPropertyClass)
+
+    def _get_with_type(self, t: Type[Union[OwlEntity, OwlIndividual]]):
+        return {x: self.entities[x] for x in self.entities if isinstance(self.entities[x], t)}
+
+    def _from_internals_to_dict(self) -> dict:
+        onto = self.ontology
+        classes: List[Thing] = list(onto.implementation.classes())
+        props: List[Thing] = list(onto.implementation.properties())
+        individuals: List[Thing] = list(onto.implementation.individuals())
+        all_three = classes + props + individuals
+        for cls in classes:
+            p = onto.lookup_prefix(cls.namespace.base_iri)
+            e = absolutize_entity_name(cls.name, p)
+            c = OwlClass(e)
+            for p in Thing.get_properties(cls):
+                if isinstance(p, AnnotationPropertyClass):
+                    c.retrieve_builtin_prop(p.name, cls, self.ontology.lookup_prefix(p.namespace.base_iri))
+            c.parent_class_names = [absolutize_entity_name(s.name) for s in cls.is_a]
+            self.entities[e] = c
+        for prop in props:
+            p = onto.lookup_prefix(prop.namespace.base_iri)
+            e = absolutize_entity_name(prop.name, p)
+            if isinstance(prop, DataPropertyClass):
+                dp = OwlDataProperty(e)
+                self.entities[e] = dp
+                dp.parent_class_names = [absolutize_entity_name(s.name) for s in prop.is_a]
+            elif isinstance(prop, ObjectPropertyClass):
+                op = OwlObjectProperty(e)
+                self.entities[e] = op
+                op.parent_class_names = [absolutize_entity_name(s.name) for s in prop.is_a]
+        for individual in individuals:
+            p = onto.lookup_prefix(individual.namespace.base_iri)
+            e = absolutize_entity_name(individual.name, p)
+            i = OwlIndividual(e)
+            for x in dir(individual):
+                p = getattr(individual, x)
+                if isinstance(p, ClassValueList) or isinstance(p, IndividualValueList):
+                    e = absolutize_entity_name(x)
+                    for a in p:
+                        i.add_property_assertion(e, str(a))
+            for inst_of in individual.is_instance_of:
+                p = onto.lookup_prefix(inst_of.namespace.base_iri)
+                e2 = absolutize_entity_name(inst_of.name, p)
+                i.be_type_of(self.get_entity(e2))
+            self.entities[e] = i
+        dct = {}
+        assign_optional_dct(dct, OWL_CLASS, {abs_name: self.classes[abs_name].to_dict() for abs_name in self.classes})
+        assign_optional_dct(dct, OWL_OBJECT_PROPERTY, {abs_name: self.object_properties[abs_name].to_dict()
+                                                       for abs_name in self.object_properties})
+        assign_optional_dct(dct, OWL_DATA_PROPERTY, {abs_name: self.data_properties[abs_name].to_dict()
+                                                     for abs_name in self.data_properties})
+        assign_optional_dct(dct, OWL_INDIVIDUAL, {abs_name: self.individuals[abs_name].to_dict()
+                                                  for abs_name in self.individuals})
+        return dct

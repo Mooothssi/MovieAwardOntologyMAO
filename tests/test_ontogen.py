@@ -9,7 +9,7 @@ from ontogen.base import cleanup
 from ontogen.converter import OntogenConverter
 from ontogen.primitives import OwlClass, OwlObjectProperty, OwlAnnotationProperty
 from ontogen.primitives.datatypes import Datatype
-from ontogen.utils import ClassExpToConstruct
+from ontogen.utils.classexp import ClassExpToConstruct
 
 from settings import OWL_FILEPATH, OUT_PATH, OUT_FILENAME
 
@@ -35,7 +35,7 @@ class TestOntogen(TestCase):
         self.test_instantiation()
         self.parasite_film.add_property_assertion("mao:hasTitle", "Parasite")
         self.parasite_film.actualize(self.onto)
-        self.assertEqual("Parasite", self.parasite_film.properties_values["mao:hasTitle"])
+        self.assertEqual('Parasite', self.parasite_film.properties_values["mao:hasTitle"])
 
     def test_instantiation(self):
         film: OwlClass = OwlClass("mao:Film")
@@ -85,10 +85,9 @@ class TestOntogen(TestCase):
         self.converter.export_to_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
 
-    def test_write(self):
+    def test_write_yaml(self):
         c = OntogenConverter()
-        c.write_yaml(str(ROOT_DIR / Path(OUT_PATH) / OUT_FILENAME) # OWL_FILEPATH
-        , ROOT_DIR / "out/out.yaml")
+        c.write_yaml(str(ROOT_DIR / Path(OUT_PATH) / OUT_FILENAME), ROOT_DIR / "out/out.yaml")
 
     def tearDown(self):
         cleanup(self.onto)

@@ -13,3 +13,7 @@ BUILTIN_ENTITIES = {
     LABEL_ENTITY_NAME: OwlAnnotationProperty(LABEL_ENTITY_NAME),
     COMMENT_ENTITY_NAME: OwlAnnotationProperty(COMMENT_ENTITY_NAME)
 }
+
+OWL_READY_ENTITIES = {
+    'classes': OwlClass
+}
