@@ -12,7 +12,7 @@ annotations:
     - pizza^^xsd:string
   dc:title:
     - pizza^^rdfs:Literal@en
-  dcterms:licence:
+  dcterms:license:
     - Creative Commons Attribution 3.0 (CC BY 3.0)^^xsd:string
 
 owl:Class:
@@ -126,7 +126,7 @@ owl:AnnotationProperty:
       rdfs:comment:
         - >
           A name given to the resource^^rdfs:Literal@en
-  dcterms:licence:
+  dcterms:license:
     annotations:
       rdfs:comment:
         - >
