@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from typing import Union
 
 LABEL_ENTITY_NAME = "rdfs:label"
@@ -15,6 +15,7 @@ DATATYPE_MAP = {
     'xsd:float': float,
     'xsd:decimal': float,
     'xsd:date': date,
+    'xsd:dateTime': datetime,
     'rdfs:Literal': str
 }
 ANNO_ATTRS = BUILTIN_NAMES

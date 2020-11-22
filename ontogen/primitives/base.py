@@ -44,7 +44,12 @@ class OwlProperty(OwlEntity):
         self.actualize_assertions(p)
 
     def get_generated_range(self, onto: Ontology):
-        return [x._get_generated_class(onto) for x in self.range if isinstance(x, OwlEntity)]
+        lst = []
+        for x in self.range:
+            if isinstance(x, OwlEntity):
+                x = x._get_generated_class(onto)
+            lst.append(x)
+        return lst
 
 
 class OwlDataProperty(OwlProperty):
