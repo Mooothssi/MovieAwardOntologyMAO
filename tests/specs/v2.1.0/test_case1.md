@@ -230,6 +230,9 @@ Domain:
 Range:
   - PizzaBase
 
+Sub-properties:
+  - topObjectProperty
+
 ## hasTopping
 ### Description
 Domain:
@@ -238,6 +241,8 @@ Domain:
 Range:
   - PizzaTopping
 
+Sub-properties:
+  - topObjectProperty
 
 # Annotation Properties
 ## title

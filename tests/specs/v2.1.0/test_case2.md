@@ -172,6 +172,9 @@ Domain:
 Range:
   - Gender
 
+Sub-properties:
+  - topObjectProperty
+
 ## hasParent
 ### Description
 Domain:
