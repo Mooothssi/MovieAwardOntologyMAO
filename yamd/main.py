@@ -176,8 +176,9 @@ class Entity:
 
     @property
     def name(self) -> str:
-        prefix, *rest = self._name.split(':')
-        return ':'.join(rest)
+        # prefix, *rest = self._name.split(':')
+        # return ':'.join(rest)
+        return self._name
 
     @property
     def annotations(self) -> Optional[str]:
