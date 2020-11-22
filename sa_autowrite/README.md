@@ -60,7 +60,7 @@ Sample script to read data from IMDb .list files
 from sa_autowrite.parsers import parse_imdb_list
 from dirs import ROOT_DIR
 
-for file in ['countries.list', 'certificates.lit', 'production-companies.list']:
+for file in ['countries.list', 'certificates.list', 'production-companies.list']:
     for df in parse_imdb_list(ROOT_DIR / f'tests/data/large/imdb/{file}', encoding='windows-1252', chunksize=10000):
         print(df)
 ```

@@ -173,7 +173,7 @@ def insert_data(in_directory: Union[str, Path],
                     session.add_all(instances)
                     session.commit()
                     instances = []
-                    print(f'Commited {counter}')
+                    print(f'Committed {counter}')
             if instances:
                 session.add_all(instances)
                 session.commit()
