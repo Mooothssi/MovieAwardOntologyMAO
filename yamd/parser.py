@@ -59,10 +59,14 @@ def trim_dict(dct):
     {'A': {'B': {'C': 'D'}, 'E': 'F'}}
     >>> trim_dict({'A': {'B': "C\\n"}})
     {'A': {'B': 'C'}}
+    >>> trim_dict({'A': {'B': ["C^^xsd:string\\n"]}})
+    {'A': {'B': ['C^^xsd:string']}}
     """
     for key, value in dct.items():
         if isinstance(value, dict):
             dct[key] = trim_dict(value)
         elif isinstance(value, str):
-            dct[key] = value.strip()
+            dct[key] = value.strip('\n')
+        elif isinstance(value, list):
+            dct[key] = [v.strip('\n') for v in value]
     return dct
