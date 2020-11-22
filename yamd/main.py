@@ -287,7 +287,7 @@ class IRIPrefix(Entity):
             '',
             '# Prefixes',
         ]
-        print(self.data_prefix.items())
+        # print(self.data_prefix.items())
         for prop, value in self.data_prefix.items():
             heading_prop = f'## {prop}'
             lines.append('\n'.join([heading_prop, value, '']))
@@ -367,6 +367,19 @@ class AnnotationProperty(Property):
                 raise
 
 
+class Rule(Entity):
+    def __init__(self, data: dict):
+        self.data = data
+
+    def as_markdown(self) -> str:
+        lines = []
+        for name, value in self.data.items():
+            lines.append(f'## {name}')
+            code_block = '\n'.join(['```', value['rule'][0], '```'])
+            lines.append(code_block)
+        return '\n'.join(lines)
+
+
 def write_classes(classes: dict) -> List[str]:
     lines = [
         '# Class',
@@ -389,7 +402,7 @@ def convert_v1(data: dict, *, auto_include_thing: bool = True) -> List[str]:
         ('Classes', 'owl:Class', Class),
         ('Object Properties', 'owl:ObjectProperty', ObjectProperty),
         ('Data Properties', 'owl:DataProperty', DataProperty),
-        ('Annotation Properties', 'owl:AnnotationProperty', AnnotationProperty),
+        # ('Annotation Properties', 'owl:AnnotationProperty', AnnotationProperty),
         # ('Rules', 'owl:Rule?', Rule?),
     ]
     for section, dict_section, cls in sections:
@@ -444,7 +457,7 @@ def convert_v2(data: dict, *, auto_include_thing: bool = True) -> List[str]:
         ('Object Properties', 'owl:ObjectProperty', ObjectProperty),
         ('Data Properties', 'owl:DataProperty', DataProperty),
         ('Annotation Properties', 'owl:AnnotationProperty', AnnotationProperty),
-        # ('Rules', 'owl:Rule?', Rule?),
+        # ('Individuals', 'owl:Individual', Individual),
     ]
     for section, dict_section, cls in sections:
         if dict_section not in data:
@@ -453,6 +466,11 @@ def convert_v2(data: dict, *, auto_include_thing: bool = True) -> List[str]:
         lines += [cls(p, d, auto_include_thing=auto_include_thing).as_markdown() for p, d in data[dict_section].items()]
         lines += ['']
         text_sections.append('\n'.join(lines))
+
+    if 'rules' in data:
+        lines = ['# Rules', Rule(data['rules']).as_markdown(), '']
+        text_sections.append('\n'.join(lines))
+
     liens = []
     t = Node('Thing').show_graph()
     if t:
@@ -483,8 +501,7 @@ def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
     with open(owlyaml_file, 'r', encoding='utf-8') as yamlfile:
         data = yaml.load(yamlfile, yaml.FullLoader)
         data = trim_dict(data)
-    #     print(str(data))
-    # print(data['version'])
+        print(str(data))
 
     if 'version' not in data:
         # first version
@@ -503,4 +520,4 @@ if __name__ == '__main__':
     import doctest
 
     doctest.testmod()
-    convert_owl_yaml_to_md(ROOT_DIR / 'tests/specs/v2.1.0/test_case1.yaml', ROOT_DIR / 'yamd/test.md')
+    convert_owl_yaml_to_md(ROOT_DIR / 'tests/specs/v2.1.0/test_case2.yaml', ROOT_DIR / 'yamd/test.md')
