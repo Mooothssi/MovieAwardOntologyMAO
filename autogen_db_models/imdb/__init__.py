@@ -6,5 +6,8 @@ from .title_crew import TitleCrew
 from .title_episode import TitleEpisode
 from .title_principals import TitlePrincipals
 from .title_ratings import TitleRatings
+from .certificates import Certificates
+from .countries import Countries
+from .production_companies import ProductionCompanies
 
-models = [NameBasics, TitleAkas, TitleAkas, TitleBasics, TitleBasics, TitleCrew, TitleEpisode, TitlePrincipals, TitleRatings]
+models = [NameBasics, TitleAkas, TitleAkas, TitleBasics, TitleBasics, TitleCrew, TitleEpisode, TitlePrincipals, TitleRatings, Certificates, Countries, ProductionCompanies]

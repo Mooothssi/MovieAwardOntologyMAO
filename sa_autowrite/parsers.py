@@ -218,7 +218,7 @@ def parse_line_re(line: str) -> dict:
     return out
 
 
-def parse_imdb_list(filename: Union[str, Path], *, chunksize: int, encoding: str = None) -> pd.DataFrame:
+def parse_imdb_list(filename: Union[str, Path], *, chunksize: int, encoding: str = 'windows-1252') -> pd.DataFrame:
     count = 0
     lst = []
     for line in get_data_lines(filename, encoding=encoding):

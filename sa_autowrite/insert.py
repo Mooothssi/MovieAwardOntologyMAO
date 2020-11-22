@@ -1,6 +1,6 @@
 from importlib import import_module
 from pathlib import Path
-from typing import IO, Any, Callable, Dict, List, Type, Union
+from typing import Any, Callable, Dict, Iterator, List, Tuple, Type, Union
 
 import pandas as pd
 from sqlalchemy.sql.sqltypes import TypeEngine
@@ -11,6 +11,7 @@ from extended_csv import get_dialect_from_suffix
 from sa_autowrite.create import _get_info_from_filename
 from sa_autowrite.hint import DeclaredModel
 from sa_autowrite.model import DEF_TYPE, TYPE_CONVERTER
+from sa_autowrite.parsers import parse_imdb_list
 from utils.misc import depreciated
 from utils.str import snake_case, snake_to_capwords
 
@@ -56,21 +57,16 @@ def create_instance(cls: Type[DeclaredModel], row: pd.Series,
     return cls(**data)
 
 
-def insert_xsv_data(filename: Union[str, Path],
-                    model_cls: Type[DeclaredModel],
-                    *,
-                    chunksize: int,
-                    null_values: List[str],
-                    ignore_cols: List[str],
-                    encoding: str = None,
-                    skip_rows_data: int = None,
-                    read_lines_data: int = None,
-                    verbose: int = 2
-                    ):
-    filename = Path(filename)
-
+def _clean_insert_data(*,
+                       filename: Union[str, Path],
+                       chunksize: int,
+                       encoding: str,
+                       skip_rows_data: int,
+                       read_lines_data: int,
+                       default_encoding: str,
+                       ) -> Tuple[Path, str, int, int]:
     if encoding is None:
-        encoding = 'utf-8'
+        encoding = default_encoding
     if skip_rows_data is None:
         skip_rows_data = 1
     if skip_rows_data % chunksize != 0:
@@ -79,12 +75,21 @@ def insert_xsv_data(filename: Union[str, Path],
         if read_lines_data % chunksize != 0:
             raise ValueError(f"read_lines_data must be a multiple of chunk_size")
         read_until = skip_rows_data + read_lines_data
+    else:
+        read_until = None
 
-    info = _get_info_from_filename(filename.name)
-    dialect = get_dialect_from_suffix(info['format'])
-    print(f"Opening {filename.name}")
+    return Path(filename), encoding, skip_rows_data, read_until
 
-    reader = pd.read_csv(filename, encoding=encoding, dialect=dialect, chunksize=chunksize)
+
+def _handle_reader(reader: Iterator[pd.DataFrame],
+                   model_cls: Type[DeclaredModel],
+                   *,
+                   chunksize: int,
+                   null_values: List[str],
+                   ignore_cols: List[str],
+                   skip_rows_data: int,
+                   read_until: int,
+                   verbose: int):
     session = Session()
     counter = 0
     for chunk in reader:
@@ -106,8 +111,64 @@ def insert_xsv_data(filename: Union[str, Path],
         session.commit()
         if verbose > 0:
             print(f'Committed till row {counter}')
-        if read_lines_data is not None and counter == read_until:
+        if read_until is not None and counter == read_until:
             break
+
+
+def insert_xsv_data(filename: Union[str, Path],
+                    model_cls: Type[DeclaredModel],
+                    *,
+                    chunksize: int,
+                    null_values: List[str],
+                    ignore_cols: List[str],
+                    encoding: str = None,
+                    skip_rows_data: int = None,
+                    read_lines_data: int = None,
+                    verbose: int = 2
+                    ) -> None:
+    filename, encoding, skip_rows_data, read_until = _clean_insert_data(filename=filename,
+                                                                        chunksize=chunksize,
+                                                                        encoding=encoding,
+                                                                        skip_rows_data=skip_rows_data,
+                                                                        read_lines_data=read_lines_data,
+                                                                        default_encoding='utf-8')
+    info = _get_info_from_filename(filename.name)
+    dialect = get_dialect_from_suffix(info['format'])
+    print(f"Opening {filename.name}")
+
+    reader = pd.read_csv(filename, encoding=encoding, dialect=dialect, chunksize=chunksize)
+
+    _handle_reader(reader, model_cls,
+                   chunksize=chunksize,
+                   null_values=null_values, ignore_cols=ignore_cols,
+                   skip_rows_data=skip_rows_data, read_until=read_until,
+                   verbose=verbose)
+
+
+def insert_list_data(filename: Union[str, Path],
+                     model_cls: Type[DeclaredModel],
+                     *,
+                     chunksize: int,
+                     ignore_cols: List[str],
+                     encoding: str = None,
+                     skip_rows_data: int = None,
+                     read_lines_data: int = None,
+                     verbose: int = 2
+                     ) -> None:
+    filename, encoding, skip_rows_data, read_until = _clean_insert_data(filename=filename,
+                                                                        chunksize=chunksize,
+                                                                        encoding=encoding,
+                                                                        skip_rows_data=skip_rows_data,
+                                                                        read_lines_data=read_lines_data,
+                                                                        default_encoding='windows-1252')
+
+    reader = parse_imdb_list(filename, chunksize=chunksize, encoding=encoding)
+
+    _handle_reader(reader, model_cls,
+                   chunksize=chunksize,
+                   null_values=[], ignore_cols=ignore_cols,
+                   skip_rows_data=skip_rows_data, read_until=read_until,
+                   verbose=verbose)
 
 
 @depreciated('n/a')
