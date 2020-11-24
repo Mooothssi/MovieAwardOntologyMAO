@@ -115,7 +115,7 @@ class OntogenConverter:
                             prop_qualifier = absolutize_entity_name(prop_name)
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
-                self.entities[class_entity_name] = obj
+                self.entities[absolutize_entity_name(class_entity_name)] = obj
         self._add_individuals(root)
         if "annotations" in root:
             anno = root["annotations"]
