@@ -10,7 +10,8 @@ WELL_KNOWN_PREFIXES = {
     'dcterms': 'http://purl.org/dc/terms/',
     'dc': 'http://purl.org/dc/elements/1.1/',
     'skos': 'http://www.w3.org/2004/02/skos/core#',
-    'xml': 'http://www.w3.org/XML/1998/namespace'
+    'xml': 'http://www.w3.org/XML/1998/namespace',
+    'foaf': 'http://xmlns.com/foaf/0.1/'
 }
 S_WK_P = frozenset(WELL_KNOWN_PREFIXES.items())
 WELL_KNOWN_IRIS = {v: k for k, v in WELL_KNOWN_PREFIXES.items()}

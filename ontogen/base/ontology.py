@@ -128,7 +128,6 @@ class Ontology(OwlAssertable):
             if len(self.iris) > 0:
                 for iri in self.iris:
                     g.namespace_manager.bind(iri, Namespace(self.iris[iri]))
-                print(list(g.namespace_manager.namespaces()))
             with open(filename, mode="wb") as file:
                 file.write(g.serialize(format=file_format))
 
@@ -146,7 +145,6 @@ class Ontology(OwlAssertable):
         if comment is not None:
             rule.comment = comment
         rule.set_as_rule(swrl_rule.replace(f"swrlb:", "").replace(f"{self.base_name}:", "").replace("^ ", ", "))
-        print(rule)
 
     @property
     def implementation(self) -> owlready2.Ontology:

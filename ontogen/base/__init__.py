@@ -186,3 +186,6 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
         assign_optional_dct(dct, RDFS_SUBCLASS_OF, [name for name in self.parent_class_names])
         assign_optional_dct(dct, 'annotations', {v: self._sanitize(self.properties_values[v][0]) for v in self.properties_values if v in ANNO_ATTRS})
         return dct
+
+    def __repr__(self):
+        return f"{self.__class__.name}<{self.prefix}:{self.name}>"
