@@ -49,7 +49,9 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
     def __init__(self, entity_qualifier: str):
         super().__init__()
         self.properties_values = {}
+        self._use_default_prefix = False
         if ":" not in entity_qualifier:
+            self._use_default_prefix = True
             raise AssertionError("Must include a prefix")
         pre, n = entity_qualifier.split(":")
         self.prefix = pre
@@ -63,13 +65,16 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
         self.equivalent_class_expressions = []
 
     @classmethod
-    def get_entity_name(cls) -> str:
+    def get_owl_type_entity_name(cls) -> str:
         return f"{cls.prefix}:{cls.name}"
 
-    def get_full_iri(self, onto: Ontology):
+    @property
+    def name_with_prefix(self) -> str:
+        return f"{self.prefix}:{self.name}"
+
+    def get_iri(self, onto: Ontology):
         return f"{onto.lookup_iri(self.prefix)}{self.name}"
 
-    @abstractmethod
     def actualize(self, onto: Ontology) -> 'OwlEntity':
         """Makes the entity concrete (saved) in a given Ontology
 
@@ -78,7 +83,8 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
 
         Returns: An actualized OwlEntity
         """
-        raise NotImplementedError
+        if self._use_default_prefix:
+            self.prefix = onto.base_prefix
 
     def add_superclass(self, superclass: Union["OwlEntity", "str"]):
         """Adds a superclass of this Class.
@@ -164,7 +170,7 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
             if default:
                 GENERATED_TYPES[self.name] = type(self.name, (self._parent_class,), attrs)
             if onto.base_prefix != self.prefix:
-                p = self.get_full_iri(onto)
+                p = self.get_iri(onto)
                 self.actualized_entity.iri = p
             self.actualize_assertions(GENERATED_TYPES[self.name])
             self._sync_description()
@@ -188,4 +194,4 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
         return dct
 
     def __repr__(self):
-        return f"{self.__class__.name}<{self.prefix}:{self.name}>"
+        return f"{self.__class__.name}<{self.name_with_prefix}>"

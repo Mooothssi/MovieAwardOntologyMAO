@@ -77,7 +77,7 @@ class OntogenConverter:
 
         for base in BASE_ENTITIES:
             cls = base
-            q = base.get_entity_name()
+            q = base.get_owl_type_entity_name()
             if q not in root:
                 continue
             classes = root[q]
@@ -216,7 +216,7 @@ class OntogenConverter:
         onto.create()
         for entity in self.entities.values():
             entity.actualize(onto)
-        # self._add_rules(self._dct)
+        self._add_rules(self._dct)
         onto.actualize()
         return onto
 

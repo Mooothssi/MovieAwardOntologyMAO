@@ -39,6 +39,7 @@ class OwlClass(OwlEntity):
         Args:
             onto: a given Ontology
         """
+        super().actualize(onto)
         apply_classes_from(onto)
         for i in self.individuals:
             i.actualize_imp(onto)
@@ -71,11 +72,12 @@ class OwlThing(OwlClass):
         return self._internal_imp_instance
 
 
-class OwlIndividual(OwlActualizable, OwlAssertable):
+class OwlIndividual(OwlEntity, OwlAssertable):
     """
     An Individual of Ontology classes
     """
     def __init__(self, name: str):
+        super(OwlIndividual, self).__init__(name)
         self.name = name
         self.onto_types: List[OwlClass] = []
         self.defined_properties: Dict[str, "OwlProperty" or None] = dict(ENTITIES)
@@ -94,6 +96,7 @@ class OwlIndividual(OwlActualizable, OwlAssertable):
         self.onto_types.append(cls)
 
     def actualize(self, onto: Ontology):
+        super().actualize(onto)
         self.onto_types[0].actualize(onto)
 
     def _get_entity(self, onto: Ontology, relative_name: str) -> object or None:

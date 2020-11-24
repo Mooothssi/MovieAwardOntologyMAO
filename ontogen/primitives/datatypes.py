@@ -11,8 +11,8 @@ class Datatype(OwlEntity):
         self._data_type: Type = None
 
     def actualize(self, onto: Ontology) -> 'Datatype':
-        declare_datatype(self.data_type, self.get_full_iri(onto), self.to_this, self.to_str)
-        _universal_abbrev_datatype(type(self), self.to_this, self.to_str, self.get_full_iri(onto))
+        declare_datatype(self.data_type, self.get_iri(onto), self.to_this, self.to_str)
+        _universal_abbrev_datatype(type(self), self.to_this, self.to_str, self.get_iri(onto))
         return self
 
     @property

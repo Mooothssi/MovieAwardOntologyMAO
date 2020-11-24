@@ -39,6 +39,7 @@ class OwlProperty(OwlEntity):
         """
         if self.name in ["topObjectProperty", "topDataProperty"]:
             return
+        super().actualize(onto)
         apply_classes_from(onto)
         p = self._get_generated_class(onto, range=self.get_generated_range(onto))
         self.actualize_assertions(p)
