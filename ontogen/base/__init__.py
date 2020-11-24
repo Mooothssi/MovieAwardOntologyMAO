@@ -1,15 +1,25 @@
 from abc import ABCMeta, abstractmethod
-from typing import List, Type, Union
+from typing import List, Type, Union, Dict, Any
 
 from owlready2 import Thing, ClassConstruct, locstr
 from owlready2.prop import destroy_entity
 
 from .assertable import OwlAssertable
-from .namespaces import RDFS_SUBCLASS_OF
+from .namespaces import RDFS_SUBCLASS_OF, ANNOTATIONS_KEY, OWL_DISJOINT_WITH, OWL_EQUIVALENT_CLASS, OWL_RESTRICTION
 from .ontology import Ontology
 from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME, \
     BUILTIN_DATA_TYPES, ANNO_ATTRS
 from ..utils.basics import assign_optional_dct
+
+
+def _get_equivalent_classes(sub_dict: dict) -> List:
+    if OWL_EQUIVALENT_CLASS not in sub_dict:
+        return []
+    u = sub_dict[OWL_EQUIVALENT_CLASS]
+    if isinstance(u, dict):
+        return u.get(OWL_RESTRICTION, [])
+    else:
+        return u
 
 
 def cleanup(onto: Ontology):
@@ -48,6 +58,7 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
 
     def __init__(self, entity_qualifier: str):
         super().__init__()
+        self.disjoint_class_names: List[str] = []
         self.properties_values = {}
         self._use_default_prefix = False
         if ":" not in entity_qualifier:
@@ -192,6 +203,12 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
         assign_optional_dct(dct, RDFS_SUBCLASS_OF, [name for name in self.parent_class_names])
         assign_optional_dct(dct, 'annotations', {v: self._sanitize(self.properties_values[v][0]) for v in self.properties_values if v in ANNO_ATTRS})
         return dct
+
+    def from_dict(self, sub: Dict[str, Any]):
+        self.disjoint_class_names = sub.get(OWL_DISJOINT_WITH, [])
+        self.parent_class_names = sub.get(RDFS_SUBCLASS_OF, [])
+        self.equivalent_class_expressions = _get_equivalent_classes(sub)
+        super(OwlEntity, self).from_dict(sub)
 
     def __repr__(self):
         return f"{self.__class__.name}<{self.name_with_prefix}>"

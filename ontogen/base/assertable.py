@@ -3,9 +3,10 @@ from typing import Union, List, Any
 
 from owlready2 import locstr
 
-from .vars import BUILTIN_NAMES, DATATYPE_MAP, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
+from .namespaces import ANNOTATIONS_KEY
+from .vars import DATATYPE_MAP, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
 from .vars import BUILTIN_DATA_TYPES
-from ontogen.utils.basics import absolutize_entity_name
+from ontogen.utils.basics import absolutize_entity_name, shorten_entity_name
 
 
 class OwlAssertable:
@@ -19,7 +20,8 @@ class OwlAssertable:
                 val = [self._prepare_assertion_value(set_prop, val) for val in v]
             else:
                 val = self._prepare_assertion_value(set_prop, v)
-            if set_prop in BUILTIN_NAMES and isinstance(val, list):
+            if isinstance(val, list):
+                # set_prop in BUILTIN_NAMES and
                 for i, v in enumerate(val):
                     v: str
                     if "^^" in v or "@" in v:
@@ -31,7 +33,7 @@ class OwlAssertable:
                             v, data_type = (split_values[4], split_values[5])
                             val[i] = DATATYPE_MAP[data_type](v)
             if ":" in set_prop:
-                set_prop = set_prop.split(":")[1]
+                set_prop = shorten_entity_name(set_prop)
             try:
                 if isinstance(val, list):
                     setattr(inst, set_prop, val)
@@ -43,16 +45,27 @@ class OwlAssertable:
     def _prepare_assertion_value(self, set_prop: str, values: Union[List, Any]) -> object:
         return values
 
-    def add_builtin_prop(self, builtin_name: str, value: BUILTIN_DATA_TYPES):
+    def add_property_assertion(self, property_name: str, value: BUILTIN_DATA_TYPES):
+        """Adds a property assertion to an ``OwlAssertable`` entity
+
+        Args:
+            property_name: The name of a given property
+            value:  A given value to be associated with a property with the given name
+
+        Returns:
+            None
+        """
         if value is None:
             return
-        if builtin_name not in self.properties_values:
-            self.properties_values[builtin_name] = []
-        self.properties_values[builtin_name] += [value]
+        if not (":" in property_name and len(property_name.split(":")) == 2):
+            raise AssertionError("Please add prefix.")
+        if property_name not in self.properties_values:
+            self.properties_values[property_name] = []
+        self.properties_values[property_name] += [value]
 
-    def retrieve_builtin_prop(self, builtin_name: str, obj, prefix):
+    def retrieve_property(self, builtin_name: str, obj, prefix):
         val = getattr(obj, builtin_name)
-        self.add_builtin_prop(absolutize_entity_name(builtin_name, prefix), val)
+        self.add_property_assertion(absolutize_entity_name(builtin_name, prefix), val)
 
     def add_label(self, value: BUILTIN_DATA_TYPES):
         """Add a rdfs:label AnnotationProperty with a given value of supported types
@@ -63,7 +76,7 @@ class OwlAssertable:
         Returns:
             None
         """
-        self.add_builtin_prop(LABEL_ENTITY_NAME, value)
+        self.add_property_assertion(LABEL_ENTITY_NAME, value)
 
     def add_comment(self, value: BUILTIN_DATA_TYPES):
         """Add a rdfs:comment AnnotationProperty with a given value of supported types
@@ -74,4 +87,10 @@ class OwlAssertable:
         Returns:
             None
         """
-        self.add_builtin_prop(COMMENT_ENTITY_NAME, value)
+        self.add_property_assertion(COMMENT_ENTITY_NAME, value)
+
+    def from_dict(self, sub: dict):
+        annotations = sub.get(ANNOTATIONS_KEY, {})
+        for prop_name, prop_values in annotations.items():
+            for value in prop_values:
+                self.add_property_assertion(prop_name, value)

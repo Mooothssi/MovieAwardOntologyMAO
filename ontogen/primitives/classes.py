@@ -25,7 +25,6 @@ class OwlClass(OwlEntity):
     parent_name = "BaseOntologyClass"
     _parent_class = Thing
     parent_class_names: List[str] = []
-    disjoint_class_names: List[str] = []
 
     def __init__(self, entity_name: str):
         super(OwlClass, self).__init__(entity_qualifier=entity_name)
@@ -129,22 +128,6 @@ class OwlIndividual(OwlEntity, OwlAssertable):
                 if n in GENERATED_TYPES:
                     return GENERATED_TYPES[n]
         return val
-
-    def add_property_assertion(self, property_name: str, value):
-        """Adds a property assertion with a given value
-
-        Args:
-            property_name: A given name
-            value: A given value to be associated with a property with the given name
-
-        Returns:
-            None
-        """
-        if not (":" in property_name and len(property_name.split(":")) == 2):
-            raise AssertionError("Please add prefix.")
-        # if property_name not in self.properties_values:
-        #     self.properties_values[property_name] = []
-        self.properties_values[property_name] = value
 
     def _assert_restrictions(self, types: List[str], value):
         if not check_restrictions(self.prefix, types, value):

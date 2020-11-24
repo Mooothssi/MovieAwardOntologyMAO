@@ -9,13 +9,9 @@ from ontogen.base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_I
 from ontogen.primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, LABEL_ENTITY_NAME, PROPERTY_ENTITIES,
                                 Ontology, OwlEntity, OwlClass, OwlDataProperty,
                                 OwlObjectProperty)
-from ontogen.utils.basics import absolutize_entity_name
+from ontogen.utils.basics import absolutize_entity_name, shorten_entity_name
 from ontogen.primitives.classes import OwlIndividual
 from ontogen.utils.basics import assign_optional_dct
-
-
-def get_equivalent_datatype(entity_name: str) -> Union[type, str]:
-    return DATATYPE_MAP.get(entity_name, entity_name)
 
 
 class OntogenConverter:
@@ -28,13 +24,18 @@ class OntogenConverter:
     def __init__(self):
         """Loads a file with the given name into a skeleton of an OWL ontology.
         """
-        self.entities: Dict[str, Union[OwlEntity, OwlIndividual]] = {}
+#        self.entities: Dict[str, Union[OwlEntity, OwlIndividual]] = {}
         self.ontology = Ontology()
         self.ontology.generate_base_iri_from_prefix()
         self.file_version = ""
         self._individuals: List[OwlIndividual] = []
         self._missing_entities = set()
         self._dct = {}
+
+    @property
+    def entities(self) -> Dict[str, Union[OwlEntity, OwlIndividual]]:
+        """Returns the entities of the generated Ontology"""
+        return self.ontology.entities
 
     @property
     def prefix(self) -> str:
@@ -84,29 +85,13 @@ class OntogenConverter:
             for class_entity_name in classes:
                 if class_entity_name == OWL_THING:
                     continue
-                e = absolutize_entity_name(class_entity_name, self.prefix)
-                prefix, name = e.split(":")
-                obj = cls(e)
-                obj.prefix = prefix
+                entity_name = absolutize_entity_name(class_entity_name, self.prefix)
+                obj = cls(entity_name)
                 sub = classes[class_entity_name]
                 if isinstance(sub, dict):
-                    obj.parent_class_names = sub.get("rdfs:subClassOf", [])
-                    if base == OwlObjectProperty:
-                        obj._characteristics = sub.get(RDF_TYPE, [])
-                        obj.range = sub.get("rdfs:range", [])
-                        inv = sub.get("owl:inverseOf", [])
-                        if len(inv) == 1:
-                            obj.inverse_prop = inv[0]
-                    elif base == OwlDataProperty:
-                        if "rdfs:range" in sub:
-                            obj.range = [get_equivalent_datatype(datatype) for datatype in sub["rdfs:range"]]
-                    annotations = sub.get("annotations", {})
-                    obj.add_labels(annotations.get(LABEL_ENTITY_NAME, [None]))
-                    obj.add_comments(annotations.get(COMMENT_ENTITY_NAME, [None]))
+                    obj.from_dict(sub)
                 if base == OwlClass:
                     obj._internal_dict = sub
-                    obj.disjoint_class_names = sub.get("owl:disjointWith", [])
-                    obj.equivalent_class_expressions = self._get_equivalent_classes(sub)
                     for prop in PROPERTY_ENTITIES:
                         if prop not in sub:
                             continue
@@ -117,13 +102,8 @@ class OntogenConverter:
                     temp_classes.append(obj)
                 self.entities[absolutize_entity_name(class_entity_name)] = obj
         self._add_individuals(root)
-        if "annotations" in root:
-            anno = root["annotations"]
-            self.ontology.add_label(anno["rdfs:label"][0])
-            self.ontology.add_annotation("license", anno["dcterms:license"][0])
-            self.ontology.add_annotation("title", anno["dc:title"][0])
+        self.ontology.from_dict(root)
         self._load_class_descriptions(tuple(self.entities.values()))
-        self.ontology.entities = self.entities
 
     def write_yaml(self, owl_filename: str, spec_filename: str):
         self.ontology = Ontology.load_from_file(owl_filename)
@@ -156,16 +136,6 @@ class OntogenConverter:
                     for key in values:
                         ind.add_property_assertion(key, values[key])
             self.individuals[individual] = ind
-
-    @staticmethod
-    def _get_equivalent_classes(sub_dict: dict) -> List:
-        if OWL_EQUIVALENT_CLASS not in sub_dict:
-            return []
-        u = sub_dict[OWL_EQUIVALENT_CLASS]
-        if isinstance(u, dict):
-            return u.get(OWL_RESTRICTION, [])
-        else:
-            return u
 
     def _load_class_descriptions(self, classes: Tuple[OwlEntity, ...]):
         for cls in classes:
@@ -256,7 +226,7 @@ class OntogenConverter:
             c = OwlClass(e)
             for p in Thing.get_properties(cls):
                 if isinstance(p, AnnotationPropertyClass):
-                    c.retrieve_builtin_prop(p.name, cls, self.ontology.lookup_prefix(p.namespace.base_iri))
+                    c.retrieve_property(p.name, cls, self.ontology.lookup_prefix(p.namespace.base_iri))
             c.parent_class_names = [absolutize_entity_name(s.name) for s in cls.is_a]
             self.entities[e] = c
         for prop in props:

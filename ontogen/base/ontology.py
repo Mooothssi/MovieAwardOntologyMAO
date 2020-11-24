@@ -32,6 +32,7 @@ class Ontology(OwlAssertable):
     comment: str
 
     def __init__(self, base_iri: str = "", base_prefix: str = ""):
+        super(Ontology, self).__init__()
         self._internal_onto: owlready2.Ontology or None = None
         self.base_iri = base_iri
         self.base_prefix = base_prefix
@@ -176,12 +177,13 @@ class Ontology(OwlAssertable):
         self.add_annotation("dcterms:licence", label)
 
     def add_annotation(self, annotation: str, value: Any):
-        if annotation not in self.annotations:
-            self.annotations[annotation] = []
-        self.annotations[annotation].append(value)
+        # if annotation not in self.annotations:
+        #     self.annotations[annotation] = []
+        # self.annotations[annotation].append(value)
+        self.add_property_assertion(annotation, value)
 
     def actualize(self):
-        self.properties_values = self.annotations
+       # self.properties_values = self.annotations
         self.actualize_assertions(self.implementation.metadata)
 
     @property

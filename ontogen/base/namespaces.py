@@ -25,9 +25,14 @@ OWL_EQUIVALENT_CLASS = 'owl:equivalentClass'
 OWL_RESTRICTION = 'owl:Restriction'
 OWL_INDIVIDUAL = 'owl:Individual'
 OWL_THING = 'owl:Thing'
+OWL_INVERSE_OF = 'owl:inverseOf'
 
 RDF_TYPE = 'rdf:type'
-RDFS_SUBCLASS_OF = 'rdfs:subclassOf'
+RDFS_SUBCLASS_OF = 'rdfs:subClassOf'
+RDFS_RANGE = 'rdfs:range'
+ANNOTATIONS_KEY = 'annotations'
+
+OWL_DISJOINT_WITH = 'owl:disjointWith'
 
 
 def lookup_iri(prefix: str, lookup: dict = None) -> str:
