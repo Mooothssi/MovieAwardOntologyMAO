@@ -51,14 +51,14 @@ class OntogenConverter:
 
     def _deal_with_iris(self, base_dict: dict):
         self.ontology.base_iri = base_dict.get("iri", "")
+
         prefixes = base_dict.get("prefixes", {})
         try:
             [self.ontology.define_prefix(prefix, prefixes[prefix]) for prefix in prefixes]
         except KeyError:
             raise AssertionError("Please define prefix for the base IRI of this Ontology")
-        else:
-            self.ontology.update_base_prefix()
-            self.ontology.create()
+        self.ontology.update_base_prefix()
+        self.ontology.create()
 
     def _check_eligible_version(self, base_dict: dict):
         self.file_version = base_dict["version"].replace("v", "")
@@ -133,11 +133,12 @@ class OntogenConverter:
                 values = individuals[individual][t]
                 if t == RDF_TYPE:
                     for value in values:
-                        entity = self.get_entity(value)
+                        entity = self.get_entity(value, self.prefix)
                         ind.be_type_of(entity)
                 elif t == "relations":
-                    for key in values:
-                        ind.add_property_assertion(key, values[key])
+                    for key, values in values.items():
+                        for val in values:
+                            ind.add_property_assertion(absolutize_entity_name(key, self.prefix), val)
             self.individuals[individual] = ind
 
     def _load_class_descriptions(self, classes: Tuple[OwlEntity, ...]):

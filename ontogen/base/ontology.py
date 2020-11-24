@@ -66,7 +66,8 @@ class Ontology(OwlAssertable):
         return lookup_prefix(iri, self.iri_to_prefixes)
 
     def update_base_prefix(self):
-        self.base_prefix = self.lookup_prefix(self.base_iri)
+        b = self.lookup_prefix(self.base_iri)
+        self.base_prefix = b
 
     @property
     def iri_to_prefixes(self):
@@ -85,7 +86,8 @@ class Ontology(OwlAssertable):
             raise AssertionError("Namespace must be set before creation")
         self.base_iri = self.base_iri if self.base_iri != "" else namespace_iri
         self._internal_onto = get_ontology(self.base_iri)
-        self.base_prefix = self.implementation.name
+        if not self.base_prefix:
+            self.base_prefix = self.implementation.name
         self.define_prefix()
 
     def define_prefix(self, prefix: Optional[str] = None, iri: Optional[str] = None,
@@ -106,6 +108,8 @@ class Ontology(OwlAssertable):
             iri = self.base_iri
         if not allow_update and prefix in self.iris:
             raise AssertionError(f"Prefix {prefix} is already associated with IRI {self.iris[prefix]}")
+        if iri in self.iri_to_prefixes:
+            return
         self.iris[prefix] = iri
 
     @classmethod
@@ -212,4 +216,7 @@ class Ontology(OwlAssertable):
             return list(q)
 
     def add_entity(self, entity: 'OwlEntity'):
-        self.entities[absolutize_entity_name(entity.name)] = entity
+        self.entities[absolutize_entity_name(entity.name, self.base_prefix)] = entity
+
+    def sync_iri(self):
+        self.base_prefix = self.lookup_prefix(self.base_iri)

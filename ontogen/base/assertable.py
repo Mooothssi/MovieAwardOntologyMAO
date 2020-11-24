@@ -1,5 +1,5 @@
 import re
-from typing import Union, List, Any, Dict, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from owlready2 import locstr
 
@@ -84,13 +84,6 @@ class OwlAssertable:
             None
         """
         self.add_property_assertion(property_name, value, self.annotations)
-        # if value is None:
-        #     return
-        # if not (":" in property_name and len(property_name.split(":")) == 2):
-        #     raise AssertionError("Please add prefix.")
-        # if property_name not in self.properties_values:
-        #     self.properties_values[property_name] = []
-        # self.properties_values[property_name] += [value]
 
     def retrieve_property(self, builtin_name: str, obj, prefix):
         val = getattr(obj, builtin_name)

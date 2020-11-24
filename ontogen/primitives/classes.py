@@ -77,12 +77,10 @@ class OwlIndividual(OwlEntity, OwlAssertable):
     """
     def __init__(self, name: str):
         super(OwlIndividual, self).__init__(name)
-        self.name = name
         self.onto_types: List[OwlClass] = []
         self.defined_properties: Dict[str, "OwlProperty" or None] = dict(ENTITIES)
         self._imp = None
         self.properties_values: Dict[str, ] = {}
-        self.prefix = self.name.split(":")[0]
 
     def be_type_of(self, cls: OwlClass):
         """
@@ -103,7 +101,7 @@ class OwlIndividual(OwlEntity, OwlAssertable):
         return onto.entities.get(name, None)
 
     def actualize_imp(self, onto: Ontology):
-        res = self.name.split(":")
+        res = self.name_with_prefix.split(":")
         assert len(res) > 1, "Must include a prefix"
         name = res[1]
         try:
