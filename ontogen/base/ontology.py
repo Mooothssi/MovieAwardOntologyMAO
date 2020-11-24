@@ -39,7 +39,7 @@ class Ontology(OwlAssertable):
         self.annotations: Dict[str, List[Union["OwlAnnotationProperty", Any]]] = {}
         self.entities: Dict[str, "OwlEntity"] = {}
 
-    def name_from_prefix(self, developer: str = "nomad"):
+    def generate_base_iri_from_prefix(self, developer: str = "nomad"):
         now = datetime.datetime.now()
         self.base_iri = f"{FREE_DOMAIN}/{developer}/ontologies/{now.year}/{now.month}/{self.base_prefix}#"
 
@@ -61,13 +61,13 @@ class Ontology(OwlAssertable):
         Args:
             iri: A given IRI
         """
-        return lookup_prefix(iri, self.prefixes)
+        return lookup_prefix(iri, self.iri_to_prefixes)
 
     def update_base_prefix(self):
         self.base_prefix = self.lookup_prefix(self.base_iri)
 
     @property
-    def prefixes(self):
+    def iri_to_prefixes(self):
         return {v: k for k, v in self.iris.items()}
 
     def create(self, namespace_iri: str = ""):
@@ -84,13 +84,26 @@ class Ontology(OwlAssertable):
         self.base_iri = self.base_iri if self.base_iri != "" else namespace_iri
         self._internal_onto = get_ontology(self.base_iri)
         self.base_prefix = self.implementation.name
-        self.update_iri()
+        self.define_prefix()
 
-    def update_iri(self, prefix: Optional[str] = None, iri: Optional[str] = None):
+    def define_prefix(self, prefix: Optional[str] = None, iri: Optional[str] = None,
+                      allow_update: Optional[bool] = True):
+        """Associate a prefix with an IRI in this Ontology
+
+        Args:
+            prefix: A given prefix shorthand
+            iri: A given IRI
+            allow_update: Checks whether the given prefix is already defined for an IRI
+
+        Returns:
+            None
+        """
         if prefix is None:
             prefix = self.base_prefix
         if iri is None:
             iri = self.base_iri
+        if not allow_update and prefix in self.iris:
+            raise AssertionError(f"Prefix {prefix} is already associated with IRI {self.iris[prefix]}")
         self.iris[prefix] = iri
 
     @classmethod
@@ -111,7 +124,7 @@ class Ontology(OwlAssertable):
                 [getattr(inst, ANNOTATION_FUNCTION_MAP[k])(prop)
                  for prop in getattr(internal.metadata, k)]
         inst.base_iri, inst.base_prefix = inst.implementation.base_iri, inst.implementation.name
-        inst.update_iri()
+        inst.define_prefix()
         return inst
 
     def save_to_file(self, filename: str, file_format: str = "xml"):
@@ -172,7 +185,7 @@ class Ontology(OwlAssertable):
         self.actualize_assertions(self.implementation.metadata)
 
     @property
-    def rdflib_graph(self):
+    def rdflib_graph(self) -> Graph:
         return self.implementation.world.as_rdflib_graph()
 
     def sparql_query(self, query: str, with_prefixes=True, sync_reasoner=True) -> list or bool:

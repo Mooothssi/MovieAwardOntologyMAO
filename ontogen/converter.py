@@ -30,7 +30,7 @@ class OntogenConverter:
         """
         self.entities: Dict[str, Union[OwlEntity, OwlIndividual]] = {}
         self.ontology = Ontology()
-        self.ontology.name_from_prefix()
+        self.ontology.generate_base_iri_from_prefix()
         self.file_version = ""
         self._individuals: List[OwlIndividual] = []
         self._missing_entities = set()
@@ -49,7 +49,7 @@ class OntogenConverter:
         self.ontology.base_iri = base_dict.get("iri", "")
         prefixes = base_dict.get("prefixes", {})
         try:
-            [self.ontology.update_iri(prefix, prefixes[prefix]) for prefix in prefixes]
+            [self.ontology.define_prefix(prefix, prefixes[prefix]) for prefix in prefixes]
         except KeyError:
             raise AssertionError("Please define prefix for the base IRI of this Ontology")
         else:
@@ -128,6 +128,11 @@ class OntogenConverter:
     def write_yaml(self, owl_filename: str, spec_filename: str):
         self.ontology = Ontology.load_from_file(owl_filename)
         onto = self.ontology
+        with onto.implementation:
+            g = onto.rdflib_graph
+            namespaces = dict(g.namespaces())
+            for k in namespaces:
+                self.ontology.define_prefix(k, str(namespaces[k]))
         internals = self._from_internals_to_dict()
         dct = {'version': self.SUPPORTED_VERSION,
                'iri': onto.base_iri,
@@ -212,7 +217,7 @@ class OntogenConverter:
         self.check_missing_definitions()
         if onto is None:
             onto = self.ontology
-            onto.name_from_prefix()
+            onto.generate_base_iri_from_prefix()
         onto.create()
         for entity in self.entities.values():
             entity.actualize(onto)
