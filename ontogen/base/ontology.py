@@ -178,13 +178,9 @@ class Ontology(OwlAssertable):
         self.add_annotation("dcterms:licence", label)
 
     def add_annotation(self, annotation: str, value: Any):
-        # if annotation not in self.annotations:
-        #     self.annotations[annotation] = []
-        # self.annotations[annotation].append(value)
         self.add_property_assertion(annotation, value)
 
     def actualize(self):
-       # self.properties_values = self.annotations
         self.actualize_assertions(self.implementation.metadata)
 
     @property

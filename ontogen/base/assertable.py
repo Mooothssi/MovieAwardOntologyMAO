@@ -1,5 +1,5 @@
 import re
-from typing import Union, List, Any
+from typing import Union, List, Any, Dict, Optional
 
 from owlready2 import locstr
 
@@ -11,11 +11,18 @@ from ontogen.utils.basics import absolutize_entity_name, shorten_entity_name
 
 class OwlAssertable:
     def __init__(self):
-        self.properties_values = {}
+        self.properties_values: Dict[str, Any] = {}
+        self.annotations: Dict[str, Any] = {}
+
+    @property
+    def properties_with_values(self) -> dict:
+        new_dct = dict(self.properties_values)
+        new_dct.update(self.annotations)
+        return new_dct
 
     def actualize_assertions(self, inst):
-        for set_prop in self.properties_values:
-            v = self.properties_values[set_prop]
+        for set_prop in self.properties_with_values:
+            v = self.properties_with_values[set_prop]
             if isinstance(v, list):
                 val = [self._prepare_assertion_value(set_prop, val) for val in v]
             else:
@@ -45,10 +52,11 @@ class OwlAssertable:
     def _prepare_assertion_value(self, set_prop: str, values: Union[List, Any]) -> object:
         return values
 
-    def add_property_assertion(self, property_name: str, value: BUILTIN_DATA_TYPES):
+    def add_property_assertion(self, property_name: str, value: BUILTIN_DATA_TYPES, dct: Optional[Dict] = None):
         """Adds a property assertion to an ``OwlAssertable`` entity
 
         Args:
+            dct: A given dictionary
             property_name: The name of a given property
             value:  A given value to be associated with a property with the given name
 
@@ -59,9 +67,30 @@ class OwlAssertable:
             return
         if not (":" in property_name and len(property_name.split(":")) == 2):
             raise AssertionError("Please add prefix.")
-        if property_name not in self.properties_values:
-            self.properties_values[property_name] = []
-        self.properties_values[property_name] += [value]
+        if dct is None:
+            dct = self.properties_values
+        if property_name not in dct:
+            dct[property_name] = []
+        dct[property_name] += [value]
+
+    def add_annotation(self, property_name: str, value: BUILTIN_DATA_TYPES):
+        """Adds an annotation to an ``OwlAssertable`` entity
+
+        Args:
+            property_name: The name of a given property
+            value:  A given value to be associated with a property with the given name
+
+        Returns:
+            None
+        """
+        self.add_property_assertion(property_name, value, self.annotations)
+        # if value is None:
+        #     return
+        # if not (":" in property_name and len(property_name.split(":")) == 2):
+        #     raise AssertionError("Please add prefix.")
+        # if property_name not in self.properties_values:
+        #     self.properties_values[property_name] = []
+        # self.properties_values[property_name] += [value]
 
     def retrieve_property(self, builtin_name: str, obj, prefix):
         val = getattr(obj, builtin_name)
@@ -93,4 +122,4 @@ class OwlAssertable:
         annotations = sub.get(ANNOTATIONS_KEY, {})
         for prop_name, prop_values in annotations.items():
             for value in prop_values:
-                self.add_property_assertion(prop_name, value)
+                self.add_annotation(prop_name, value)
