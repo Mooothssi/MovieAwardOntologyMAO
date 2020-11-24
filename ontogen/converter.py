@@ -37,6 +37,9 @@ class OntogenConverter:
         """Returns the entities of the generated Ontology"""
         return self.ontology.entities
 
+    def add_entity(self, entity: OwlEntity):
+        self.entities[absolutize_entity_name(entity.name)] = entity
+
     @property
     def prefix(self) -> str:
         return self.ontology.base_prefix
@@ -100,7 +103,7 @@ class OntogenConverter:
                             prop_qualifier = absolutize_entity_name(prop_name)
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
-                self.entities[absolutize_entity_name(class_entity_name)] = obj
+                self.ontology.add_entity(obj)
         self._add_individuals(root)
         self.ontology.from_dict(root)
         self._load_class_descriptions(tuple(self.entities.values()))
@@ -153,7 +156,7 @@ class OntogenConverter:
         if prefix is None:
             prefix = self.prefix
         modified_name = absolutize_entity_name(entity_name, prefix)
-        if modified_name == "owl:Thing" or modified_name == f"{prefix}:Thing":
+        if modified_name == OWL_THING or modified_name == f"{prefix}:Thing":
             return None
         try:
             if modified_name in self._missing_entities:

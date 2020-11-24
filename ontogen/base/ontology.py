@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from .namespaces import lookup_iri, lookup_prefix, build_prefixes, WELL_KNOWN_PREFIXES
 from .assertable import OwlAssertable
+from ..utils.basics import absolutize_entity_name
 
 
 def get_ontology_from_prefix(prefix: str, ld: dict):
@@ -213,3 +214,6 @@ class Ontology(OwlAssertable):
             return q.askAnswer
         else:
             return list(q)
+
+    def add_entity(self, entity: 'OwlEntity'):
+        self.entities[absolutize_entity_name(entity.name)] = entity
