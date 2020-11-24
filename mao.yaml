@@ -1696,5 +1696,5 @@ rules:
   categoryGiveTo:
     rule:
       - >
-        mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, ?ac) ^ mao:forOccupation(?ac, ?o) ^ mao:forFilm(?n, ?m) ^ mao:Film(?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasCrewMember(?fm, ?p) ^ mao:hasOccupation(?p, ?o) -> mao:isGivento(?n, ?p)
+        mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, ?ac) ^ mao:forOccupation(?ac, ?o) ^ mao:forFilm(?n, ?m) ^ mao:Film(?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasOccupation(?p, ?o) -> mao:isGivenTo(?n, ?p)
     rdfs:comment: ""
