@@ -73,7 +73,9 @@ class OwlIndividual(OwlEntity, OwlAssertable):
         if isinstance(value, list):
             if prop_name in self.all_defined_properties:
                 prop = self.all_defined_properties[prop_name]
-                if isinstance(prop, OwlObjectProperty) and 'owl:FunctionalProperty' in prop._characteristics:
+                if isinstance(prop, OwlObjectProperty) and (
+                        'owl:FunctionalProperty' in prop._characteristics
+                        or 'owl:InverseFunctionalProperty' in prop._characteristics):
                     return self._prepare_assertion_value(prop_name, value[0])
             return [self._prepare_assertion_value(prop_name, v) for v in value]
         else:

@@ -19,6 +19,9 @@ def count_files(directory: str) -> int:
                 if os.path.isfile(os.path.join(directory, name))])
 
 
+SPEC_VERSION = 'v2.1.0'
+
+
 class TestOntogen(TestCase):
     def setUp(self):
         self.converter: OntogenConverter = OntogenConverter.load_from_spec(ROOT_DIR / "mao.yaml")
@@ -95,22 +98,32 @@ class TestOntogen(TestCase):
 
 class TestOntogenFamily(TestCase):
     def test_family_ontology(self):
-        converter = OntogenConverter.load_from_spec(ROOT_DIR / "tests/specs/v2.1.0/test_case2.yaml")
+        converter = OntogenConverter.load_from_spec(ROOT_DIR / f"tests/specs/{SPEC_VERSION}/test_case2.yaml")
         onto = converter.export_to_ontology()
+        father1 = onto.get_entity("family:Father1")
+        aunt1 = onto.get_entity("family:Aunt1")
+        self.assertListEqual([father1.actualized_entity], aunt1.actualized_entity.isSiblingOf)
         onto.add_license("MIT License")
         self.assertEqual("http://www.co-ode.org/roberts/family-tree.owl#", onto.base_iri)
         onto.save_to_file("out/family.owl")
 
     def test_pizza_ontology(self):
-        converter = OntogenConverter.load_from_spec(ROOT_DIR / "tests/specs/v2.1.0/test_case1.yaml")
+        converter = OntogenConverter.load_from_spec(ROOT_DIR / f"tests/specs/{SPEC_VERSION}/test_case1.yaml")
         onto = converter.export_to_ontology()
-        onto.add_license("MIT License")
+        named_pizza = onto.get_entity("pizza:NamedPizza")
+        margherita = onto.get_entity("pizza:Margherita")
+        cls_exp = ClassExpToConstruct(onto)
+        self.assertListEqual(margherita.actualized_entity.is_a,
+                             [named_pizza.actualized_entity,
+                              cls_exp.to_construct("hasTopping only (MozzarellaTopping or TomatoTopping)"),
+                              cls_exp.to_construct("hasTopping some MozzarellaTopping"),
+                              cls_exp.to_construct("hasTopping some TomatoTopping")])
         self.assertEqual("http://www.co-ode.org/ontologies/pizza/pizza.owl#", onto.base_iri)
         onto.save_to_file("out/pizza.owl")
 
-    def test_movie_ontology(self):
-        o = Ontology.load_from_file(OWL_FILEPATH)
-        print(o.implementation.metadata.deprecated)
+    # def test_movie_ontology(self):
+    #     o = Ontology.load_from_file(OWL_FILEPATH)
+    #     print(o.implementation.metadata.deprecated)
 
 
 FIXTURES = (

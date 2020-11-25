@@ -6,6 +6,7 @@ from rdflib import Graph, Namespace
 from owlready2 import Imp, get_ontology, sync_reasoner_pellet
 from typing import Any, Dict, List, Optional, Union, Type
 
+from . import OwlEntity
 from .namespaces import lookup_iri, lookup_prefix, build_prefixes, WELL_KNOWN_PREFIXES
 from .assertable import OwlAssertable
 from ontogen.primitives.classes import OwlClass, OwlIndividual
@@ -67,7 +68,7 @@ class Ontology(OwlAssertable):
         """Returns all the Data Properties of this Ontology"""
         return self._get_with_type(OwlDataProperty)
 
-    def get_entity(self, relative_name: str) -> Union[object, None]:
+    def get_entity(self, relative_name: str) -> Union[OwlEntity, None]:
         name = absolutize_entity_name(relative_name, self.base_prefix)
         return self.entities.get(name, None)
 
