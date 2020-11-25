@@ -2,7 +2,6 @@ from typing import List, Dict, Type, Union
 
 from owlready2 import Thing, AllDisjoint
 
-from ontogen.base import OwlActualizable
 from ontogen.base.vars import GENERATED_TYPES
 from .base import OwlEntity, Ontology, ENTITIES, apply_classes_from, get_exp_constructor, check_restrictions
 from ontogen.utils.basics import absolutize_entity_name
@@ -30,6 +29,18 @@ class OwlClass(OwlEntity):
         super(OwlClass, self).__init__(entity_qualifier=entity_name)
         self.individuals: List[OwlIndividual] = []
         self.defined_properties: Dict[str, "OwlProperty" or None] = dict(ENTITIES)
+
+    # @property
+    # def is_actualized(self) -> bool:
+    #     """Returns whether this Class is saved to an Ontology
+    #     """
+    #     return self._actualized_entity is not None
+    #
+    # @property
+    # def actualized_entity(self):
+    #     if self.is_actualized:
+    #         return self._actualized_entity
+    #     raise AssertionError("The entity has yet to be actualized")
 
     def actualize(self, onto: Ontology) -> 'OwlClass':
         """
@@ -75,6 +86,7 @@ class OwlIndividual(OwlEntity, OwlAssertable):
     """
     An Individual of Ontology classes
     """
+
     def __init__(self, name: str):
         super(OwlIndividual, self).__init__(name)
         self.onto_types: List[OwlClass] = []

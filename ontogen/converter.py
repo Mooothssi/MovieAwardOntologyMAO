@@ -3,6 +3,8 @@ import yaml
 from owlready2 import AnnotationPropertyClass, ClassValueList, DataPropertyClass, ObjectPropertyClass, Thing, IndividualValueList
 from semver import VersionInfo
 
+from ontogen.actualizers.base import OntologyActualizer
+from ontogen.actualizers.owlready2 import Owlready2Actualizer
 from ontogen.base import DATATYPE_MAP
 from ontogen.base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_INDIVIDUAL, RDF_TYPE, OWL_THING, \
     OWL_CLASS, OWL_ANNOTATION_PROPERTY, OWL_OBJECT_PROPERTY, OWL_DATA_PROPERTY
@@ -28,6 +30,7 @@ class OntogenConverter:
         self.ontology = Ontology()
         self.ontology.generate_base_iri_from_prefix()
         self.file_version = ""
+        self.actualizer: OntologyActualizer = Owlready2Actualizer(self.ontology)
         self._individuals: List[OwlIndividual] = []
         self._missing_entities = set()
         self._dct = {}
@@ -148,6 +151,7 @@ class OntogenConverter:
                 if isinstance(cls, OwlClass):
                     [cls.add_disjoint_class(self.get_entity(name, cls.prefix)) for name in cls.disjoint_class_names]
                 elif isinstance(cls, OwlObjectProperty):
+                    cls.domain = [self.get_entity(name, cls.prefix) for name in cls.domain if isinstance(name, str)]
                     cls.range = [self.get_entity(name, cls.prefix) for name in cls.range if isinstance(name, str)]
                     cls.inverse_prop = self.get_entity(cls.inverse_prop)
 
@@ -193,8 +197,9 @@ class OntogenConverter:
             onto = self.ontology
             onto.generate_base_iri_from_prefix()
         onto.create()
-        for entity in self.entities.values():
-            entity.actualize(onto)
+        self.actualizer.actualize(self.entities)
+        # for entity in self.entities.values():
+        #     entity.actualize(onto)
         self._add_rules(self._dct)
         onto.actualize()
         return onto

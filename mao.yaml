@@ -1607,6 +1607,15 @@ owl:ObjectProperty:
       - violates
 
 owl:Individual:
+  mao:BaftaAward:
+    rdf:type:
+      - Award
+  mao:OscarAward:
+    rdf:type:
+      - Award
+  mao:Oscars:
+    rdf:type:
+      - Award
   mao:Female:
     rdf:type:
       - Gender

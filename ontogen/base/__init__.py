@@ -9,6 +9,7 @@ from .namespaces import RDFS_SUBCLASS_OF, ANNOTATIONS_KEY, OWL_DISJOINT_WITH, OW
 from .ontology import Ontology
 from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME, \
     BUILTIN_DATA_TYPES, ANNO_ATTRS
+from ..actualizers.types import ACTUALIZED_CLASS
 from ..utils.basics import assign_optional_dct
 
 
@@ -31,8 +32,10 @@ def cleanup(onto: Ontology):
 # BUILTIN_DATA_TYPES = Union[str, int]
 
 
-class OwlActualizable(metaclass=ABCMeta):
-    @abstractmethod
+class OwlActualizable:
+    def __init__(self):
+        self._actualized_entity: ACTUALIZED_CLASS = None
+
     def actualize(self, onto: Ontology) -> 'OwlEntity':
         """Makes the entity concrete (saved) in a given Ontology
 
@@ -46,7 +49,6 @@ class OwlActualizable(metaclass=ABCMeta):
 
 class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
     prefix = "owl"
-    name = "any"
     _internal_dict = {}
     _parent_class = object
     parent_class_names: List[str] = []
@@ -57,7 +59,8 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
     _internal_imp_instance: Thing = None
 
     def __init__(self, entity_qualifier: str):
-        super().__init__()
+        super(OwlEntity, self).__init__()
+        self._actualized_entity: ACTUALIZED_CLASS = None
         self.disjoint_class_names: List[str] = []
         self.properties_values = {}
         self._use_default_prefix = False
@@ -211,4 +214,4 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
         super(OwlEntity, self).from_dict(sub)
 
     def __repr__(self):
-        return f"{self.__class__.name}<{self.name_with_prefix}>"
+        return f"{self.__class__.__name__}<{self.name_with_prefix}>"

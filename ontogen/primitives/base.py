@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Type, Union
 from owlready2 import AnnotationProperty, DataProperty
 
 from ..base import Ontology, OwlEntity, BUILTIN_DATA_TYPES, DATATYPE_MAP
-from ..base.namespaces import RDFS_RANGE, OWL_INVERSE_OF
+from ..base.namespaces import RDFS_RANGE, OWL_INVERSE_OF, RDFS_DOMAIN
 from ..wrapper import apply_classes_from
 from ontogen.utils.classexp import ClassExpToConstruct
 
@@ -69,6 +69,7 @@ class OwlProperty(OwlEntity):
     def from_dict(self, sub: Dict[str, Any]):
         super(OwlProperty, self).from_dict(sub)
         self.range = sub.get(RDFS_RANGE, [])
+        self.domain = sub.get(RDFS_DOMAIN, [])
         inv = sub.get(OWL_INVERSE_OF, [])
         if len(inv) == 1:
             self.inverse_prop = inv[0]

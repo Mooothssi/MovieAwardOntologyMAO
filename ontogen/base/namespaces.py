@@ -30,6 +30,7 @@ OWL_INVERSE_OF = 'owl:inverseOf'
 RDF_TYPE = 'rdf:type'
 RDFS_SUBCLASS_OF = 'rdfs:subClassOf'
 RDFS_RANGE = 'rdfs:range'
+RDFS_DOMAIN = 'rdfs:domain'
 ANNOTATIONS_KEY = 'annotations'
 
 OWL_DISJOINT_WITH = 'owl:disjointWith'

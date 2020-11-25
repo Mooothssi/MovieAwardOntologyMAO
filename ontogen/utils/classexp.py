@@ -114,6 +114,7 @@ class TokenInfo:
         self.onto = onto
         self.start_index = 0
         self.end_index = 0
+        self.is_individual = False
 
     @property
     def count(self):
@@ -141,6 +142,8 @@ class TokenInfo:
                 base_cls = Thing
                 if self.keyword in QUANTIFIER_RESTRICTION_KEYWORDS:
                     base_cls = ObjectProperty
+                if self.is_individual:
+                    raise AssertionError(f'The individual "{new_str}" is missing.')
                 return get_class_from_literal(self.onto, new_str, base_cls)
             elif self.keyword in CARDINALITY_RESTRICTION_KEYWORDS:
                 first, second, third = self.sub_tokens
@@ -148,6 +151,8 @@ class TokenInfo:
             elif self.keyword in TRIPLE_KEYWORDS:
                 first, second = self.sub_tokens
                 if self.keyword in QUANTIFIER_RESTRICTION_KEYWORDS + ("value", ):
+                    if self.keyword == "value":
+                        second.is_individual = True
                     return getattr(first.construct, self.keyword)(second.construct)
                 elif self.keyword == "and":
                     return first.construct & second.construct
@@ -155,8 +160,8 @@ class TokenInfo:
                     return first.construct | second.construct
             elif self.keyword == "not":
                 return Not(self.sub_tokens[0].construct)
-        except AttributeError:
-            raise SyntaxError("Unable to construct from Class Expression syntax!")
+        except AttributeError as e:
+            raise SyntaxError("Unable to construct from Class Expression syntax!" + str(e))
 
     def __repr__(self):
         if self.keyword == "not":

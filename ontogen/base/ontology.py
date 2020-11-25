@@ -41,6 +41,10 @@ class Ontology(OwlAssertable):
         self.annotations: Dict[str, List[Union["OwlAnnotationProperty", Any]]] = {}
         self.entities: Dict[str, "OwlEntity"] = {}
 
+    def get_entity(self, relative_name: str) -> Union[object, None]:
+        name = absolutize_entity_name(relative_name)
+        return self.entities.get(name, None)
+
     def generate_base_iri_from_prefix(self, developer: str = "nomad"):
         now = datetime.datetime.now()
         self.base_iri = f"{FREE_DOMAIN}/{developer}/ontologies/{now.year}/{now.month}/{self.base_prefix}#"
