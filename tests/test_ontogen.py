@@ -5,7 +5,7 @@ from unittest import TestCase
 from dirs import ROOT_DIR
 
 from ontogen import Ontology, OwlIndividual
-from ontogen.base import cleanup
+from ontogen.actualizers.owlready2 import cleanup
 from ontogen.converter import OntogenConverter
 from ontogen.primitives import OwlClass, OwlObjectProperty, OwlAnnotationProperty
 from ontogen.primitives.datatypes import Datatype
@@ -82,7 +82,7 @@ class TestOntogen(TestCase):
         event.actualize(self.onto)
         self.test_instantiation()
         self.parasite_film.add_property_assertion("mao:someProp", "Parasite")
-        self.parasite_film.actualize(self.onto)
+        # self.parasite_film.actualize(self.onto)
         self.converter.export_to_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
 
@@ -147,13 +147,13 @@ class OntogenClassExpressionTestCase(TestCase):
         c = OwlClass("mao:Gender")
         i = OwlIndividual("mao:Male")
         i.be_type_of(c)
-        i.actualize(self.onto)
+       # i.actualize(self.onto)
         i = OwlIndividual("mao:Female")
         i.be_type_of(c)
-        i.actualize(self.onto)
+        #i.actualize(self.onto)
         i = OwlIndividual("mao:NonBinary")
         i.be_type_of(c)
-        i.actualize(self.onto)
+        # i.actualize(self.onto)
         cls = ClassExpToConstruct(self.onto)
         for fixture in FIXTURES:
             exp, expected = fixture

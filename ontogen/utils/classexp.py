@@ -3,7 +3,7 @@ from typing import Dict, Tuple, Type, Union
 
 from owlready2 import ClassConstruct, ConstrainedDatatype, Not, ObjectProperty, OneOf, Thing
 
-from ontogen.base import Ontology
+from ontogen import Ontology
 from ontogen.base.vars import GENERATED_TYPES
 from ontogen.internal import CONSTRAINT_DATATYPE_OPERATOR_MAP
 

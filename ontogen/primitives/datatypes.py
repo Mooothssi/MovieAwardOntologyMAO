@@ -2,7 +2,8 @@ from typing import Type
 
 from owlready2.base import declare_datatype, _universal_abbrev_datatype
 
-from ..base import OwlEntity, Ontology
+from ..base import OwlEntity
+from ..base.ontology import Ontology
 
 
 class Datatype(OwlEntity):

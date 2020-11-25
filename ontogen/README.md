@@ -51,17 +51,6 @@ onto.add_rule("mao:ActingSituation(?p) ^ mao:hasActor(?p, ?a) -> mao:actsIn(?a, 
 ```
 
 
-### Saving (Actualizing) a newly-defined Class to an Ontology
-```python
-from ontogen import Ontology, OwlClass
-
-onto: Ontology
-mao_film: OwlClass = OwlClass("mao:Film")
-# Saves mao:Film class into the given `onto` Ontology
-mao_film.actualize(onto)
-```
-
-
 ### Creating an Individual from an Ontology Class
 An individual must be first `instantiated` before adding any assertions.
 ```python
@@ -74,7 +63,7 @@ film: OwlClass = OwlClass("mao:Film") # or selectively `converter.get_entity("ma
 parasite_film: OwlIndividual = OwlIndividual("mao:Parasite")
 parasite_film.be_type_of(film)
 # Create an mao:Film individual named Parasite in a given OWL Ontology
-parasite_film.actualize(onto)
+# parasite_film.actualize(onto)
 ```
 
 ### Adding a Property Assertion to an Individual

@@ -1,17 +1,12 @@
 from typing import Any, Dict, List, Type, Union
 
-from ontogen.base import Ontology, OwlEntity, BUILTIN_DATA_TYPES, DATATYPE_MAP
+from ontogen.base import OwlEntity, BUILTIN_DATA_TYPES, DATATYPE_MAP
 from ontogen.base.namespaces import RDFS_RANGE, OWL_INVERSE_OF, RDFS_DOMAIN
-from ontogen.utils.classexp import ClassExpToConstruct
 
 __all__ = ('OwlProperty', 'OwlAnnotationProperty',
            'OwlDataProperty', 'ENTITIES')
 
 ENTITIES: Dict[str, OwlEntity] = {}
-
-
-def get_exp_constructor(onto: Ontology):
-    return ClassExpToConstruct(onto)
 
 
 def get_equivalent_datatype(entity_name: str) -> Union[type, str]:
@@ -59,14 +54,6 @@ class OwlAnnotationProperty(OwlProperty):
     name = "AnnotationProperty"
     range = [str]
 
-    # owlready-related implementation
-    def actualize(self, onto: Ontology):
-        """
-        Instantiate a Datatype Property into a given Ontology
-
-        :param onto: An `owlready2` Ontology
-        """
-        self._get_generated_class(onto, range=self.range)
 
 
 

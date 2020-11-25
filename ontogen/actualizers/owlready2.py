@@ -1,12 +1,14 @@
 from typing import Type, Union, List
 
-from owlready2 import (AnnotationProperty, DataProperty, ObjectProperty, Thing, AllDisjoint)
+from owlready2 import (AnnotationProperty, DataProperty, ObjectProperty, Thing, AllDisjoint, destroy_entity)
 
 from ontogen import OwlClass, OwlObjectProperty, OwlIndividual
 from ontogen.actualizers.base import OntologyActualizer, OntologyBaseActualizer
-from ontogen.base import Ontology, OwlEntity, GENERATED_TYPES
+from ontogen.base import OwlEntity, GENERATED_TYPES
+from ontogen.base.ontology import Ontology
 from ontogen.internal import CHARACTERISTICS_MAPPING
-from ontogen.primitives.base import get_exp_constructor, OwlProperty, OwlAnnotationProperty, OwlDataProperty
+from ontogen.primitives.base import OwlProperty, OwlAnnotationProperty, OwlDataProperty
+from ontogen.utils.classexp import ClassExpToConstruct
 
 TYPE_MAPPING = {
     OwlAnnotationProperty: AnnotationProperty,
@@ -14,6 +16,17 @@ TYPE_MAPPING = {
     OwlDataProperty: DataProperty,
     OwlClass: Thing
 }
+
+
+def cleanup(onto: Ontology):
+    onto.implementation.graph.destroy()
+    for e in GENERATED_TYPES:
+        destroy_entity(GENERATED_TYPES[e])
+    GENERATED_TYPES.clear()
+
+
+def get_exp_constructor(onto: Ontology):
+    return ClassExpToConstruct(onto)
 # GENERATED_TYPES: Dict[str, Union[Type[Thing], Thing, type]] = {}
 
 class OwlreadyBaseActualizer(OntologyBaseActualizer):

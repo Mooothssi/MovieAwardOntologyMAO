@@ -1,17 +1,14 @@
-from typing import Any, Dict, List, Union, Tuple, Type
+from typing import Any, Dict, List, Union, Tuple, Type, Optional
 import yaml
 from owlready2 import AnnotationPropertyClass, ClassValueList, DataPropertyClass, ObjectPropertyClass, Thing, IndividualValueList
 from semver import VersionInfo
 
-from ontogen.actualizers.base import OntologyActualizer
-from ontogen.actualizers.owlready2 import Owlready2Actualizer
-from ontogen.base import DATATYPE_MAP
-from ontogen.base.namespaces import OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, OWL_INDIVIDUAL, RDF_TYPE, OWL_THING, \
-    OWL_CLASS, OWL_ANNOTATION_PROPERTY, OWL_OBJECT_PROPERTY, OWL_DATA_PROPERTY
-from ontogen.primitives import (BASE_ENTITIES, COMMENT_ENTITY_NAME, LABEL_ENTITY_NAME, PROPERTY_ENTITIES,
-                                Ontology, OwlEntity, OwlClass, OwlDataProperty,
+from ontogen.base.ontology import Ontology
+from ontogen.actualizers import OntologyActualizer, Owlready2Actualizer
+from ontogen.base.namespaces import OWL_INDIVIDUAL, RDF_TYPE, OWL_THING, OWL_CLASS, OWL_OBJECT_PROPERTY, OWL_DATA_PROPERTY
+from ontogen.primitives import (BASE_ENTITIES, PROPERTY_ENTITIES, OwlEntity, OwlClass, OwlDataProperty,
                                 OwlObjectProperty)
-from ontogen.utils.basics import absolutize_entity_name, shorten_entity_name
+from ontogen.utils.basics import absolutize_entity_name
 from ontogen.primitives.classes import OwlIndividual
 from ontogen.utils.basics import assign_optional_dct
 
@@ -155,7 +152,7 @@ class OntogenConverter:
                     cls.range = [self.get_entity(name, cls.prefix) for name in cls.range if isinstance(name, str)]
                     cls.inverse_prop = self.get_entity(cls.inverse_prop)
 
-    def get_entity(self, entity_name: str, prefix: str = None) -> Union[OwlClass, OwlEntity, str]:
+    def get_entity(self, entity_name: str, prefix: str = None) -> Union[OwlClass, OwlEntity, str, None]:
         if entity_name is None:
             return None
         if prefix is None:
@@ -204,22 +201,7 @@ class OntogenConverter:
 
     @property
     def individuals(self):
-        return self._get_with_type(OwlIndividual)
-
-    @property
-    def classes(self):
-        return self._get_with_type(OwlClass)
-
-    @property
-    def object_properties(self):
-        return self._get_with_type(OwlObjectProperty)
-
-    @property
-    def data_properties(self):
-        return self._get_with_type(OwlDataProperty)
-
-    def _get_with_type(self, t: Type[Union[OwlEntity, OwlIndividual]]):
-        return {x: self.entities[x] for x in self.entities if isinstance(self.entities[x], t)}
+        return self.ontology.individuals
 
     def _from_internals_to_dict(self) -> dict:
         onto = self.ontology

@@ -1,8 +1,10 @@
 from abc import ABCMeta, abstractmethod
 
-from ontogen import OwlClass, Ontology
-from ontogen.base import OwlEntity
+
+from ontogen.primitives.base import OwlEntity
+from ontogen.base.ontology import Ontology
 from ontogen.primitives.base import OwlProperty
+from ontogen.primitives.classes import OwlClass
 
 
 class OntologyBaseActualizer(metaclass=ABCMeta):

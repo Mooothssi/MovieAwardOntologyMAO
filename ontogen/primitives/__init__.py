@@ -1,4 +1,4 @@
-from .base import (Ontology, OwlEntity, OwlAnnotationProperty,
+from .base import (OwlEntity, OwlAnnotationProperty,
                    OwlDataProperty)
 from .vars import (BASE_ENTITIES, COMMENT_ENTITY_NAME,
                    LABEL_ENTITY_NAME, PROPERTY_ENTITIES)

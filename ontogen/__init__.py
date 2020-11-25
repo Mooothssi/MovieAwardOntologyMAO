@@ -1,2 +1,2 @@
-from .base import Ontology
+from .base.ontology import Ontology
 from .primitives import OwlClass, OwlObjectProperty, OwlIndividual

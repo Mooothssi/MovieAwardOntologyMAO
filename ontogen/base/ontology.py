@@ -4,10 +4,13 @@ import re
 import owlready2
 from rdflib import Graph, Namespace
 from owlready2 import Imp, get_ontology, sync_reasoner_pellet
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, Type
 
 from .namespaces import lookup_iri, lookup_prefix, build_prefixes, WELL_KNOWN_PREFIXES
 from .assertable import OwlAssertable
+from ontogen.primitives.classes import OwlClass, OwlIndividual
+from ontogen.primitives.properties import OwlObjectProperty
+from ..primitives import OwlDataProperty
 from ..utils.basics import absolutize_entity_name
 
 
@@ -40,6 +43,29 @@ class Ontology(OwlAssertable):
         self.iris: Dict[str, str] = {}
         self.annotations: Dict[str, List[Union["OwlAnnotationProperty", Any]]] = {}
         self.entities: Dict[str, "OwlEntity"] = {}
+
+    def _get_with_type(self, t: Type[Union['OwlEntity', 'OwlIndividual']]):
+        return {x: self.entities[x] for x in self.entities if isinstance(self.entities[x], t)}
+
+    @property
+    def individuals(self) -> Dict[str, OwlIndividual]:
+        """Returns all the Individuals of this Ontology"""
+        return self._get_with_type(OwlIndividual)
+
+    @property
+    def classes(self) -> Dict[str, OwlClass]:
+        """Returns all the Classes of this Ontology"""
+        return self._get_with_type(OwlClass)
+
+    @property
+    def object_properties(self) -> Dict[str, OwlObjectProperty]:
+        """Returns all the Object Properties of this Ontology"""
+        return self._get_with_type(OwlObjectProperty)
+
+    @property
+    def data_properties(self) -> Dict[str, OwlDataProperty]:
+        """Returns all the Data Properties of this Ontology"""
+        return self._get_with_type(OwlDataProperty)
 
     def get_entity(self, relative_name: str) -> Union[object, None]:
         name = absolutize_entity_name(relative_name)
@@ -220,6 +246,14 @@ class Ontology(OwlAssertable):
             return list(q)
 
     def add_entity(self, entity: 'OwlEntity'):
+        """Adds a given Entity into this Ontology
+
+        Args:
+            entity: A given Entity
+
+        Returns:
+            None
+        """
         self.entities[absolutize_entity_name(entity.name, self.base_prefix)] = entity
 
     def sync_iri(self):

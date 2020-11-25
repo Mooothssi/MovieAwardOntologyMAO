@@ -2,14 +2,12 @@ from abc import ABCMeta
 from typing import List, Type, Union, Dict, Any
 
 from owlready2 import Thing, ClassConstruct, locstr
-from owlready2.prop import destroy_entity
 
 from .assertable import OwlAssertable
 from .namespaces import RDFS_SUBCLASS_OF, ANNOTATIONS_KEY, OWL_DISJOINT_WITH, OWL_EQUIVALENT_CLASS, OWL_RESTRICTION
-from .ontology import Ontology
 from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME, \
     BUILTIN_DATA_TYPES, ANNO_ATTRS
-from ..actualizers.types import ACTUALIZED_CLASS
+# from ..actualizers.types import ACTUALIZED_CLASS
 from ..utils.basics import assign_optional_dct
 
 
@@ -21,13 +19,6 @@ def _get_equivalent_classes(sub_dict: dict) -> List:
         return u.get(OWL_RESTRICTION, [])
     else:
         return u
-
-
-def cleanup(onto: Ontology):
-    onto.implementation.graph.destroy()
-    for e in GENERATED_TYPES:
-        destroy_entity(GENERATED_TYPES[e])
-    GENERATED_TYPES.clear()
 
 # BUILTIN_DATA_TYPES = Union[str, int]
 
@@ -45,7 +36,6 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
 
     def __init__(self, entity_qualifier: str):
         super(OwlEntity, self).__init__()
-        self._actualized_entity: ACTUALIZED_CLASS = None
         self.disjoint_class_names: List[str] = []
         self.properties_values = {}
         self._use_default_prefix = False
@@ -71,7 +61,7 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
     def name_with_prefix(self) -> str:
         return f"{self.prefix}:{self.name}"
 
-    def get_iri(self, onto: Ontology):
+    def get_iri(self, onto: 'Ontology'):
         return f"{onto.lookup_iri(self.prefix)}{self.name}"
 
     def add_superclass(self, superclass: Union["OwlEntity", "str"]):
@@ -139,30 +129,6 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
         if self.is_actualized:
             return GENERATED_TYPES[self.name]
         raise AssertionError("The entity has yet to be actualized")
-
-    def _get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
-        try:
-            self._sync_description()
-            return self.actualized_entity
-        except AssertionError:
-            attrs['namespace'] = onto.implementation
-            default = True
-            if len(self._parent_classes) > 0 or len(self._realised_parent_classes) > 0:
-                self._realised_parent_classes.extend(
-                    [x._get_generated_class(onto) for x in self._parent_classes
-                     if x is not None and isinstance(x, OwlEntity)])
-                gen = self._realised_parent_classes
-                if len(gen) > 0:
-                    GENERATED_TYPES[self.name] = type(self.name, tuple(gen), attrs)
-                    default = False
-            if default:
-                GENERATED_TYPES[self.name] = type(self.name, (self._parent_class,), attrs)
-            if onto.base_prefix != self.prefix:
-                p = self.get_iri(onto)
-                self.actualized_entity.iri = p
-            self.actualize_assertions(GENERATED_TYPES[self.name])
-            self._sync_description()
-            return GENERATED_TYPES[self.name]
 
     def _sync_description(self):
         """Internally synchronizes with the `owlready2` representation of this Class

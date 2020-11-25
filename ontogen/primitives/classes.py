@@ -3,8 +3,7 @@ from typing import List, Dict, Union
 from ontogen.base.assertable import OwlAssertable
 from ontogen.base.namespaces import RDF_TYPE
 from ontogen.base.vars import GENERATED_TYPES
-from ontogen.utils.basics import absolutize_entity_name
-from ontogen.primitives.base import OwlEntity, Ontology, ENTITIES, check_restrictions
+from ontogen.primitives.base import OwlEntity, ENTITIES, check_restrictions
 from ontogen.primitives.properties import OwlObjectProperty
 from ontogen.utils.basics import assign_optional_dct
 
@@ -61,14 +60,6 @@ class OwlIndividual(OwlEntity, OwlAssertable):
         """
         cls.individuals.append(self)
         self.onto_types.append(cls)
-
-    def actualize(self, onto: Ontology):
-        super().actualize(onto)
-        self.onto_types[0].actualize(onto)
-
-    def _get_entity(self, onto: Ontology, relative_name: str) -> object or None:
-        name = absolutize_entity_name(relative_name)
-        return onto.entities.get(name, None)
 
     def _prepare_assertion_value(self, prop_name: str, value: Union[List, str]) -> object:
         val = value
