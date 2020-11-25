@@ -66,12 +66,14 @@ class OntogenConverter:
                 .compare(VersionInfo.parse(OntogenConverter.SUPPORTED_VERSION)) > 0):
             raise AssertionError("Unsupported version of file")
 
-    def load_from_spec(self, spec_filename: str):
+    @classmethod
+    def load_from_spec(cls, spec_filename: str) -> 'OntogenConverter':
         """Creates an abstract Ontology from a specs file with the given filename
 
         Args:
             spec_filename: The filename of a specs file in YAML
         """
+        self = cls()
         with open(spec_filename) as f:
             self._dct = yaml.load(f, Loader=yaml.Loader)
             root = self._dct
@@ -107,6 +109,7 @@ class OntogenConverter:
         self._add_individuals(root)
         self.ontology.from_dict(root)
         self._load_class_descriptions(tuple(self.entities.values()))
+        return self
 
     def write_yaml(self, owl_filename: str, spec_filename: str):
         self.ontology = Ontology.load_from_file(owl_filename)
@@ -153,6 +156,15 @@ class OntogenConverter:
                     cls.inverse_prop = self.get_entity(cls.inverse_prop)
 
     def get_entity(self, entity_name: str, prefix: str = None) -> Union[OwlClass, OwlEntity, str, None]:
+        """Gets an Entity with a given name
+
+        Args:
+            entity_name: The given name of an Entity
+            prefix: A fallback prefix
+
+        Returns:
+            An OwlEntity with the given name. Can be an OwlClass or OwlProperty
+        """
         if entity_name is None:
             return None
         if prefix is None:

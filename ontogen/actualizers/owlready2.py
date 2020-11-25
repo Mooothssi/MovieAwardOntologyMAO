@@ -4,6 +4,7 @@ from owlready2 import (AnnotationProperty, DataProperty, ObjectProperty, Thing, 
 
 from ontogen import OwlClass, OwlObjectProperty, OwlIndividual
 from ontogen.actualizers.base import OntologyActualizer, OntologyBaseActualizer
+from ontogen.actualizers.types import ACTUALIZED_CLASS
 from ontogen.base import OwlEntity, GENERATED_TYPES
 from ontogen.base.ontology import Ontology
 from ontogen.internal import CHARACTERISTICS_MAPPING
@@ -28,6 +29,7 @@ def cleanup(onto: Ontology):
 def get_exp_constructor(onto: Ontology):
     return ClassExpToConstruct(onto)
 # GENERATED_TYPES: Dict[str, Union[Type[Thing], Thing, type]] = {}
+
 
 class OwlreadyBaseActualizer(OntologyBaseActualizer):
     def get_actualized_entity(self, cls: OwlEntity, onto: Ontology, **attrs) -> Type[Thing]:
@@ -79,7 +81,6 @@ class OwlreadyClassActualizer(OwlreadyBaseActualizer):
         super().actualize(cls, onto)
         for i in cls.individuals:
             self.actualize_individual(i, onto)
-            # i.actualize_imp(onto)
         [cls.add_equivalent_class_expression(get_exp_constructor(onto).to_construct(exp))
          for exp in cls.equivalent_class_expressions]
         for idx, x in enumerate(cls._parent_classes):
@@ -90,7 +91,6 @@ class OwlreadyClassActualizer(OwlreadyBaseActualizer):
         cls.actualize_assertions(generated_cls)
         for i in cls.individuals:
             self.actualize_individual(i, onto)
-            #i.actualize_imp(onto)
         disjoints = [self.get_actualized_entity(x, onto) for x in cls._disjoint_classes if x is not None]
         if len(disjoints) > 0:
             AllDisjoint(disjoints)
@@ -126,9 +126,10 @@ class OwlreadyPropertyActualizer(OwlreadyBaseActualizer):
             p = self.get_actualized_entity(cls, onto)
             cls.actualize_assertions(p)
 
-    def _get_generated(self, cls: OwlEntity, onto: Ontology, classes: List[OwlEntity]):
+    def _get_generated(self, cls: OwlEntity, onto: Ontology, classes: List[OwlEntity]) -> List[ACTUALIZED_CLASS]:
         if isinstance(cls, OwlObjectProperty):
-            return [super(OwlreadyPropertyActualizer, self).get_actualized_entity(x, onto) for x in classes if x is not None]
+            return [super(OwlreadyPropertyActualizer, self).get_actualized_entity(x, onto)
+                    for x in classes if x is not None]
         else:
             lst = []
             for c in classes:

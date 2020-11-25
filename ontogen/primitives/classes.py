@@ -40,13 +40,20 @@ class OwlClass(OwlEntity):
 
 
 class OwlIndividual(OwlEntity, OwlAssertable):
-    """
-    An Individual of Ontology classes
+    """An Individual of Ontology classes
     """
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, classes: List[OwlClass] = None):
+        """Instantiates an ``OwlIndividual``
+
+        Args:
+            name: A given name literal with a required prefix
+        """
         super(OwlIndividual, self).__init__(name)
-        self.onto_types: List[OwlClass] = []
+        if classes:
+            self.onto_types = classes
+        else:
+            self.onto_types: List[OwlClass] = []
         self.defined_properties: Dict[str, "OwlProperty" or None] = dict(ENTITIES)
         self._imp = None
         self.properties_values: Dict[str, ] = {}
