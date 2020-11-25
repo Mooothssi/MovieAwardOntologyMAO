@@ -1,6 +1,7 @@
-from typing import Any, Dict, List, Union, Tuple, Type, Optional
+from typing import Dict, List, Union, Tuple
 import yaml
-from owlready2 import AnnotationPropertyClass, ClassValueList, DataPropertyClass, ObjectPropertyClass, Thing, IndividualValueList
+from owlready2 import (AnnotationPropertyClass, ClassValueList, DataPropertyClass,
+                       ObjectPropertyClass, Thing, IndividualValueList)
 from semver import VersionInfo
 
 from ontogen.base.ontology import Ontology
@@ -23,10 +24,10 @@ class OntogenConverter:
     def __init__(self):
         """Loads a file with the given name into a skeleton of an OWL ontology.
         """
-        self.ontology = Ontology()
-        self.ontology.generate_base_iri_from_prefix()
+        self._ontology = Ontology()
+        self._ontology.generate_base_iri_from_prefix()
         self.file_version = ""
-        self.actualizer: OntologyActualizer = Owlready2Actualizer(self.ontology)
+        self.actualizer: OntologyActualizer = Owlready2Actualizer(self._ontology)
         self._individuals: List[OwlIndividual] = []
         self._missing_entities = set()
         self._dct = {}
@@ -34,29 +35,34 @@ class OntogenConverter:
     @property
     def entities(self) -> Dict[str, Union[OwlEntity, OwlIndividual]]:
         """Returns the entities of the generated Ontology"""
-        return self.ontology.entities
+        return self._ontology.entities
+
+    @property
+    def ontology(self):
+        """Returns the internal Ontology of this Converter"""
+        return self._ontology
 
     def add_entity(self, entity: OwlEntity):
         self.entities[absolutize_entity_name(entity.name)] = entity
 
     @property
     def prefix(self) -> str:
-        return self.ontology.base_prefix
+        return self._ontology.base_prefix
 
     def _add_rules(self, base_dict: dict):
         b = base_dict.get("rules", {})
         for rule_name in b:
-            self.ontology.add_rule(b[rule_name]["rule"][0], rule_name)
+            self._ontology.add_rule(b[rule_name]["rule"][0], rule_name)
 
     def _deal_with_iris(self, base_dict: dict):
-        self.ontology.base_iri = base_dict.get("iri", "")
+        self._ontology.base_iri = base_dict.get("iri", "")
         prefixes = base_dict.get("prefixes", {})
         try:
-            [self.ontology.define_prefix(prefix, prefixes[prefix]) for prefix in prefixes]
+            [self._ontology.define_prefix(prefix, prefixes[prefix]) for prefix in prefixes]
         except KeyError:
             raise AssertionError("Please define prefix for the base IRI of this Ontology")
-        self.ontology.update_base_prefix()
-        self.ontology.create()
+        self._ontology.update_base_prefix()
+        self._ontology.create()
 
     def _check_eligible_version(self, base_dict: dict):
         self.file_version = base_dict["version"].replace("v", "")
@@ -103,20 +109,20 @@ class OntogenConverter:
                             prop_qualifier = absolutize_entity_name(prop_name, self.prefix)
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
-                self.ontology.add_entity(obj)
+                self._ontology.add_entity(obj)
         self._add_individuals(root)
-        self.ontology.from_dict(root)
+        self._ontology.from_dict(root)
         self._load_class_descriptions(tuple(self.entities.values()))
         return self
 
     def write_yaml(self, owl_filename: str, spec_filename: str):
-        self.ontology = Ontology.load_from_file(owl_filename)
-        onto = self.ontology
+        self._ontology = Ontology.load_from_file(owl_filename)
+        onto = self._ontology
         with onto.implementation:
             g = onto.rdflib_graph
             namespaces = dict(g.namespaces())
             for k in namespaces:
-                self.ontology.define_prefix(k, str(namespaces[k]))
+                self._ontology.define_prefix(k, str(namespaces[k]))
         internals = self._from_internals_to_dict()
         dct = {'version': self.SUPPORTED_VERSION,
                'iri': onto.base_iri,
@@ -141,7 +147,7 @@ class OntogenConverter:
                         for val in values:
                             ind.add_property_assertion(absolutize_entity_name(key, self.prefix), val)
             self.individuals[individual] = ind
-            self.ontology.add_entity(ind)
+            self._ontology.add_entity(ind)
 
     def _load_class_descriptions(self, classes: Tuple[OwlEntity, ...]):
         for cls in classes:
@@ -193,6 +199,23 @@ class OntogenConverter:
         for entity in self.entities:
             print(f"- {entity}: {self.entities[entity].__class__.__name__}")
 
+    def actualize_ontology(self, onto: Ontology):
+        """Saves changes made into an existing Ontology
+
+        Args:
+            onto: A given Ontology
+
+        Returns:
+            None
+        """
+        self.check_missing_definitions()
+        onto = onto
+        onto.create()
+        onto.generate_base_iri_from_prefix()
+        self.actualizer.actualize(self.entities)
+        self._add_rules(self._dct)
+        onto.actualize()
+
     def export_to_ontology(self, onto: Ontology = None) -> Ontology:
         """Saves changes made into a given Ontology
 
@@ -202,22 +225,17 @@ class OntogenConverter:
         Returns:
             A resultant Ontology
         """
-        self.check_missing_definitions()
         if onto is None:
-            onto = self.ontology
-        onto.create()
-        onto.generate_base_iri_from_prefix()
-        self.actualizer.actualize(self.entities)
-        self._add_rules(self._dct)
-        onto.actualize()
+            onto = self._ontology
+        self.actualize_ontology(onto)
         return onto
 
     @property
     def individuals(self):
-        return self.ontology.individuals
+        return self._ontology.individuals
 
     def _from_internals_to_dict(self) -> dict:
-        onto = self.ontology
+        onto = self._ontology
         classes: List[Thing] = list(onto.implementation.classes())
         props: List[Thing] = list(onto.implementation.properties())
         individuals: List[Thing] = list(onto.implementation.individuals())
@@ -228,7 +246,7 @@ class OntogenConverter:
             c = OwlClass(e)
             for p in Thing.get_properties(cls):
                 if isinstance(p, AnnotationPropertyClass):
-                    c.retrieve_property(p.name, cls, self.ontology.lookup_prefix(p.namespace.base_iri))
+                    c.retrieve_property(p.name, cls, self._ontology.lookup_prefix(p.namespace.base_iri))
             c.parent_class_names = [absolutize_entity_name(s.name) for s in cls.is_a]
             self.entities[e] = c
         for prop in props:

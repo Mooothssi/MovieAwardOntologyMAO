@@ -12,7 +12,7 @@ Feel free to run unit tests in `test_ontogen.py`
 - `rdflib` for direct `RDF/XML` manipulation
 - `pyyaml`
 
-### Using a YAML-to-OWL Converter to generate `OwlClass`es
+### Sample script
 ```python
 from dirs import ROOT_DIR
 
@@ -25,13 +25,12 @@ film: OwlClass = converter.get_entity("mao:Film")
 # You can start mapping rows from the database to an Individual from here.
 parasite_film: OwlIndividual = OwlIndividual("mao:Parasite")
 parasite_film.be_type_of(film)
+
 # Adds `parasite_film` to the Ontology
 converter.ontology.add_entity(parasite_film)
-
 # Save the results to an in-memory Ontology
 onto: Ontology = converter.export_to_ontology()
-
-# Save the results to an OWL-file Ontology
+# Save the results to an RDF/XML file Ontology. Can be 'xml' or 'ttl'
 onto.save_to_file("<filename>")
 ```
 
@@ -63,8 +62,6 @@ onto: Ontology
 film: OwlClass = OwlClass("mao:Film") # or selectively `converter.get_entity("mao:Film")`
 parasite_film: OwlIndividual = OwlIndividual("mao:Parasite")
 parasite_film.be_type_of(film)
-# Create an mao:Film individual named Parasite in a given OWL Ontology
-# parasite_film.actualize(onto)
 ```
 
 ### Adding a Property Assertion to an Individual
@@ -100,7 +97,7 @@ onto.sparql_query("""ASK { mao:Parasite rdf:type mao:Film }""")
 For version: `v2.1.0`
 
 - [x] Support custom prefixes
-- [ ] Fix faceting conjunction
+- [x] Fix faceting conjunction
 
 ### Individuals
 - [x] `owl:Individual`

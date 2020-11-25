@@ -14,7 +14,7 @@ class OwlClass(OwlEntity):
     """
 
     def __repr__(self) -> str:
-        return f"OwlClass<{self.prefix}:{self.name}>"
+        return f"OwlClass<{self.name_with_prefix}>"
 
     prefix = "owl"
     name = "Class"

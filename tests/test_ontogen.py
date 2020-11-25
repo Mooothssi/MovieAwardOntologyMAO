@@ -66,23 +66,15 @@ class TestOntogen(TestCase):
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
         self.onto.save_to_file(str(Path(OUT_PATH) / "out.ttl"), "ttl")
 
-    def test_load_ontology(self):
-        onto = Ontology.load_from_file(str(ROOT_DIR / Path(OUT_PATH) / OUT_FILENAME))
-
     def test_super_classes(self):
         film_making = self.converter.get_entity("mao:FilmMakingSituation")
-        film_making.actualize(self.onto)
         event = self.converter.get_entity("mao:Event")
-        event.actualize(self.onto)
         sit = self.converter.get_entity("mao:Situation")
-        sit.actualize(self.onto)
         self.assertListEqual([event.actualized_entity, sit.actualized_entity], film_making.actualized_entity.is_a)
 
     def test_annotation_property(self):
         prop = OwlAnnotationProperty("mao:someProp")
-        prop.actualize(self.onto)
         event = self.converter.get_entity("mao:Event")
-        event.actualize(self.onto)
         self.test_instantiation()
         self.parasite_film.add_property_assertion("mao:someProp", "Parasite")
         # self.parasite_film.actualize(self.onto)
