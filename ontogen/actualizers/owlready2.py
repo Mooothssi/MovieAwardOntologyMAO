@@ -133,6 +133,8 @@ class OwlreadyPropertyActualizer(OwlreadyBaseActualizer):
     def _get_generated(self, cls: OwlEntity, onto: Ontology, classes: List[OwlEntity]) -> List[ACTUALIZED_CLASS]:
         lst = []
         for c in classes:
+            if c is None:
+                c = Thing
             if isinstance(c, str):
                 c = onto.get_entity(c)
             if isinstance(c, OwlEntity):
