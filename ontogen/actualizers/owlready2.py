@@ -1,6 +1,7 @@
 from typing import Type, Union, List
 
-from owlready2 import (AnnotationProperty, DataProperty, ObjectProperty, Thing, AllDisjoint, destroy_entity)
+from owlready2 import (AnnotationProperty, DataProperty, ObjectProperty, Thing, AllDisjoint, destroy_entity,
+                       Restriction)
 
 from ontogen import OwlClass, OwlObjectProperty, OwlIndividual
 from ontogen.actualizers.base import OntologyActualizer, OntologyBaseActualizer
@@ -52,10 +53,12 @@ class OwlreadyBaseActualizer(OntologyBaseActualizer):
             if len(cls._parent_classes) > 0 or len(cls._realised_parent_classes) > 0:
                 cls._realised_parent_classes.extend(
                     [self.get_actualized_entity(x, onto) for x in cls._parent_classes
-                     if x is not None and isinstance(x, OwlEntity)])
+                     if (x is not None and isinstance(x, OwlEntity))])
+                restrictions = [x for x in cls._parent_classes if isinstance(x, Restriction)]
                 gen = cls._realised_parent_classes
                 if len(gen) > 0:
                     GENERATED_TYPES[cls.name] = type(cls.name, tuple(gen), attrs)
+                    GENERATED_TYPES[cls.name].is_a.extend(restrictions)
                     default = False
             if default:
                 mapped = TYPE_MAPPING[cls.__class__]
@@ -85,6 +88,8 @@ class OwlreadyClassActualizer(OwlreadyBaseActualizer):
                 self.actualize_individual(i, onto)
         [cls.add_equivalent_class_expression(get_exp_constructor(onto).to_construct(exp))
          for exp in cls.equivalent_class_expressions]
+        # [cls.add_superclass_expressions(get_exp_constructor(onto).to_construct(exp))
+        #  for exp in cls.superclass_expressions]
         for idx, x in enumerate(cls._parent_classes):
             if isinstance(x, str):
                 c = get_exp_constructor(onto).to_construct(x)

@@ -42,6 +42,8 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
         self.name = n
         self.dependencies = []
         self._parent_classes = []
+        self._parent_class_expressions = []
+        self.superclass_expressions = []
         self._disjoint_classes = []
         self.equivalent_class_expressions: List[str] = []
         self.equivalent_classes: list = []
@@ -69,6 +71,17 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
         if superclass is None:
             return
         self._parent_classes.append(superclass)
+
+    def add_superclass_expressions(self, superclass: str):
+        """Adds a superclass of this Class.
+        This Class will then be an ``rdfs:subclassOf`` a given superclass
+
+        Args:
+            superclass: A given Superclass expression
+        """
+        if superclass is None:
+            return
+        self._parent_class_expressions.append(superclass)
 
     def add_disjoint_class(self, cls: "OwlEntity"):
         """Adds a disjoint class to this Class. The given class will be lazy loaded.

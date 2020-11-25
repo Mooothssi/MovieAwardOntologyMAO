@@ -98,7 +98,15 @@ class TestOntogenFamily(TestCase):
         converter = OntogenConverter.load_from_spec(ROOT_DIR / "tests/specs/v2.1.0/test_case2.yaml")
         onto = converter.export_to_ontology()
         onto.add_license("MIT License")
+        self.assertEqual("http://www.co-ode.org/roberts/family-tree.owl#", onto.base_iri)
         onto.save_to_file("out/family.owl")
+
+    def test_pizza_ontology(self):
+        converter = OntogenConverter.load_from_spec(ROOT_DIR / "tests/specs/v2.1.0/test_case1.yaml")
+        onto = converter.export_to_ontology()
+        onto.add_license("MIT License")
+        self.assertEqual("http://www.co-ode.org/ontologies/pizza/pizza.owl#", onto.base_iri)
+        onto.save_to_file("out/pizza.owl")
 
     def test_movie_ontology(self):
         o = Ontology.load_from_file(OWL_FILEPATH)

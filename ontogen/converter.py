@@ -178,7 +178,9 @@ class OntogenConverter:
                 self._missing_entities.remove(modified_name)
             return self.entities[modified_name]
         except KeyError:
-            self._missing_entities.add(modified_name)
+            import re
+            if not re.match(r'(.+) ([A-Za-z]+) (.+)', modified_name):
+                self._missing_entities.add(modified_name)
             return modified_name
 
     def check_missing_definitions(self):
