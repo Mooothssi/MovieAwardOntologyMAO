@@ -58,7 +58,8 @@ class OwlreadyBaseActualizer(OntologyBaseActualizer):
                     GENERATED_TYPES[cls.name] = type(cls.name, tuple(gen), attrs)
                     default = False
             if default:
-                GENERATED_TYPES[cls.name] = type(cls.name, (TYPE_MAPPING[cls.__class__],), attrs)
+                mapped = TYPE_MAPPING[cls.__class__]
+                GENERATED_TYPES[cls.name] = type(cls.name, (mapped,), attrs)
             if onto.base_prefix != cls.prefix:
                 p = cls.get_iri(onto)
                 cls.actualized_entity.iri = p
@@ -79,8 +80,9 @@ class OwlreadyClassActualizer(OwlreadyBaseActualizer):
             onto: a given Ontology
         """
         super().actualize(cls, onto)
-        for i in cls.individuals:
-            self.actualize_individual(i, onto)
+        if isinstance(cls, OwlClass):
+            for i in cls.individuals:
+                self.actualize_individual(i, onto)
         [cls.add_equivalent_class_expression(get_exp_constructor(onto).to_construct(exp))
          for exp in cls.equivalent_class_expressions]
         for idx, x in enumerate(cls._parent_classes):
@@ -89,8 +91,9 @@ class OwlreadyClassActualizer(OwlreadyBaseActualizer):
                 cls._parent_classes[idx] = c
         generated_cls = self.get_actualized_entity(cls, onto)
         cls.actualize_assertions(generated_cls)
-        for i in cls.individuals:
-            self.actualize_individual(i, onto)
+        if isinstance(cls, OwlClass):
+            for i in cls.individuals:
+                self.actualize_individual(i, onto)
         disjoints = [self.get_actualized_entity(x, onto) for x in cls._disjoint_classes if x is not None]
         if len(disjoints) > 0:
             AllDisjoint(disjoints)
@@ -106,7 +109,7 @@ class OwlreadyClassActualizer(OwlreadyBaseActualizer):
             else:
                 inst = cls.onto_types[0].actualized_entity()
             inst.name = name
-            [self.actualize(y, onto) for y in [onto.get_entity(onto, prop) for prop in cls.properties_values] if y]
+            [self.actualize(y, onto) for y in [onto.get_entity(prop) for prop in cls.properties_values] if y]
             GENERATED_TYPES[inst.name] = inst
             cls.actualize_assertions(inst)
             cls._imp = inst
@@ -119,7 +122,6 @@ class OwlreadyPropertyActualizer(OwlreadyBaseActualizer):
         if isinstance(cls, OwlAnnotationProperty):
             self.get_actualized_entity(cls, onto, range=cls.range)
         else:
-
             if cls.name in ["topObjectProperty", "topDataProperty"]:
                 return
             super().actualize(cls, onto)
@@ -127,16 +129,14 @@ class OwlreadyPropertyActualizer(OwlreadyBaseActualizer):
             cls.actualize_assertions(p)
 
     def _get_generated(self, cls: OwlEntity, onto: Ontology, classes: List[OwlEntity]) -> List[ACTUALIZED_CLASS]:
-        if isinstance(cls, OwlObjectProperty):
-            return [super(OwlreadyPropertyActualizer, self).get_actualized_entity(x, onto)
-                    for x in classes if x is not None]
-        else:
-            lst = []
-            for c in classes:
-                if isinstance(c, OwlEntity):
-                    c = super().get_actualized_entity(c, onto)
-                lst.append(c)
-            return lst
+        lst = []
+        for c in classes:
+            if isinstance(c, str):
+                c = onto.get_entity(c)
+            if isinstance(c, OwlEntity):
+                c = super(OwlreadyPropertyActualizer, self).get_actualized_entity(c, onto)
+            lst.append(c)
+        return lst
 
     def get_actualized_entity(self, cls: Union[OwlObjectProperty, OwlProperty], onto: Ontology, **attrs) -> Type[Thing]:
         if isinstance(cls, OwlProperty):

@@ -68,7 +68,7 @@ class Ontology(OwlAssertable):
         return self._get_with_type(OwlDataProperty)
 
     def get_entity(self, relative_name: str) -> Union[object, None]:
-        name = absolutize_entity_name(relative_name)
+        name = absolutize_entity_name(relative_name, self.base_prefix)
         return self.entities.get(name, None)
 
     def generate_base_iri_from_prefix(self, developer: str = "nomad"):

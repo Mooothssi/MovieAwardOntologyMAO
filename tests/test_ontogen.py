@@ -95,16 +95,9 @@ class TestOntogen(TestCase):
 
 class TestOntogenFamily(TestCase):
     def test_family_ontology(self):
-        converter = OntogenConverter()
-        converter.load_from_spec(ROOT_DIR / "tests/specs/v2.1.0/test_case2.yaml")
+        converter = OntogenConverter.load_from_spec(ROOT_DIR / "tests/specs/v2.1.0/test_case2.yaml")
         onto = converter.export_to_ontology()
-        d = Datatype("family:str")
-        d.data_type = str
-        d.actualize(onto)
         onto.add_license("MIT License")
-        print(onto.implementation.world._props)
-        # pizza = converter.get_entity("pizza:Pizza")
-        # self.assertTrue(converter.get_entity("pizza:NamedPizza").is_subclass_of(pizza))
         onto.save_to_file("out/family.owl")
 
     def test_movie_ontology(self):
