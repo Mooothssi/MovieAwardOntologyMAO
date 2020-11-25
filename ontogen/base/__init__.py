@@ -1,13 +1,12 @@
 from abc import ABCMeta
-from typing import List, Type, Union, Dict, Any
+from typing import List, Union, Dict, Any
 
-from owlready2 import Thing, ClassConstruct, locstr
+from owlready2 import ClassConstruct, locstr
 
 from .assertable import OwlAssertable
 from .namespaces import RDFS_SUBCLASS_OF, ANNOTATIONS_KEY, OWL_DISJOINT_WITH, OWL_EQUIVALENT_CLASS, OWL_RESTRICTION
 from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME, \
     BUILTIN_DATA_TYPES, ANNO_ATTRS
-# from ..actualizers.types import ACTUALIZED_CLASS
 from ..utils.basics import assign_optional_dct
 
 
@@ -20,19 +19,14 @@ def _get_equivalent_classes(sub_dict: dict) -> List:
     else:
         return u
 
-# BUILTIN_DATA_TYPES = Union[str, int]
-
 
 class OwlEntity(OwlAssertable, metaclass=ABCMeta):
     prefix = "owl"
     _internal_dict = {}
     _parent_class = object
     parent_class_names: List[str] = []
-    _parent_classes: List["OwlEntity" or ClassConstruct] = []
+    _parent_classes: List["OwlEntity"] = []
     _disjoint_classes: List["OwlEntity"] = []
-
-    # Short for an Implementation instance
-    _internal_imp_instance: Thing = None
 
     def __init__(self, entity_qualifier: str):
         super(OwlEntity, self).__init__()
@@ -49,7 +43,7 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
         self._parent_classes = []
         self._disjoint_classes = []
         self.equivalent_class_expressions: List[str] = []
-        self.equivalent_classes: List[ClassConstruct] = []
+        self.equivalent_classes: list = []
         self._realised_parent_classes = []
         self.equivalent_class_expressions = []
 
@@ -110,10 +104,6 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
     def add_comments(self, values: List[BUILTIN_DATA_TYPES]):
         for v in values:
             self.add_comment(v)
-
-    @property
-    def is_individual(self) -> bool:
-        return self._internal_imp_instance is not None
 
     @property
     def is_actualized(self) -> bool:

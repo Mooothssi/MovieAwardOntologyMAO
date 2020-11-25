@@ -8,7 +8,7 @@ from ontogen.actualizers.types import ACTUALIZED_CLASS
 from ontogen.base import OwlEntity, GENERATED_TYPES
 from ontogen.base.ontology import Ontology
 from ontogen.internal import CHARACTERISTICS_MAPPING
-from ontogen.primitives.base import OwlProperty, OwlAnnotationProperty, OwlDataProperty
+from ontogen.primitives.properties import OwlProperty, OwlAnnotationProperty, OwlDataProperty
 from ontogen.utils.classexp import ClassExpToConstruct
 
 TYPE_MAPPING = {

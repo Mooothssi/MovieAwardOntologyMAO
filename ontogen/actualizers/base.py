@@ -3,8 +3,8 @@ from abc import ABCMeta, abstractmethod
 
 from ontogen.primitives.base import OwlEntity
 from ontogen.base.ontology import Ontology
-from ontogen.primitives.base import OwlProperty
 from ontogen.primitives.classes import OwlClass
+from ontogen.primitives.properties import OwlProperty
 
 
 class OntologyBaseActualizer(metaclass=ABCMeta):

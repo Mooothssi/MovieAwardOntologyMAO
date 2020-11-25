@@ -1,7 +1,41 @@
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Type
 
-from ontogen.base.namespaces import RDF_TYPE
-from ontogen.primitives.base import OwlProperty
+from ontogen.base import OwlEntity
+from ontogen.base.namespaces import RDF_TYPE, RDFS_RANGE, RDFS_DOMAIN, OWL_INVERSE_OF
+from ontogen.primitives.base import get_equivalent_datatype
+
+
+class OwlProperty(OwlEntity):
+    prefix = "owl"
+    range = [Type[str]]
+
+    def __init__(self, entity_qualifier: str):
+        super(OwlProperty, self).__init__(entity_qualifier)
+        self.range = []
+        self.domain = []
+        self.inverse_prop: Type or None = None
+
+    def from_dict(self, sub: Dict[str, Any]):
+        super(OwlProperty, self).from_dict(sub)
+        self.range = sub.get(RDFS_RANGE, [])
+        self.domain = sub.get(RDFS_DOMAIN, [])
+        inv = sub.get(OWL_INVERSE_OF, [])
+        if len(inv) == 1:
+            self.inverse_prop = inv[0]
+
+
+class OwlDataProperty(OwlProperty):
+    name = "DataProperty"
+    range = [str]
+
+    def from_dict(self, sub: Dict[str, Any]):
+        super().from_dict(sub)
+        self.range = [get_equivalent_datatype(datatype) for datatype in sub["rdfs:range"]]
+
+
+class OwlAnnotationProperty(OwlProperty):
+    name = "AnnotationProperty"
+    range = [str]
 
 
 class OwlObjectProperty(OwlProperty):

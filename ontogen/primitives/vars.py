@@ -1,9 +1,8 @@
 
 from ontogen.base import LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME
 
-from ontogen.primitives.base import OwlAnnotationProperty, OwlDataProperty
 from ontogen.primitives.classes import OwlClass
-from ontogen.primitives.properties import OwlObjectProperty
+from ontogen.primitives.properties import OwlAnnotationProperty, OwlDataProperty, OwlObjectProperty
 
 BASE_ENTITIES = [OwlAnnotationProperty, OwlDataProperty, OwlObjectProperty, OwlClass]
 PROPERTY_ENTITIES = {"dataProperty": OwlDataProperty,

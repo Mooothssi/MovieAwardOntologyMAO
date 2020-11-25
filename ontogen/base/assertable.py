@@ -112,6 +112,14 @@ class OwlAssertable:
         self.add_property_assertion(COMMENT_ENTITY_NAME, value)
 
     def from_dict(self, sub: dict):
+        """Applies annotations from a given dictionary
+
+        Args:
+            sub: A given representation in dictionary
+
+        Returns:
+            None
+        """
         annotations = sub.get(ANNOTATIONS_KEY, {})
         for prop_name, prop_values in annotations.items():
             for value in prop_values:
