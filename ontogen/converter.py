@@ -198,8 +198,6 @@ class OntogenConverter:
             onto.generate_base_iri_from_prefix()
         onto.create()
         self.actualizer.actualize(self.entities)
-        # for entity in self.entities.values():
-        #     entity.actualize(onto)
         self._add_rules(self._dct)
         onto.actualize()
         return onto

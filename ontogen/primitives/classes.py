@@ -1,14 +1,12 @@
-from typing import List, Dict, Type, Union
+from typing import List, Dict, Union
 
-from owlready2 import Thing, AllDisjoint
-
+from ontogen.base.assertable import OwlAssertable
+from ontogen.base.namespaces import RDF_TYPE
 from ontogen.base.vars import GENERATED_TYPES
-from .base import OwlEntity, Ontology, ENTITIES, apply_classes_from, get_exp_constructor, check_restrictions
 from ontogen.utils.basics import absolutize_entity_name
+from ontogen.primitives.base import OwlEntity, Ontology, ENTITIES, check_restrictions
 from ontogen.primitives.properties import OwlObjectProperty
 from ontogen.utils.basics import assign_optional_dct
-from ontogen.base.assertable import OwlAssertable
-from ..base.namespaces import RDF_TYPE
 
 
 class OwlClass(OwlEntity):
@@ -22,7 +20,6 @@ class OwlClass(OwlEntity):
     prefix = "owl"
     name = "Class"
     parent_name = "BaseOntologyClass"
-    _parent_class = Thing
     parent_class_names: List[str] = []
 
     def __init__(self, entity_name: str):
@@ -41,45 +38,6 @@ class OwlClass(OwlEntity):
     #     if self.is_actualized:
     #         return self._actualized_entity
     #     raise AssertionError("The entity has yet to be actualized")
-
-    def actualize(self, onto: Ontology) -> 'OwlClass':
-        """
-        Makes the entity concrete (saved) in a given Ontology
-
-        Args:
-            onto: a given Ontology
-        """
-        super().actualize(onto)
-        apply_classes_from(onto)
-        for i in self.individuals:
-            i.actualize_imp(onto)
-        [self.add_equivalent_class_expression(get_exp_constructor(onto).to_construct(exp))
-         for exp in self.equivalent_class_expressions]
-        for idx, x in enumerate(self._parent_classes):
-            if isinstance(x, str):
-                c = get_exp_constructor(onto).to_construct(x)
-                self._parent_classes[idx] = c
-        inst = self._get_generated_class(onto)
-        self.actualize_assertions(inst)
-        for i in self.individuals:
-            i.actualize_imp(onto)
-        disjoints = [x._get_generated_class(onto) for x in self._disjoint_classes if x is not None]
-        if len(disjoints) > 0:
-            AllDisjoint(disjoints)
-        return self
-
-
-class OwlThing(OwlClass):
-    name = "Thing"
-    parent_name = "BaseOwlThing"
-    prefix = "owl"
-    _internal_imp_instance = Thing
-
-    def __init__(self):
-        super().__init__(f"{self.prefix}:{self.name}")
-
-    def _get_generated_class(self, onto: Ontology, **attrs) -> Type[Thing]:
-        return self._internal_imp_instance
 
 
 class OwlIndividual(OwlEntity, OwlAssertable):
@@ -111,23 +69,6 @@ class OwlIndividual(OwlEntity, OwlAssertable):
     def _get_entity(self, onto: Ontology, relative_name: str) -> object or None:
         name = absolutize_entity_name(relative_name)
         return onto.entities.get(name, None)
-
-    def actualize_imp(self, onto: Ontology):
-        res = self.name_with_prefix.split(":")
-        assert len(res) > 1, "Must include a prefix"
-        name = res[1]
-        try:
-            if self._imp:
-                inst = GENERATED_TYPES[name]
-            else:
-                inst = self.onto_types[0].actualized_entity()
-            inst.name = name
-            [y.actualize(onto) for y in [self._get_entity(onto, prop) for prop in self.properties_values] if y]
-            GENERATED_TYPES[inst.name] = inst
-            self.actualize_assertions(inst)
-            self._imp = inst
-        except AssertionError:
-            pass
 
     def _prepare_assertion_value(self, prop_name: str, value: Union[List, str]) -> object:
         val = value

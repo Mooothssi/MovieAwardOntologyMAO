@@ -1,10 +1,7 @@
 from typing import Any, Dict, List, Type, Union
 
-from owlready2 import AnnotationProperty, DataProperty
-
-from ..base import Ontology, OwlEntity, BUILTIN_DATA_TYPES, DATATYPE_MAP
-from ..base.namespaces import RDFS_RANGE, OWL_INVERSE_OF, RDFS_DOMAIN
-from ..wrapper import apply_classes_from
+from ontogen.base import Ontology, OwlEntity, BUILTIN_DATA_TYPES, DATATYPE_MAP
+from ontogen.base.namespaces import RDFS_RANGE, OWL_INVERSE_OF, RDFS_DOMAIN
 from ontogen.utils.classexp import ClassExpToConstruct
 
 __all__ = ('OwlProperty', 'OwlAnnotationProperty',
@@ -40,32 +37,6 @@ class OwlProperty(OwlEntity):
         self.domain = []
         self.inverse_prop: Type or None = None
 
-    # owlready-related implementation
-    def actualize(self, onto: Ontology):
-        """Instantiates a Property into a given Ontology
-
-        Args:
-            onto: An `owlready2` Ontology
-
-        Returns:
-            None
-        """
-        if self.name in ["topObjectProperty", "topDataProperty"]:
-            return
-        super().actualize(onto)
-        apply_classes_from(onto)
-        p = self._get_generated_class(onto, domain=self._get_generated(onto, self.domain),
-                                      range=self._get_generated(onto, self.range))
-        self.actualize_assertions(p)
-
-    def _get_generated(self, onto: Ontology, classes: List[OwlEntity]):
-        lst = []
-        for c in classes:
-            if isinstance(c, OwlEntity):
-                c = c._get_generated_class(onto)
-            lst.append(c)
-        return lst
-
     def from_dict(self, sub: Dict[str, Any]):
         super(OwlProperty, self).from_dict(sub)
         self.range = sub.get(RDFS_RANGE, [])
@@ -78,7 +49,6 @@ class OwlProperty(OwlEntity):
 class OwlDataProperty(OwlProperty):
     name = "DataProperty"
     range = [str]
-    _parent_class = DataProperty
 
     def from_dict(self, sub: Dict[str, Any]):
         super().from_dict(sub)
@@ -88,7 +58,6 @@ class OwlDataProperty(OwlProperty):
 class OwlAnnotationProperty(OwlProperty):
     name = "AnnotationProperty"
     range = [str]
-    _parent_class = AnnotationProperty
 
     # owlready-related implementation
     def actualize(self, onto: Ontology):

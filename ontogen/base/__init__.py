@@ -1,4 +1,4 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from typing import List, Type, Union, Dict, Any
 
 from owlready2 import Thing, ClassConstruct, locstr
@@ -32,22 +32,7 @@ def cleanup(onto: Ontology):
 # BUILTIN_DATA_TYPES = Union[str, int]
 
 
-class OwlActualizable:
-    def __init__(self):
-        self._actualized_entity: ACTUALIZED_CLASS = None
-
-    def actualize(self, onto: Ontology) -> 'OwlEntity':
-        """Makes the entity concrete (saved) in a given Ontology
-
-        Args:
-            onto: A given Ontology
-
-        Returns: An OwlEntity
-        """
-        raise NotImplementedError
-
-
-class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
+class OwlEntity(OwlAssertable, metaclass=ABCMeta):
     prefix = "owl"
     _internal_dict = {}
     _parent_class = object
@@ -88,17 +73,6 @@ class OwlEntity(OwlAssertable, OwlActualizable, metaclass=ABCMeta):
 
     def get_iri(self, onto: Ontology):
         return f"{onto.lookup_iri(self.prefix)}{self.name}"
-
-    def actualize(self, onto: Ontology) -> 'OwlEntity':
-        """Makes the entity concrete (saved) in a given Ontology
-
-        Args:
-            onto: a given Ontology
-
-        Returns: An actualized OwlEntity
-        """
-        if self._use_default_prefix:
-            self.prefix = onto.base_prefix
 
     def add_superclass(self, superclass: Union["OwlEntity", "str"]):
         """Adds a superclass of this Class.

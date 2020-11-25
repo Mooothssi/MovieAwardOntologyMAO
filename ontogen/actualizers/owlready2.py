@@ -1,18 +1,23 @@
-from typing import Type, Union, Dict, List
+from typing import Type, Union, List
 
-from owlready2 import Thing, AllDisjoint, destroy_entity
+from owlready2 import (AnnotationProperty, DataProperty, ObjectProperty, Thing, AllDisjoint)
 
 from ontogen import OwlClass, OwlObjectProperty, OwlIndividual
 from ontogen.actualizers.base import OntologyActualizer, OntologyBaseActualizer
 from ontogen.base import Ontology, OwlEntity, GENERATED_TYPES
 from ontogen.internal import CHARACTERISTICS_MAPPING
-from ontogen.primitives.base import get_exp_constructor, OwlProperty, OwlAnnotationProperty
+from ontogen.primitives.base import get_exp_constructor, OwlProperty, OwlAnnotationProperty, OwlDataProperty
 
-
+TYPE_MAPPING = {
+    OwlAnnotationProperty: AnnotationProperty,
+    OwlObjectProperty: ObjectProperty,
+    OwlDataProperty: DataProperty,
+    OwlClass: Thing
+}
 # GENERATED_TYPES: Dict[str, Union[Type[Thing], Thing, type]] = {}
 
 class OwlreadyBaseActualizer(OntologyBaseActualizer):
-    def get_actualized_entity(self, cls: OwlClass, onto: Ontology, **attrs) -> Type[Thing]:
+    def get_actualized_entity(self, cls: OwlEntity, onto: Ontology, **attrs) -> Type[Thing]:
         """Returns an actualized Class of the given Ontology
 
         Args:
@@ -38,7 +43,7 @@ class OwlreadyBaseActualizer(OntologyBaseActualizer):
                     GENERATED_TYPES[cls.name] = type(cls.name, tuple(gen), attrs)
                     default = False
             if default:
-                GENERATED_TYPES[cls.name] = type(cls.name, (cls._parent_class,), attrs)
+                GENERATED_TYPES[cls.name] = type(cls.name, (TYPE_MAPPING[cls.__class__],), attrs)
             if onto.base_prefix != cls.prefix:
                 p = cls.get_iri(onto)
                 cls.actualized_entity.iri = p
@@ -101,6 +106,7 @@ class OwlreadyPropertyActualizer(OwlreadyBaseActualizer):
         if isinstance(cls, OwlAnnotationProperty):
             self.get_actualized_entity(cls, onto, range=cls.range)
         else:
+
             if cls.name in ["topObjectProperty", "topDataProperty"]:
                 return
             super().actualize(cls, onto)
@@ -123,14 +129,19 @@ class OwlreadyPropertyActualizer(OwlreadyBaseActualizer):
             attrs['domain'] = self._get_generated(cls, onto, cls.domain)
             attrs['range'] = self._get_generated(cls, onto, cls.range)
         if isinstance(cls, OwlObjectProperty):
+            cls._realised_parent_classes.append(ObjectProperty)
             u = [CHARACTERISTICS_MAPPING.get(c, None) for c in cls._characteristics]
             if cls.inverse_prop is not None:
-                attrs['inverse_property'] = cls.get_generated_inverse(onto)
+                attrs['inverse_property'] = self.get_generated_inverse(cls, onto)
             if len(u) > 0:
                 cls._realised_parent_classes.extend(u)
             return super().get_actualized_entity(cls, onto, **attrs)
         else:
             return super().get_actualized_entity(cls, onto, **attrs)
+
+    def get_generated_inverse(self, cls: OwlObjectProperty, onto: Ontology) -> Type:
+        cls.inverse_prop.inverse_prop = None
+        return self.get_actualized_entity(cls.inverse_prop, onto)
 
 
 class Owlready2Actualizer(OntologyActualizer):

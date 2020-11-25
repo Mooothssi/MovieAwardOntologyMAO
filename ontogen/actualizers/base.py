@@ -1,14 +1,37 @@
+from abc import ABCMeta, abstractmethod
+
 from ontogen import OwlClass, Ontology
 from ontogen.base import OwlEntity
 from ontogen.primitives.base import OwlProperty
 
 
-class OntologyBaseActualizer:
+class OntologyBaseActualizer(metaclass=ABCMeta):
     def actualize(self, cls: OwlEntity, onto: Ontology):
-        pass
+        """Makes the entity concrete (saved) in a given Ontology
 
-    def get_actualized_entity(self, cls: OwlEntity, onto: Ontology, **attrs):
-        pass
+        Args:
+            cls: A given Entity
+            onto: A given Ontology
+
+        Returns:
+            None
+        """
+        if cls._use_default_prefix:
+            cls.prefix = onto.base_prefix
+
+    @abstractmethod
+    def get_actualized_entity(self, cls: OwlEntity, onto: Ontology, **attrs: dict) -> object:
+        """Returns the entity concrete (saved) in a given Ontology
+
+        Args
+            cls: A given Entity
+            onto: A given Ontology
+            **attrs: A dict of keyword arguments required to instantiate underlying implementation
+
+        Returns:
+            An actualized OwlEntity
+        """
+        raise NotImplementedError
 
 
 class OntologyActualizer:
