@@ -102,7 +102,7 @@ class OntogenConverter:
                             continue
                         prop_class = sub[prop]
                         for prop_name in prop_class:
-                            prop_qualifier = absolutize_entity_name(prop_name)
+                            prop_qualifier = absolutize_entity_name(prop_name, self.prefix)
                             obj.defined_properties[prop_qualifier] = self.get_entity(prop_name)
                     temp_classes.append(obj)
                 self.ontology.add_entity(obj)
@@ -143,6 +143,7 @@ class OntogenConverter:
                         for val in values:
                             ind.add_property_assertion(absolutize_entity_name(key, self.prefix), val)
             self.individuals[individual] = ind
+            self.ontology.add_entity(ind)
 
     def _load_class_descriptions(self, classes: Tuple[OwlEntity, ...]):
         for cls in classes:
@@ -204,8 +205,8 @@ class OntogenConverter:
         self.check_missing_definitions()
         if onto is None:
             onto = self.ontology
-            onto.generate_base_iri_from_prefix()
         onto.create()
+        onto.generate_base_iri_from_prefix()
         self.actualizer.actualize(self.entities)
         self._add_rules(self._dct)
         onto.actualize()

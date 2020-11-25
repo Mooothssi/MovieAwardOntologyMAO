@@ -73,7 +73,8 @@ class Ontology(OwlAssertable):
 
     def generate_base_iri_from_prefix(self, developer: str = "nomad"):
         now = datetime.datetime.now()
-        self.base_iri = f"{FREE_DOMAIN}/{developer}/ontologies/{now.year}/{now.month}/{self.base_prefix}#"
+        if not self.base_iri:
+            self.base_iri = f"{FREE_DOMAIN}/{developer}/ontologies/{now.year}/{now.month}/{self.base_prefix}#"
 
     def _get_onto_from_prefix(self, prefix: str) -> owlready2.Ontology:
         return get_ontology_from_prefix(prefix, self.iris)
@@ -118,6 +119,7 @@ class Ontology(OwlAssertable):
         self._internal_onto = get_ontology(self.base_iri)
         if not self.base_prefix:
             self.base_prefix = self.implementation.name
+        self.implementation.name = self.base_prefix
         self.define_prefix()
 
     def define_prefix(self, prefix: Optional[str] = None, iri: Optional[str] = None,

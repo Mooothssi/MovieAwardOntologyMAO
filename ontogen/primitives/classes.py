@@ -5,7 +5,7 @@ from ontogen.base.namespaces import RDF_TYPE
 from ontogen.base.vars import GENERATED_TYPES
 from ontogen.primitives.base import OwlEntity, ENTITIES, check_restrictions
 from ontogen.primitives.properties import OwlObjectProperty
-from ontogen.utils.basics import assign_optional_dct
+from ontogen.utils.basics import assign_optional_dct, shorten_entity_name
 
 
 class OwlClass(OwlEntity):
@@ -68,15 +68,29 @@ class OwlIndividual(OwlEntity, OwlAssertable):
         cls.individuals.append(self)
         self.onto_types.append(cls)
 
-    def _prepare_assertion_value(self, prop_name: str, value: Union[List, str]) -> object:
+    def _prepare_assertion_value(self, prop_name: str, value: Union[List, str]) -> Union[List[object], object]:
         val = value
-        if isinstance(val, str) and prop_name in self.onto_types[0].defined_properties:
-            prop = self.onto_types[0].defined_properties[prop_name]
-            if isinstance(prop, OwlObjectProperty):
-                n = value.split(":")[1]
-                if n in GENERATED_TYPES:
-                    return GENERATED_TYPES[n]
-        return val
+        if isinstance(value, list):
+            if prop_name in self.all_defined_properties:
+                prop = self.all_defined_properties[prop_name]
+                if isinstance(prop, OwlObjectProperty) and 'owl:FunctionalProperty' in prop._characteristics:
+                    return self._prepare_assertion_value(prop_name, value[0])
+            return [self._prepare_assertion_value(prop_name, v) for v in value]
+        else:
+            if isinstance(val, str) and prop_name in self.all_defined_properties:
+                prop = self.all_defined_properties[prop_name]
+                if isinstance(prop, OwlObjectProperty):
+                    n = shorten_entity_name(value)
+                    if n in GENERATED_TYPES:
+                        return GENERATED_TYPES[n]
+            return val
+
+    @property
+    def all_defined_properties(self) -> Dict[str, OwlObjectProperty]:
+        dct = {}
+        for t in self.onto_types:
+            dct.update(t.defined_properties)
+        return dct
 
     def _assert_restrictions(self, types: List[str], value):
         if not check_restrictions(self.prefix, types, value):

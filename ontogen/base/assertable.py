@@ -13,6 +13,7 @@ class OwlAssertable:
     def __init__(self):
         self.properties_values: Dict[str, Any] = {}
         self.annotations: Dict[str, Any] = {}
+        self.defined_properties: Dict[str, "OwlProperty" or None] = {}
 
     @property
     def properties_with_values(self) -> dict:
@@ -23,29 +24,26 @@ class OwlAssertable:
     def actualize_assertions(self, inst):
         for set_prop in self.properties_with_values:
             v = self.properties_with_values[set_prop]
-            if isinstance(v, list):
-                val = [self._prepare_assertion_value(set_prop, val) for val in v]
-            else:
-                val = self._prepare_assertion_value(set_prop, v)
+            val = self._prepare_assertion_value(set_prop, v)
             if isinstance(val, list):
                 # set_prop in BUILTIN_NAMES and
                 for i, v in enumerate(val):
-                    v: str
-                    if "^^" in v or "@" in v:
-                        split_values = re.split(r'(?:(.+)\^\^(.+)@(.+)|(.+)\^\^(.+))', v)
-                        if len(split_values) > 2 and split_values[1] is not None:
-                            lit, lang = (split_values[1], split_values[3])
-                            val[i] = locstr(lit, lang)
-                        else:
-                            v, data_type = (split_values[4], split_values[5])
-                            val[i] = DATATYPE_MAP[data_type](v)
+                    if isinstance(v, str):
+                        if "^^" in v or "@" in v:
+                            split_values = re.split(r'(?:(.+)\^\^(.+)@(.+)|(.+)\^\^(.+))', v)
+                            if len(split_values) > 2 and split_values[1] is not None:
+                                lit, lang = (split_values[1], split_values[3])
+                                val[i] = locstr(lit, lang)
+                            else:
+                                v, data_type = (split_values[4], split_values[5])
+                                val[i] = DATATYPE_MAP[data_type](v)
             if ":" in set_prop:
                 set_prop = shorten_entity_name(set_prop)
             try:
                 if isinstance(val, list):
                     setattr(inst, set_prop, val)
                 else:
-                    setattr(inst, set_prop, [val])
+                    setattr(inst, set_prop, val)
             except AttributeError:
                 pass
 

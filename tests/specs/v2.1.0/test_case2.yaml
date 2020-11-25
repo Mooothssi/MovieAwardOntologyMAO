@@ -47,6 +47,8 @@ owl:Class:
     objectProperty:
       - hasParent
       - hasGender
+      - isSiblingOf
+      - isParentOf
     owl:equivalentClass:
       - (hasParent some Person) and (hasGender some Gender)
     owl:disjointWith: 
@@ -154,7 +156,7 @@ owl:ObjectProperty:
       - Person
     rdfs:subPropertyOf:
       - topObjectProperty
-  family:isInlawOf:
+  family:isInLawOf:
     rdf:type:
       - owl:SymmetricProperty
     rdfs:domain:

@@ -4,7 +4,8 @@ from typing import List, Union, Dict, Any
 from owlready2 import ClassConstruct, locstr
 
 from .assertable import OwlAssertable
-from .namespaces import RDFS_SUBCLASS_OF, ANNOTATIONS_KEY, OWL_DISJOINT_WITH, OWL_EQUIVALENT_CLASS, OWL_RESTRICTION
+from .namespaces import RDFS_SUBCLASS_OF, ANNOTATIONS_KEY, OWL_DISJOINT_WITH, OWL_EQUIVALENT_CLASS, OWL_RESTRICTION, \
+    RDFS_SUBPROPERTY_OF
 from .vars import BUILTIN_NAMES, DATATYPE_MAP, GENERATED_TYPES, LABEL_ENTITY_NAME, COMMENT_ENTITY_NAME, \
     BUILTIN_DATA_TYPES, ANNO_ATTRS
 from ..utils.basics import assign_optional_dct
@@ -138,8 +139,10 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
         return dct
 
     def from_dict(self, sub: Dict[str, Any]):
+        # TODO: Deal with versions here
         self.disjoint_class_names = sub.get(OWL_DISJOINT_WITH, [])
         self.parent_class_names = sub.get(RDFS_SUBCLASS_OF, [])
+        self.parent_class_names.extend(sub.get(RDFS_SUBPROPERTY_OF, []))
         self.equivalent_class_expressions = _get_equivalent_classes(sub)
         super(OwlEntity, self).from_dict(sub)
 

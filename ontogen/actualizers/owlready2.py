@@ -106,12 +106,14 @@ class OwlreadyClassActualizer(OwlreadyBaseActualizer):
         try:
             if cls._imp:
                 inst = GENERATED_TYPES[name]
+                return
             else:
                 inst = cls.onto_types[0].actualized_entity()
             inst.name = name
-            [self.actualize(y, onto) for y in [onto.get_entity(prop) for prop in cls.properties_values] if y]
+            [self.parent.property_actualizer.actualize(y, onto) for y in [onto.get_entity(prop)
+                                                                          for prop in cls.properties_values] if y]
             GENERATED_TYPES[inst.name] = inst
-            cls.actualize_assertions(inst)
+           # cls.actualize_assertions(inst)
             cls._imp = inst
         except AssertionError:
             pass
@@ -159,5 +161,5 @@ class OwlreadyPropertyActualizer(OwlreadyBaseActualizer):
 
 
 class Owlready2Actualizer(OntologyActualizer):
-    class_actualizer = OwlreadyClassActualizer()
-    property_actualizer = OwlreadyPropertyActualizer()
+    class_actualizer_class = OwlreadyClassActualizer
+    property_actualizer_class = OwlreadyPropertyActualizer
