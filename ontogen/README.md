@@ -25,6 +25,8 @@ film: OwlClass = converter.get_entity("mao:Film")
 # You can start mapping rows from the database to an Individual from here.
 parasite_film: OwlIndividual = OwlIndividual("mao:Parasite")
 parasite_film.be_type_of(film)
+# Adds `parasite_film` to the Ontology
+converter.ontology.add_entity(parasite_film)
 
 # Save the results to an in-memory Ontology
 onto: Ontology = converter.export_to_ontology()

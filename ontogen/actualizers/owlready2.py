@@ -22,8 +22,8 @@ TYPE_MAPPING = {
 
 def cleanup(onto: Ontology):
     onto.implementation.graph.destroy()
-    for e in GENERATED_TYPES:
-        destroy_entity(GENERATED_TYPES[e])
+    # for e in GENERATED_TYPES:
+    #     destroy_entity(GENERATED_TYPES[e])
     GENERATED_TYPES.clear()
 
 

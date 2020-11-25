@@ -25,9 +25,10 @@ SPEC_VERSION = 'v2.1.0'
 class TestOntogen(TestCase):
     def setUp(self):
         self.converter: OntogenConverter = OntogenConverter.load_from_spec(ROOT_DIR / "mao.yaml")
-        self.onto = self.converter.ontology
-        self.parasite_film = OwlIndividual("mao:Parasite")
         self.i: OwlClass = self.converter.get_entity("mao:Film")
+        self.parasite_film = OwlIndividual("mao:Parasite")
+        self.parasite_film.be_type_of(self.i)
+        self.onto = self.converter.export_to_ontology()
 
     def test_add_rule(self):
         self.test_realization()

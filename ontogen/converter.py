@@ -23,7 +23,6 @@ class OntogenConverter:
     def __init__(self):
         """Loads a file with the given name into a skeleton of an OWL ontology.
         """
-#        self.entities: Dict[str, Union[OwlEntity, OwlIndividual]] = {}
         self.ontology = Ontology()
         self.ontology.generate_base_iri_from_prefix()
         self.file_version = ""
@@ -51,7 +50,6 @@ class OntogenConverter:
 
     def _deal_with_iris(self, base_dict: dict):
         self.ontology.base_iri = base_dict.get("iri", "")
-
         prefixes = base_dict.get("prefixes", {})
         try:
             [self.ontology.define_prefix(prefix, prefixes[prefix]) for prefix in prefixes]
@@ -251,7 +249,7 @@ class OntogenConverter:
             for x in dir(individual):
                 p = getattr(individual, x)
                 if isinstance(p, ClassValueList) or isinstance(p, IndividualValueList):
-                    e = absolutize_entity_name(x)
+                    e = absolutize_entity_name(x, onto.base_prefix)
                     for a in p:
                         i.add_property_assertion(e, str(a))
             for inst_of in individual.is_instance_of:

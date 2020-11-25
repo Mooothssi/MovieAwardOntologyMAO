@@ -43,7 +43,7 @@ class Ontology(OwlAssertable):
         self.base_prefix = base_prefix
         self.iris: Dict[str, str] = {}
         self.annotations: Dict[str, List[Union["OwlAnnotationProperty", Any]]] = {}
-        self.entities: Dict[str, "OwlEntity"] = {}
+        self.entities: Dict[str, Union[OwlEntity, OwlIndividual]] = {}
 
     def _get_with_type(self, t: Type[Union['OwlEntity', 'OwlIndividual']]):
         return {x: self.entities[x] for x in self.entities if isinstance(self.entities[x], t)}
@@ -224,7 +224,7 @@ class Ontology(OwlAssertable):
     def rdflib_graph(self) -> Graph:
         return self.implementation.world.as_rdflib_graph()
 
-    def sparql_query(self, query: str, with_prefixes=True, sync_reasoner=True) -> list or bool:
+    def sparql_query(self, query: str, with_prefixes=True, sync_reasoner=False) -> list or bool:
         """Queries the Ontology in SPARQL
 
         Args:
@@ -238,11 +238,14 @@ class Ontology(OwlAssertable):
         if sync_reasoner:
             sync_reasoner_pellet()
         if with_prefixes:
+            #q = self.rdflib_graph.query(query, initNs=self.iris)
             m = re.match(r"PREFIX (.+): <(.+)>", query)
             if m is not None:
                 raise AssertionError("Prefixes are already included.")
             query = build_prefixes(self.iris) + query
-        q = self.rdflib_graph.query(query)
+            q = self.rdflib_graph.query(query)
+        else:
+            q = self.rdflib_graph.query(query)
         if q.type == 'ASK':
             return q.askAnswer
         else:
