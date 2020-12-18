@@ -166,7 +166,7 @@ class Ontology(OwlAssertable):
         inst.define_prefix()
         return inst
 
-    def save_to_file(self, filename: str, file_format: str = "xml"):
+    def save_to_file(self, filename: str, file_format: str = "pretty-xml"):
         """Saves an Ontology with a given filename
 
         Args:
