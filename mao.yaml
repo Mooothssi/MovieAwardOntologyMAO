@@ -201,8 +201,7 @@ owl:Class:
     owl:disjointWith:
       - OscarCriterion
     owl:equivalentClass:
-      owl:Restriction:
-        - Criterion and (isCriterionFor value BaftaAward)
+      - Criterion and (isCriterionFor value BaftaAward)
     rdfs:subClassOf:
       - Criterion
   mao:Building:
@@ -501,8 +500,7 @@ owl:Class:
       - Nationality
       - Race
     owl:equivalentClass:
-      owl:Restriction:
-        - "{Female, Male, Non-binary}"
+      - "{Female, Male, Non-binary}"
     rdfs:subClassOf:
       - Classification
   mao:Genre:
@@ -707,8 +705,7 @@ owl:Class:
     owl:disjointWith:
       - BaftaCriterion
     owl:equivalentClass:
-      owl:Restriction:
-        - Criterion and (isCriterionFor value OscarAward)
+      - Criterion and (isCriterionFor value OscarAward)
     rdfs:subClassOf:
       - Criterion
   mao:Place:
