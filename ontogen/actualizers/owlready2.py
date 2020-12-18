@@ -99,7 +99,7 @@ class OwlreadyClassActualizer(OwlreadyBaseActualizer):
         if isinstance(cls, OwlClass):
             for i in cls.individuals:
                 self.actualize_individual(i, onto)
-        disjoints: List[Type[Thing]] = [self.get_actualized_entity(x, onto) for x in cls._disjoint_classes]
+        disjoints: List[Type[Thing]] = [self.get_actualized_entity(x, onto) for x in cls._disjoint_classes] + [cls.actualized_entity]
         if len(disjoints) > 0:
             AllDisjoint(disjoints)
         return cls
