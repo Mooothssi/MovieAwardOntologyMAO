@@ -20,7 +20,7 @@ annotations:
       
       THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   owl:versionInfo:
-    - 1.0.1
+    - 1.0.4
   rdfs:label:
     - Movie Awards Ontology^^rdfs:Literal@en
   rdfs:comment:
@@ -201,8 +201,7 @@ owl:Class:
     owl:disjointWith:
       - OscarCriterion
     owl:equivalentClass:
-      owl:Restriction:
-        - Criterion and (isCriterionFor value BaftaAward)
+      - Criterion and (isCriterionFor value BaftaAward)
     rdfs:subClassOf:
       - Criterion
   mao:Building:
@@ -501,8 +500,7 @@ owl:Class:
       - Nationality
       - Race
     owl:equivalentClass:
-      owl:Restriction:
-        - "{Female, Male, Non-binary}"
+      - "{Female, Male, Non-binary}"
     rdfs:subClassOf:
       - Classification
   mao:Genre:
@@ -707,8 +705,7 @@ owl:Class:
     owl:disjointWith:
       - BaftaCriterion
     owl:equivalentClass:
-      owl:Restriction:
-        - Criterion and (isCriterionFor value OscarAward)
+      - Criterion and (isCriterionFor value OscarAward)
     rdfs:subClassOf:
       - Criterion
   mao:Place:
