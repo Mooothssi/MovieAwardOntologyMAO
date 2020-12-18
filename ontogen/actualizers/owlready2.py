@@ -4,7 +4,7 @@ from owlready2 import (AnnotationProperty, DataProperty, ObjectProperty, Thing, 
                        Restriction)
 
 from ontogen import OwlClass, OwlObjectProperty, OwlIndividual
-from ontogen.actualizers.base import OntologyActualizer, OntologyBaseActualizer
+from ontogen.actualizers.base import OntologyActualizer, OwlEntityBaseActualizer, OntologyBaseActualizer
 from ontogen.actualizers.types import ACTUALIZED_CLASS
 from ontogen.base import OwlEntity, GENERATED_TYPES
 from ontogen.base.ontology import Ontology
@@ -32,7 +32,15 @@ def get_exp_constructor(onto: Ontology):
 # GENERATED_TYPES: Dict[str, Union[Type[Thing], Thing, type]] = {}
 
 
-class OwlreadyBaseActualizer(OntologyBaseActualizer):
+class OwlreadyOntologyActualizer(OntologyBaseActualizer):
+    def actualize(self, onto: Ontology):
+        for disjoint_set in onto.disjoint_sets:
+            disjoints: List[Type[Thing]] = [owl_class.actualized_entity for owl_class in disjoint_set]
+            if len(disjoints) > 0:
+                AllDisjoint(disjoints)
+
+
+class OwlreadyBaseActualizer(OwlEntityBaseActualizer):
     def get_actualized_entity(self, cls: OwlEntity, onto: Ontology, **attrs) -> Type[Thing]:
         """Returns an actualized Class of the given Ontology
 
@@ -168,5 +176,6 @@ class OwlreadyPropertyActualizer(OwlreadyBaseActualizer):
 
 
 class Owlready2Actualizer(OntologyActualizer):
+    onto_actualizer_class = OwlreadyOntologyActualizer
     class_actualizer_class = OwlreadyClassActualizer
     property_actualizer_class = OwlreadyPropertyActualizer

@@ -28,7 +28,7 @@ class OntogenConverter:
         self._ontology = Ontology()
         self._ontology.generate_base_iri_from_prefix()
         self.file_version = ""
-        self.actualizer: OntologyActualizer = Owlready2Actualizer(self._ontology)
+        self.actualizer: OntologyActualizer = Owlready2Actualizer()
         self._individuals: List[OwlIndividual] = []
         self._missing_entities = set()
         self._dct = {}
@@ -157,17 +157,21 @@ class OntogenConverter:
                 for name in cls.parent_class_names:
                     cls.add_superclass(self.get_entity(name, cls.prefix))
                 if isinstance(cls, OwlClass):
+                    if len(cls.disjoint_class_names) == 0:
+                        continue
                     disjoint_set: Tuple = tuple(sorted(cls.disjoint_class_names + [cls.name]))
                     if disjoint_set not in disjoint_sets:
                         disjoint_sets.add(disjoint_set)
-                        for name in cls.disjoint_class_names:
-                            cls_entity = self.get_entity(name, cls.prefix)
-                            if cls_entity is not None:
-                                cls.add_disjoint_class(cls_entity)
+                        # for name in cls.disjoint_class_names:
+                        #     cls_entity = self.get_entity(name, cls.prefix)
+                        #     if cls_entity is not None:
+                        #         cls.add_disjoint_class(cls_entity)
                 elif isinstance(cls, OwlObjectProperty):
                     cls.domain = [self.get_entity(name, cls.prefix) for name in cls.domain if isinstance(name, str)]
                     cls.range = [self.get_entity(name, cls.prefix) for name in cls.range if isinstance(name, str)]
                     cls.inverse_prop = self.get_entity(cls.inverse_prop)
+        for disjoint_set in disjoint_sets:
+            self.ontology.add_disjoint_set(tuple(self.get_entity(name) for name in disjoint_set))
 
     def get_entity(self, entity_name: str, prefix: str = None) -> Union[OwlClass, OwlEntity, str, None]:
         """Gets an Entity with a given name
@@ -218,12 +222,10 @@ class OntogenConverter:
             None
         """
         self.check_missing_definitions()
-        onto = onto
         onto.create()
         onto.generate_base_iri_from_prefix()
-        self.actualizer.actualize(self.entities)
+        self.actualizer.actualize(onto)
         self._add_rules(self._dct)
-        onto.actualize()
 
     def export_to_ontology(self, onto: Ontology = None) -> Ontology:
         """Saves changes made into a given Ontology

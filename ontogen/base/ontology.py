@@ -4,7 +4,7 @@ import re
 import owlready2
 from rdflib import Graph, Namespace
 from owlready2 import Imp, get_ontology, sync_reasoner_pellet
-from typing import Any, Dict, List, Optional, Union, Type
+from typing import Any, Dict, List, Optional, Union, Type, Set, Tuple
 
 from . import OwlEntity
 from .namespaces import lookup_iri, lookup_prefix, build_prefixes, WELL_KNOWN_PREFIXES
@@ -44,6 +44,7 @@ class Ontology(OwlAssertable):
         self.iris: Dict[str, str] = {}
         self.annotations: Dict[str, List[Union["OwlAnnotationProperty", Any]]] = {}
         self.entities: Dict[str, Union[OwlEntity, OwlIndividual]] = {}
+        self.disjoint_sets: List[Tuple['OwlEntity']] = []
 
     def _get_with_type(self, t: Type[Union['OwlEntity', 'OwlIndividual']]):
         return {x: self.entities[x] for x in self.entities if isinstance(self.entities[x], t)}
@@ -219,6 +220,16 @@ class Ontology(OwlAssertable):
 
     def actualize(self):
         self.actualize_assertions(self.implementation.metadata)
+
+    def add_disjoint_set(self, owl_class_set: Tuple['OwlEntity', ...]):
+        """Adds a tuple of disjoint classes to this Ontology. The given class will be lazy loaded.
+
+        Args:
+            owl_class_set: an OntologyEntity
+        """
+        if owl_class_set is None:
+            return TypeError(f"owl_class must not be None")
+        self.disjoint_sets.append(owl_class_set)
 
     @property
     def rdflib_graph(self) -> Graph:

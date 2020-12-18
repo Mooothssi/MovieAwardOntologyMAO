@@ -1,4 +1,4 @@
-from typing import Any, Dict, List, Type, Union
+from typing import Any, Dict, List, Union
 
 from ontogen.base import OwlEntity, BUILTIN_DATA_TYPES, DATATYPE_MAP
 
