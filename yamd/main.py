@@ -165,7 +165,7 @@ class Entity:
     def maybe_include_thing(self, auto_include_thing: bool) -> None:
         if auto_include_thing:
             try:
-                Node(self.name).add_parents(Node(self._top_type))
+                Node(self.name_with_prefix).add_parents(Node(self._top_type))
             except ValueError as e:
                 if e.args[0] == 'parent must be a separate entity':
                     # Might have 'Thing' etc. defined
@@ -204,6 +204,11 @@ class Entity:
 
 
 class Class(Entity):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'rdfs:subClassOf' not in self.data:
+            self.maybe_include_thing(True)
+
     @property
     def _description_map(self) -> Dict[str, str]:
         return {
@@ -311,6 +316,11 @@ class IRIPrefix(Entity):
 
 
 class Property(Entity):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'rdfs:subPropertyOf' not in self.data:
+            self.maybe_include_thing(True)
+
     @property
     def _description_map(self) -> Dict[str, str]:
         return {
@@ -374,7 +384,7 @@ class AnnotationProperty(Property):
     def maybe_include_thing(self, auto_include_thing: bool) -> None:
         """Definitely include the dummy TopAnnotationProperty"""
         try:
-            Node(self.name).add_parents(Node(self._top_type))
+            Node(self.name_with_prefix).add_parents(Node(self._top_type))
         except ValueError as e:
             if e.args[0] == 'parent must be a separate entity':
                 # Might have 'Thing' etc. defined
@@ -531,7 +541,7 @@ def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
     elif data['version'] == 'v2.0.0':
         lines = convert_v2(data, auto_include_thing=True)
     elif data['version'] == 'v2.1.0':
-        lines = convert_v2(data, auto_include_thing=True)
+        lines = convert_v2(data, auto_include_thing=False)
     else:
         raise NotImplementedError
 
