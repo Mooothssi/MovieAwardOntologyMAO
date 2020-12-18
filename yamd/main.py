@@ -140,8 +140,18 @@ class Annotations:
         return '\n'.join(lines)
 
 
+class Ontology:
+    def __init__(self, prefix: str):
+        self.prefix = prefix
+
+    def add_prefix_if_missing(self, entity: str) -> str:
+        if ':' in entity:
+            return entity
+        return f'{self.prefix}:{entity}'
+
+
 class Entity:
-    def __init__(self, name: str, data: dict, *, auto_include_thing: bool = True):
+    def __init__(self, name: str, data: dict, *, auto_include_thing: bool = True, ontology: Ontology = None):
         if isinstance(data, str):
             # Allow using '' as placeholder when no data
             assert data == ''
@@ -149,6 +159,7 @@ class Entity:
         else:
             self.data = data
         self._name = name
+        self.ontology = ontology
         self.maybe_include_thing(auto_include_thing)
 
     def maybe_include_thing(self, auto_include_thing: bool) -> None:
@@ -181,6 +192,10 @@ class Entity:
         return self._name
 
     @property
+    def name_with_prefix(self) -> str:
+        return self.ontology.add_prefix_if_missing(self._name)
+
+    @property
     def annotations(self) -> Optional[str]:
         try:
             return Annotations(self.data['annotations']).as_markdown()
@@ -199,7 +214,7 @@ class Class(Entity):
 
     @property
     def _top_type(self) -> str:
-        return 'Thing'
+        return 'owl:Thing'
 
     def as_markdown(self) -> str:
         lines = [
@@ -226,13 +241,13 @@ class Class(Entity):
                     data = self.data[uname]['owl:Restriction']
                 else:
                     data = self.data[uname]
-                cleaned_data = parse_lenient_list_of_strings(data)
+                cleaned_data = [self.ontology.add_prefix_if_missing(name) for name in parse_lenient_list_of_strings(data)]
                 if cleaned_data:
                     lines += [f'{pname}:',
                               get_md_list(0, cleaned_data),
                               '']
                     if uname == 'rdfs:subClassOf':
-                        Node.from_list_of_parents(self.name, cleaned_data)
+                        Node.from_list_of_parents(self.name_with_prefix, cleaned_data)
         if lines:
             lines.insert(0, '### Description')
             return '\n'.join(lines)
@@ -317,14 +332,15 @@ class Property(Entity):
         lines = []
         for uname, pname in self._description_map.items():
             if uname in self.data:
-                cleaned_data = parse_lenient_list_of_strings(self.data[uname])
+                cleaned_data = [self.ontology.add_prefix_if_missing(name) for name in
+                                parse_lenient_list_of_strings(self.data[uname])]
                 lines += [
                     f'{pname}:',
                     get_md_list(0, cleaned_data),
                     ''
                 ]
                 if uname == 'rdfs:subPropertyOf':
-                    Node.from_list_of_parents(self.name, cleaned_data)
+                    Node.from_list_of_parents(self.name_with_prefix, cleaned_data)
         if lines:
             lines.insert(0, '### Description')
             return '\n'.join(lines)
@@ -333,13 +349,13 @@ class Property(Entity):
 class ObjectProperty(Property):
     @property
     def _top_type(self) -> str:
-        return 'TopObjectProperty'
+        return 'owl:TopObjectProperty'
 
 
 class DataProperty(Property):
     @property
     def _top_type(self) -> str:
-        return 'TopDataProperty'
+        return 'owl:TopDataProperty'
 
 
 class AnnotationProperty(Property):
@@ -446,6 +462,9 @@ def convert_v2(data: dict, *, auto_include_thing: bool = True) -> List[str]:
         lines = [IRIPrefix(data['iri'], data['prefixes']).as_markdown(),
                  '']
         text_sections.append('\n'.join(lines))
+        for k, v in data['prefixes'].items():
+            if v == data['iri']:
+                onto = Ontology(k)
 
     if 'annotations' in data:
         lines = [f'# Ontology Description',
@@ -464,7 +483,7 @@ def convert_v2(data: dict, *, auto_include_thing: bool = True) -> List[str]:
         if dict_section not in data:
             continue
         lines = [f'# {section}']
-        lines += [cls(p, d, auto_include_thing=auto_include_thing).as_markdown() for p, d in data[dict_section].items()]
+        lines += [cls(p, d, auto_include_thing=auto_include_thing, ontology=onto).as_markdown() for p, d in data[dict_section].items()]
         lines += ['']
         text_sections.append('\n'.join(lines))
 
