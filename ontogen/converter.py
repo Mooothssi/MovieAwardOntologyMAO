@@ -1,4 +1,4 @@
-from typing import Dict, List, Union, Tuple
+from typing import Dict, List, Union, Tuple, Set
 import yaml
 from owlready2 import (AnnotationPropertyClass, ClassValueList, DataPropertyClass,
                        ObjectPropertyClass, Thing, IndividualValueList)
@@ -150,15 +150,19 @@ class OntogenConverter:
             self._ontology.add_entity(ind)
 
     def _load_class_descriptions(self, classes: Tuple[OwlEntity, ...]):
+        disjoint_sets: Set[Tuple[str, ...]] = set()
         for cls in classes:
             if isinstance(cls, OwlClass) or isinstance(cls, OwlObjectProperty):
                 for name in cls.parent_class_names:
                     cls.add_superclass(self.get_entity(name, cls.prefix))
                 if isinstance(cls, OwlClass):
-                    for name in cls.disjoint_class_names:
-                        cls_entity = self.get_entity(name, cls.prefix)
-                        if cls_entity is not None:
-                            cls.add_disjoint_class(cls_entity)
+                    disjoint_set: Tuple = tuple(sorted(cls.disjoint_class_names + [cls.name]))
+                    if disjoint_set not in disjoint_sets:
+                        disjoint_sets.add(disjoint_set)
+                        for name in cls.disjoint_class_names:
+                            cls_entity = self.get_entity(name, cls.prefix)
+                            if cls_entity is not None:
+                                cls.add_disjoint_class(cls_entity)
                 elif isinstance(cls, OwlObjectProperty):
                     cls.domain = [self.get_entity(name, cls.prefix) for name in cls.domain if isinstance(name, str)]
                     cls.range = [self.get_entity(name, cls.prefix) for name in cls.range if isinstance(name, str)]

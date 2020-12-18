@@ -1,6 +1,7 @@
 from abc import ABCMeta
-from typing import List, Union, Dict, Any
+from typing import List, Union, Dict, Any, Type
 
+import owlready2
 from owlready2 import ClassConstruct, locstr
 
 from .assertable import OwlAssertable
@@ -44,7 +45,7 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
         self._parent_classes = []
         self._parent_class_expressions = []
         self.superclass_expressions = []
-        self._disjoint_classes: List['OwlEntity'] = []
+        self._disjoint_classes: List['OwlEntity'] = []  # Only one of the disjoint set will have values for this attrib
         self.equivalent_class_expressions: List[str] = []
         self.equivalent_classes: list = []
         self._realised_parent_classes = []
@@ -131,7 +132,7 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
         self.actualize(self.actualized_entity.namespace)
 
     @property
-    def actualized_entity(self):
+    def actualized_entity(self) -> Type[owlready2.Thing]:
         if self.is_actualized:
             return GENERATED_TYPES[self.name]
         raise AssertionError("The entity has yet to be actualized")
