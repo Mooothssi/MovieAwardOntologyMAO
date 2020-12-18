@@ -1,19 +1,19 @@
 from django.db import models
 
 
-class MaxLenMixin:
-    @property
-    def max_len(self):
-        return max(map(self.choices))
+# class MaxLenMixin:
+#     @property
+#     def max_len(self):
+#         return max(map(self.choices))
 
 
-class Gender(MaxLenMixin, models.TextChoices):
+class Gender(models.TextChoices):
     FEMALE = 'female'
     MALE = 'male'
     NON_BINARY = 'non-binary'
 
 
-class CharacterImportance(MaxLenMixin, models.TextChoices):
+class CharacterImportance(models.TextChoices):
     MAIN = 'main'
     SIDE = 'side'
     EXTRA = 'extra'
@@ -27,17 +27,17 @@ class Occupation(models.Model):
 class Person(models.Model):
     # object properties
     actsIn = models.ForeignKey('FilmMakingSituation', on_delete=models.CASCADE)
-    hasGender = models.CharField(max_length=Gender.max_len, choices=Gender.choices)
+    hasGender = models.CharField(max_length=255, choices=Gender.choices)
     hasOccupation = models.ForeignKey(Occupation, on_delete=models.CASCADE)
     eligibleFor = models.ForeignKey('Award', on_delete=models.CASCADE)
 
     # data properties
-    hasName = models.CharField()
+    hasName = models.CharField(max_length=255)
 
 
 class CollectiveAgent(models.Model):
     # object properties
-    isParticipantIn = models.ForeignKey('Situation', on_delete=models.CASCADE)
+    # isParticipantIn = models.ForeignKey('Situation', on_delete=models.CASCADE)
     hasMember = models.ForeignKey(Person, on_delete=models.CASCADE)
 
 
@@ -67,13 +67,13 @@ class ActingSituation(Situation):
 class FilmMakingSituation(Situation):
     # object proerties
     hasCast = models.ForeignKey(FilmCast, on_delete=models.CASCADE)
-    hasCinematographer = models.ForeignKey(Person, on_delete=models.CASCADE)
-    hasComposer = models.ForeignKey(Person, on_delete=models.CASCADE)
+    hasCinematographer = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='cinematographer_of_film_making_situation_set')
+    hasComposer = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='composer_of_film_making_situation_set')
     hasCrew = models.ForeignKey(FilmCrew, on_delete=models.CASCADE)
-    hasDirector = models.ForeignKey(Person, on_delete=models.CASCADE)
+    hasDirector = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='director_of_film_making_situation_set')
     hasFilm = models.ForeignKey('Film', on_delete=models.CASCADE)
     hasPart = models.ForeignKey(ActingSituation, on_delete=models.CASCADE)
-    hasProducer = models.ForeignKey(Person, on_delete=models.CASCADE)
+    hasProducer = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='producer_of_film_making_situation_set')
 
 
 class NominationSituation(Situation):
@@ -90,7 +90,7 @@ class NominationSituation(Situation):
 
 class ContentRating(models.Model):
     # data properties
-    hasDescription = models.CharField()
+    hasDescription = models.CharField(max_length=255)
 
 
 class Place(models.Model):
@@ -99,28 +99,28 @@ class Place(models.Model):
 
 class Country(Place):
     # annotation property
-    label = models.CharField()
+    label = models.CharField(max_length=255)
 
 
 class Genre(models.Model):
     # object properties
-    hasSubGenre = models.ForeignKey('Genre', on_delete=models.SET_NULL)
-    isSubGenreOf = models.ForeignKey('Genre', on_delete=models.SET_NULL)
+    hasSubGenre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, related_name='isSubGenreOf')
+    # isSubGenreOf = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, related_name='SubGenreOf_set')
 
 
 class Language(models.Model):
     # annotation property
-    label = models.CharField()
+    label = models.CharField(max_length=255)
 
 
 class AwardCeremony(models.Model):
     # object properties
-    follow = models.ForeignKey('AwardCeremony', on_delete=models.SET_NULL)
-    followedBy = models.ForeignKey('AwardCeremony', on_delete=models.SET_NULL)
+    follow = models.ForeignKey('AwardCeremony', on_delete=models.SET_NULL, null=True, related_name='followedBy')
+    # followedBy = models.ForeignKey('AwardCeremony', on_delete=models.SET_NULL, null=True)
     hasAward = models.ForeignKey('Award', on_delete=models.CASCADE)
 
     # data properties
-    dateHeld = models.CharField()
+    dateHeld = models.CharField(max_length=255)
     hasEditionNumber = models.IntegerField()
     yearScreened = models.IntegerField()
 
@@ -135,20 +135,20 @@ class Award(models.Model):
     hasAwardCategory = models.ForeignKey(AwardCategory, on_delete=models.CASCADE)
     hasPart = models.ForeignKey(AwardCeremony, on_delete=models.CASCADE)
     hasSetting = models.ForeignKey(NominationSituation, on_delete=models.CASCADE)
-    presentedBy = models.ForeignKey('', on_delete=models.CASCADE)
+    presentedBy = models.ForeignKey('Organization', on_delete=models.CASCADE)
 
     # data properties
-    hasNickname = models.CharField()
+    hasNickname = models.CharField(max_length=255)
 
 
 class Audience(models.Model):
     # temp
-    label = models.CharField()
+    label = models.CharField(max_length=255)
 
 
 class Organization(models.Model):
     # temp
-    label = models.CharField()
+    label = models.CharField(max_length=255)
 
 
 class MovieStudio(Organization):
@@ -159,35 +159,35 @@ class Film(models.Model):
     # object properties
     hasAudience = models.ForeignKey(Audience, on_delete=models.CASCADE)
     hasContentRating = models.ForeignKey(ContentRating, on_delete=models.CASCADE)
-    hasCountryOfOrigin = models.ForeignKey(Country, on_delete=models.CASCADE)
-    hasFilmingLocation = models.ForeignKey(Place, on_delete=models.CASCADE)  # may not be in use
+    hasCountryOfOrigin = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='origin_country_of_films')
+    hasFilmingLocation = models.ForeignKey(Place, on_delete=models.CASCADE, related_name='filming_location_of_films')  # may not be in use
     hasGenre = models.ForeignKey(Genre, on_delete=models.CASCADE)
-    hasLanguage = models.ForeignKey(Language, on_delete=models.CASCADE)
-    hasOriginalLanguage = models.ForeignKey(Language, on_delete=models.CASCADE)
-    hasPrequels = models.ForeignKey('Film', on_delete=models.SET_NULL)
-    hasSequels = models.ForeignKey('Film', on_delete=models.SET_NULL)
-    hasSubTitleInLanguage = models.ForeignKey(Language, on_delete=models.CASCADE)
+    hasLanguage = models.ForeignKey(Language, on_delete=models.CASCADE, related_name='language_of_films')
+    hasOriginalLanguage = models.ForeignKey(Language, on_delete=models.CASCADE, related_name='original_language_of_films')
+    hasPrequels = models.ForeignKey('Film', on_delete=models.SET_NULL, related_name='hasSequels', null=True)
+    # hasSequels = models.ForeignKey('Film', on_delete=models.SET_NULL)
+    hasSubTitleInLanguage = models.ForeignKey(Language, on_delete=models.CASCADE, related_name='subtitle_of_films')
     eligibleFor = models.ForeignKey(Award, on_delete=models.CASCADE)
 
     # data properties
-    dateReleased = models.CharField()  # models.DateField()
+    dateReleased = models.CharField(max_length=255)  # models.DateField()
     hasFeatureLengthInMinutes = models.IntegerField()
     hasInitialReleaseYear = models.IntegerField()
-    hasTitle = models.CharField()
-    hasWikipediaLink = models.CharField()  # models.URLField()
+    hasTitle = models.CharField(max_length=255)
+    hasWikipediaLink = models.CharField(max_length=255)  # models.URLField()
     isBritishFilm = models.BooleanField()
     isAdult = models.BooleanField()
 
     # temp
-    avg_rating = models.CharField()
+    avg_rating = models.CharField(max_length=255)
 
 
 class Character(models.Model):
     # object properties
     actedBy = models.ForeignKey(Person, on_delete=models.CASCADE)
-    hasGender = models.CharField(max_length=Gender.max_len, choices=Gender.choices)
-    hasImportance = models.CharField(max_length=CharacterImportance.max_len, choices=CharacterImportance.choices)
+    hasGender = models.CharField(max_length=255, choices=Gender.choices)
+    hasImportance = models.CharField(max_length=255, choices=CharacterImportance.choices)
 
     # data properties
-    hasCharacterTitle = models.CharField()
-    hasName = models.CharField()
+    hasCharacterTitle = models.CharField(max_length=255)
+    hasName = models.CharField(max_length=255)
