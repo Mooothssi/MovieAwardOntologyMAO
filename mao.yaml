@@ -20,7 +20,7 @@ annotations:
 
       THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   owl:versionInfo:
-    - 1.0.8
+    - 1.0.9
   rdfs:label:
     - Movie Awards Ontology^^rdfs:Literal@en
   rdfs:comment:
@@ -41,7 +41,7 @@ owl:Class:
       - Object
       - Value
     rdfs:subClassOf:
-      - owl:Thing
+      - Thing
   mao:ActingSituation:
     annotations:
       rdfs:label:
@@ -103,15 +103,6 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
-  mao:Antagonist:
-    annotations:
-      rdfs:label:
-        - Antagonist^^rdfs:Literal@en
-    owl:disjointWith:
-      - Protagonist
-      - Hero
-    rdfs:subClassOf:
-      - MainCharacter
   mao:Audience:
     annotations:
       rdfs:label:
@@ -204,16 +195,6 @@ owl:Class:
       - Criterion and (isCriterionFor value BaftaAward)
     rdfs:subClassOf:
       - Criterion
-  mao:Building:
-    annotations:
-      rdfs:label:
-        - Building^^rdfs:Literal@en
-    owl:disjointWith:
-      - City
-      - Country
-      - GeographicalFeature
-    rdfs:subClassOf:
-      - Place
   mao:Character:
     annotations:
       rdfs:comment:
@@ -253,9 +234,7 @@ owl:Class:
       rdfs:label:
         - City^^rdfs:Literal@en
     owl:disjointWith:
-      - Building
       - Country
-      - GeographicalFeature
     rdfs:subClassOf:
       - Place
   mao:Classification:
@@ -297,9 +276,7 @@ owl:Class:
       rdfs:label:
         - Country^^rdfs:Literal@en
     owl:disjointWith:
-      - Building
       - City
-      - GeographicalFeature
     rdfs:subClassOf:
       - Place
   mao:Criterion:
@@ -360,7 +337,7 @@ owl:Class:
       - Object
       - Value
     rdfs:subClassOf:
-      - owl:Thing
+      - Thing
   mao:ExtraCharacter:
     annotations:
       rdfs:label:
@@ -443,24 +420,6 @@ owl:Class:
       - CollectiveAgent and (isParticipantIn some FilmMakingSituation)
     rdfs:subClassOf:
       - CollectiveAgent
-  mao:FeatureFilm:
-    annotations:
-      rdfs:label:
-        - FeatureFilm^^rdfs:Literal@en
-    owl:disjointWith:
-      - ShortFilm
-    owl:equivalentClass:
-      - Film and (hasFeatureLengthInMinutes some integer[>=40])
-    rdfs:subClassOf:
-      - Film
-  mao:FemaleProtagonist:
-    annotations:
-      rdfs:label:
-        - FemaleProtagonist^^rdfs:Literal@en
-    owl:disjointWith:
-      - MaleProtagonist
-    rdfs:subClassOf:
-      - Protagonist
   mao:FilmMakingSituation:
     annotations:
       rdfs:label:
@@ -506,33 +465,6 @@ owl:Class:
       - Race
     rdfs:subClassOf:
       - Classification
-  mao:GeographicalFeature:
-    annotations:
-      rdfs:label:
-        - GeographicalFeature^^rdfs:Literal@en
-    owl:disjointWith:
-      - Building
-      - City
-      - Country
-    rdfs:subClassOf:
-      - Place
-  mao:Hero:
-    annotations:
-      rdfs:label:
-        - Hero^^rdfs:Literal@en
-    owl:disjointWith:
-      - Antagonist
-      - Protagonist
-    rdfs:subClassOf:
-      - MainCharacter
-  mao:Heroine:
-    annotations:
-      rdfs:label:
-        - Heroine^^rdfs:Literal@en
-    owl:disjointWith:
-      - MaleHero
-    rdfs:subClassOf:
-      - Hero
   mao:Language:
     annotations:
       rdfs:label:
@@ -543,9 +475,6 @@ owl:Class:
       - Abstract
   mao:MainCharacter:
     annotations:
-      rdfs:comment:
-        - >
-          Inferred class.^^xsd:string
       rdfs:label:
         - MainCharacter^^rdfs:Literal@en
     owl:disjointWith:
@@ -553,22 +482,6 @@ owl:Class:
       - SideCharacter
     rdfs:subClassOf:
       - CharacterImportance
-  mao:MaleHero:
-    annotations:
-      rdfs:label:
-        - MaleHero^^rdfs:Literal@en
-    owl:disjointWith:
-      - Heroine
-    rdfs:subClassOf:
-      - Hero
-  mao:MaleProtagonist:
-    annotations:
-      rdfs:label:
-        - MaleProtagonist^^rdfs:Literal@en
-    owl:disjointWith:
-      - FemaleProtagonist
-    rdfs:subClassOf:
-      - Protagonist
   mao:MPAAContentRating:
     annotations:
       rdfs:label:
@@ -659,7 +572,7 @@ owl:Class:
       - Event
       - Value
     rdfs:subClassOf:
-      - owl:Thing
+      - Thing
   mao:Occupation:
     annotations:
       rdfs:label:
@@ -736,15 +649,6 @@ owl:Class:
       - Organization
     rdfs:subClassOf:
       - Agent
-  mao:Protagonist:
-    annotations:
-      rdfs:label:
-        - Protagonist^^rdfs:Literal@en
-    owl:disjointWith:
-      - Antagonist
-      - Hero
-    rdfs:subClassOf:
-      - MainCharacter
   mao:Race:
     annotations:
       rdfs:label:
@@ -818,16 +722,6 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
-  mao:ShortFilm:
-    annotations:
-      rdfs:label:
-        - ShortFilm^^rdfs:Literal@en
-    owl:disjointWith:
-      - FeatureFilm
-    owl:equivalentClass:
-      - Film and (hasFeatureLengthInMinutes some integer[<40])
-    rdfs:subClassOf:
-      - Film
   mao:ShortFilmOscarCriterion:
     annotations:
       rdfs:label:
@@ -848,9 +742,6 @@ owl:Class:
       - OscarCriterion
   mao:SideCharacter:
     annotations:
-      rdfs:comment:
-        - >
-          Inferred class.^^xsd:string
       rdfs:label:
         - SideCharacter^^rdfs:Literal@en
     owl:disjointWith:
@@ -903,7 +794,7 @@ owl:Class:
       - Event
       - Object
     rdfs:subClassOf:
-      - owl:Thing
+      - Thing
   mao:VoiceActingSituation:
     annotations:
       rdfs:label:
@@ -1045,9 +936,6 @@ owl:DataProperty:
       - xsd:string
   mao:isBritishFilm:
     annotations:
-      rdfs:comment:
-        - >
-          Inferred relation.^^xsd:string
       rdfs:label:
         - is British film^^rdfs:Literal@en
     rdfs:range:
@@ -1092,9 +980,6 @@ owl:ObjectProperty:
       - Object
   mao:eligibleFor:
     annotations:
-      rdfs:comment:
-        - >
-          Inferred relation.^^xsd:string
       rdfs:label:
         - eligible for^^rdfs:Literal@en
     rdfs:range:
@@ -1222,7 +1107,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - owl:Thing
+      - Thing
   mao:hasFilm:
     annotations:
       rdfs:label:
@@ -1273,9 +1158,6 @@ owl:ObjectProperty:
       - Person
   mao:hasOccupation:
     annotations:
-      rdfs:comment:
-        - >
-          Inferred relation.^^xsd:string
       rdfs:label:
         - has occupation^^rdfs:Literal@en
     rdfs:range:
@@ -1299,9 +1181,9 @@ owl:ObjectProperty:
     rdf:type:
       - owl:TransitiveProperty
     rdfs:domain:
-      - owl:Thing
+      - Thing
     rdfs:range:
-      - owl:Thing
+      - Thing
   mao:hasPrequels:
     annotations:
       rdfs:label:
@@ -1340,7 +1222,7 @@ owl:ObjectProperty:
     owl:inverseOf:
       - isSettingFor
     rdfs:domain:
-      - owl:Thing
+      - Thing
     rdfs:range:
       - Situation
   mao:hasSubGenre:
@@ -1393,7 +1275,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - owl:Thing
+      - Thing
   mao:isAgentInvolvedIn:
     annotations:
       rdfs:label:
@@ -1440,9 +1322,9 @@ owl:ObjectProperty:
     rdf:type:
       - owl:TransitiveProperty
     rdfs:domain:
-      - owl:Thing
+      - Thing
     rdfs:range:
-      - owl:Thing
+      - Thing
   mao:isParticipantIn:
     annotations:
       rdfs:comment:
@@ -1461,7 +1343,7 @@ owl:ObjectProperty:
       rdfs:label:
         - is requirement for^^rdfs:Literal@en
     rdfs:range:
-      - owl:Thing
+      - Thing
     rdfs:subPropertyOf:
       - isValidFor
   mao:isSatisfiedBy:
@@ -1469,7 +1351,7 @@ owl:ObjectProperty:
       rdfs:label:
         - is satisfied by^^rdfs:Literal@en
     rdfs:domain:
-      - owl:Thing
+      - Thing
     rdfs:range:
       - Value
   mao:isSettingFor:
@@ -1482,7 +1364,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Situation
     rdfs:range:
-      - owl:Thing
+      - Thing
   mao:isSubGenreOf:
     annotations:
       rdfs:label:
@@ -1499,7 +1381,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - owl:Thing
+      - Thing
   mao:isViolatedBy:
     annotations:
       rdfs:label:
@@ -1507,7 +1389,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - owl:Thing
+      - Thing
   mao:locatedIn:
     annotations:
       rdfs:label:
@@ -1531,14 +1413,11 @@ owl:ObjectProperty:
       rdfs:label:
         - satisfies^^rdfs:Literal@en
     rdfs:domain:
-      - owl:Thing
+      - Thing
     rdfs:range:
       - Value
   mao:satisfiesCriterion:
     annotations:
-      rdfs:comment:
-        - >
-          Inferred relation.^^xsd:string
       rdfs:label:
         - satisfies criterion^^rdfs:Literal@en
     rdfs:range:
@@ -1564,7 +1443,7 @@ owl:ObjectProperty:
       rdfs:label:
         - violates^^rdfs:Literal@en
     rdfs:domain:
-      - owl:Thing
+      - Thing
     rdfs:range:
       - Value
   mao:violatesCriterion:
