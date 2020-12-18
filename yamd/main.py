@@ -257,7 +257,7 @@ class Class(Entity):
         for uname, pname in self._description_map.items():
             if uname in self.data:
                 data = self.data[uname]
-                cleaned_data = parse_lenient_list_of_strings(data)
+                cleaned_data = [self.ontology.add_prefix_if_missing(name) for name in parse_lenient_list_of_strings(data)]
                 if cleaned_data:
                     lines += [f'{pname}:',
                               get_md_list(0, cleaned_data),
@@ -369,7 +369,7 @@ class AnnotationProperty(Property):
 
     @property
     def _top_type(self) -> str:
-        return 'DummyTopAnnotationProperty'
+        return ':DummyTopAnnotationProperty'
 
     def maybe_include_thing(self, auto_include_thing: bool) -> None:
         """Definitely include the dummy TopAnnotationProperty"""
@@ -492,24 +492,24 @@ def convert_v2(data: dict, *, auto_include_thing: bool = True) -> List[str]:
         text_sections.append('\n'.join(lines))
 
     liens = []
-    t = Node('Thing').show_graph()
+    t = Node('owl:Thing').show_graph()
     if t:
         lines = ['# Class Hierarchy',
                  t,
                  '']
-    if Node('TopObjectProperty').children or Node('TopDataProperty').children or Node('DummyTopAnnotationProperty').children:
+    if Node('owl:TopObjectProperty').children or Node('owl:TopDataProperty').children or Node(':DummyTopAnnotationProperty').children:
         lines += ['# Property Hierarchy']
-    if Node('TopObjectProperty').children:
+    if Node('owl:TopObjectProperty').children:
         lines += ['### Object Property',
-                  Node('TopObjectProperty').show_graph(),
+                  Node('owl:TopObjectProperty').show_graph(),
                   '']
-    if Node('TopDataProperty').children:
+    if Node('owl:TopDataProperty').children:
         lines += ['### Data Property',
-                  Node('TopDataProperty').show_graph(),
+                  Node('owl:TopDataProperty').show_graph(),
                   '']
-    if Node('DummyTopAnnotationProperty').children:
+    if Node(':DummyTopAnnotationProperty').children:
         lines += ['### Annotation Property']
-        lines += [annotation.show_graph() for annotation in Node('DummyTopAnnotationProperty').children]
+        lines += [annotation.show_graph() for annotation in Node(':DummyTopAnnotationProperty').children]
         lines += ['']
     text_sections.insert(2, '\n'.join(lines))
     return text_sections
@@ -521,7 +521,7 @@ def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
     with open(owlyaml_file, 'r', encoding='utf-8') as yamlfile:
         data = yaml.load(yamlfile, yaml.FullLoader)
         data = trim_dict(data)
-        print(str(data))
+        # print(str(data))
 
     if 'version' not in data:
         # first version
@@ -529,6 +529,8 @@ def convert_owl_yaml_to_md(owlyaml_file: Union[str, Path],
     elif data['version'] == 'v1.0.0':
         lines = convert_v1(data, auto_include_thing=False)
     elif data['version'] == 'v2.0.0':
+        lines = convert_v2(data, auto_include_thing=True)
+    elif data['version'] == 'v2.1.0':
         lines = convert_v2(data, auto_include_thing=True)
     else:
         raise NotImplementedError
@@ -540,4 +542,4 @@ if __name__ == '__main__':
     import doctest
 
     doctest.testmod()
-    convert_owl_yaml_to_md(ROOT_DIR / 'tests/specs/v2.0.0/test_case2.yaml', ROOT_DIR / 'yamd/test.md')
+    convert_owl_yaml_to_md(ROOT_DIR / 'mao.yaml', ROOT_DIR / 'mao.md')
