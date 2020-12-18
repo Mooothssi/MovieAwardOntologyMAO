@@ -451,7 +451,6 @@ owl:Class:
     objectProperty:
       - eligibleFor
     owl:disjointWith:
-      - Animation
       - FeatureFilm
       - ShortFilm
     rdfs:subClassOf:
@@ -461,7 +460,6 @@ owl:Class:
       rdfs:label:
         - FeatureFilm^^rdfs:Literal@en
     owl:disjointWith:
-      - Animation
       - FilmEligibleForAward
       - ShortFilm
     owl:equivalentClass:
@@ -846,7 +844,6 @@ owl:Class:
       rdfs:label:
         - ShortFilm^^rdfs:Literal@en
     owl:disjointWith:
-      - Animation
       - FeatureFilm
       - FilmEligibleForAward
     owl:equivalentClass:
