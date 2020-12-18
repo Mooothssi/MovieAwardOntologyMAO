@@ -167,20 +167,21 @@ class Ontology(OwlAssertable):
         inst.define_prefix()
         return inst
 
-    def save_to_file(self, filename: str, file_format: str = "pretty-xml"):
+    def save_to_file(self, filename: str, file_format: str = "xml"):
         """Saves an Ontology with a given filename
 
         Args:
             filename: The name of a given file
-            file_format: The file format of given filename. Only `rdfxml` is supported by `owlready2`
+            file_format: The file format of given filename. Only `xml` is supported by `owlready2`
         """
+
         with self.implementation:
             g: Graph = self.rdflib_graph
-        # term.bind()
             self.iris.update(WELL_KNOWN_PREFIXES)
             if len(self.iris) > 0:
-                for iri in self.iris:
-                    g.namespace_manager.bind(iri, Namespace(self.iris[iri]))
+                for prefix in self.iris:
+                    #self.implementation.graph.add_ontology_alias(prefix, self.iris[prefix])
+                    g.namespace_manager.bind(prefix, Namespace(self.iris[prefix]))
             with open(filename, mode="wb") as file:
                 file.write(g.serialize(format=file_format))
 

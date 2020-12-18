@@ -120,8 +120,13 @@ class OntogenConverter:
         self._ontology = Ontology.load_from_file(owl_filename)
         onto = self._ontology
         with onto.implementation:
+            # print(list(onto.implementation.world.graph.ontologies_iris()))
+            # c = onto.implementation.graph.execute("SELECT * FROM ontology_alias").fetchall()
             g = onto.rdflib_graph
-            namespaces = dict(g.namespaces())
+            p = onto.implementation.world
+            # DataPropertyClass
+            print(type(p._props['win']).__dict__)
+            namespaces = dict(g.namespace_manager.namespaces())
             for k in namespaces:
                 self._ontology.define_prefix(k, str(namespaces[k]))
         internals = self._from_internals_to_dict()
@@ -258,7 +263,7 @@ class OntogenConverter:
             for p in Thing.get_properties(cls):
                 if isinstance(p, AnnotationPropertyClass):
                     c.retrieve_property(p.name, cls, self._ontology.lookup_prefix(p.namespace.base_iri))
-            c.parent_class_names = [absolutize_entity_name(s.name) for s in cls.is_a]
+            c.parent_class_names = [absolutize_entity_name(s.name, self.ontology.base_prefix) for s in cls.is_a]
             self.entities[e] = c
         for prop in props:
             p = onto.lookup_prefix(prop.namespace.base_iri)
@@ -266,11 +271,11 @@ class OntogenConverter:
             if isinstance(prop, DataPropertyClass):
                 dp = OwlDataProperty(e)
                 self.entities[e] = dp
-                dp.parent_class_names = [absolutize_entity_name(s.name) for s in prop.is_a]
+                dp.parent_class_names = [absolutize_entity_name(s.name, self.ontology.base_prefix) for s in prop.is_a]
             elif isinstance(prop, ObjectPropertyClass):
                 op = OwlObjectProperty(e)
                 self.entities[e] = op
-                op.parent_class_names = [absolutize_entity_name(s.name) for s in prop.is_a]
+                op.parent_class_names = [absolutize_entity_name(s.name, self.ontology.base_prefix) for s in prop.is_a]
         for individual in individuals:
             p = onto.lookup_prefix(individual.namespace.base_iri)
             e = absolutize_entity_name(individual.name, p)
@@ -287,11 +292,11 @@ class OntogenConverter:
                 i.be_type_of(self.get_entity(e2))
             self.entities[e] = i
         dct = {}
-        assign_optional_dct(dct, OWL_CLASS, {abs_name: self.classes[abs_name].to_dict() for abs_name in self.classes})
-        assign_optional_dct(dct, OWL_OBJECT_PROPERTY, {abs_name: self.object_properties[abs_name].to_dict()
-                                                       for abs_name in self.object_properties})
-        assign_optional_dct(dct, OWL_DATA_PROPERTY, {abs_name: self.data_properties[abs_name].to_dict()
-                                                     for abs_name in self.data_properties})
-        assign_optional_dct(dct, OWL_INDIVIDUAL, {abs_name: self.individuals[abs_name].to_dict()
+        assign_optional_dct(dct, OWL_CLASS, {abs_name: self.ontology.classes[abs_name].to_dict() for abs_name in self.ontology.classes})
+        assign_optional_dct(dct, OWL_OBJECT_PROPERTY, {abs_name: self.ontology.object_properties[abs_name].to_dict()
+                                                       for abs_name in self.ontology.object_properties})
+        assign_optional_dct(dct, OWL_DATA_PROPERTY, {abs_name: self.ontology.data_properties[abs_name].to_dict()
+                                                     for abs_name in self.ontology.data_properties})
+        assign_optional_dct(dct, OWL_INDIVIDUAL, {abs_name: self.ontology.individuals[abs_name].to_dict()
                                                   for abs_name in self.individuals})
         return dct
