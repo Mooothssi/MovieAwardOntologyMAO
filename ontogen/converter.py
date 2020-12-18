@@ -152,9 +152,13 @@ class OntogenConverter:
     def _load_class_descriptions(self, classes: Tuple[OwlEntity, ...]):
         for cls in classes:
             if isinstance(cls, OwlClass) or isinstance(cls, OwlObjectProperty):
-                [cls.add_superclass(self.get_entity(name, cls.prefix)) for name in cls.parent_class_names]
+                for name in cls.parent_class_names:
+                    cls.add_superclass(self.get_entity(name, cls.prefix))
                 if isinstance(cls, OwlClass):
-                    [cls.add_disjoint_class(self.get_entity(name, cls.prefix)) for name in cls.disjoint_class_names]
+                    for name in cls.disjoint_class_names:
+                        cls_entity = self.get_entity(name, cls.prefix)
+                        if cls_entity is not None:
+                            cls.add_disjoint_class(cls_entity)
                 elif isinstance(cls, OwlObjectProperty):
                     cls.domain = [self.get_entity(name, cls.prefix) for name in cls.domain if isinstance(name, str)]
                     cls.range = [self.get_entity(name, cls.prefix) for name in cls.range if isinstance(name, str)]

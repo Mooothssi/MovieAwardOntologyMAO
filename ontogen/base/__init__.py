@@ -44,7 +44,7 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
         self._parent_classes = []
         self._parent_class_expressions = []
         self.superclass_expressions = []
-        self._disjoint_classes = []
+        self._disjoint_classes: List['OwlEntity'] = []
         self.equivalent_class_expressions: List[str] = []
         self.equivalent_classes: list = []
         self._realised_parent_classes = []
@@ -83,12 +83,14 @@ class OwlEntity(OwlAssertable, metaclass=ABCMeta):
             return
         self._parent_class_expressions.append(superclass)
 
-    def add_disjoint_class(self, cls: "OwlEntity"):
+    def add_disjoint_class(self, cls: 'OwlEntity'):
         """Adds a disjoint class to this Class. The given class will be lazy loaded.
 
         Args:
             cls: an OntologyEntity
         """
+        if cls is None:
+            return TypeError(f"cls must not be None")
         self._disjoint_classes.append(cls)
 
     def add_equivalent_class_expression(self, expression: Union[str, ClassConstruct]):
