@@ -711,15 +711,6 @@ owl:Class:
         - Criterion and (isCriterionFor value OscarAward)
     rdfs:subClassOf:
       - Criterion
-  mao:OscarEligible:
-    annotations:
-      rdfs:label:
-        - OscarEligible^^rdfs:Literal@en
-    owl:equivalentClass:
-      owl:Restriction:
-        - FilmEligibleForAward and (eligibleFor value Oscars) and (violatesCriterion only not(OscarCriterion)) and (satisfiesCriterion only OscarCriterion)
-    rdfs:subClassOf:
-      - FilmEligibleForAward
   mao:Place:
     annotations:
       rdfs:label:
