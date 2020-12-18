@@ -20,7 +20,7 @@ annotations:
 
       THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   owl:versionInfo:
-    - 1.0.10
+    - 1.0.11
   rdfs:label:
     - Movie Awards Ontology^^rdfs:Literal@en
   rdfs:comment:
@@ -1795,6 +1795,7 @@ owl:ObjectProperty:
       - violates
 
 owl:Individual:
+  # Awards
   mao:BaftaAward:
     rdf:type:
       - Award
@@ -1804,6 +1805,7 @@ owl:Individual:
   mao:Oscars:
     rdf:type:
       - Award
+  # Genders
   mao:Female:
     rdf:type:
       - Gender
@@ -1813,57 +1815,285 @@ owl:Individual:
   mao:Non-binary:
     rdf:type:
       - Gender
-  mao:BestFilm:
+  # Award categories
+  # Oscar
+  mao:OscarBestPicture:
+    annotations:
+      rdfs:label:
+        - Best Picture^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestPicture:
+    relations:
+      mao:forOccupation:
+        - mao:Producer
+  mao:OscarBestDirector:
+    annotations:
+      rdfs:label:
+        - Best Director^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestDirector:
+    relations:
+      mao:forOccupation:
+        - mao:FilmDirector
+  mao:OscarBestActor:
+    annotations:
+      rdfs:label:
+        - Best Actor^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestActor:
+    relations:
+      mao:forOccupation:
+        - mao:Actor
+  mao:OscarBestActress:
+    annotations:
+      rdfs:label:
+        - Best Actressr^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestActress:
+    relations:
+      mao:forOccupation:
+        - mao:Actress
+  mao:OscarBestSupportingActor:
+    annotations:
+      rdfs:label:
+        - Best Supporting Actor^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestSupportingActor:
+    relations:
+      mao:forOccupation:
+        - mao:Actor
+  mao:OscarBestSupportingActress:
+    annotations:
+      rdfs:label:
+        - Best Supporting Actress^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestSupportingActress:
+    relations:
+      mao:forOccupation:
+        - mao:Actress
+  mao:OscarBestScreenWriter:
+    annotations:
+      rdfs:label:
+        - Best Original Screenplay^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:Newcomer:
+    relations:
+      mao:forOccupation:
+        - mao:ScreenWriter
+  mao:OscarBestCinematographer:
+    annotations:
+      rdfs:label:
+        - Best Cinematography^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestScreenWriter:
+    relations:
+      mao:forOccupation:
+        - mao:Cinematographer
+  mao:OscarBestProductionDesigner:
+    annotations:
+      rdfs:label:
+        - Best Production Design^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestCinematographer:
+    relations:
+      mao:forOccupation:
+        - mao:ArtDirector
+  mao:OscarBestComposer:
+    annotations:
+      rdfs:label:
+        - Best Original Score^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestProductionDesigner:
+    relations:
+      mao:forOccupation:
+        - mao:Composer
+  mao:OscarBestEditor:
+    annotations:
+      rdfs:label:
+        - Best Film Editing^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestComposer:
+    relations:
+      mao:forOccupation:
+        - mao:FilmEditor
+  # To do (It give to many occupation)
+  mao:OscarBestVisualEffects:
+    annotations:
+      rdfs:label:
+        - Best Visual Effects^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestEditor:
+  mao:OscarBestCostumeDesigner:
+    annotations:
+      rdfs:label:
+        - Best Costume Design^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestVisualEffects:
+    relations:
+      mao:forOccupation:
+        - mao:CustomDesigner
+  # BAFTA
+  # To do (It give to director and producer)
+  mao:BaftaBestFilm:
+    annotations:
+      rdfs:label:
+        - Best Film^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:BestCostumeDesigner:
+    relations:
+      mao:forOccupation:
+        - mao:Producer
+  mao:BaftaBestDirector:
+    annotations:
+      rdfs:label:
+        - Best Direction^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:OutstandingBritishFilm:
+    relations:
+      mao:forOccupation:
+        - mao:FilmDirector
+  mao:BaftaBestActor:
+    annotations:
+      rdfs:label:
+        - Best Actor in a Leading Role^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
-  mao:OutstandingDebut:
+    relations:
+      mao:forOccupation:
+        - mao:Actor
+  mao:BaftaBestActress:
+    annotations:
+      rdfs:label:
+        - Best Actress in a Leading Role^^rdfs:Literal@en
     rdf:type:
       - AwardCategory
+    relations:
+      mao:forOccupation:
+        - mao:Actress
+  mao:BaftaBestSupportingActor:
+    annotations:
+      rdfs:label:
+        - Best Actor in a Supporting Role^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+    relations:
+      mao:forOccupation:
+        - mao:Actor
+  mao:BaftaBestSupportingActress:
+    annotations:
+      rdfs:label:
+        - Best Actress in a Supporting Role^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+    relations:
+      mao:forOccupation:
+        - mao:Actress
+  mao:BaftaBestScreenWriter:
+    annotations:
+      rdfs:label:
+        - Best Original Screenplay^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+    relations:
+      mao:forOccupation:
+        - mao:ScreenWriter
+  mao:BaftaBestCinematographer:
+    annotations:
+      rdfs:label:
+        - Best Cinematography^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+    relations:
+      mao:forOccupation:
+        - mao:Cinematographer
+  mao:BaftaBestProductionDesigner:
+    annotations:
+      rdfs:label:
+        - Best Production Design^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+    relations:
+      mao:forOccupation:
+        - mao:ArtDirector
+  mao:BaftaBestComposer:
+    annotations:
+      rdfs:label:
+        - Best Original Music^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+    relations:
+      mao:forOccupation:
+        - mao:Composer
+  mao:BaftaBestEditor:
+    annotations:
+      rdfs:label:
+        - Best Editing^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+    relations:
+      mao:forOccupation:
+        - mao:FilmEditor
+  # To do (It give to many occupation)
+  mao:BaftaBestVisualEffects:
+    annotations:
+      rdfs:label:
+        - Best Special Visual Effects^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+  mao:BaftaBestCostumeDesigner:
+    annotations:
+      rdfs:label:
+        - Best Costume Design^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+    relations:
+      mao:forOccupation:
+        - mao:CustomDesigner
+  # To do (It give to many occupation)
+  mao:BaftaOutstandingBritishFilm:
+    annotations:
+      rdfs:label:
+        - BAFTA Award for Outstanding British Film^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+  # To do (It give to many occupation)
+  mao:BaftaOutstandingDebut:
+    annotations:
+      rdfs:label:
+        - BAFTA Award for Outstanding Debut by a British Writer, Director or Producer^^rdfs:Literal@en
+    rdf:type:
+      - AwardCategory
+  # Occupation
+  mao:Producer:
+    rdf:type:
+      - Occupation
+  mao:FilmDirector:
+    rdf:type:
+      - Occupation
+  mao:Actor:
+    rdf:type:
+      - Occupation
+  mao:Actress:
+    rdf:type:
+      - Occupation
+  mao:ScreenWriter:
+    rdf:type:
+      - Occupation
+  mao:Cinematographer:
+    rdf:type:
+      - Occupation
+  mao:ArtDirector:
+    rdf:type:
+      - Occupation
+  mao:Composer:
+    rdf:type:
+      - Occupation
+  mao:FilmEditor:
+    rdf:type:
+      - Occupation
+  mao:CustomDesigner:
+    rdf:type:
+      - Occupation
 
 rules:
   filmEligible:
