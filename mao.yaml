@@ -20,7 +20,7 @@ annotations:
 
       THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   owl:versionInfo:
-    - 1.0.7
+    - 1.0.8
   rdfs:label:
     - Movie Awards Ontology^^rdfs:Literal@en
   rdfs:comment:
@@ -41,7 +41,7 @@ owl:Class:
       - Object
       - Value
     rdfs:subClassOf:
-      - Thing
+      - owl:Thing
   mao:ActingSituation:
     annotations:
       rdfs:label:
@@ -360,7 +360,7 @@ owl:Class:
       - Object
       - Value
     rdfs:subClassOf:
-      - Thing
+      - owl:Thing
   mao:ExtraCharacter:
     annotations:
       rdfs:label:
@@ -659,7 +659,7 @@ owl:Class:
       - Event
       - Value
     rdfs:subClassOf:
-      - Thing
+      - owl:Thing
   mao:Occupation:
     annotations:
       rdfs:label:
@@ -903,7 +903,7 @@ owl:Class:
       - Event
       - Object
     rdfs:subClassOf:
-      - Thing
+      - owl:Thing
   mao:VoiceActingSituation:
     annotations:
       rdfs:label:
@@ -1222,7 +1222,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:hasFilm:
     annotations:
       rdfs:label:
@@ -1299,9 +1299,9 @@ owl:ObjectProperty:
     rdf:type:
       - owl:TransitiveProperty
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:hasPrequels:
     annotations:
       rdfs:label:
@@ -1340,7 +1340,7 @@ owl:ObjectProperty:
     owl:inverseOf:
       - isSettingFor
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
       - Situation
   mao:hasSubGenre:
@@ -1393,7 +1393,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:isAgentInvolvedIn:
     annotations:
       rdfs:label:
@@ -1440,9 +1440,9 @@ owl:ObjectProperty:
     rdf:type:
       - owl:TransitiveProperty
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:isParticipantIn:
     annotations:
       rdfs:comment:
@@ -1461,7 +1461,7 @@ owl:ObjectProperty:
       rdfs:label:
         - is requirement for^^rdfs:Literal@en
     rdfs:range:
-      - Thing
+      - owl:Thing
     rdfs:subPropertyOf:
       - isValidFor
   mao:isSatisfiedBy:
@@ -1469,7 +1469,7 @@ owl:ObjectProperty:
       rdfs:label:
         - is satisfied by^^rdfs:Literal@en
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
       - Value
   mao:isSettingFor:
@@ -1482,7 +1482,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Situation
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:isSubGenreOf:
     annotations:
       rdfs:label:
@@ -1499,7 +1499,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:isViolatedBy:
     annotations:
       rdfs:label:
@@ -1507,7 +1507,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:locatedIn:
     annotations:
       rdfs:label:
@@ -1531,7 +1531,7 @@ owl:ObjectProperty:
       rdfs:label:
         - satisfies^^rdfs:Literal@en
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
       - Value
   mao:satisfiesCriterion:
@@ -1564,7 +1564,7 @@ owl:ObjectProperty:
       rdfs:label:
         - violates^^rdfs:Literal@en
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
       - Value
   mao:violatesCriterion:
