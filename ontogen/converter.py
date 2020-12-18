@@ -9,6 +9,7 @@ from ontogen.actualizers import OntologyActualizer, Owlready2Actualizer
 from ontogen.base.namespaces import OWL_INDIVIDUAL, RDF_TYPE, OWL_THING, OWL_CLASS, OWL_OBJECT_PROPERTY, OWL_DATA_PROPERTY
 from ontogen.primitives import (BASE_ENTITIES, PROPERTY_ENTITIES, OwlEntity, OwlClass, OwlDataProperty,
                                 OwlObjectProperty)
+from ontogen.primitives.errors import OntologyConsistencyError
 from ontogen.utils.basics import absolutize_entity_name
 from ontogen.primitives.classes import OwlIndividual
 from ontogen.utils.basics import assign_optional_dct
@@ -198,8 +199,8 @@ class OntogenConverter:
     def check_missing_definitions(self):
         if len(self._missing_entities) > 0:
             missing = "\n".join([f"- {e}" for e in self._missing_entities])
-            raise AssertionError(f"There are missing entities as follows. "
-                                 f"Please check the consistency of the given specs!\n{missing}")
+            raise OntologyConsistencyError(f"There are missing entities as follows. "
+                                           f"Please check the consistency of the given specs!\n{missing}")
 
     def list_entities(self):
         """Print out list of entities to the console
