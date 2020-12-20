@@ -196,7 +196,7 @@ class Genre(models.Model, UpsertMixin):
         for genre, subgenre in get_genre_with_subgenres():
             subgenre = cls.upsert(wikidata_id=subgenre.wikidata_id, label=subgenre.label)
             genre = cls.upsert(wikidata_id=genre.wikidata_id, label=genre.label)
-            genre.hasSubGenre = subgenre
+            genre.hasSubGenre.add(subgenre)
             genre.save()
 
 
@@ -337,7 +337,7 @@ class Film(models.Model):
     hasFeatureLengthInMinutes = models.IntegerField(null=True)
     hasInitialReleaseYear = models.IntegerField(null=True)
     hasTitle = models.CharField(max_length=255, null=True)
-    hasWikipediaLink = models.CharField(max_length=255, null=True)  # models.URLField(, null=True)
+  #  hasWikipediaLink = models.CharField(max_length=255, null=True)  # models.URLField(, null=True)
     # isBritishFilm = models.BooleanField(null=True)
     isAdult = models.BooleanField(null=True)
 

@@ -116,11 +116,11 @@ SELECT ?genre ?genreLabel ?subGenre ?subGenreLabel
     for index, row in df.iterrows():
         genre = row['genre.value']
         genrelabel = row['genreLabel.value']
-        subgenre = row['genreLabel.value']
+        subgenre = row['subGenre.value']
         subgenrelabel = row['subGenreLabel.value']
         lst.append(GenreWithSub(
-            genre=Genre(wikidata_id=genre, label=genrelabel),
-            subgenre=Genre(wikidata_id=subgenre, label=subgenrelabel)
+            genre=Genre(wikidata_id=get_individual_id_from_url(genre), label=genrelabel),
+            subgenre=Genre(wikidata_id=get_individual_id_from_url(subgenre), label=subgenrelabel)
         ))
     return lst
 
