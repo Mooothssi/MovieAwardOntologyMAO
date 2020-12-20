@@ -4,7 +4,7 @@ import urllib.request
 # proxy_support = urllib.request.ProxyHandler({})
 # opener = urllib.request.build_opener(proxy_support)
 # urllib.request.install_opener(opener)
-from typing import List
+from typing import List, NamedTuple
 
 from SPARQLWrapper import SPARQLWrapper, JSON
 import pandas as pd
@@ -89,6 +89,40 @@ def get_from_imdb_id(imdb_id: str) -> str:
     """
     df = builder.raw_query(['film'], WIKIDATA_ID_FROM_IMDB_ID_QUERY.format(imdb_id=imdb_id))
     return get_individual_id_from_url(df.iloc[0]['film.value'])
+
+
+class Genre(NamedTuple):
+    wikidata_id: str
+    label: str
+
+
+class GenreWithSub(NamedTuple):
+    genre: Genre
+    subgenre: Genre
+
+
+def get_genre_with_subgenres() -> List[GenreWithSub]:
+    query = """
+SELECT ?genre ?genreLabel ?subGenre ?subGenreLabel
+{
+  ?subGenre wdt:P31 wd:Q201658;
+         wdt:P279 ?genre.
+  ?genre wdt:P31 wd:Q201658
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,[AUTO_LANGUAGE]".}
+}
+    """.strip()
+    df = builder.raw_query(['genre', 'genreLabel', 'subGenre', 'subGenreLabel'], query)
+    lst: List[GenreWithSub] = []
+    for index, row in df.iterrows():
+        genre = row['genre.value']
+        genrelabel = row['genreLabel.value']
+        subgenre = row['genreLabel.value']
+        subgenrelabel = row['subGenreLabel.value']
+        lst.append(GenreWithSub(
+            genre=Genre(wikidata_id=genre, label=genrelabel),
+            subgenre=Genre(wikidata_id=subgenre, label=subgenrelabel)
+        ))
+    return lst
 
 
 def main():

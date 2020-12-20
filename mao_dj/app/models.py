@@ -11,7 +11,7 @@ from django.db.models import ManyToOneRel, AutoField, ForeignObjectRel, Field
 from dirs import ROOT_DIR
 from mapping import OSCAR_MAPPING
 from utils.dict import select_not_null
-from wikidata_queries.base import get_content_ratings_for_film, get_single_valued_prop, get_from_imdb_id
+from wikidata_queries.base import get_content_ratings_for_film, get_single_valued_prop, get_genre_with_subgenres, get_from_imdb_id
 
 
 class Gender(models.TextChoices):
@@ -184,11 +184,20 @@ class Country(Place, UpsertMixin):
 
 class Genre(models.Model, UpsertMixin):
     # object properties
-    hasSubGenre = models.ForeignKey('Genre', on_delete=models.SET_NULL, related_name='isSubGenreOf', null=True)
+    hasSubGenre = models.ManyToManyField('Genre', related_name='isSubGenreOf', null=True)
     # isSubGenreOf = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, related_name='SubGenreOf_set', null=True)
 
     # temp
     label = models.CharField(max_length=255)
+    wikidata_id = models.CharField(max_length=13)
+
+    @classmethod
+    def populate_film_subgenres_from_wikidata(cls):
+        for genre, subgenre in get_genre_with_subgenres():
+            subgenre = cls.upsert(wikidata_id=subgenre.wikidata_id, label=subgenre.label)
+            genre = cls.upsert(wikidata_id=genre.wikidata_id, label=genre.label)
+            genre.hasSubGenre = subgenre
+            genre.save()
 
 
 class Language(models.Model):
