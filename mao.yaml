@@ -273,7 +273,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          The action or process of classifying something according to shared qualities or characteristics.^^xsd:string
+          A special kind of Situation that allows to include time indexing for the classifies relation in situations^^xsd:string
       rdfs:label:
         - Classification^^rdfs:Literal@en
     owl:disjointWith:
@@ -284,7 +284,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          A group of individuals or organizations, etc. jointly conducting any business It is established as a juristic person in the manner prescribed by law, with various rights and duties within the scope of the intended purpose and having the same rights and duties as a natural person. Except the rights and duties which by condition can only be natural persons^^xsd:string
+          A SocialAgent that is actedBy agents that are (and act as) members of a Collective. A collective agent can have roles that are also roles of those agents^^xsd:string
       rdfs:label:
         - CollectiveAgent^^rdfs:Literal@en
     objectProperty:
@@ -732,7 +732,8 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          A particular position or point in space^^xsd:string
+          A location, in a very generic sense: a political geographic entity, a non-material location determined by the presence of other entities, pivot events or signs, complements of other entities, etc.
+          In this generic sense, a Place is an approximate location.^^xsd:string
       rdfs:label:
         - Place^^rdfs:Literal@en
     owl:disjointWith:
