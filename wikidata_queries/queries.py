@@ -24,3 +24,9 @@ ORDER BY ?film ?cr ASC(?publicationDate)
 LIMIT 1
 '''
 
+WIKIDATA_ID_FROM_IMDB_ID_QUERY = '''
+SELECT ?film {{
+    ?film wdt:P345 \"{imdb_id}\".
+    SERVICE wikibase:label {{ bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }}
+}}
+'''

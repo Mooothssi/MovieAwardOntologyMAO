@@ -10,7 +10,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 import pandas as pd
 
 from wikidata_queries.contracts import ContentRatingContract, FilmContract
-from wikidata_queries.queries import CR_QUERY_TEMPLATE, SINGLE_PROP_FILM_QUERY_TEMPLATE
+from wikidata_queries.queries import CR_QUERY_TEMPLATE, SINGLE_PROP_FILM_QUERY_TEMPLATE, WIKIDATA_ID_FROM_IMDB_ID_QUERY
 
 
 class WikiDataQueryBuilder:
@@ -52,6 +52,10 @@ class WikiDataQueryBuilder:
 builder = WikiDataQueryBuilder()
 
 
+def get_individual_id_from_url(entity_url: str) -> str:
+    return entity_url.replace('http://www.wikidata.org/entity/', '')
+
+
 def get_content_ratings_for_film(wikidata_id: str) -> List[ContentRatingContract]:
     query = CR_QUERY_TEMPLATE
     df = builder.raw_query(['crpLabel', 'countryLabel', 'contentRatingLabel'], query.format(film=wikidata_id))
@@ -74,8 +78,20 @@ def get_single_valued_prop(wikidata_id: str) -> FilmContract:
         return FilmContract(hasCountryOfOrigin=country, hasOriginalLanguage=lang, hasPublicationDate=pub_date)
 
 
+def get_from_imdb_id(imdb_id: str) -> str:
+    """
+
+    Args:
+        imdb_id:
+
+    Returns: The wikidata id of the given movie with the given imdb id
+
+    """
+    df = builder.raw_query(['film'], WIKIDATA_ID_FROM_IMDB_ID_QUERY.format(imdb_id=imdb_id))
+    return get_individual_id_from_url(df.iloc[0]['film.value'])
+
+
 def main():
-   # print(get_content_ratings_for_film('Q61448040'))
     print(get_single_valued_prop('Q61448040'))
 
 
