@@ -1,11 +1,12 @@
 from typing import List, Dict, Union
+import datetime
 
 from ontogen.base.assertable import OwlAssertable
 from ontogen.base.namespaces import RDF_TYPE
 from ontogen.base.vars import GENERATED_TYPES
 from ontogen.primitives.base import OwlEntity, ENTITIES, check_restrictions
 from ontogen.primitives.errors import OntologyConsistencyError
-from ontogen.primitives.properties import OwlObjectProperty
+from ontogen.primitives.properties import OwlObjectProperty, OwlDataProperty
 from ontogen.utils.basics import assign_optional_dct, shorten_entity_name
 
 
@@ -86,7 +87,12 @@ class OwlIndividual(OwlEntity, OwlAssertable):
                     n = shorten_entity_name(value)
                     if n in GENERATED_TYPES:
                         return GENERATED_TYPES[n]
-            raise OntologyConsistencyError(f'{prop_name} is not declared in the specs')
+                elif isinstance(prop, OwlDataProperty):
+                    r = prop.range[0]
+                    if r == datetime.datetime:
+                        return datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
+            return value
+            # raise OntologyConsistencyError(f'{prop_name} is not declared in the specs')
 
     @property
     def all_defined_properties(self) -> Dict[str, OwlObjectProperty]:

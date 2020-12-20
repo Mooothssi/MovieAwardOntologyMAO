@@ -30,7 +30,10 @@ class OwlDataProperty(OwlProperty):
 
     def from_dict(self, sub: Dict[str, Any]):
         super().from_dict(sub)
-        self.range = [get_equivalent_datatype(datatype) for datatype in sub["rdfs:range"]]
+        try:
+            self.range = [get_equivalent_datatype(datatype) for datatype in sub["rdfs:range"]]
+        except KeyError:
+            raise ValueError(f"No range specified for {self.name_with_prefix}")
 
 
 class OwlAnnotationProperty(OwlProperty):

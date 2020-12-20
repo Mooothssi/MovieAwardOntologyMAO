@@ -232,7 +232,7 @@ class OntogenConverter:
         self.actualizer.actualize(onto)
         self._add_rules(self._dct)
 
-    def export_to_ontology(self, onto: Ontology = None) -> Ontology:
+    def sync_with_ontology(self, onto: Ontology = None) -> Ontology:
         """Saves changes made into a given Ontology
 
         Args:

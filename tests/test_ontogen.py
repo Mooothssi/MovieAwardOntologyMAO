@@ -28,7 +28,7 @@ class TestOntogen(TestCase):
         self.i: OwlClass = self.converter.get_entity("mao:Film")
         self.parasite_film = OwlIndividual("mao:Parasite")
         self.parasite_film.be_type_of(self.i)
-        self.onto = self.converter.export_to_ontology()
+        self.onto = self.converter.sync_with_ontology()
 
     def test_add_rule(self):
         self.test_realization()
@@ -57,12 +57,12 @@ class TestOntogen(TestCase):
         self.assertTrue(answer)
 
     def test_realization(self):
-        self.converter.export_to_ontology(self.onto)
+        self.converter.sync_with_ontology(self.onto)
 
     # Create an OWL ontology from scratch
     def test_create_ontology(self):
         self.test_assertion()
-        self.converter.export_to_ontology(self.onto)
+        self.converter.sync_with_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
         self.onto.save_to_file(str(Path(OUT_PATH) / "out.ttl"), "ttl")
 
@@ -78,7 +78,7 @@ class TestOntogen(TestCase):
         self.test_instantiation()
         self.parasite_film.add_property_assertion("mao:someProp", "Parasite")
         # self.parasite_film.actualize(self.onto)
-        self.converter.export_to_ontology(self.onto)
+        self.converter.sync_with_ontology(self.onto)
         self.onto.save_to_file(str(Path(OUT_PATH) / OUT_FILENAME))
 
     def test_write_yaml(self):
@@ -92,7 +92,7 @@ class TestOntogen(TestCase):
 class TestOntogenFamily(TestCase):
     def test_family_ontology(self):
         converter = OntogenConverter.load_from_spec(ROOT_DIR / f"tests/specs/{SPEC_VERSION}/test_case2.yaml")
-        onto = converter.export_to_ontology()
+        onto = converter.sync_with_ontology()
         father1 = onto.get_entity("family:Father1")
         aunt1 = onto.get_entity("family:Aunt1")
         self.assertListEqual([father1.actualized_entity], aunt1.actualized_entity.isSiblingOf)
@@ -102,7 +102,7 @@ class TestOntogenFamily(TestCase):
 
     def test_pizza_ontology(self):
         converter = OntogenConverter.load_from_spec(ROOT_DIR / f"tests/specs/{SPEC_VERSION}/test_case1.yaml")
-        onto = converter.export_to_ontology()
+        onto = converter.sync_with_ontology()
         named_pizza = onto.get_entity("pizza:NamedPizza")
         margherita = onto.get_entity("pizza:Margherita")
         cls_exp = ClassExpToConstruct(onto)
