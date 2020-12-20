@@ -30,3 +30,12 @@ SELECT ?film {{
     SERVICE wikibase:label {{ bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }}
 }}
 '''
+
+PREQUEL_SEQUEL_BY_WIKIDATA_ID_QUERY = '''
+SELECT (GROUP_CONCAT(DISTINCT ?prequel;SEPARATOR=",") AS ?prequels)  (GROUP_CONCAT(DISTINCT ?sequel;SEPARATOR=",") AS ?sequels) 
+WHERE {{
+    wd:{wikidata_id} wdt:P155 ?prequel;
+                     wdt:P156 ?sequel.
+    SERVICE wikibase:label {{ bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }}
+}}
+'''

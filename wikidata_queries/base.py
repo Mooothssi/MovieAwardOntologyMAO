@@ -4,13 +4,14 @@ import urllib.request
 # proxy_support = urllib.request.ProxyHandler({})
 # opener = urllib.request.build_opener(proxy_support)
 # urllib.request.install_opener(opener)
-from typing import List, NamedTuple
+from typing import List, NamedTuple, Tuple
 
 from SPARQLWrapper import SPARQLWrapper, JSON
 import pandas as pd
 
 from wikidata_queries.contracts import ContentRatingContract, FilmContract
-from wikidata_queries.queries import CR_QUERY_TEMPLATE, SINGLE_PROP_FILM_QUERY_TEMPLATE, WIKIDATA_ID_FROM_IMDB_ID_QUERY
+from wikidata_queries.queries import CR_QUERY_TEMPLATE, SINGLE_PROP_FILM_QUERY_TEMPLATE, WIKIDATA_ID_FROM_IMDB_ID_QUERY, \
+    PREQUEL_SEQUEL_BY_WIKIDATA_ID_QUERY
 
 
 class WikiDataQueryBuilder:
@@ -76,6 +77,17 @@ def get_single_valued_prop(wikidata_id: str) -> FilmContract:
         lang = row['originalLangLabel.value']
         pub_date = row['publicationDateLabel.value']
         return FilmContract(hasCountryOfOrigin=country, hasOriginalLanguage=lang, hasPublicationDate=pub_date)
+
+
+def get_prequel_sequel(wikidata_id: str) -> Tuple[FilmContract]:
+    query = PREQUEL_SEQUEL_BY_WIKIDATA_ID_QUERY
+    df = builder.raw_query(['prequels', 'sequels'], query.format(wikidata_id=wikidata_id))
+    row = df.iloc[0]
+    prequels = tuple(map(lambda x: FilmContract(wikidata_id=get_individual_id_from_url(x), isPrequel=True),
+                   row['prequels.value'].split(",")))
+    sequels = tuple(map(lambda x: FilmContract(wikidata_id=get_individual_id_from_url(x), isSequel=True),
+                  row['sequels.value'].split(",")))
+    return prequels + sequels
 
 
 def get_from_imdb_id(imdb_id: str) -> str:

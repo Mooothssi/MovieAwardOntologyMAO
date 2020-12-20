@@ -12,6 +12,9 @@ class ContentRatingContract:
 @dataclasses.dataclass
 class FilmContract:
     title: str = ''
+    wikidata_id: str = ''
     hasCountryOfOrigin: str = ''
     hasOriginalLanguage: str = ''
     hasPublicationDate: str = ''
+    isPrequel: bool = False
+    isSequel: bool = False
