@@ -20,7 +20,7 @@ annotations:
 
       THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   owl:versionInfo:
-    - 1.0.13
+    - 1.0.14
   rdfs:label:
     - Movie Awards Ontology^^rdfs:Literal@en
   rdfs:comment:
@@ -46,7 +46,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS. ^^xsd:string
+          A set of circumstances in which one finds about acting^^xsd:string
       rdfs:label:
         - ActingSituation^^rdfs:Literal@en
     objectProperty:
@@ -85,7 +85,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          The overall rating, based on a collection of ratings, of the movie. ^^xsd:string
+          A whole formed by combining several rating^^xsd:string
       rdfs:label:
         - AggregateRating^^rdfs:Literal@en
     dataProperty:
@@ -114,7 +114,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          The assembled spectators or listeners at a public event, such as a movie^^xsd:string
       rdfs:label:
         - Audience^^rdfs:Literal@en
     owl:disjointWith:
@@ -128,7 +128,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A prize or other mark of recognition given in honor of an achievement^^xsd:string
       rdfs:label:
         - Award^^rdfs:Literal@en
     dataProperty:
@@ -155,7 +155,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A class or division of award regarded as having particular shared characteristics^^xsd:string
       rdfs:label:
         - AwardCategory^^rdfs:Literal@en
     objectProperty:
@@ -172,7 +172,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A formal act or series of acts prescribed by ritual, protocol, or convention about award^^xsd:string
       rdfs:label:
         - AwardCeremony^^rdfs:Literal@en
     dataProperty:
@@ -200,7 +200,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A set of circumstances in which one finds about award receiving^^xsd:string
       rdfs:label:
         - AwardReceivedSituation^^rdfs:Literal@en
     owl:disjointWith:
@@ -211,6 +211,9 @@ owl:Class:
       - NominationSituation
   mao:BaftaCriterion:
     annotations:
+      rdfs:comment:
+        - >
+          A principle or standard which may be judged or decided by Bafta^^xsd:string
       rdfs:label:
         - BaftaCriterion^^rdfs:Literal@en
     owl:disjointWith:
@@ -245,7 +248,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          The state or fact of being of significance or value of character^^xsd:string
       rdfs:label:
         - CharacterImportance^^rdfs:Literal@en
     owl:disjointWith:
@@ -259,7 +262,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A large town^^xsd:string
       rdfs:label:
         - City^^rdfs:Literal@en
     owl:disjointWith:
@@ -270,7 +273,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          The action or process of classifying something according to shared qualities or characteristics.^^xsd:string
       rdfs:label:
         - Classification^^rdfs:Literal@en
     owl:disjointWith:
@@ -281,7 +284,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A group of individuals or organizations, etc. jointly conducting any business It is established as a juristic person in the manner prescribed by law, with various rights and duties within the scope of the intended purpose and having the same rights and duties as a natural person. Except the rights and duties which by condition can only be natural persons^^xsd:string
       rdfs:label:
         - CollectiveAgent^^rdfs:Literal@en
     objectProperty:
@@ -298,7 +301,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A classification or ranking of content based on a comparative assessment of quality, standard, or performance^^xsd:string
       rdfs:label:
         - ContentRatingCategory^^rdfs:Literal@en
       dataProperty:
@@ -322,7 +325,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          The action or process of classifying content rating according to shared qualities or characteristics^^xsd:string
       rdfs:label:
         - ContentRatingClassification^^rdfs:Literal@en
     dataProperty:
@@ -341,7 +344,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A nation with its own government, occupying a particular territory^^xsd:string
       rdfs:label:
         - Country^^rdfs:Literal@en
     owl:disjointWith:
@@ -352,7 +355,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A principle or standard which may be judged or decided^^xsd:string
       rdfs:label:
         - Criterion^^rdfs:Literal@en
     objectProperty:
@@ -412,6 +415,9 @@ owl:Class:
       - Thing
   mao:Film:
     annotations:
+      rdfs:comment:
+        - >
+          The moving picture^^xsd:string
       rdfs:label:
         - Film^^rdfs:Literal@en
     dataProperty:
@@ -452,7 +458,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A principle or standard of feature length which may be judged or decided by Bafta^^xsd:string
       rdfs:label:
         - FeatureLengthBaftaCriterion^^rdfs:Literal@en
     rdfs:subClassOf:
@@ -461,7 +467,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A principle or standard of feature length which may be judged or decided by Oscar^^xsd:string
       rdfs:label:
         - FeatureLengthOscarCriterion^^rdfs:Literal@en
     owl:disjointWith:
@@ -473,7 +479,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          The process of making casts or molds about filming^^xsd:string
       rdfs:label:
         - FilmCast^^rdfs:Literal@en
     owl:disjointWith:
@@ -487,7 +493,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A group of people who work closely together about filming^^xsd:string
       rdfs:label:
         - FilmCrew^^rdfs:Literal@en
     owl:disjointWith:
@@ -501,7 +507,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A set of circumstances in which one finds about film making^^xsd:string
       rdfs:label:
         - Film making^^rdfs:Literal@en
     objectProperty:
@@ -520,7 +526,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          The socially constructed roles and behaviors that a society typically associates with males and females^^xsd:string
       rdfs:label:
         - Gender^^rdfs:Literal@en
     owl:disjointWith:
@@ -537,7 +543,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A category of composition characterized by similarities in form, style, or subject matter^^xsd:string
       rdfs:label:
         - Genre^^rdfs:Literal@en
     objectProperty:
@@ -555,7 +561,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          The principal method of human communication^^xsd:string
       rdfs:label:
         - Language^^rdfs:Literal@en
     owl:disjointWith:
@@ -566,7 +572,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A classification or ranking of content by MMPA based on a comparative assessment of quality, standard, or performance^^xsd:string
       rdfs:label:
         - MPAAContentRating^^rdfs:Literal@en
     rdfs:subClassOf:
@@ -575,7 +581,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A room, building, or group of buildings where movies are produced^^xsd:string
       rdfs:label:
         - MovieStudio^^rdfs:Literal@en
     objectProperty:
@@ -586,7 +592,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A set of circumstances in which one finds about movie watching^^xsd:string
       rdfs:label:
         - MovieWatchingSituation^^rdfs:Literal@en
     owl:disjointWith:
@@ -600,7 +606,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          The status of belonging to a particular nation^^xsd:string
       rdfs:label:
         - Nationality^^rdfs:Literal@en
     owl:disjointWith:
@@ -615,7 +621,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          Being suggested by someone for a set of circumstances^^xsd:string
       rdfs:label:
         - NominatedForSituation^^rdfs:Literal@en
     owl:disjointWith:
@@ -628,7 +634,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A set of circumstances in which one finds about nomination^^xsd:string
       rdfs:label:
         - NominationSituation^^rdfs:Literal@en
     dataProperty:
@@ -675,7 +681,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A job or profession^^xsd:string
       rdfs:label:
         - Occupation^^rdfs:Literal@en
     objectProperty:
@@ -697,7 +703,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          An organized body of people with a particular purpose^^xsd:string
       rdfs:label:
         - Organization^^rdfs:Literal@en
     dataProperty:
@@ -713,7 +719,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A principle or standard which may be judged or decided by Oscar^^xsd:string
       rdfs:label:
         - OscarCriterion^^rdfs:Literal@en
     owl:disjointWith:
@@ -726,7 +732,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A particular position or point in space^^xsd:string
       rdfs:label:
         - Place^^rdfs:Literal@en
     owl:disjointWith:
@@ -767,7 +773,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A group of people sharing the same culture, history, language, etc.^^xsd:string
       rdfs:label:
         - Race^^rdfs:Literal@en
     owl:disjointWith:
@@ -782,7 +788,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A classification or ranking based on a comparative assessment of quality, standard, or performance^^xsd:string
       rdfs:label:
         - Rating^^rdfs:Literal@en
     dataProperty:
@@ -811,7 +817,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A thing that is compulsory^^xsd:string
       rdfs:label:
         - Requirement^^rdfs:Literal@en
     objectProperty:
@@ -826,7 +832,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A published critical appraisal^^xsd:string
       rdfs:label:
         - Review^^rdfs:Literal@en
     dataProperty:
@@ -854,7 +860,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A principle or standard of Oscar for short films^^xsd:string
       rdfs:label:
         - ShortFilmOscarCriterion^^rdfs:Literal@en
     owl:disjointWith:
@@ -866,7 +872,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A principle or standard of Oscar nomination for short films^^xsd:string
       rdfs:label:
         - ShortFilmReleaseNominationOscarCriterion^^rdfs:Literal@en
     owl:disjointWith:
@@ -925,7 +931,7 @@ owl:Class:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          A set of circumstances in which one finds about voice acting^^xsd:string
       rdfs:label:
         - VoiceActingSituation^^rdfs:Literal@en
     objectProperty:
@@ -961,16 +967,13 @@ owl:DataProperty:
     annotations:
       rdfs:comment:
         - >
-          PASS ^^xsd:string
+          An attribute, quality, or characteristic of data^^xsd:string
       rdfs:label:
         - date held^^rdfs:Literal@en
     rdfs:range:
       - xsd:date
   mao:dateReleased:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - date released^^rdfs:Literal@en
     rdf:type:
@@ -979,63 +982,42 @@ owl:DataProperty:
       - xsd:dateTime
   mao:hasAggregateRating:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has aggregate rating^^rdfs:Literal@en
     rdfs:range:
       - xsd:decimal
   mao:hasContent:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has content^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
   mao:hasCount:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has count^^rdfs:Literal@en
     rdfs:range:
       - xsd:integer
   mao:hasDescription:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has description^^rdfs:Literal@en
       rdfs:range:
         - xsd:string
   mao:hasEditionNumber:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has edition number^^rdfs:Literal@en
     rdfs:range:
       - xsd:integer
   mao:hasFeatureLengthInMinutes:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has feature length in minutes^^rdfs:Literal@en
     rdfs:range:
       - xsd:integer
   mao:hasInitialReleaseYear:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has initial release year^^rdfs:Literal@en
     rdf:type:
@@ -1044,108 +1026,72 @@ owl:DataProperty:
       - xsd:integer
   mao:hasMaxValue:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has max value^^rdfs:Literal@en
     rdfs:range:
       - xsd:decimal
   mao:hasMinValue:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has min value^^rdfs:Literal@en
     rdfs:range:
       - xsd:decimal
   mao:hasName:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has name^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
   mao:hasNickname:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has nickname^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
   mao:hasTitle:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has title^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
   mao:hasSource:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has source^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
   mao:hasValue:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has value^^rdfs:Literal@en
     rdfs:range:
       - xsd:decimal
   mao:hasWikipediaLink:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has Wikipedia link^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
   mao:isAdult:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
-        rdfs:label:
-          - is adult^^rdfs:Literal@en
-        rdfs:range:
-          - xsd:boolean
+      rdfs:label:
+        - is adult^^rdfs:Literal@en
+    rdfs:range:
+      - xsd:boolean
   mao:isBritishFilm:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - is British film^^rdfs:Literal@en
     rdfs:range:
       - xsd:boolean
   mao:yearScreened:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - year screened^^rdfs:Literal@en
     rdfs:range:
       - xsd:integer
   mao:win:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - win^^rdfs:Literal@en
     rdfs:range:
@@ -1155,27 +1101,18 @@ owl:ObjectProperty:
   owl:topObjectProperty: ""
   mao:actedBy:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - acted by^^rdfsL:Literal@en
     rdfs:range:
       - Person
   mao:actsIn:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - acts in^^rdfs:Literal@en
     rdfs:range:
       - FilmMakingSituation
   mao:appliesInCountry:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - applies in country^^rdfs:Literal@en
     rdfs:range:
@@ -1193,36 +1130,24 @@ owl:ObjectProperty:
       - Object
   mao:eligibleFor:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - eligible for^^rdfs:Literal@en
     rdfs:range:
       - Award
   mao:follow:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - follow^^rdfs:Literal@en
     rdfs:range:
       - AwardCeremony
   mao:followedBy:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - followed by^^rdfs:Literal@en
     rdfs:range:
       - AwardCategory
   mao:forFilm:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - for film^^rdfs:Literal@en
     rdfs:domain:
@@ -1231,9 +1156,6 @@ owl:ObjectProperty:
       - Film
   mao:forOccupation:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - for occupation^^rdfs:Literal@en
     rdfs:domain:
@@ -1242,142 +1164,94 @@ owl:ObjectProperty:
       - Occupation
   mao:hasActor:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has actor^^rdfs:Literal@en
     rdfs:range:
       - Person
   mao:hasArchetype:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has archetype^^rdfs:Literal@en
   mao:hasAudience:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has audience^^rdfs:Literal@en
     rdfs:range:
       - Audience
   mao:hasAuthor:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has author^^rdfs:Literal@en
     rdfs:range:
       - Agent
   mao:hasAward:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has award^^rdfs:Literal@en
     rdfs:range:
       - Award
   mao:hasAwardCategory:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has award category^^rdfs:Literal@en
     rdfs:range:
       - AwardCategory
   mao:hasAwardCeremony:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has award ceremony^^rdfs:Literal@en
     rdfs:range:
       - AwardCeremony
   mao:hasCast:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has cast^^rdfs:Literal@en
     rdfs:range:
       - FilmCast
   mao:hasCharacter:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has character^^rdfs:Literal@en
     rdfs:range:
       - Character
   mao:hasCinematographer:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has cinematographer^^rdfs:Literal@en
     rdfs:range:
       - Person
   mao:hasComposer:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has composer^^rdfs:Literal@en
     rdfs:range:
       - Person
   mao:hasContentRating:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has content rating^^rdfs:Literal@en
     rdfs:range:
       - ContentRating
   mao:hasCountryOfOrigin:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has country of origin^^rdfs:Literal@en
     rdfs:range:
       - Country
   mao:hasCrew:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has crew^^rdfs:Literal@en
     rdfs:range:
       - FilmCrew
   mao:hasDirector:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has director^^rdfs:Literal@en
     rdfs:range:
       - Person
   mao:hasException:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has exception^^rdfs:Literal@en
     rdfs:domain:
@@ -1386,90 +1260,60 @@ owl:ObjectProperty:
       - Thing
   mao:hasFilm:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has Film^^rdfs:Literal@en
     rdfs:range:
       - Film
   mao:hasFilmingLocation:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has filming location^^rdfs:Literal@en
     rdfs:range:
       - Place
   mao:hasFilmStudio:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has film studio^^rdfs:Literal@en
     rdfs:range:
       - MovieStudio
   mao:hasGender:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has gender^^rdfs:Literal@en
     rdfs:range:
       - Gender
   mao:hasGenre:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has genre^^rdfs:Literal@en
     rdfs:range:
       - Genre
   mao:hasImportance:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has importance^^rdfs:Literal@en
     rdfs:range:
       - CharacterImportance
   mao:hasLanguage:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has language^^rdfs:Literal@en
     rdfs:range:
       - Language
   mao:hasMember:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has member^^rdfs:Literal@en
     rdfs:range:
       - Person
   mao:hasOccupation:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has occupation^^rdfs:Literal@en
     rdfs:range:
       - Occupation
   mao:hasOriginalLanguage:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has original language^^rdfs:Literal@en
     rdfs:range:
@@ -1492,41 +1336,26 @@ owl:ObjectProperty:
       - Thing
   mao:hasPrequels:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has prequels^^rdfs:Literal@en
     rdfs:range:
       - Film
   mao:hasProducer:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has producer^^rdfs:Literal@en
   mao:hasReviewAggregator:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has review aggregator^^rdfs:Literal@en
     rdfs:range:
       - Organization
   mao:hasRole:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has role^^rdfs:Literal@en
   mao:hasSequels:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has sequels^^rdfs:Literal@en
     rdfs:range:
@@ -1546,18 +1375,12 @@ owl:ObjectProperty:
       - Situation
   mao:hasSubGenre:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has sub-genre^^rdfs:Literal@en
     rdfs:range:
       - Genre
   mao:hasSubTitleInLanguage:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has sub title in language^^rdfs:Literal@en
     rdfs:range:
@@ -1577,18 +1400,12 @@ owl:ObjectProperty:
       - Object
   mao:hasVoiceActor:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - has voice actor^^rdfs:Literal@en
     rdfs:range:
       - Person
   mao:involvesAgent:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - involves agent^^rdfs:Literal@en
     owl:inverseOf:
@@ -1601,9 +1418,6 @@ owl:ObjectProperty:
       - hasParticipant
   mao:isAffectedByValidityOf:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - is affected by validity of^^rdfs:Literal@en
     rdfs:domain:
@@ -1612,9 +1426,6 @@ owl:ObjectProperty:
       - Thing
   mao:isAgentInvolvedIn:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - is agent involved in^^rdfs:Literal@en
     owl:inverseOf:
@@ -1627,18 +1438,12 @@ owl:ObjectProperty:
       - isParticipantIn
   mao:isCriterionFor:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - is criterion for^^rdfs:Literal@en
     rdfs:subPropertyOf:
       - isValidFor
   mao:isGivenTo:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - is given to^^rdfs:Literal@en
     rdfs:domain:
@@ -1647,9 +1452,6 @@ owl:ObjectProperty:
       - Object
   mao:isOccupationOf:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - is occupation of^^rdfs:Literal@en
     owl:inverseOf:
@@ -1686,9 +1488,6 @@ owl:ObjectProperty:
       - Event
   mao:isRequirementFor:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - is requirement for^^rdfs:Literal@en
     rdfs:range:
@@ -1697,9 +1496,6 @@ owl:ObjectProperty:
       - isValidFor
   mao:isSatisfiedBy:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - is satisfied by^^rdfs:Literal@en
     rdfs:domain:
@@ -1719,9 +1515,6 @@ owl:ObjectProperty:
       - Thing
   mao:isSubGenreOf:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - is sub-genre of^^rdfs:Literal@en
     rdfs:range:
@@ -1739,9 +1532,6 @@ owl:ObjectProperty:
       - Thing
   mao:isViolatedBy:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - is violated by^^rdfs:Literal@en
     rdfs:domain:
@@ -1750,36 +1540,24 @@ owl:ObjectProperty:
       - Thing
   mao:locatedIn:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - located in^^rdfs:Literal@en
     rdfs:range:
       - Place
   mao:presentedBy:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - presented by^^rdfs:Literal@en
     rdfs:range:
       - Organization
   mao:reviewOf:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - review of^^rdfs:Literal@en
     rdfs:range:
       - Object
   mao:satisfies:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - satisfies^^rdfs:Literal@en
     rdfs:domain:
@@ -1788,9 +1566,6 @@ owl:ObjectProperty:
       - Value
   mao:satisfiesCriterion:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - satisfies criterion^^rdfs:Literal@en
     rdfs:range:
@@ -1799,9 +1574,6 @@ owl:ObjectProperty:
       - satisfies
   mao:satisfiesRequirement:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - satisfies requirement^^rdfs:Literal@en
     rdfs:range:
@@ -1810,18 +1582,12 @@ owl:ObjectProperty:
       - satisfies
   mao:setBy:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - set by^^rdfs:Literal@en
     rdfs:range:
       - Agent
   mao:violates:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - violates^^rdfs:Literal@en
     rdfs:domain:
@@ -1830,9 +1596,6 @@ owl:ObjectProperty:
       - Value
   mao:violatesCriterion:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - violates criterion^^rdfs:Literal@en
     rdfs:range:
@@ -1841,9 +1604,6 @@ owl:ObjectProperty:
       - violates
   mao:violatesRequirement:
     annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
       rdfs:label:
         - violates requirement^^rdfs:Literal@en
     rdfs:range:
