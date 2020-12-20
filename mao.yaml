@@ -72,6 +72,7 @@ owl:Class:
       - AggregateRating
       - Award
       - AwardCeremony
+      - ContentRatingCategory
       - Film
       - Occupation
       - Place
@@ -141,6 +142,7 @@ owl:Class:
       - Agent
       - AggregateRating
       - AwardCeremony
+      - ContentRatingCategory
       - Film
       - Occupation
       - Place
@@ -185,6 +187,7 @@ owl:Class:
       - Agent
       - AggregateRating
       - Award
+      - ContentRatingCategory
       - Film
       - Occupation
       - Place
@@ -291,13 +294,41 @@ owl:Class:
       - Person
     rdfs:subClassOf:
       - Agent
-  mao:ContentRating:
+  mao:ContentRatingCategory:
     annotations:
       rdfs:comment:
         - >
           PASS ^^xsd:string
       rdfs:label:
-        - ContentRating^^rdfs:Literal@en
+        - ContentRatingCategory^^rdfs:Literal@en
+      dataProperty:
+        - hasDescription
+      objectProperty:
+        - appliesInCountry
+      owl:disjointWith:
+        - Agent
+        - AggregateRating
+        - Award
+        - AwardCeremony
+        - Film
+        - Occupation
+        - Place
+        - Rating
+        - Review
+        - Situation
+      rdfs:subClassOf:
+        - Object
+  mao:ContentRatingClassification:
+    annotations:
+      rdfs:comment:
+        - >
+          PASS ^^xsd:string
+      rdfs:label:
+        - ContentRatingClassification^^rdfs:Literal@en
+    dataProperty:
+      - hasValue
+    objectProperty:
+      - isPartOf
     owl:disjointWith:
       - AwardCategory
       - Gender
@@ -390,6 +421,7 @@ owl:Class:
       - hasInitialReleaseYear
       - hasTitle
       - hasWikipediaLink
+      - isAdult
       - isBritishFilm
     objectProperty:
       - hasAudience
@@ -408,6 +440,7 @@ owl:Class:
       - AggregateRating
       - Award
       - AwardCeremony
+      - ContentRatingCategory
       - Occupation
       - Place
       - Rating
@@ -652,6 +685,7 @@ owl:Class:
       - AggregateRating
       - Award
       - AwardCeremony
+      - ContentRatingCategory
       - Film
       - Place
       - Rating
@@ -700,6 +734,7 @@ owl:Class:
       - AggregateRating
       - Award
       - AwardCeremony
+      - ContentRatingCategory
       - Film
       - Occupation
       - Rating
@@ -717,7 +752,7 @@ owl:Class:
     dataProperty:
       - hasName
     objectProperty:
-      - actsIn
+      - isParticipantIn
       - hasGender
       - hasOccupation
       - eligibleFor
@@ -764,6 +799,7 @@ owl:Class:
       - AggregateRating
       - Award
       - AwardCeremony
+      - ContentRatingCategory
       - Film
       - Occupation
       - Place
@@ -806,6 +842,7 @@ owl:Class:
       - AggregateRating
       - Award
       - AwardCeremony
+      - ContentRatingCategory
       - Film
       - Occupation
       - Place
@@ -854,6 +891,7 @@ owl:Class:
       - AggregateRating
       - Award
       - AwardCeremony
+      - ContentRatingCategory
       - Film
       - Occupation
       - Place
@@ -966,6 +1004,15 @@ owl:DataProperty:
         - has count^^rdfs:Literal@en
     rdfs:range:
       - xsd:integer
+  mao:hasDescription:
+    annotations:
+      rdfs:comment:
+        - >
+          PASS ^^xsd:string
+      rdfs:label:
+        - has description^^rdfs:Literal@en
+      rdfs:range:
+        - xsd:string
   mao:hasEditionNumber:
     annotations:
       rdfs:comment:
@@ -1067,6 +1114,15 @@ owl:DataProperty:
         - has Wikipedia link^^rdfs:Literal@en
     rdfs:range:
       - xsd:string
+  mao:isAdult:
+    annotations:
+      rdfs:comment:
+        - >
+          PASS ^^xsd:string
+        rdfs:label:
+          - is adult^^rdfs:Literal@en
+        rdfs:range:
+          - xsd:boolean
   mao:isBritishFilm:
     annotations:
       rdfs:comment:
@@ -1115,6 +1171,15 @@ owl:ObjectProperty:
         - acts in^^rdfs:Literal@en
     rdfs:range:
       - FilmMakingSituation
+  mao:appliesInCountry:
+    annotations:
+      rdfs:comment:
+        - >
+          PASS ^^xsd:string
+      rdfs:label:
+        - applies in country^^rdfs:Literal@en
+    rdfs:range:
+      - Country
   mao:coparticipatesWith:
     annotations:
       rdfs:comment:
