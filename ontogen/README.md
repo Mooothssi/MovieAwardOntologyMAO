@@ -29,7 +29,7 @@ parasite_film.be_type_of(film)
 # Adds `parasite_film` to the Ontology
 converter.ontology.add_entity(parasite_film)
 # Save the results to an in-memory Ontology
-onto: Ontology = converter.export_to_ontology()
+onto: Ontology = converter.sync_with_ontology()
 # Save the results to an RDF/XML file Ontology. Can be 'xml' or 'ttl'
 onto.save_to_file("<filename>")
 ```

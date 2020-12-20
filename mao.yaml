@@ -161,7 +161,7 @@ owl:Class:
     objectProperty:
       - forOccupation
     owl:disjointWith:
-      - ContentRating
+      - ContentRatingCategory
       - Genre
       - Gender
       - Nationality
@@ -303,31 +303,31 @@ owl:Class:
         - >
           A classification or ranking of content based on a comparative assessment of quality, standard, or performance^^xsd:string
       rdfs:label:
-        - ContentRatingCategory^^rdfs:Literal@en
-      dataProperty:
-        - hasDescription
-      objectProperty:
-        - appliesInCountry
-      owl:disjointWith:
-        - Agent
-        - AggregateRating
-        - Award
-        - AwardCeremony
-        - Film
-        - Occupation
-        - Place
-        - Rating
-        - Review
-        - Situation
-      rdfs:subClassOf:
-        - Object
+        Category^^rdfs:Literal@en
+    dataProperty:
+      - hasDescription
+    objectProperty:
+      - appliesInCountry
+    owl:disjointWith:
+      - Agent
+      - AggregateRating
+      - Award
+      - AwardCeremony
+      - Film
+      - Occupation
+      - Place
+      - Rating
+      - Review
+      - Situation
+    rdfs:subClassOf:
+      - Object
   mao:ContentRatingClassification:
     annotations:
       rdfs:comment:
         - >
           The action or process of classifying content rating according to shared qualities or characteristics^^xsd:string
       rdfs:label:
-        - ContentRatingClassification^^rdfs:Literal@en
+        Classification^^rdfs:Literal@en
     dataProperty:
       - hasValue
     objectProperty:
@@ -531,7 +531,7 @@ owl:Class:
         - Gender^^rdfs:Literal@en
     owl:disjointWith:
       - AwardCategory
-      - ContentRating
+      - ContentRatingClassification
       - Genre
       - Nationality
       - Race
@@ -551,7 +551,7 @@ owl:Class:
       - isSubGenreOf
     owl:disjointWith:
       - AwardCategory
-      - ContentRating
+      - ContentRatingClassification
       - Gender
       - Nationality
       - Race
@@ -568,15 +568,6 @@ owl:Class:
       - Classification
     rdfs:subClassOf:
       - Abstract
-  mao:MPAAContentRating:
-    annotations:
-      rdfs:comment:
-        - >
-          A classification or ranking of content by MMPA based on a comparative assessment of quality, standard, or performance^^xsd:string
-      rdfs:label:
-        - MPAAContentRating^^rdfs:Literal@en
-    rdfs:subClassOf:
-      - ContentRating
   mao:MovieStudio:
     annotations:
       rdfs:comment:
@@ -611,7 +602,7 @@ owl:Class:
         - Nationality^^rdfs:Literal@en
     owl:disjointWith:
       - AwardCategory
-      - ContentRating
+      - ContentRatingClassification
       - Gender
       - Genre
       - Race
@@ -779,7 +770,7 @@ owl:Class:
         - Race^^rdfs:Literal@en
     owl:disjointWith:
       - AwardCategory
-      - ContentRating
+      - ContentRatingClassification
       - Gender
       - Genre
       - Nationality
@@ -1003,8 +994,8 @@ owl:DataProperty:
     annotations:
       rdfs:label:
         - has description^^rdfs:Literal@en
-      rdfs:range:
-        - xsd:string
+    rdfs:range:
+      - xsd:string
   mao:hasEditionNumber:
     annotations:
       rdfs:label:
@@ -1232,7 +1223,7 @@ owl:ObjectProperty:
       rdfs:label:
         - has content rating^^rdfs:Literal@en
     rdfs:range:
-      - ContentRating
+      - ContentRatingClassification
   mao:hasCountryOfOrigin:
     annotations:
       rdfs:label:
