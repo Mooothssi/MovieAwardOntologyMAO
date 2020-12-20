@@ -1,0 +1,12 @@
+SELECT ?crLabel ?contentRatingLabel {
+    wd:Q1000094 wdt:P31 wd:Q11424.
+  ?cr wdt:P31 wd:Q24716199;
+        wikibase:claim ?p;
+         wikibase:statementProperty ?ps .
+   ?film ?p [?ps ?contentRating]
+  OPTIONAL { ?film  wdt:P155 ?prequel }
+  OPTIONAL { ?film  wdt:P156 ?sequel }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}
+ORDER BY ?film
+LIMIT 50
