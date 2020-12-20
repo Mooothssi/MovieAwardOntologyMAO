@@ -3,6 +3,9 @@ import typing
 import pandas as pd
 from django.core.exceptions import ObjectDoesNotExist
 
+from start_dj import start_django_lite
+
+start_django_lite()
 from dirs import ROOT_DIR
 
 from ontogen import Ontology
@@ -11,7 +14,7 @@ from autogen_db_models import imdb, awards
 from engine import Session
 import attr
 
-from mao_dj.app import models
+from app import models
 from spacy_nlp import get_not_person_name
 import spacy_nlp as snlp
 
@@ -51,7 +54,7 @@ class Nomination:
 def convert_yaml_to_owl(yaml_file: FilePathOrBuffer, owl_file: Path):
     converter = OntogenConverter.load_from_spec(yaml_file)
     # Save the results to an in-memory Ontology
-    onto: Ontology = converter.export_to_ontology()
+    onto: Ontology = converter.sync_with_ontology()
     # Save the results to an RDF/XML file Ontology. Can be 'xml' or 'ttl'
     onto.save_to_file(owl_file)
 
@@ -218,9 +221,11 @@ def add_imdb_info():
             .join(imdb.ProductionCompanies, imdb.ProductionCompanies.title == imdb.TitleAkas.title
                   and imdb.ProductionCompanies.year == imdb.TitleBasics.startYear
                   ).all()
+        film.sync_from_wikidata()
         for three in title_akas_lst:
             title_akas = three[0]
             prod = three[1]
+
             if title_akas.isOriginalTitle == 1:
                 try:
                     if prod.country_code:
