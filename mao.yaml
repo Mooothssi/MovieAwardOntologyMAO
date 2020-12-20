@@ -135,7 +135,7 @@ owl:Class:
     objectProperty:
       - hasAwardCategory
       - hasPart
-      - isSettingFor
+      - hasSetting
       - presentedBy
     owl:disjointWith:
       - Agent
@@ -224,7 +224,6 @@ owl:Class:
       rdfs:label:
         - Character^^rdfs:Literal@en
     dataProperty:
-      - hasCharacterTitle
       - hasName
     objectProperty:
       - actedBy
@@ -667,6 +666,8 @@ owl:Class:
           PASS ^^xsd:string
       rdfs:label:
         - Organization^^rdfs:Literal@en
+    dataProperty:
+      - hasName
     owl:disjointWith:
       - Character
       - CharacterImportance
@@ -947,15 +948,6 @@ owl:DataProperty:
         - has aggregate rating^^rdfs:Literal@en
     rdfs:range:
       - xsd:decimal
-  mao:hasCharacterTitle:
-    annotations:
-      rdfs:comment:
-        - >
-          PASS ^^xsd:string
-      rdfs:label:
-        - has character title^^rdfs:Literal@en
-    rdfs:range:
-      - xsd:string
   mao:hasContent:
     annotations:
       rdfs:comment:
@@ -1207,7 +1199,7 @@ owl:ObjectProperty:
       rdfs:label:
         - has audience^^rdfs:Literal@en
     rdfs:range:
-      - CollectiveAgent
+      - Audience
   mao:hasAuthor:
     annotations:
       rdfs:comment:
