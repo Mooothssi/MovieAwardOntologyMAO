@@ -29,14 +29,20 @@ class OwlAssertable:
                 # set_prop in BUILTIN_NAMES and
                 for i, v in enumerate(val):
                     if isinstance(v, str):
-                        if "^^" in v or "@" in v:
-                            split_values = re.split(r'(?:(.+)\^\^(.+)@(.+)|(.+)\^\^(.+))', v)
-                            if len(split_values) > 2 and split_values[1] is not None:
-                                lit, lang = (split_values[1], split_values[3])
-                                val[i] = locstr(lit, lang)
-                            else:
-                                v, data_type = (split_values[4], split_values[5])
-                                val[i] = DATATYPE_MAP[data_type](v)
+                        if len(v) > 3 and ("^^" in v or "@" in v):
+                            try:
+                                split_values = re.split(r'(?:(.+)\^\^(.+)@(.+)|(.+)\^\^(.+))', v)
+                                if split_values[1] is None and split_values[3] is None:
+                                    v, data_type = (split_values[4], split_values[5])
+                                    val[i] = DATATYPE_MAP[data_type](v)
+                                elif len(split_values) > 2 and split_values[1] is not None:
+                                    lit, lang = (split_values[1], split_values[3])
+                                    val[i] = locstr(lit, lang)
+                                else:
+                                    v, data_type = (split_values[4], split_values[5])
+                                    val[i] = DATATYPE_MAP[data_type](v)
+                            except IndexError:
+                                raise ValueError(f'No such found - {v}')
             if ":" in set_prop:
                 set_prop = shorten_entity_name(set_prop)
             try:
@@ -64,7 +70,7 @@ class OwlAssertable:
         if value is None:
             return
         if not (":" in property_name and len(property_name.split(":")) == 2):
-            raise AssertionError("Please add prefix.")
+            raise AssertionError(f"Please add prefix for {property_name}")
         if dct is None:
             dct = self.properties_values
         if property_name not in dct:
