@@ -11,6 +11,7 @@ from django.db.models import ManyToOneRel, AutoField, ForeignObjectRel, Field
 # from dirs import ROOT_DIR
 from mapping import OSCAR_MAPPING
 # from ontogen.decorators import include
+from ontogen.mixins.base import DjModelOntogenMixin
 from utils.dict import select_not_null
 from wikidata_queries.base import (
     get_content_ratings_for_film,
@@ -19,6 +20,7 @@ from wikidata_queries.base import (
     get_from_imdb_id,
     get_prequel_sequel,
 )
+
 
 class Gender(models.TextChoices):
     FEMALE = 'female'
@@ -166,18 +168,18 @@ class NominationSituation(UpsertMixin, Situation):
     win = models.BooleanField()
 
 
-class ContentRatingCategory(UpsertMixin, models.Model):
+class ContentRatingClassification(DjModelOntogenMixin, UpsertMixin, models.Model):
     hasValue = models.CharField(max_length=255)
-    isPartOf = models.OneToOneField('ContentRating', on_delete=models.CASCADE, related_name='hasPart')
+    isPartOf = models.ForeignKey('ContentRatingCategory', on_delete=models.CASCADE, related_name='hasPart')
 
 
-class ContentRating(UpsertMixin, models.Model):
+class ContentRatingCategory(DjModelOntogenMixin, UpsertMixin, models.Model):
     hasDescription = models.CharField(max_length=255)
     # data properties
     appliesInCountry = models.ForeignKey('Country', on_delete=models.PROTECT, null=True)
 
 
-class Place(models.Model):
+class Place(DjModelOntogenMixin, models.Model):
     pass  # Nothing
 
 
@@ -186,9 +188,11 @@ class Country(Place, UpsertMixin):
     label = models.CharField(max_length=255)
     alpha_2 = models.CharField(max_length=2)
     alpha_3 = models.CharField(max_length=3)
+    _exclude_ = ('alpha_3', 'alpha_2')
 
 
-class Genre(models.Model, UpsertMixin):
+class Genre(models.Model, DjModelOntogenMixin, UpsertMixin):
+    _exclude_ = ('film', 'wikidata_id')
     # object properties
     hasSubGenre = models.ManyToManyField('Genre', related_name='isSubGenreOf', null=True)
     # isSubGenreOf = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, related_name='SubGenreOf_set', null=True)
@@ -206,7 +210,8 @@ class Genre(models.Model, UpsertMixin):
             genre.save()
 
 
-class Language(UpsertMixin, models.Model):
+class Language(DjModelOntogenMixin, UpsertMixin, models.Model):
+    _exclude_ = ('country', )
     # annotation property
     label = models.CharField(max_length=255)
 
@@ -274,6 +279,10 @@ class AwardCategory(models.Model, UpsertMixin):
     # temp
     label = models.CharField(max_length=255)
 
+    @property
+    def _name(self):
+        return f"Academy Awards for {self.label}"
+
     @classmethod
     def get_instance_from_kaggle_oscar_data(cls, category: str) -> 'AwardCategory':
         return cls.upsert(label=OSCAR_MAPPING[category])
@@ -315,7 +324,12 @@ class MovieStudio(Organization):
     locatedIn = models.ForeignKey('Place', on_delete=models.CASCADE, null=True)
 
 
-class Film(models.Model):
+class Film(DjModelOntogenMixin, models.Model):
+    _exclude_ = ('hasWikidataId', 't_const', 'avg_rating')
+
+    @property
+    def _name(self):
+        return f'mao:Film_{self.t_const}'
     # object properties
     # hasAudience = models.ForeignKey(Audience, on_delete=models.CASCADE, null=True)
     # TODO:  fetched from wikidata
@@ -374,8 +388,8 @@ class Film(models.Model):
 
     def update_content_rating_from_wikidata(self):
         for cr in get_content_ratings_for_film(self.hasWikidataId):
-            cr_model = ContentRating.upsert(appliesInCountry=Country.upsert(label=cr.appliesInCountry))
-            category = ContentRatingCategory.upsert(hasValue=cr.value, isPartOf=cr_model)
+            cr_model = ContentRatingClassification.upsert(appliesInCountry=Country.upsert(label=cr.appliesInCountry))
+            category = ContentRatingClassification.upsert(hasValue=cr.value, isPartOf=cr_model)
             self.hasContentRating.add(category)
         self.save()
 
