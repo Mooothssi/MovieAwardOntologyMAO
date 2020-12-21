@@ -509,7 +509,7 @@ owl:Class:
         - >
           A set of circumstances in which one finds about film making^^xsd:string
       rdfs:label:
-        - Film making^^rdfs:Literal@en
+        - FilmMakingSituation^^rdfs:Literal@en
     objectProperty:
       - hasCast
       - hasCinematographer
