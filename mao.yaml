@@ -56,7 +56,6 @@ owl:Class:
       - isPartOf
     owl:disjointWith:
       - FilmMakingSituation
-      - MovieWatchingSituation
       - NominationSituation
       - VoiceActingSituation
     rdfs:subClassOf:
@@ -120,8 +119,6 @@ owl:Class:
     owl:disjointWith:
       - FilmCast
       - FilmCrew
-    owl:equivalentClass:
-      - CollectiveAgent and (isParticipantIn some MovieWatchingSituation)
     rdfs:subClassOf:
       - CollectiveAgent
   mao:Award:
@@ -579,20 +576,6 @@ owl:Class:
       - locatedIn
     rdfs:subClassOf:
       - Organization
-  mao:MovieWatchingSituation:
-    annotations:
-      rdfs:comment:
-        - >
-          A set of circumstances in which one finds about movie watching^^xsd:string
-      rdfs:label:
-        - MovieWatchingSituation^^rdfs:Literal@en
-    owl:disjointWith:
-      - ActingSituation
-      - FilmMakingSituation
-      - NominationSituation
-      - VoiceActingSituation
-    rdfs:subClassOf:
-      - Situation
   mao:Nationality:
     annotations:
       rdfs:comment:
@@ -639,7 +622,6 @@ owl:Class:
     owl:disjointWith:
       - ActingSituation
       - FilmMakingSituation
-      - MovieWatchingSituation
       - VoiceActingSituation
     rdfs:subClassOf:
       - Situation
@@ -934,7 +916,6 @@ owl:Class:
     owl:disjointWith:
       - ActingSituation
       - FilmMakingSituation
-      - MovieWatchingSituation
       - NominationSituation
     rdfs:subClassOf:
       - Situation
