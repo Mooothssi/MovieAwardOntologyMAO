@@ -10,11 +10,15 @@ from django.db.models import ManyToOneRel, AutoField, ForeignObjectRel, Field
 
 # from dirs import ROOT_DIR
 from mapping import OSCAR_MAPPING
-from ontogen.decorators import include
+# from ontogen.decorators import include
 from utils.dict import select_not_null
-from wikidata_queries.base import (get_content_ratings_for_film, get_single_valued_prop,
-                                   get_genre_with_subgenres, get_from_imdb_id)
-
+from wikidata_queries.base import (
+    get_content_ratings_for_film,
+    get_single_valued_prop,
+    get_genre_with_subgenres,
+    get_from_imdb_id,
+    get_prequel_sequel,
+)
 
 class Gender(models.TextChoices):
     FEMALE = 'female'
@@ -209,7 +213,7 @@ class Language(UpsertMixin, models.Model):
 
 class AwardCeremony(UpsertMixin, models.Model):
     # object properties
-    # follow = models.ForeignKey('AwardCeremony', on_delete=models.SET_NULL, related_name='followedBy', null=True)
+    # follows = models.ForeignKey('AwardCeremony', on_delete=models.SET_NULL, related_name='followedBy', null=True)
     # followedBy = models.ForeignKey('AwardCeremony', on_delete=models.SET_NULL, null=True, null=True)
     hasAward = models.ForeignKey('Award', on_delete=models.CASCADE, null=True)
 
@@ -220,7 +224,7 @@ class AwardCeremony(UpsertMixin, models.Model):
     yearScreened = models.IntegerField()
 
     @property
-    def follow(self) -> typing.Optional['AwardCeremony']:
+    def follows(self) -> typing.Optional['AwardCeremony']:
         try:
             return self.objects.get(hasEditionNumber=self.hasEditionNumber - 1)
         except self.DoesNotExist:
@@ -350,16 +354,17 @@ class Film(models.Model):
     avg_rating = models.CharField(max_length=255, null=True)
     t_const = models.CharField(max_length=255, unique=True)
 
-    @include
     def sync_from_wikidata(self):
+        print(f'Syncing {self.hasTitle} with {self.t_const}')
+        if self.hasWikidataId:
+            return
         try:
-            print(f'Syncing {self.hasTitle} with {self.t_const}')
             self.update_wikidata_id_from_imdb()
             self.update_content_rating_from_wikidata()
             self.update_country_of_origin_from_wikidata()
             print(f'Synced {self.hasTitle} with {self.t_const} [{self.hasWikidataId}]')
-        except KeyError:
-            pass
+        except KeyError as e:
+            print(e)
 
     def update_wikidata_id_from_imdb(self):
         self.hasWikidataId = get_from_imdb_id(self.t_const)
@@ -368,12 +373,19 @@ class Film(models.Model):
         self.save()
 
     def update_content_rating_from_wikidata(self):
+        for cr in get_content_ratings_for_film(self.hasWikidataId):
+            cr_model = ContentRating.upsert(appliesInCountry=Country.upsert(label=cr.appliesInCountry))
+            category = ContentRatingCategory.upsert(hasValue=cr.value, isPartOf=cr_model)
+            self.hasContentRating.add(category)
+        self.save()
 
-            for cr in get_content_ratings_for_film(self.hasWikidataId):
-                cr_model = ContentRating.upsert(appliesInCountry=Country.upsert(label=cr.appliesInCountry))
-                category = ContentRatingCategory.upsert(hasValue=cr.value, isPartOf=cr_model)
-                self.hasContentRating.add(category)
-            self.save()
+    def update_prequel_sequel(self):
+        for film in get_prequel_sequel(self.hasWikidataId):
+            f = Film.objects.get(hasWikidataId=film.wikidata_id)
+            if film.isPrequel:
+                self.hasPrequels = f
+            if film.isSequel:
+                f.hasPrequels = self
 
     def update_country_of_origin_from_wikidata(self):
         f = get_single_valued_prop(self.hasWikidataId)
