@@ -20,7 +20,7 @@ annotations:
 
       THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   owl:versionInfo:
-    - 1.0.16
+    - 1.0.18
   rdfs:label:
     - Movie Awards Ontology^^rdfs:Literal@en
   rdfs:comment:
@@ -41,7 +41,7 @@ owl:Class:
       - Object
       - Value
     rdfs:subClassOf:
-      - Thing
+      - owl:Thing
   mao:ActingSituation:
     annotations:
       rdfs:comment:
@@ -396,7 +396,7 @@ owl:Class:
       - Object
       - Value
     rdfs:subClassOf:
-      - Thing
+      - owl:Thing
   mao:Film:
     annotations:
       rdfs:comment:
@@ -615,7 +615,7 @@ owl:Class:
       - Event
       - Value
     rdfs:subClassOf:
-      - Thing
+      - owl:Thing
   mao:Occupation:
     annotations:
       rdfs:comment:
@@ -829,7 +829,7 @@ owl:Class:
       - Event
       - Object
     rdfs:subClassOf:
-      - Thing
+      - owl:Thing
   mao:VoiceActingSituation:
     annotations:
       rdfs:comment:
@@ -848,6 +848,11 @@ owl:Class:
       - NominationSituation
     rdfs:subClassOf:
       - Situation
+  mao:FilmEligibleForOscars:
+    owl:equivalentClass:
+      - Film and (satisfiesCriterionFor some Award) and (not violatesCriterioinFor some Award)
+    rdfs:subClassOf:
+      - Film
 
 owl:AnnotationProperty:
   dc:title:
@@ -1035,7 +1040,7 @@ owl:ObjectProperty:
       rdfs:label:
         - eligible for^^rdfs:Literal@en
     rdfs:range:
-      - Award
+      - AwardCategory
   mao:follow:
     annotations:
       rdfs:label:
@@ -1159,7 +1164,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:hasFilm:
     annotations:
       rdfs:label:
@@ -1233,9 +1238,9 @@ owl:ObjectProperty:
     rdf:type:
       - owl:TransitiveProperty
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:hasPrequels:
     annotations:
       rdfs:label:
@@ -1272,7 +1277,7 @@ owl:ObjectProperty:
     owl:inverseOf:
       - isSettingFor
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
       - Situation
   mao:hasSubGenre:
@@ -1325,7 +1330,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:isAgentInvolvedIn:
     annotations:
       rdfs:label:
@@ -1372,9 +1377,9 @@ owl:ObjectProperty:
     rdf:type:
       - owl:TransitiveProperty
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:isParticipantIn:
     annotations:
       rdfs:comment:
@@ -1393,7 +1398,7 @@ owl:ObjectProperty:
       rdfs:label:
         - is requirement for^^rdfs:Literal@en
     rdfs:range:
-      - Thing
+      - owl:Thing
     rdfs:subPropertyOf:
       - isValidFor
   mao:isSatisfiedBy:
@@ -1401,7 +1406,7 @@ owl:ObjectProperty:
       rdfs:label:
         - is satisfied by^^rdfs:Literal@en
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
       - Value
   mao:isSettingFor:
@@ -1414,7 +1419,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Situation
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:isSubGenreOf:
     annotations:
       rdfs:label:
@@ -1431,7 +1436,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:isViolatedBy:
     annotations:
       rdfs:label:
@@ -1439,7 +1444,7 @@ owl:ObjectProperty:
     rdfs:domain:
       - Value
     rdfs:range:
-      - Thing
+      - owl:Thing
   mao:locatedIn:
     annotations:
       rdfs:label:
@@ -1463,7 +1468,7 @@ owl:ObjectProperty:
       rdfs:label:
         - satisfies^^rdfs:Literal@en
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
       - Value
   mao:satisfiesCriterion:
@@ -1493,7 +1498,7 @@ owl:ObjectProperty:
       rdfs:label:
         - violates^^rdfs:Literal@en
     rdfs:domain:
-      - Thing
+      - owl:Thing
     rdfs:range:
       - Value
   mao:violatesCriterion:
@@ -1512,6 +1517,17 @@ owl:ObjectProperty:
       - Requirement
     rdfs:subPropertyOf:
       - violates
+    rdfs:Domain:
+  mao:satisfiesCriterionFor:
+    rdfs:domain:
+      - Film
+    rdfs:range:
+      - Award
+  mao:violatesCriterionFor:
+    rdfs:domain:
+      - Film
+    rdfs:range:
+      - Award
 
 owl:Individual:
   # Awards
@@ -1651,137 +1667,6 @@ owl:Individual:
     relations:
       mao:forOccupation:
         - mao:CustomDesigner
-  # BAFTA
-  # To do (It give to director and producer)
-  mao:BaftaBestFilm:
-    annotations:
-      rdfs:label:
-        - Best Film^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:Producer
-  mao:BaftaBestDirector:
-    annotations:
-      rdfs:label:
-        - Best Direction^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:FilmDirector
-  mao:BaftaBestActor:
-    annotations:
-      rdfs:label:
-        - Best Actor in a Leading Role^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:Actor
-  mao:BaftaBestActress:
-    annotations:
-      rdfs:label:
-        - Best Actress in a Leading Role^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:Actress
-  mao:BaftaBestSupportingActor:
-    annotations:
-      rdfs:label:
-        - Best Actor in a Supporting Role^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:Actor
-  mao:BaftaBestSupportingActress:
-    annotations:
-      rdfs:label:
-        - Best Actress in a Supporting Role^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:Actress
-  mao:BaftaBestScreenWriter:
-    annotations:
-      rdfs:label:
-        - Best Original Screenplay^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:ScreenWriter
-  mao:BaftaBestCinematographer:
-    annotations:
-      rdfs:label:
-        - Best Cinematography^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:Cinematographer
-  mao:BaftaBestProductionDesigner:
-    annotations:
-      rdfs:label:
-        - Best Production Design^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:ArtDirector
-  mao:BaftaBestComposer:
-    annotations:
-      rdfs:label:
-        - Best Original Music^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:Composer
-  mao:BaftaBestEditor:
-    annotations:
-      rdfs:label:
-        - Best Editing^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:FilmEditor
-  # To do (It give to many occupation)
-  mao:BaftaBestVisualEffects:
-    annotations:
-      rdfs:label:
-        - Best Special Visual Effects^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-  mao:BaftaBestCostumeDesigner:
-    annotations:
-      rdfs:label:
-        - Best Costume Design^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-    relations:
-      mao:forOccupation:
-        - mao:CustomDesigner
-  # To do (It give to many occupation)
-  mao:BaftaOutstandingBritishFilm:
-    annotations:
-      rdfs:label:
-        - BAFTA Award for Outstanding British Film^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
-  # To do (It give to many occupation)
-  mao:BaftaOutstandingDebut:
-    annotations:
-      rdfs:label:
-        - BAFTA Award for Outstanding Debut by a British Writer, Director or Producer^^rdfs:Literal@en
-    rdf:type:
-      - AwardCategory
   # Occupation
   mao:Producer:
     rdf:type:
@@ -1852,6 +1737,12 @@ rules:
         mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, mao:FeatureLengthOscarCriterion)
     rdfs:comment: "Feature length rule for Academy Award"
 
+  violateFeatureLengthOscarCriterion:
+    rule:
+      - >
+        mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThan(?t, 40) -> mao:violatesCriterion(?m, mao:FeatureLengthOscarCriterion)
+    rdfs:comment: "Invalid feature length rule for Academy Award"
+
   satisfyShortFilmOscarCriterion:
     rule:
       - >
@@ -1870,52 +1761,42 @@ rules:
         mao:Film(?f) ^ mao:AwardReceivedSituation(?as) ^ mao:hasAward(?as, mao:Oscars) ^ mao:forFilm(?as, ?f) -> mao:hasSubTitleInLanguage(?f, mao:English)
     rdfs:comment: "Rule for check english sub"
 
+  occupationForperson:
+    rule:
+      - >
+        NominationSituation(?ns) ^ hasAwardCategory(?ns, ?ac) ^ forOccupation(?ac, ?o) ^ isGivenTo(?ns, ?p) ^ -> hasOccupation(?p, ?o)
+    rdfs:comment: "Rule for find occupation for person"
+
   mainCharacterOscarActor:
     rule:
       - >
-        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
+        mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, mao:OscarBestActor) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
     rdfs:comment: "Rule for find occupation by award category"
 
   mainCharacterOscarActress:
     rule:
       - >
-        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
+        mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, mao:OscarBestActress) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
     rdfs:comment: "Rule for find main character by oscar best actress"
 
   sideCharacterOscarActor:
     rule:
       - >
-       mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestSupportingActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
+       mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, mao:OscarBestSupportingActor) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
     rdfs:comment: "Rule for find side character by oscar best supporting actor"
 
   sideCharacterOscarActress:
     rule:
       - >
-        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestSupportingActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
+        mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, mao:OscarBestSupportingActress) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
     rdfs:comment: "Rule for find side character by oscar best supporting actress"
 
-  mainCharacterBaftaActor:
+  satisfiesCriterionFor:
     rule:
       - >
-        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
-    rdfs:comment: "Rule for find main character by oscar best actor"
+        mao:satisfiesCriterion(?film, ?c) ^ mao:isCriterionFor(?c, ?award) -> mao:satisfiesCriterionFor(?film, ?award)
 
-  mainCharacterBaftaActress:
+  violatesCriterionFor:
     rule:
       - >
-        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
-    rdfs:comment: "Rule for find main character by bafta best actress"
-
-  sideCharacterBaftaActor:
-    rule:
-      - >
-       mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestSupportingActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
-    rdfs:comment: "Rule for find side character by bafta best supporting actor"
-
-  sideCharacterBaftaActress:
-    rule:
-      - >
-        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestSupportingActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
-    rdfs:comment: "Rule for find side character by bafta best supporting actress"
-
-
+        mao:violatesCriterion(?film, ?c) ^ mao:isCriterionFor(?c, ?award) -> mao:violatesCriterionFor(?film, ?award)

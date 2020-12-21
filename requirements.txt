@@ -9,3 +9,5 @@ pandas
 rdflib
 semver
 spacy
+Django
+SPARQLWrapper
