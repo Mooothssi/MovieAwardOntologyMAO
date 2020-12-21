@@ -4,14 +4,14 @@ Movie Awards Ontology (MAO)
 
 ## Team Members
 
-| Name                   | Student Identification   | GitHub                                        |
-|------------------------|--------------------------|-----------------------------------------------|
-| Nutthanich Narphromar  | 6110545490               | [NutthanichN](https://github.com/NutthanichN) |
-| Tetach Rattanavikran   | 6110545554               | [theethaj](https://github.com/theethaj)       |
-| Mai Norapong  | 6110545619               | [MaiMee1](https://github.com/MaiMee1)       |
-| Wijantra Cojamnong     | 6110545627               | [Wijantra](https://github.com/Wijantra)       |
-| Tharathorn Bunrattanasathian   | 6110546011               | [th-bunratta](https://github.com/th-bunratta)       |
-| Natthaphon Rakprakobkij     | 6110546402               | [mark47546](https://github.com/mark47546)       |
+| Name                         | Student ID | GitHub                                        |
+|------------------------------|------------|-----------------------------------------------|
+| Nutthanich Narphromar        | 6110545490 | [NutthanichN](https://github.com/NutthanichN) |
+| Tetach Rattanavikran         | 6110545554 | [theethaj](https://github.com/theethaj)       |
+| Mai Norapong                 | 6110545619 | [MaiMee1](https://github.com/MaiMee1)         |
+| Wijantra Cojamnong           | 6110545627 | [Wijantra](https://github.com/Wijantra)       |
+| Tharathorn Bunrattanasathian | 6110546011 | [th-bunratta](https://github.com/th-bunratta) |
+| Natthaphon Rakprakobkij      | 6110546402 | [mark47546](https://github.com/mark47546)     |
 
 ## Submission
 [MAO's CQs](https://docs.google.com/document/d/1fCCBBOLLUXRpFNAixN0ijBHhyUXKfc0Geao4H-j9m3k/edit?usp=sharing): the competency questions of Movie Awards Ontology (MAO)
