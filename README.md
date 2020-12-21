@@ -22,4 +22,21 @@ Testing: Python 3.8+
    
    for converting `.yaml` specs to RDF `.owl`
 
+## Getting Started
 
+Generate .owl from .yaml specs. 
+
+```python
+from dirs import ROOT_DIR
+
+from ontogen import Ontology
+from ontogen.converter import OntogenConverter
+
+# Load ontology from YAML specs
+converter = OntogenConverter.load_from_spec(ROOT_DIR / "mao.yaml")
+
+# Save the results to an in-memory Ontology
+onto: Ontology = converter.sync_with_ontology()
+# Save the results to an RDF/XML file Ontology. Can be 'xml' or 'ttl'
+onto.save_to_file(ROOT_DIR / "mao.owl")
+```
