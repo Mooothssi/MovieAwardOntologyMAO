@@ -1840,17 +1840,73 @@ rules:
   satisfyFeatureLengthOscarCriterion:
     rule:
       - >
-        mao:isCriterionFor(mao:FeatureLengthOscarCriterion, ?m) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, mao:FeatureLengthOscarCriterion)
-    rdfs:comment: ""
+        mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, mao:FeatureLengthOscarCriterion)
+    rdfs:comment: "Feature length rule for Academy Award"
 
   satisfyShortFilmOscarCriterion:
     rule:
       - >
-        mao:isCriterionFor(mao:ShortFilmOscarCriterion, ?m) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, mao:ShortFilmOscarCriterion)
-    rdfs:comment: ""
+        mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, mao:ShortFilmOscarCriterion)
+    rdfs:comment: "Short film rule for Academy Award"
 
   satisfyFeatureLengthBaftaCriterion:
     rule:
       - >
-        mao:isCriterionFor(mao:FeatureLengthBaftaCriterion, ?m) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 70) -> mao:satisfiesCriterion(?m, mao:FeatureLengthBaftaCriterion)
-    rdfs:comment: ""
+        mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 70) -> mao:satisfiesCriterion(?m, mao:FeatureLengthBaftaCriterion)
+    rdfs:comment: "Feature length rule for BAFTA"
+
+  hasEnglishSubTitle:
+    rule:
+      - >
+        mao:Film(?f) ^ mao:AwardReceivedSituation(?as) ^ mao:hasAward(?as, mao:Oscar) ^ mao:forFilm(?as, ?f) -> mao:hasSubTitleInLanguage(?f, mao:English)
+    rdfs:comment: "Rule for check english sub"
+
+  mainCharacterOscarActor: Indiviadual
+    rule:
+      - >
+        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPartActing(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
+    rdfs:comment: "Rule for find occupation by award category"
+
+  mainCharacterOscarActress: Indivaidual
+    rule:
+      - >
+        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPartActing(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
+    rdfs:comment: "Rule for find main character by oscar best actress"
+
+  sideCharacterOscarActor: Individual
+    rule:
+      - >
+       mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BestSupportingActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPartActing(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
+    rdfs:comment: "Rule for find side character by oscar best supporting actor"
+
+  sideCharacterOscarActress: Individual
+    rule:
+      - >
+        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestSupportingActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPartActing(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
+    rdfs:comment: "Rule for find side character by oscar best supporting actress"
+
+  mainCharacterBaftaActor: Individual
+    rule:
+      - >
+        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPartActing(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
+    rdfs:comment: "Rule for find main character by oscar best actor"
+
+  mainCharacterBaftaActress: Indivaidual
+    rule:
+      - >
+        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPartActing(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
+    rdfs:comment: "Rule for find main character by bafta best actress"
+
+  sideCharacterBaftaActor: Individual
+    rule:
+      - >
+       mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestSupportingActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPartActing(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
+    rdfs:comment: "Rule for find side character by bafta best supporting actor"
+
+  sideCharacterBaftaActress: Individual
+    rule:
+      - >
+        mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestSupportingActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPartActing(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
+    rdfs:comment: "Rule for find side character by bafta best supporting actress"
+
+
