@@ -206,19 +206,6 @@ owl:Class:
       - NominationSituation and (win value True)
     rdfs:subClassOf:
       - NominationSituation
-  mao:BaftaCriterion:
-    annotations:
-      rdfs:comment:
-        - >
-          A principle or standard which may be judged or decided by Bafta^^xsd:string
-      rdfs:label:
-        - BaftaCriterion^^rdfs:Literal@en
-    owl:disjointWith:
-      - OscarCriterion
-    owl:equivalentClass:
-      - Criterion and (isCriterionFor value BaftaAward)
-    rdfs:subClassOf:
-      - Criterion
   mao:Character:
     annotations:
       rdfs:comment:
@@ -451,15 +438,6 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
-  mao:FeatureLengthBaftaCriterion:
-    annotations:
-      rdfs:comment:
-        - >
-          A principle or standard of feature length which may be judged or decided by Bafta^^xsd:string
-      rdfs:label:
-        - FeatureLengthBaftaCriterion^^rdfs:Literal@en
-    rdfs:subClassOf:
-      - BaftaCriterion
   mao:FeatureLengthOscarCriterion:
     annotations:
       rdfs:comment:
@@ -695,8 +673,6 @@ owl:Class:
           A principle or standard which may be judged or decided by Oscar^^xsd:string
       rdfs:label:
         - OscarCriterion^^rdfs:Literal@en
-    owl:disjointWith:
-      - BaftaCriterion
     owl:equivalentClass:
       - Criterion and (isCriterionFor value OscarAward)
     rdfs:subClassOf:
