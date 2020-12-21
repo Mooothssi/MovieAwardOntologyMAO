@@ -8,7 +8,7 @@ import re
 #         return max(map(self.choices, null=True), null=True)
 from django.db.models import ManyToOneRel, AutoField, ForeignObjectRel, Field
 
-from dirs import ROOT_DIR
+# from dirs import ROOT_DIR
 from mapping import OSCAR_MAPPING
 from utils.dict import select_not_null
 from wikidata_queries.base import get_content_ratings_for_film, get_single_valued_prop, get_genre_with_subgenres, get_from_imdb_id
@@ -260,7 +260,7 @@ def read_wiki_oscar_categories(filename: str) -> typing.List[str]:
 
 class AwardCategory(models.Model, UpsertMixin):
     wiki_categories: typing.ClassVar[typing.List[str]] = read_wiki_oscar_categories(
-        ROOT_DIR / 'mapping/oscar-categories.txt')
+        'mapping/oscar-categories.txt')
 
     # object properties
     forOccupation = models.ForeignKey(Occupation, on_delete=models.CASCADE, null=True)
