@@ -2,9 +2,11 @@
 
 Movie Awards Ontology (MAO)
 
-## Getting Started
+## Submission
+[MAO's CQs](https://docs.google.com/document/d/1fCCBBOLLUXRpFNAixN0ijBHhyUXKfc0Geao4H-j9m3k/edit?usp=sharing): the competency questions of Movie Awards Ontology (MAO)
 
-Don't forget to create `.env` file before starting `sample.py`.
+[Documentation](https://github.com/th-bunratta/MovieAwardOntologyMAO/blob/master/mao.md): the documentation about MAO ontology
+
 
 ## Requirements
 
@@ -19,3 +21,5 @@ Testing: Python 3.8+
 - [**ontogen**](ontogen/README.md)
    
    for converting `.yaml` specs to RDF `.owl`
+
+
