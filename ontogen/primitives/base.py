@@ -2,7 +2,7 @@ from typing import Any, Dict, List, Union
 
 from ontogen.base import OwlEntity, BUILTIN_DATA_TYPES, DATATYPE_MAP
 
-ENTITIES: Dict[str, OwlEntity] = {}
+ENTITIES: Dict[str, OwlEntity] = {'rdfs:label': None}
 
 
 def get_equivalent_datatype(entity_name: str) -> Union[type, str]:

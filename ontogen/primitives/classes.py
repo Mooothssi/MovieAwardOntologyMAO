@@ -83,6 +83,8 @@ class OwlIndividual(OwlEntity, OwlAssertable):
         else:
             if isinstance(val, str) and prop_name in self.all_defined_properties:
                 prop = self.all_defined_properties[prop_name]
+                if not prop:
+                    return value
                 if isinstance(prop, OwlObjectProperty):
                     n = shorten_entity_name(value)
                     if n in GENERATED_TYPES:
@@ -90,9 +92,12 @@ class OwlIndividual(OwlEntity, OwlAssertable):
                 elif isinstance(prop, OwlDataProperty):
                     r = prop.range[0]
                     if r == datetime.datetime:
-                        return datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
-            return value
-            # raise OntologyConsistencyError(f'{prop_name} is not declared in the specs')
+                        try:
+                            return datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
+                        except ValueError:
+                            raise ValueError(f'{self.name_with_prefix} has invalid value {value}')
+                    return value
+            raise OntologyConsistencyError(f'{prop_name} is not declared in the specs')
 
     @property
     def all_defined_properties(self) -> Dict[str, OwlObjectProperty]:
