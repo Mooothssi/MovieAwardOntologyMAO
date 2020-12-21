@@ -6,6 +6,7 @@ import urllib.request
 # urllib.request.install_opener(opener)
 from typing import List, NamedTuple, Tuple
 
+
 from SPARQLWrapper import SPARQLWrapper, JSON
 import pandas as pd
 
@@ -115,13 +116,13 @@ class GenreWithSub(NamedTuple):
 
 def get_genre_with_subgenres() -> List[GenreWithSub]:
     query = """
-SELECT ?genre ?genreLabel ?subGenre ?subGenreLabel
-{
-  ?subGenre wdt:P31 wd:Q201658;
-         wdt:P279 ?genre.
-  ?genre wdt:P31 wd:Q201658
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,[AUTO_LANGUAGE]".}
-}
+    SELECT ?genre ?genreLabel ?subGenre ?subGenreLabel
+    {
+      ?subGenre wdt:P31 wd:Q201658;
+             wdt:P279 ?genre.
+      ?genre wdt:P31 wd:Q201658
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "en,[AUTO_LANGUAGE]".}
+    }
     """.strip()
     df = builder.raw_query(['genre', 'genreLabel', 'subGenre', 'subGenreLabel'], query)
     lst: List[GenreWithSub] = []

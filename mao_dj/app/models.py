@@ -10,8 +10,10 @@ from django.db.models import ManyToOneRel, AutoField, ForeignObjectRel, Field
 
 # from dirs import ROOT_DIR
 from mapping import OSCAR_MAPPING
+from ontogen.decorators import include
 from utils.dict import select_not_null
-from wikidata_queries.base import get_content_ratings_for_film, get_single_valued_prop, get_genre_with_subgenres, get_from_imdb_id
+from wikidata_queries.base import (get_content_ratings_for_film, get_single_valued_prop,
+                                   get_genre_with_subgenres, get_from_imdb_id)
 
 
 class Gender(models.TextChoices):
@@ -200,7 +202,7 @@ class Genre(models.Model, UpsertMixin):
             genre.save()
 
 
-class Language(models.Model):
+class Language(UpsertMixin, models.Model):
     # annotation property
     label = models.CharField(max_length=255)
 
@@ -259,8 +261,8 @@ def read_wiki_oscar_categories(filename: str) -> typing.List[str]:
 
 
 class AwardCategory(models.Model, UpsertMixin):
-    wiki_categories: typing.ClassVar[typing.List[str]] = read_wiki_oscar_categories(
-        'mapping/oscar-categories.txt')
+    # wiki_categories: typing.ClassVar[typing.List[str]] = read_wiki_oscar_categories(
+    #     'mapping/oscar-categories.txt')
 
     # object properties
     forOccupation = models.ForeignKey(Occupation, on_delete=models.CASCADE, null=True)
@@ -348,12 +350,16 @@ class Film(models.Model):
     avg_rating = models.CharField(max_length=255, null=True)
     t_const = models.CharField(max_length=255, unique=True)
 
+    @include
     def sync_from_wikidata(self):
-        print(f'Syncing {self.hasTitle} with {self.t_const}')
-        self.update_wikidata_id_from_imdb()
-        self.update_content_rating_from_wikidata()
-        self.update_country_of_origin_from_wikidata()
-        print(f'Synced {self.hasTitle} with {self.t_const} [{self.hasWikidataId}]')
+        try:
+            print(f'Syncing {self.hasTitle} with {self.t_const}')
+            self.update_wikidata_id_from_imdb()
+            self.update_content_rating_from_wikidata()
+            self.update_country_of_origin_from_wikidata()
+            print(f'Synced {self.hasTitle} with {self.t_const} [{self.hasWikidataId}]')
+        except KeyError:
+            pass
 
     def update_wikidata_id_from_imdb(self):
         self.hasWikidataId = get_from_imdb_id(self.t_const)
@@ -362,17 +368,18 @@ class Film(models.Model):
         self.save()
 
     def update_content_rating_from_wikidata(self):
-        for cr in get_content_ratings_for_film(self.hasWikidataId):
-            cr_model = ContentRating.upsert(appliesInCountry=Country.upsert(name=cr.appliesInCountry))
-            category = ContentRatingCategory.upsert(hasValue=cr.value, isPartOf=cr_model)
-            self.hasContentRating.add(category)
-        self.save()
+
+            for cr in get_content_ratings_for_film(self.hasWikidataId):
+                cr_model = ContentRating.upsert(appliesInCountry=Country.upsert(label=cr.appliesInCountry))
+                category = ContentRatingCategory.upsert(hasValue=cr.value, isPartOf=cr_model)
+                self.hasContentRating.add(category)
+            self.save()
 
     def update_country_of_origin_from_wikidata(self):
         f = get_single_valued_prop(self.hasWikidataId)
         self.dateReleased = f.hasPublicationDate
-        self.hasCountryOfOrigin = f.hasCountryOfOrigin
-        self.hasOriginalLanguage = f.hasOriginalLanguage
+        self.hasCountryOfOrigin = Country.upsert(label=f.hasCountryOfOrigin)
+        self.hasOriginalLanguage = Language.upsert(label=f.hasOriginalLanguage)
         self.save()
 
 
