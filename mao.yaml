@@ -157,6 +157,7 @@ owl:Class:
         - AwardCategory^^rdfs:Literal@en
     objectProperty:
       - forOccupation
+      - isPartOf
     owl:disjointWith:
       - ContentRatingCategory
       - Genre
@@ -287,7 +288,11 @@ owl:Class:
         - >
           A classification or ranking of content based on a comparative assessment of quality, standard, or performance^^xsd:string
       rdfs:label:
+<<<<<<< HEAD
         - Category^^rdfs:Literal@en
+=======
+      - ContentRatingCategory^^rdfs:Literal@en
+>>>>>>> Update class AwardCategory
     dataProperty:
       - hasDescription
     objectProperty:
@@ -850,7 +855,11 @@ owl:Class:
       - Situation
   mao:FilmEligibleForOscars:
     owl:equivalentClass:
+<<<<<<< HEAD
       - Film and (satisfiesCriterionFor some Award) and (not(violatesCriterionFor some Award))
+=======
+      - Film and (satisfiesCriterionFor some Award) and (not (violatesCriterionFor some Award))
+>>>>>>> Update class AwardCategory
     rdfs:subClassOf:
       - Film
 
