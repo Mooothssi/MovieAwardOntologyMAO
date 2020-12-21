@@ -850,9 +850,7 @@ owl:Class:
       - Situation
   mao:FilmEligibleForOscars:
     owl:equivalentClass:
-      - Film and (satisfiesCriterionFor some Award) and (not violatesCriterioinFor some Award)
-    rdfs:subClassOf:
-      - Film
+      - "Film and (satisfiesCriterionFor some Award) and (not (violatesCriterionFor some Award))"
 
 owl:AnnotationProperty:
   dc:title:
