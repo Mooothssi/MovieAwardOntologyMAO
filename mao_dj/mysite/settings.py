@@ -31,7 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'app',
+    'app',  # running?
+    # 'mao_dj.app',  # migrations, migrate?
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
