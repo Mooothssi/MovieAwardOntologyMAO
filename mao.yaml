@@ -438,18 +438,6 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
-  mao:FeatureLengthOscarCriterion:
-    annotations:
-      rdfs:comment:
-        - >
-          A principle or standard of feature length which may be judged or decided by Oscar^^xsd:string
-      rdfs:label:
-        - FeatureLengthOscarCriterion^^rdfs:Literal@en
-    owl:disjointWith:
-      - ShortFilmOscarCriterion
-      - ShortFilmReleaseNominationOscarCriterion
-    rdfs:subClassOf:
-      - OscarCriterion
   mao:FilmCast:
     annotations:
       rdfs:comment:
@@ -666,17 +654,6 @@ owl:Class:
       - Person
     rdfs:subClassOf:
       - Agent
-  mao:OscarCriterion:
-    annotations:
-      rdfs:comment:
-        - >
-          A principle or standard which may be judged or decided by Oscar^^xsd:string
-      rdfs:label:
-        - OscarCriterion^^rdfs:Literal@en
-    owl:equivalentClass:
-      - Criterion and (isCriterionFor value OscarAward)
-    rdfs:subClassOf:
-      - Criterion
   mao:Place:
     annotations:
       rdfs:comment:
@@ -806,30 +783,6 @@ owl:Class:
       - Situation
     rdfs:subClassOf:
       - Object
-  mao:ShortFilmOscarCriterion:
-    annotations:
-      rdfs:comment:
-        - >
-          A principle or standard of Oscar for short films^^xsd:string
-      rdfs:label:
-        - ShortFilmOscarCriterion^^rdfs:Literal@en
-    owl:disjointWith:
-      - FeatureLengthOscarCriterion
-      - ShortFilmReleaseNominationOscarCriterion
-    rdfs:subClassOf:
-      - OscarCriterion
-  mao:ShortFilmReleaseNominationOscarCriterion:
-    annotations:
-      rdfs:comment:
-        - >
-          A principle or standard of Oscar nomination for short films^^xsd:string
-      rdfs:label:
-        - ShortFilmReleaseNominationOscarCriterion^^rdfs:Literal@en
-    owl:disjointWith:
-      - FeatureLengthOscarCriterion
-      - ShortFilmOscarCriterion
-    rdfs:subClassOf:
-      - OscarCriterion
   mao:Situation:
     annotations:
       rdfs:comment:
