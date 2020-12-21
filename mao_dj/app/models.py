@@ -354,11 +354,11 @@ class Film(models.Model):
     avg_rating = models.CharField(max_length=255, null=True)
     t_const = models.CharField(max_length=255, unique=True)
 
-    def sync_from_wikidata(self):
-        print(f'Syncing {self.hasTitle} with {self.t_const}')
-        if self.hasWikidataId:
-            return
+    def sync_from_wikidata(self, skip=True):
         try:
+            print(f'Syncing {self.hasTitle} with {self.t_const}')
+            if self.hasWikidataId and skip:
+                return
             self.update_wikidata_id_from_imdb()
             self.update_content_rating_from_wikidata()
             self.update_country_of_origin_from_wikidata()
