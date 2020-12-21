@@ -10,3 +10,4 @@ rdflib
 semver
 spacy
 Django
+SPARQLWrapper
