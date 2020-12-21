@@ -287,7 +287,7 @@ owl:Class:
         - >
           A classification or ranking of content based on a comparative assessment of quality, standard, or performance^^xsd:string
       rdfs:label:
-        Category^^rdfs:Literal@en
+        - Category^^rdfs:Literal@en
     dataProperty:
       - hasDescription
     objectProperty:
@@ -310,8 +310,8 @@ owl:Class:
       rdfs:comment:
         - >
           The action or process of classifying content rating according to shared qualities or characteristics^^xsd:string
-      rdfs:label:
-        Classification^^rdfs:Literal@en
+      rdfs:label: 
+        - Classification^^rdfs:Literal@en
     dataProperty:
       - hasValue
     objectProperty:
@@ -850,7 +850,7 @@ owl:Class:
       - Situation
   mao:FilmEligibleForOscars:
     owl:equivalentClass:
-      - Film and (satisfiesCriterionFor some Award) and (not violatesCriterioinFor some Award)
+      - Film and (satisfiesCriterionFor some Award) and (not(violatesCriterionFor some Award))
     rdfs:subClassOf:
       - Film
 
