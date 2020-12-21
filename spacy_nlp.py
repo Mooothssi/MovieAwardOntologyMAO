@@ -105,7 +105,7 @@ def get_not_person_name(s1: str, s2: str) -> str:
     if person is not None:
         return s1
 
-    with get_person_names() as person_names:
+    with get_resources('person_names') as person_names:
         if s1 in person_names:
             if s2 not in person_names:
                 return s2
