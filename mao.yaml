@@ -848,6 +848,11 @@ owl:Class:
       - NominationSituation
     rdfs:subClassOf:
       - Situation
+  mao:FilmEligibleForOscars:
+    owl:equivalentClass:
+      - Film and (satisfiesCriterionFor some Award) and (not violatesCriterioinFor some Award)
+    rdfs:subClassOf:
+      - Film
 
 owl:AnnotationProperty:
   dc:title:
@@ -1512,6 +1517,17 @@ owl:ObjectProperty:
       - Requirement
     rdfs:subPropertyOf:
       - violates
+    rdfs:Domain:
+  mao:satisfiesCriterionFor:
+    rdfs:domain:
+      - Film
+    rdfs:range:
+      - Award
+  mao:violatesCriterionFor:
+    rdfs:domain:
+      - Film
+    rdfs:range:
+      - Award
 
 owl:Individual:
   # Awards
@@ -1918,4 +1934,12 @@ rules:
         mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestSupportingActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
     rdfs:comment: "Rule for find side character by bafta best supporting actress"
 
+  satisfiesCriterionFor:
+    rule:
+      - >
+        mao:satisfiesCriterion(?film, ?c) ^ mao:isCriterionFor(?c, ?award) -> mao:satisfiesCriterionFor(?film, ?award)
 
+  violatesCriterionFor:
+    rule:
+      - >
+        mao:violatesCriterion(?film, ?c) ^ mao:isCriterionFor(?c, ?award) -> mao:violatesCriterionFor(?film, ?award)
