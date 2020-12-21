@@ -6,7 +6,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from start_dj import start_django_lite
 
 start_django_lite()
-from dirs import ROOT_DIR
 
 from ontogen import Ontology
 from ontogen.converter import OntogenConverter, OwlClass, OwlIndividual
@@ -221,7 +220,10 @@ def add_imdb_info():
             .join(imdb.ProductionCompanies, imdb.ProductionCompanies.title == imdb.TitleAkas.title
                   and imdb.ProductionCompanies.year == imdb.TitleBasics.startYear
                   ).all()
-        film.sync_from_wikidata()
+        try:
+            film.sync_from_wikidata()
+        except KeyError:
+            pass
         for three in title_akas_lst:
             title_akas = three[0]
             prod = three[1]
@@ -233,7 +235,8 @@ def add_imdb_info():
                         film.hasCountryOfOrigin = country
                         print(f'found: {title_akas}')
                 except ObjectDoesNotExist:
-                    print(title_akas.region)
+                    pass
+        print(film)
 
 
 def read_alpha_2_to_countries(csv_file: str):
@@ -248,4 +251,6 @@ def read_alpha_2_to_countries(csv_file: str):
 
 
 if __name__ == '__main__':
-    pass
+    add_award_info()
+    films = get_starting_films_from_awards()
+    # dump_attrs_list(ROOT_DIR / 'mapping/films.csv', films)
