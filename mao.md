@@ -16,6 +16,51 @@ http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#
 
 # Class Hierarchy
 - owl:Thing
+  - mao:Abstract
+    - mao:Classification
+      - mao:AwardCategory
+      - mao:ContentRatingClassification
+      - mao:Gender
+      - mao:Genre
+      - mao:Nationality
+      - mao:Race
+    - mao:Language
+  - mao:Event
+    - mao:FilmMakingSituation
+  - mao:Object
+    - mao:Agent
+      - mao:Character
+      - mao:CharacterImportance
+      - mao:CollectiveAgent
+        - mao:Audience
+        - mao:FilmCast
+        - mao:FilmCrew
+      - mao:Organization
+        - mao:MovieStudio
+      - mao:Person
+    - mao:AggregateRating
+    - mao:Award
+    - mao:AwardCeremony
+    - mao:ContentRatingCategory
+    - mao:Film
+      - mao:FilmEligibleForOscars
+    - mao:Occupation
+    - mao:Place
+      - mao:City
+      - mao:Country
+    - mao:Rating
+    - mao:Review
+    - mao:Situation
+      - mao:ActingSituation
+      - mao:FilmMakingSituation
+      - mao:NominationSituation
+        - mao:AwardReceivedSituation
+        - mao:NominatedForSituation
+      - mao:VoiceActingSituation
+  - mao:Value
+    - mao:NormativeValue
+      - mao:Criterion
+      - mao:Requirement
 
 # Property Hierarchy
 ### Object Property
@@ -86,10 +131,12 @@ http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#
   - mao:satisfies
     - mao:satisfiesCriterion
     - mao:satisfiesRequirement
+  - mao:satisfiesCriterionFor
   - mao:setBy
   - mao:violates
     - mao:violatesCriterion
     - mao:violatesRequirement
+  - mao:violatesCriterionFor
   - owl:topObjectProperty
 
 ### Data Property
@@ -118,8 +165,8 @@ http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#
   - owl:topDataProperty
 
 ### Annotation Property
-- dcterms:license
 - dc:title
+- dcterms:license
 
 # Ontology Description
 ### Annotations
@@ -135,7 +182,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Version Info
-  - 1.0.16
+  - 1.0.17
 Label
 
 | Language | Label |
@@ -163,7 +210,7 @@ Label
 
 ### Description
 Subclass of:
-  - mao:Thing
+  - owl:Thing
 
 Disjoint with:
   - mao:Event
@@ -617,7 +664,7 @@ Label
 
 ### Description
 Subclass of:
-  - mao:Thing
+  - owl:Thing
 
 Disjoint with:
   - mao:Abstract
@@ -927,7 +974,7 @@ Label
 
 ### Description
 Subclass of:
-  - mao:Thing
+  - owl:Thing
 
 Disjoint with:
   - mao:Abstract
@@ -1206,7 +1253,7 @@ Label
 
 ### Description
 Subclass of:
-  - mao:Thing
+  - owl:Thing
 
 Disjoint with:
   - mao:Abstract
@@ -1246,6 +1293,14 @@ Disjoint with:
   - hasCharacter
   - hasFilm
   - isPartOf
+
+## mao:FilmEligibleForOscars
+### Description
+Subclass of:
+  - mao:Film
+
+Equivalent to:
+  - mao:Film and (satisfiesCriterionFor some Award) and (not violatesCriterioinFor some Award)
 
 
 # Object Properties
@@ -1313,7 +1368,7 @@ Label
 
 ### Description
 Range:
-  - mao:Award
+  - mao:AwardCategory
 
 ## mao:follow
 ### Annotations
@@ -1558,7 +1613,7 @@ Domain:
   - mao:Value
 
 Range:
-  - mao:Thing
+  - owl:Thing
 
 ## mao:hasFilm
 ### Annotations
@@ -1692,10 +1747,10 @@ Label
 
 ### Description
 Domain:
-  - mao:Thing
+  - owl:Thing
 
 Range:
-  - mao:Thing
+  - owl:Thing
 
 ## mao:hasPrequels
 ### Annotations
@@ -1761,7 +1816,7 @@ Label
 
 ### Description
 Domain:
-  - mao:Thing
+  - owl:Thing
 
 Range:
   - mao:Situation
@@ -1850,7 +1905,7 @@ Domain:
   - mao:Value
 
 Range:
-  - mao:Thing
+  - owl:Thing
 
 ## mao:isAgentInvolvedIn
 ### Annotations
@@ -1921,10 +1976,10 @@ Label
 
 ### Description
 Domain:
-  - mao:Thing
+  - owl:Thing
 
 Range:
-  - mao:Thing
+  - owl:Thing
 
 ## mao:isParticipantIn
 ### Annotations
@@ -1953,7 +2008,7 @@ Label
 
 ### Description
 Range:
-  - mao:Thing
+  - owl:Thing
 
 Sub-properties:
   - mao:isValidFor
@@ -1968,7 +2023,7 @@ Label
 
 ### Description
 Domain:
-  - mao:Thing
+  - owl:Thing
 
 Range:
   - mao:Value
@@ -1988,7 +2043,7 @@ Domain:
   - mao:Situation
 
 Range:
-  - mao:Thing
+  - owl:Thing
 
 ## mao:isSubGenreOf
 ### Annotations
@@ -2021,7 +2076,7 @@ Domain:
   - mao:Value
 
 Range:
-  - mao:Thing
+  - owl:Thing
 
 ## mao:isViolatedBy
 ### Annotations
@@ -2036,7 +2091,7 @@ Domain:
   - mao:Value
 
 Range:
-  - mao:Thing
+  - owl:Thing
 
 ## mao:locatedIn
 ### Annotations
@@ -2084,7 +2139,7 @@ Label
 
 ### Description
 Domain:
-  - mao:Thing
+  - owl:Thing
 
 Range:
   - mao:Value
@@ -2141,7 +2196,7 @@ Label
 
 ### Description
 Domain:
-  - mao:Thing
+  - owl:Thing
 
 Range:
   - mao:Value
@@ -2175,6 +2230,22 @@ Range:
 
 Sub-properties:
   - mao:violates
+
+## mao:satisfiesCriterionFor
+### Description
+Domain:
+  - mao:Film
+
+Range:
+  - mao:Award
+
+## mao:violatesCriterionFor
+### Description
+Domain:
+  - mao:Film
+
+Range:
+  - mao:Award
 
 
 # Data Properties
@@ -2467,6 +2538,10 @@ mao:Film(?m) ^ mao:satisfiesCriterion(?m, ?c) ^ mao:isCriterionFor(?c, ?award) -
 ```
 mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, mao:FeatureLengthOscarCriterion)
 ```
+## violateFeatureLengthOscarCriterion
+```
+mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThan(?t, 40) -> mao:violatesCriterion(?m, mao:FeatureLengthOscarCriterion)
+```
 ## satisfyShortFilmOscarCriterion
 ```
 mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, mao:ShortFilmOscarCriterion)
@@ -2479,35 +2554,31 @@ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(
 ```
 mao:Film(?f) ^ mao:AwardReceivedSituation(?as) ^ mao:hasAward(?as, mao:Oscars) ^ mao:forFilm(?as, ?f) -> mao:hasSubTitleInLanguage(?f, mao:English)
 ```
+## occupationForperson
+```
+NominationSituation(?ns) ^ hasAwardCategory(?ns, ?ac) ^ forOccupation(?ac, ?o) ^ isGivenTo(?ns, ?p) ^ -> hasOccupation(?p, ?o)
+```
 ## mainCharacterOscarActor
 ```
-mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
+mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, mao:OscarBestActor) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
 ```
 ## mainCharacterOscarActress
 ```
-mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
+mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, mao:OscarBestActress) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
 ```
 ## sideCharacterOscarActor
 ```
-mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestSupportingActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
+mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, mao:OscarBestSupportingActor) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
 ```
 ## sideCharacterOscarActress
 ```
-mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:OscarBestSupportingActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
+mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, mao:OscarBestSupportingActress) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
 ```
-## mainCharacterBaftaActor
+## satisfiesCriterionFor
 ```
-mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
+mao:satisfiesCriterion(?film, ?c) ^ mao:isCriterionFor(?c, ?award) -> mao:satisfiesCriterionFor(?film, ?award)
 ```
-## mainCharacterBaftaActress
+## violatesCriterionFor
 ```
-mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:MainCharacter)
-```
-## sideCharacterBaftaActor
-```
-mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestSupportingActor) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
-```
-## sideCharacterBaftaActress
-```
-mao:eligibleFor(?p, ?award) ^ mao:hasAwardCategory(?award, mao:BaftaBestSupportingActress) ^ mao:NominationSituation(?n) ^ mao:isGivenTo(?n, ?p) ^ mao:forFilm(?n, ?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasPart(?fm, ?ac) ^ mao:hasActor(?ac, ?p) ^ mao:hasCharacter(?ac, ?char) -> mao:hasImportance(?char, mao:SideCharacter)
+mao:violatesCriterion(?film, ?c) ^ mao:isCriterionFor(?c, ?award) -> mao:violatesCriterionFor(?film, ?award)
 ```
