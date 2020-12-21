@@ -94,8 +94,9 @@ class OwlIndividual(OwlEntity, OwlAssertable):
                     if r == datetime.datetime:
                         try:
                             return datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
-                        except ValueError:
-                            raise ValueError(f'{self.name_with_prefix} has invalid value {value}')
+                        except ValueError as e:
+                            print(f'{self.name_with_prefix} has invalid value {value} - {e}')
+                            return ''
                     return value
             raise OntologyConsistencyError(f'{prop_name} is not declared in the specs')
 
