@@ -24,6 +24,12 @@ Testing: Python 3.8+
 
 ## Getting Started
 
+Install requirements
+
+```shell script
+pip install -r requirements.txt
+```
+
 Generate .owl from .yaml specs. 
 
 ```python
