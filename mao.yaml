@@ -1903,6 +1903,22 @@ owl:Individual:
   mao:CustomDesigner:
     rdf:type:
       - Occupation
+  #Criterion
+  mao:FeatureLengthOscarCriterion:
+    rdf:type:
+      - Criterion
+  mao:ShortFilmOscarCriterion:
+    rdf:type:
+      - Criterion
+  mao:FeatureLengthBaftaCriterion:
+    rdf:type:
+      - Criterion
+  mao:OutstandingBritishFilmExceptionBaftaCriterio:
+    rdf:type:
+      - Criterion
+  mao:OutstandingDebutFilmExceptionBaftaCriterion:
+    rdf:type:
+      - Criterion
 
 rules:
   filmEligible:
@@ -1914,23 +1930,17 @@ rules:
   satisfyFeatureLengthOscarCriterion:
     rule:
       - >
-        mao:FeatureLengthOscarCriterion(?c)^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, ?c)
+        mao:isCriterionFor(mao:FeatureLengthOscarCriterion, ?m) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, mao:FeatureLengthOscarCriterion)
     rdfs:comment: ""
 
   satisfyShortFilmOscarCriterion:
     rule:
       - >
-         mao:ShortFilmOscarCriterion(?c) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, ?c)
+        mao:isCriterionFor(mao:ShortFilmOscarCriterion, ?m) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:lessThanOrEqual(?t, 40) -> mao:satisfiesCriterion(?m, mao:ShortFilmOscarCriterion)
     rdfs:comment: ""
 
   satisfyFeatureLengthBaftaCriterion:
     rule:
       - >
-        mao:FeatureLengthBaftaCriterion(?c) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 70) -> mao:satisfiesCriterion(?m, ?c)
-    rdfs:comment: ""
-
-  categoryGiveTo:
-    rule:
-      - >
-        mao:NominationSituation(?n) ^ mao:hasAwardCategory(?n, ?ac) ^ mao:forOccupation(?ac, ?o) ^ mao:forFilm(?n, ?m) ^ mao:Film(?m) ^ mao:FilmMakingSituation(?fm) ^ mao:hasFilm(?fm, ?m) ^ mao:hasOccupation(?p, ?o) -> mao:isGivenTo(?n, ?p)
+        mao:isCriterionFor(mao:FeatureLengthBaftaCriterion, ?m) ^ mao:isCriterionFor(?c, ?m) ^ mao:Film(?m) ^ mao:hasFeatureLengthInMinutes(?m, ?t) ^ swrlb:greaterThanOrEqual(?t, 70) -> mao:satisfiesCriterion(?m, mao:FeatureLengthBaftaCriterion)
     rdfs:comment: ""
