@@ -38,9 +38,12 @@ Testing: Python 3.8+
 Install requirements
 
 ```shell script
+pip install -U setuptools wheel
 pip install -r requirements.txt
 ```
 
+### Basic Generation
+    
 Generate .owl from .yaml specs. 
 
 ```python
@@ -56,4 +59,18 @@ converter = OntogenConverter.load_from_spec(ROOT_DIR / "mao.yaml")
 onto: Ontology = converter.sync_with_ontology()
 # Save the results to an RDF/XML file Ontology. Can be 'xml' or 'ttl'
 onto.save_to_file(ROOT_DIR / "mao.owl")
+```
+
+### Populate Data
+
+Make Django migrations
+
+```shell script
+python mao_dj/manage.py makemnigrations
+```
+
+Migrate Django models
+
+```shell script
+python mao_dj/manage.py migrate
 ```
