@@ -1040,7 +1040,7 @@ owl:ObjectProperty:
       rdfs:label:
         - eligible for^^rdfs:Literal@en
     rdfs:range:
-      - Award
+      - AwardCategory
   mao:follow:
     annotations:
       rdfs:label:
