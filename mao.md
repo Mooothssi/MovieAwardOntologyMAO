@@ -165,8 +165,8 @@ http://www.semanticweb.org/movie-ontology/ontologies/2020/9/mao#
   - owl:topDataProperty
 
 ### Annotation Property
-- dc:title
 - dcterms:license
+- dc:title
 
 # Ontology Description
 ### Annotations
@@ -181,8 +181,10 @@ License
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 Version Info
-  - 1.0.17
+  - 1.0.18
+
 Label
 
 | Language | Label |
@@ -202,6 +204,7 @@ Comment
 ### Annotations
 Comment
   - Any Entity that cannot be located in space-time. E.g. mathematical entities: formal semantics elements, regions within dimensional spaces, etc.
+
 Label
 
 | Language | Label |
@@ -221,6 +224,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A set of circumstances in which one finds about acting
+
 Label
 
 | Language | Label |
@@ -246,6 +250,7 @@ Disjoint with:
 ### Annotations
 Comment
   - Additional comment: a computational agent can be considered as a PhysicalAgent that realizes a certain class of algorithms (that can be considered as instances of InformationObject) that allow to obtain some behaviors that are considered typical of agents in general. For an ontology of computational objects based on DOLCE see e.g. http://www.loa-cnr.it/COS/COS.owl, and http://www.loa-cnr.it/KCO/KCO.owl.
+
 Label
 
 | Language | Label |
@@ -272,6 +277,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A whole formed by combining several rating
+
 Label
 
 | Language | Label |
@@ -309,6 +315,7 @@ Disjoint with:
 ### Annotations
 Comment
   - The assembled spectators or listeners at a public event, such as a movie
+
 Label
 
 | Language | Label |
@@ -327,6 +334,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A prize or other mark of recognition given in honor of an achievement
+
 Label
 
 | Language | Label |
@@ -362,6 +370,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A class or division of award regarded as having particular shared characteristics
+
 Label
 
 | Language | Label |
@@ -386,6 +395,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A formal act or series of acts prescribed by ritual, protocol, or convention about award
+
 Label
 
 | Language | Label |
@@ -422,6 +432,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A set of circumstances in which one finds about award receiving
+
 Label
 
 | Language | Label |
@@ -442,6 +453,7 @@ Equivalent to:
 ### Annotations
 Comment
   - Character in film
+
 Label
 
 | Language | Label |
@@ -472,6 +484,7 @@ Disjoint with:
 ### Annotations
 Comment
   - The state or fact of being of significance or value of character
+
 Label
 
 | Language | Label |
@@ -492,6 +505,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A large town
+
 Label
 
 | Language | Label |
@@ -509,6 +523,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A special kind of Situation that allows to include time indexing for the classifies relation in situations
+
 Label
 
 | Language | Label |
@@ -526,6 +541,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A SocialAgent that is actedBy agents that are (and act as) members of a Collective. A collective agent can have roles that are also roles of those agents
+
 Label
 
 | Language | Label |
@@ -550,6 +566,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A classification or ranking of content based on a comparative assessment of quality, standard, or performance
+
 Label
 
 | Language | Label |
@@ -582,6 +599,7 @@ Disjoint with:
 ### Annotations
 Comment
   - The action or process of classifying content rating according to shared qualities or characteristics
+
 Label
 
 | Language | Label |
@@ -609,6 +627,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A nation with its own government, occupying a particular territory
+
 Label
 
 | Language | Label |
@@ -626,6 +645,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A principle or standard which may be judged or decided
+
 Label
 
 | Language | Label |
@@ -656,6 +676,7 @@ Similarly to aspectual views, several intentionality views can be provided for a
 (3) Alternative participant views
 A slightly different case is when we consider the basic participants to an Event. In this case, the identity of the Event is affected by the participating objects, because it depends on them. For example, if snow, mountain slopes, wind, waves, etc. are considered as an avalanche basic participants, or if we also want to add water, human agents, etc., that makes the identity of an avalanche change. Anyway, this approach to event classification is based on the designer's choices, and more accurately mirrors lexical or commonsense classifications (see. e.g. WordNet 'supersenses' for verb synsets).
 Ultimately, this discussion has no end, because realists will keep defending the idea that events in reality are not changed by the way we describe them, while constructivists will keep defending the idea that, whatever 'true reality' is about, it can't be modelled without the theoretical burden of how we observe and describe it. Both positions are in principle valid, but, if taken too radically, they focus on issues that are only partly relevant to the aim of computational ontologies, which only attempt to assist domain experts in representing what they want to conceptualize a certain portion of reality according to their own ideas. For this reason, in this ontology both events and situations are allowed, together with descriptions, in order to encode the modelling needs, independently from the position (if any) chosen by the designer.
+
 Label
 
 | Language | Label |
@@ -679,6 +700,7 @@ Disjoint with:
 ### Annotations
 Comment
   - The moving picture
+
 Label
 
 | Language | Label |
@@ -728,6 +750,7 @@ Disjoint with:
 ### Annotations
 Comment
   - The process of making casts or molds about filming
+
 Label
 
 | Language | Label |
@@ -749,6 +772,7 @@ Equivalent to:
 ### Annotations
 Comment
   - A group of people who work closely together about filming
+
 Label
 
 | Language | Label |
@@ -770,6 +794,7 @@ Equivalent to:
 ### Annotations
 Comment
   - A set of circumstances in which one finds about film making
+
 Label
 
 | Language | Label |
@@ -795,6 +820,7 @@ Subclass of:
 ### Annotations
 Comment
   - The socially constructed roles and behaviors that a society typically associates with males and females
+
 Label
 
 | Language | Label |
@@ -819,6 +845,7 @@ Equivalent to:
 ### Annotations
 Comment
   - A category of composition characterized by similarities in form, style, or subject matter
+
 Label
 
 | Language | Label |
@@ -844,6 +871,7 @@ Disjoint with:
 ### Annotations
 Comment
   - The principal method of human communication
+
 Label
 
 | Language | Label |
@@ -861,6 +889,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A room, building, or group of buildings where movies are produced
+
 Label
 
 | Language | Label |
@@ -878,6 +907,7 @@ Subclass of:
 ### Annotations
 Comment
   - The status of belonging to a particular nation
+
 Label
 
 | Language | Label |
@@ -899,6 +929,7 @@ Disjoint with:
 ### Annotations
 Comment
   - Being suggested by someone for a set of circumstances
+
 Label
 
 | Language | Label |
@@ -919,6 +950,7 @@ Equivalent to:
 ### Annotations
 Comment
   - A set of circumstances in which one finds about nomination
+
 Label
 
 | Language | Label |
@@ -966,6 +998,7 @@ Subclass of:
 ### Annotations
 Comment
   - Any physical, social, or mental object, or a substance. Following DOLCE Full, objects are always participating in some event (at least their own life), and are spatially located.
+
 Label
 
 | Language | Label |
@@ -989,6 +1022,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A job or profession
+
 Label
 
 | Language | Label |
@@ -1018,6 +1052,7 @@ Disjoint with:
 ### Annotations
 Comment
   - An organized body of people with a particular purpose
+
 Label
 
 | Language | Label |
@@ -1041,6 +1076,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A location, in a very generic sense: a political geographic entity, a non-material location determined by the presence of other entities, pivot events or signs, complements of other entities, etc. In this generic sense, a Place is an approximate location.
+
 Label
 
 | Language | Label |
@@ -1067,6 +1103,7 @@ Disjoint with:
 ### Annotations
 Comment
   - Persons in commonsense intuition, which does not apparently distinguish between either natural or social persons.
+
 Label
 
 | Language | Label |
@@ -1096,6 +1133,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A group of people sharing the same culture, history, language, etc.
+
 Label
 
 | Language | Label |
@@ -1117,6 +1155,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A classification or ranking based on a comparative assessment of quality, standard, or performance
+
 Label
 
 | Language | Label |
@@ -1154,6 +1193,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A thing that is compulsory
+
 Label
 
 | Language | Label |
@@ -1176,6 +1216,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A published critical appraisal
+
 Label
 
 | Language | Label |
@@ -1212,6 +1253,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A view, consistent with ('satisfying') a Description, on a set of entities. It can also be seen as a 'relational context' created by an observer on the basis of a 'frame' (i.e. a Description). For example, a PlanExecution is a context including some actions executed by agents according to certain parameters and expected tasks to be achieved from a Plan; a DiagnosedSituation is a context of observed entities that is interpreted on the basis of a Diagnosis, etc. Situation is also able to represent reified n-ary relations, where isSettingFor is the top-level relation for all binary projections of the n-ary relation. If used in a transformation pattern for n-ary relations, the designer should take care of creating only one subclass of Situation for each n-ary relation, otherwise the 'identification constraint' (Calvanese et al., IJCAI 2001) could be violated.
+
 Label
 
 | Language | Label |
@@ -1273,6 +1315,7 @@ Disjoint with:
 ### Annotations
 Comment
   - A set of circumstances in which one finds about voice acting
+
 Label
 
 | Language | Label |
@@ -1300,7 +1343,7 @@ Subclass of:
   - mao:Film
 
 Equivalent to:
-  - mao:Film and (satisfiesCriterionFor some Award) and (not violatesCriterioinFor some Award)
+  - mao:Film and (satisfiesCriterionFor some Award) and (not(violatesCriterionFor some Award))
 
 
 # Object Properties
@@ -1345,6 +1388,7 @@ Range:
 ### Annotations
 Comment
   - A relation between two objects participating in a same Event; e.g., 'Vitas and Jimmy are playing tennis'.
+
 Label
 
 | Language | Label |
@@ -1739,6 +1783,7 @@ Range:
 ### Annotations
 Comment
   - A schematic relation between any entities, e.g. 'the human body has a brain as part', '20th century contains year 1923', 'World War II includes the Pearl Harbour event'. Subproperties and restrictions can be used to specialize hasPart for objects, events, etc.
+
 Label
 
 | Language | Label |
@@ -1808,6 +1853,7 @@ Range:
 ### Annotations
 Comment
   - A relation between entities and situations, e.g. 'this morning I've prepared my coffee with a new fantastic Arabica', i.e.: (an amount of) a new fantastic Arabica hasSetting the preparation of my coffee this morning.
+
 Label
 
 | Language | Label |
@@ -1849,6 +1895,7 @@ Range:
 ### Annotations
 Comment
   - A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.
+
 Label
 
 | Language | Label |
@@ -1968,6 +2015,7 @@ Range:
 ### Annotations
 Comment
   - A relation between any entities, e.g.'brain is a part of the human body'.
+
 Label
 
 | Language | Label |
@@ -1985,6 +2033,7 @@ Range:
 ### Annotations
 Comment
   - A relation between an object and a process, e.g. 'John took part in the discussion', 'a large mass of snow fell during the avalanche', or 'a cook, some sugar, flour, etc. are all present in the cooking of a cake'.
+
 Label
 
 | Language | Label |
@@ -2032,6 +2081,7 @@ Range:
 ### Annotations
 Comment
   - A relation between situations and entities, e.g. 'this morning I've prepared my coffee with a new fantastic Arabica', i.e.: the preparation of my coffee this morning is the setting for (an amount of) a new fantastic Arabica.
+
 Label
 
 | Language | Label |
@@ -2254,6 +2304,7 @@ Range:
 ### Annotations
 Comment
   - An attribute, quality, or characteristic of data
+
 Label
 
 | Language | Label |

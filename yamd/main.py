@@ -137,6 +137,7 @@ class Annotations:
                 lines.append(table)
             else:
                 lines.append(get_md_list(0, map(get_plain_literal, clean_values)))
+                lines.append('')
         return '\n'.join(lines)
 
 
